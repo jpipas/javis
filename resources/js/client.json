@@ -1,0 +1,10 @@
+{
+  "clients":  [
+  {"id":1,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954","territory_id":1},
+  {"id":2,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678","territory_id":1},
+  {"id":3,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789","territory_id":2},
+  {"id":4,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765","territory_id":1},
+  {"id":5,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321","territory_id":1},
+  {"id":6,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345","territory_id":1},
+  ]
+}
