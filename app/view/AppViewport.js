@@ -49,9 +49,9 @@ Ext.define('NCPublishers.view.AppViewport', {
                         {
                             xtype: 'image',
                             border: 0,
-                            height: 134,
+                            height: 84,
                             id: 'logo',
-                            width: 150,
+                            width: 209,
                             shadow: false,
                             maintainFlex: true,
                             src: '/resources/images/NCLogo.jpg',

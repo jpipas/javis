@@ -17,6 +17,7 @@ Ext.define('NCPublishers.view.Viewport', {
     extend: 'NCPublishers.view.AppViewport',
     renderTo: Ext.getBody(),
     requires: [
-        'NCPublishers.view.AppViewport'
+        'NCPublishers.view.AppViewport',
+        'NCPublishers.view.ClientGrid'
     ]
 });

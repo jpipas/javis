@@ -16,20 +16,26 @@
 Ext.define('NCPublishers.model.Client', {
     extend: 'Ext.data.Model',
     alias: 'model.client',
+    uses: [
+        'NCPublishers.model.Territory'
+    ],
 
     idProperty: 'id',
 
     fields: [
         {
             name: 'id',
+            sortType: 'asInt',
             type: 'int'
         },
         {
             name: 'name',
+            sortType: 'asText',
             type: 'string'
         },
         {
             name: 'address1',
+            sortType: 'asText',
             type: 'string'
         },
         {
@@ -59,7 +65,14 @@ Ext.define('NCPublishers.model.Client', {
         url: 'resources/js/client.json',
         reader: {
             type: 'json',
-            root: 'clients'
+            idProperty: 'id',
+            root: 'clients',
+            totalProperty: 'totalCount'
         }
+    },
+
+    belongsTo: {
+        associationKey: '',
+        model: 'NCPublishers.model.Territory'
     }
 });

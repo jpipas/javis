@@ -19,9 +19,12 @@ Ext.define('NCPublishers.view.ClientGrid', {
 
     height: 250,
     itemId: 'clientgrid',
+    width: 868,
     autoScroll: false,
     title: 'List: Clients',
     forceFit: true,
+    scroll: 'none',
+    scrollDelta: 150,
     store: 'ClientStore',
     columnLines: true,
 
@@ -42,6 +45,7 @@ Ext.define('NCPublishers.view.ClientGrid', {
                     flex: 1,
                     hideable: false,
                     locked: false,
+                    menuDisabled: true,
                     altText: 'Actions',
                     items: [
                         {
@@ -121,6 +125,7 @@ Ext.define('NCPublishers.view.ClientGrid', {
             tools: [
                 {
                     xtype: 'tool',
+                    itemId: 'printTool',
                     type: 'print'
                 }
             ]

@@ -20,10 +20,12 @@ Ext.Loader.setConfig({
 Ext.application({
     models: [
         'Client',
-        'Territory'
+        'Territory',
+        'State'
     ],
     stores: [
-        'ClientStore'
+        'ClientStore',
+        'TerritoryStore'
     ],
     views: [
         'AppViewport',
@@ -31,7 +33,8 @@ Ext.application({
         'ContentCards',
         'Activities',
         'RecordNavigation',
-        'ClientGrid'
+        'ClientGrid',
+        'TerritoryGrid'
     ],
     autoCreateViewport: true,
     name: 'NCPublishers',

@@ -143,27 +143,6 @@ Ext.define('NCPublishers.view.NavBar', {
                                                 }
                                             ]
                                         }
-                                    },
-                                    {
-                                        xtype: 'menuitem',
-                                        iconCls: 'ui-silk ui-silk-application-form',
-                                        text: 'Activity List',
-                                        menu: {
-                                            xtype: 'menu',
-                                            width: 120,
-                                            items: [
-                                                {
-                                                    xtype: 'menuitem',
-                                                    iconCls: 'ui-silk ui-silk-application-form-add',
-                                                    text: 'New'
-                                                },
-                                                {
-                                                    xtype: 'menuitem',
-                                                    iconCls: 'ui-silk ui-silk-application-form-magnify',
-                                                    text: 'Search'
-                                                }
-                                            ]
-                                        }
                                     }
                                 ]
                             }
@@ -194,21 +173,25 @@ Ext.define('NCPublishers.view.NavBar', {
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'PublicationGrid',
                                         iconCls: 'ui-silk ui-silk-newspaper',
                                         text: 'Publications'
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'AdvertisementGrid',
                                         iconCls: 'ui-silk ui-silk-page-white-picture',
                                         text: 'Advertisements'
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'ContractGrid',
                                         iconCls: 'ui-silk ui-silk-folder-table',
                                         text: 'Contracts'
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'TerritoryGrid',
                                         iconCls: 'ui-silk ui-silk-map',
                                         text: 'Territories'
                                     }

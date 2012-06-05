@@ -18,7 +18,8 @@ Ext.define('NCPublishers.view.ContentCards', {
     alias: 'widget.contentCards',
     requires: [
         'NCPublishers.view.Activities',
-        'NCPublishers.view.ClientGrid'
+        'NCPublishers.view.ClientGrid',
+        'NCPublishers.view.TerritoryGrid'
     ],
 
     activeItem: 0,
@@ -50,6 +51,10 @@ Ext.define('NCPublishers.view.ContentCards', {
                 {
                     xtype: 'clientgrid',
                     itemId: 'ClientGrid'
+                },
+                {
+                    xtype: 'territorygrid',
+                    itemId: 'TerritoryGrid'
                 }
             ]
         });

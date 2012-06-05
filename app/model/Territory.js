@@ -29,12 +29,23 @@ Ext.define('NCPublishers.model.Territory', {
             type: 'string'
         },
         {
-            name: 'state',
+            name: 'state_id',
             type: 'string'
+        },
+        {
+            name: 'manager_id',
+            type: 'int'
         }
     ],
 
-    belongsTo: {
-        model: 'NCPublishers.model.Client'
+    proxy: {
+        type: 'ajax',
+        url: 'resources/js/territory.json',
+        reader: {
+            type: 'json',
+            idProperty: 'id',
+            root: 'territory',
+            totalProperty: 'totalCount'
+        }
     }
 });
