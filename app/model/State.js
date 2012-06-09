@@ -14,5 +14,25 @@
  */
 
 Ext.define('NCPublishers.model.State', {
-    extend: 'Ext.data.Model'
+    extend: 'Ext.data.Model',
+
+    fields: [
+        {
+            name: 'id'
+        },
+        {
+            name: 'name'
+        }
+    ],
+
+    proxy: {
+        type: 'ajax',
+        url: '/resources/js/state.json',
+        reader: {
+            type: 'json',
+            idProperty: 'id',
+            root: 'state',
+            totalProperty: 'totalCount'
+        }
+    }
 });

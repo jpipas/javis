@@ -16,6 +16,9 @@
 Ext.define('NCPublishers.model.Territory', {
     extend: 'Ext.data.Model',
     alias: 'model.territory',
+    uses: [
+        'NCPublishers.model.State'
+    ],
 
     idProperty: 'id',
 
@@ -27,14 +30,6 @@ Ext.define('NCPublishers.model.Territory', {
         {
             name: 'name',
             type: 'string'
-        },
-        {
-            name: 'state_id',
-            type: 'string'
-        },
-        {
-            name: 'manager_id',
-            type: 'int'
         }
     ],
 
@@ -47,5 +42,10 @@ Ext.define('NCPublishers.model.Territory', {
             root: 'territory',
             totalProperty: 'totalCount'
         }
+    },
+
+    hasMany: {
+        associationKey: 'states',
+        model: 'NCPublishers.model.State'
     }
 });

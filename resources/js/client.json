@@ -3,544 +3,544 @@
   "clients":  [
   {
   "id":1,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":2,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":3,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":4,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":5,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":6,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":7,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":8,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":9,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":10,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":11,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":12,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":13,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":14,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":15,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":16,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":17,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":18,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":19,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":20,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":21,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":22,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":23,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":24,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":25,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":26,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":27,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":28,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":29,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":30,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":31,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":32,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":33,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":34,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":35,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":36,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":37,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":38,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":39,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":40,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":41,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":42,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":43,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":44,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
-  "territory":[
+  "territory":
     {
     "id":"1","name":"Milwaukee",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]},
+  },
   {"id":45,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
-  "territory":[
+    "territory":
     {
     "id":"2","name":"Madison",
-    "state":[
+    "states":[
       {}
     ],
-    "sales_rep":[
+    "reps":[
       {}
     ]
     }
-  ]}
+  }
   ]
 }

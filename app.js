@@ -34,7 +34,8 @@ Ext.application({
         'Activities',
         'RecordNavigation',
         'ClientGrid',
-        'TerritoryGrid'
+        'TerritoryGrid',
+        'ClientRecord'
     ],
     autoCreateViewport: true,
     name: 'NCPublishers',

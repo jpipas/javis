@@ -19,7 +19,8 @@ Ext.define('NCPublishers.view.ContentCards', {
     requires: [
         'NCPublishers.view.Activities',
         'NCPublishers.view.ClientGrid',
-        'NCPublishers.view.TerritoryGrid'
+        'NCPublishers.view.TerritoryGrid',
+        'NCPublishers.view.ClientRecord'
     ],
 
     activeItem: 0,
@@ -55,6 +56,10 @@ Ext.define('NCPublishers.view.ContentCards', {
                 {
                     xtype: 'territorygrid',
                     itemId: 'TerritoryGrid'
+                },
+                {
+                    xtype: 'clientrecord',
+                    itemId: 'ClientRecord'
                 }
             ]
         });
