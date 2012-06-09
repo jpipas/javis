@@ -53,10 +53,6 @@ Ext.define('NCPublishers.model.Client', {
         {
             name: 'zip',
             type: 'string'
-        },
-        {
-            name: 'territory_id',
-            type: 'int'
         }
     ],
 
@@ -72,7 +68,8 @@ Ext.define('NCPublishers.model.Client', {
     },
 
     belongsTo: {
-        associationKey: '',
-        model: 'NCPublishers.model.Territory'
+        associationKey: 'territory_name',
+        model: 'NCPublishers.model.Territory',
+        foreignKey: 'name'
     }
 });

@@ -36,6 +36,7 @@ Ext.define('NCPublishers.view.Activities', {
             dockedItems: [
                 {
                     xtype: 'recordnav',
+                    itemId: 'RecordNavigation',
                     dock: 'top'
                 }
             ]

@@ -1,0 +1,3 @@
+[submodule "resources/js/ext_patches"]
+	path = resources/js/ext_patches
+	url = https://github.com/dnorman/ExtJS-Patches.git

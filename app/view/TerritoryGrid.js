@@ -33,6 +33,7 @@ Ext.define('NCPublishers.view.TerritoryGrid', {
 
         Ext.applyIf(me, {
             viewConfig: {
+                itemId: 'TerritoryGridView',
                 maintainFlex: true
             },
             listeners: {
@@ -44,8 +45,9 @@ Ext.define('NCPublishers.view.TerritoryGrid', {
             dockedItems: [
                 {
                     xtype: 'pagingtoolbar',
+                    itemId: 'TerritoryPagingToolbar',
                     displayInfo: true,
-                    store: 'ClientStore',
+                    store: 'TerritoryStore',
                     dock: 'bottom'
                 }
             ],

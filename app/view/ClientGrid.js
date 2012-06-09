@@ -82,9 +82,10 @@ Ext.define('NCPublishers.view.ClientGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    hidden: true,
                     dataIndex: 'address2',
                     flex: 1,
-                    text: 'Address2'
+                    text: 'Address Line 2'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -102,10 +103,15 @@ Ext.define('NCPublishers.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'zip',
                     flex: 1,
-                    text: 'ZIp'
+                    text: 'Zip'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    text: 'Territory'
                 }
             ],
             viewConfig: {
+                itemId: 'ClientGridView',
                 maintainFlex: true
             },
             listeners: {
@@ -117,6 +123,7 @@ Ext.define('NCPublishers.view.ClientGrid', {
             dockedItems: [
                 {
                     xtype: 'pagingtoolbar',
+                    itemId: 'ClientPagingToolbar',
                     displayInfo: true,
                     store: 'ClientStore',
                     dock: 'bottom'
