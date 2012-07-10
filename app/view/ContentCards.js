@@ -13,14 +13,14 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.ContentCards', {
+Ext.define('JavisERP.view.ContentCards', {
     extend: 'Ext.container.Container',
     alias: 'widget.contentCards',
     requires: [
-        'NCPublishers.view.Activities',
-        'NCPublishers.view.ClientGrid',
-        'NCPublishers.view.TerritoryGrid',
-        'NCPublishers.view.ClientRecord'
+        'JavisERP.view.Activities',
+        'JavisERP.view.ClientGrid',
+        'JavisERP.view.TerritoryGrid',
+        'JavisERP.view.ClientRecord'
     ],
 
     activeItem: 0,

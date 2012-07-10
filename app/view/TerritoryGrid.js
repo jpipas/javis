@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.TerritoryGrid', {
+Ext.define('JavisERP.view.TerritoryGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.territorygrid',
 

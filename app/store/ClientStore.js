@@ -13,10 +13,10 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.store.ClientStore', {
+Ext.define('JavisERP.store.ClientStore', {
     extend: 'Ext.data.Store',
     requires: [
-        'NCPublishers.model.Client'
+        'JavisERP.model.Client'
     ],
 
     constructor: function(cfg) {
@@ -24,7 +24,7 @@ Ext.define('NCPublishers.store.ClientStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             storeId: 'ClientStore',
-            model: 'NCPublishers.model.Client',
+            model: 'JavisERP.model.Client',
             pageSize: 45
         }, cfg)]);
     }

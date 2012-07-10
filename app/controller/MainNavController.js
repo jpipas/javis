@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.controller.MainNavController', {
+Ext.define('JavisERP.controller.MainNavController', {
     extend: 'Ext.app.Controller',
 
     refs: [

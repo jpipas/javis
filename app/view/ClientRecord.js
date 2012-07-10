@@ -13,13 +13,17 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.ClientRecord', {
+Ext.define('JavisERP.view.ClientRecord', {
     extend: 'Ext.form.Panel',
     alias: 'widget.clientrecord',
     requires: [
-        'NCPublishers.view.RecordNavigation'
+        'JavisERP.view.RecordNavigation'
     ],
 
+    layout: {
+        align: 'stretch',
+        type: 'vbox'
+    },
     bodyPadding: 5,
     title: 'Client Record',
 
@@ -28,63 +32,112 @@ Ext.define('NCPublishers.view.ClientRecord', {
 
         Ext.applyIf(me, {
             defaults: {
-                anchor: '100%'
+                anchor: '100%',
+                labelAlign: 'right'
             },
             dockedItems: [
                 {
                     xtype: 'recordnav',
                     itemId: 'RecordNavigation',
+                    flex: 1,
                     dock: 'top'
                 }
             ],
             items: [
                 {
-                    xtype: 'container',
+                    xtype: 'fieldcontainer',
                     itemId: 'RecordHeader',
+                    minHeight: 100,
+                    maintainFlex: false,
+                    defaults: {
+                        labelAlign: 'right'
+                    },
                     layout: {
                         padding: '0 0 25 0',
                         type: 'hbox'
                     },
+                    flex: 1,
                     items: [
                         {
-                            xtype: 'container',
+                            xtype: 'fieldcontainer',
                             border: 'false',
                             itemId: 'Column1',
                             defaultType: 'textfield',
+                            defaults: {
+                                labelAlign: 'right',
+                                anchor: '95%'
+                            },
                             layout: {
                                 type: 'anchor'
                             },
                             flex: 1,
                             items: [
                                 {
-                                    xtype: 'textfield',
-                                    fieldLabel: 'Client Name',
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Company Name',
                                     anchor: '95%'
                                 },
                                 {
-                                    xtype: 'textfield',
+                                    xtype: 'displayfield',
                                     fieldLabel: 'Territory',
+                                    anchor: '95%'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Email Address',
+                                    anchor: '95%'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Phone',
+                                    anchor: '95%'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Fax',
                                     anchor: '95%'
                                 }
                             ]
                         },
                         {
-                            xtype: 'container',
+                            xtype: 'fieldcontainer',
                             border: 'false',
+                            height: 222,
                             itemId: 'Column2',
+                            width: 337,
+                            autoScroll: true,
+                            defaults: {
+                                labelAlign: 'right',
+                                anchor: '95%'
+                            },
                             layout: {
                                 type: 'anchor'
                             },
                             flex: 1,
                             items: [
                                 {
-                                    xtype: 'textfield',
+                                    xtype: 'displayfield',
                                     fieldLabel: 'Address Line 1',
                                     anchor: '100%'
                                 },
                                 {
-                                    xtype: 'textfield',
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Address Line 2',
+                                    anchor: '100%'
+                                },
+                                {
+                                    xtype: 'displayfield',
                                     fieldLabel: 'City',
+                                    anchor: '100%'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'State',
+                                    anchor: '100%'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    fieldLabel: 'Zip',
                                     anchor: '100%'
                                 }
                             ]
@@ -93,20 +146,307 @@ Ext.define('NCPublishers.view.ClientRecord', {
                 },
                 {
                     xtype: 'tabpanel',
+                    height: 350,
                     itemId: 'ClientSublists',
+                    defaults: {
+                        labelAlign: 'right'
+                    },
                     activeTab: 0,
+                    plain: false,
+                    flex: 3,
                     items: [
                         {
                             xtype: 'panel',
-                            title: 'Contracts'
+                            layout: {
+                                type: 'fit'
+                            },
+                            bodyPadding: 5,
+                            title: 'General',
+                            items: [
+                                {
+                                    xtype: 'tabpanel',
+                                    itemId: 'General-Sublists',
+                                    activeTab: 0,
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Contacts',
+                                            items: [
+                                                {
+                                                    xtype: 'gridpanel',
+                                                    border: 0,
+                                                    preventHeader: true,
+                                                    title: 'My Grid Panel',
+                                                    forceFit: true,
+                                                    store: 'ContactStore',
+                                                    columnLines: false,
+                                                    viewConfig: {
+
+                                                    },
+                                                    columns: [
+                                                        {
+                                                            xtype: 'actioncolumn',
+                                                            items: [
+                                                                {
+                                                                    icon: 'resources/icons/user.png',
+                                                                    tooltip: 'View'
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'gridcolumn',
+                                                            dataIndex: 'id',
+                                                            text: 'ID'
+                                                        },
+                                                        {
+                                                            xtype: 'gridcolumn',
+                                                            dataIndex: 'name',
+                                                            text: 'Name'
+                                                        },
+                                                        {
+                                                            xtype: 'gridcolumn',
+                                                            dataIndex: 'email_address',
+                                                            text: 'Email Address'
+                                                        },
+                                                        {
+                                                            xtype: 'gridcolumn',
+                                                            dataIndex: 'cell_phone',
+                                                            text: 'Cell Phone'
+                                                        },
+                                                        {
+                                                            xtype: 'gridcolumn',
+                                                            dataIndex: 'role',
+                                                            text: 'Role'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Activities'
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'User Notes'
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Files'
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             xtype: 'panel',
-                            title: 'Sales Reps'
+                            autoScroll: false,
+                            defaults: {
+                                labelAlign: 'right'
+                            },
+                            layout: {
+                                align: 'stretch',
+                                type: 'vbox'
+                            },
+                            bodyPadding: 5,
+                            title: 'Sales',
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    height: 50,
+                                    itemId: 'SalesSublistHeader',
+                                    maxHeight: 80,
+                                    layout: {
+                                        type: 'hbox'
+                                    },
+                                    flex: 1,
+                                    items: [
+                                        {
+                                            xtype: 'fieldcontainer',
+                                            height: 94,
+                                            itemId: 'Column1',
+                                            width: 150,
+                                            defaults: {
+                                                labelAlign: 'right',
+                                                anchor: '95%'
+                                            },
+                                            layout: {
+                                                type: 'anchor'
+                                            },
+                                            flex: 1,
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Assigned Sales Rep',
+                                                    labelWidth: 150,
+                                                    anchor: '95%'
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label',
+                                                    labelWidth: 150,
+                                                    anchor: '95%'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'fieldcontainer',
+                                            height: 72,
+                                            itemId: 'Column2',
+                                            width: 150,
+                                            defaults: {
+                                                labelAlign: 'right',
+                                                anchor: '100%'
+                                            },
+                                            layout: {
+                                                type: 'anchor'
+                                            },
+                                            flex: 1,
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Overdue Balance',
+                                                    anchor: '95%'
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label',
+                                                    anchor: '95%'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'tabpanel',
+                                    itemId: 'SalesSublistTabs',
+                                    width: 100,
+                                    activeTab: 0,
+                                    plain: false,
+                                    items: [
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Publications'
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Contracts'
+                                        },
+                                        {
+                                            xtype: 'panel',
+                                            title: 'Advertisements'
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             xtype: 'panel',
-                            title: 'Financial'
+                            layout: {
+                                align: 'stretch',
+                                type: 'vbox'
+                            },
+                            bodyPadding: 5,
+                            title: 'Financial',
+                            tabConfig: {
+                                xtype: 'tab',
+                                autoWidth: false
+                            },
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    height: 50,
+                                    itemId: 'FinancialSublistHeader',
+                                    maxHeight: 50,
+                                    layout: {
+                                        align: 'stretch',
+                                        padding: '',
+                                        type: 'hbox'
+                                    },
+                                    flex: 1,
+                                    items: [
+                                        {
+                                            xtype: 'container',
+                                            flex: 1,
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label'
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'container',
+                                            flex: 1,
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label'
+                                                },
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            xtype: 'container',
+                                            flex: 1,
+                                            items: [
+                                                {
+                                                    xtype: 'textfield',
+                                                    fieldLabel: 'Label'
+                                                },
+                                                {
+                                                    xtype: 'checkboxfield',
+                                                    boxLabel: 'Box Label',
+                                                    boxLabelAlign: 'before'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'gridpanel',
+                                    padding: '10 0',
+                                    autoScroll: true,
+                                    bodyBorder: false,
+                                    preventHeader: true,
+                                    title: 'PaymentsGrid',
+                                    titleCollapse: true,
+                                    store: 'PaymentStore',
+                                    flex: 1,
+                                    columns: [
+                                        {
+                                            xtype: 'gridcolumn',
+                                            dataIndex: 'string',
+                                            text: 'String'
+                                        },
+                                        {
+                                            xtype: 'numbercolumn',
+                                            dataIndex: 'number',
+                                            text: 'Number'
+                                        },
+                                        {
+                                            xtype: 'datecolumn',
+                                            dataIndex: 'date',
+                                            text: 'Date'
+                                        },
+                                        {
+                                            xtype: 'booleancolumn',
+                                            dataIndex: 'bool',
+                                            text: 'Boolean'
+                                        }
+                                    ],
+                                    viewConfig: {
+
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }

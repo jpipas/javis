@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.RecordNavigation', {
+Ext.define('JavisERP.view.RecordNavigation', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.recordnav',
 
@@ -41,14 +41,15 @@ Ext.define('NCPublishers.view.RecordNavigation', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Back'
+                    text: 'New'
                 },
                 {
                     xtype: 'tbseparator'
                 },
                 {
                     xtype: 'button',
-                    text: 'New'
+                    itemId: 'ClientGrid',
+                    text: 'List View'
                 }
             ]
         });

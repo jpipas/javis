@@ -13,11 +13,11 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.AppViewport', {
+Ext.define('JavisERP.view.AppViewport', {
     extend: 'Ext.container.Viewport',
     requires: [
-        'NCPublishers.view.NavBar',
-        'NCPublishers.view.ContentCards'
+        'JavisERP.view.NavBar',
+        'JavisERP.view.ContentCards'
     ],
 
     border: 0,
@@ -58,6 +58,13 @@ Ext.define('NCPublishers.view.AppViewport', {
                             margins: '0px 0px 5px 0px',
                             dock: 'left'
                         }
+                    ],
+                    items: [
+                        {
+                            xtype: 'container',
+                            itemId: 'HeaderMenu',
+                            flex: 1
+                        }
                     ]
                 },
                 {
@@ -72,6 +79,7 @@ Ext.define('NCPublishers.view.AppViewport', {
                 },
                 {
                     xtype: 'panel',
+                    contentEl: 'footer',
                     height: 50,
                     maxHeight: 50,
                     layout: {

@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.model.State', {
+Ext.define('JavisERP.model.State', {
     extend: 'Ext.data.Model',
 
     fields: [

@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.ClientGrid', {
+Ext.define('JavisERP.view.ClientGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientgrid',
 
@@ -36,7 +36,7 @@ Ext.define('NCPublishers.view.ClientGrid', {
                 {
                     xtype: 'actioncolumn',
                     draggable: false,
-                    id: 'actions',
+                    itemId: 'actions',
                     layout: {
                         type: 'fit'
                     },
@@ -109,7 +109,6 @@ Ext.define('NCPublishers.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     getter: function(record) {
                         var obj = record.get('territory');
-                        console.log(obj);
                         return Ext.isObject( obj )  ? obj.name : '';
                     },
                     setter: function(record, value) {

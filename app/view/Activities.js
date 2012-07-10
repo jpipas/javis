@@ -13,11 +13,11 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.Activities', {
+Ext.define('JavisERP.view.Activities', {
     extend: 'Ext.form.Panel',
     alias: 'widget.activities',
     requires: [
-        'NCPublishers.view.RecordNavigation'
+        'JavisERP.view.RecordNavigation'
     ],
 
     border: 0,

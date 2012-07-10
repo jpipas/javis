@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.view.NavBar', {
+Ext.define('JavisERP.view.NavBar', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.navbar',
 

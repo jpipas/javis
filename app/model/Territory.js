@@ -13,11 +13,11 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.model.Territory', {
+Ext.define('JavisERP.model.Territory', {
     extend: 'Ext.data.Model',
     alias: 'model.territory',
     uses: [
-        'NCPublishers.model.State'
+        'JavisERP.model.State'
     ],
 
     idProperty: 'id',
@@ -46,6 +46,6 @@ Ext.define('NCPublishers.model.Territory', {
 
     hasMany: {
         associationKey: 'states',
-        model: 'NCPublishers.model.State'
+        model: 'JavisERP.model.State'
     }
 });

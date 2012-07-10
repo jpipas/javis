@@ -21,11 +21,15 @@ Ext.application({
     models: [
         'Client',
         'Territory',
-        'State'
+        'State',
+        'Payment',
+        'Contact'
     ],
     stores: [
         'ClientStore',
-        'TerritoryStore'
+        'TerritoryStore',
+        'PaymentStore',
+        'ContactStore'
     ],
     views: [
         'AppViewport',
@@ -38,10 +42,11 @@ Ext.application({
         'ClientRecord'
     ],
     autoCreateViewport: true,
-    name: 'NCPublishers',
+    name: 'JavisERP',
     controllers: [
         'AppController',
         'MainNavController',
-        'RecordNavController'
+        'RecordNavController',
+        'ClientGridController'
     ]
 });

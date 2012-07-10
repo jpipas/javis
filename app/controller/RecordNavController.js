@@ -13,7 +13,7 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('NCPublishers.controller.RecordNavController', {
+Ext.define('JavisERP.controller.RecordNavController', {
     extend: 'Ext.app.Controller',
 
     refs: [
@@ -24,7 +24,7 @@ Ext.define('NCPublishers.controller.RecordNavController', {
     ],
 
     onRecordNavBtnClick: function(button, e, options) {
-        console.log("DO something!!");
+        this.application.fireEvent('navigationChange',button.itemId);
 
     },
 
