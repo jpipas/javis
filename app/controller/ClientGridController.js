@@ -24,11 +24,15 @@ Ext.define('JavisERP.controller.ClientGridController', {
         {
             ref: 'contentCards',
             selector: 'contentCards'
+        },
+        {
+            ref: 'clientRecord',
+            selector: 'clientrecord'
         }
     ],
 
     onActionColumnClick: function(grid, col, row) {
-        this.application.fireEvent('clientRecordChange',grid, row);
+        this.application.fireEvent('clientRecordChange',grid,col,row);
     },
 
     init: function(application) {
@@ -44,8 +48,12 @@ Ext.define('JavisERP.controller.ClientGridController', {
         });
     },
 
-    changeClientRecord: function(grid, row) {
-        console.log(grid.store.getAt(row));
+    changeClientRecord: function(grid, col, row, record) {
+        console.log(this.getClientGrid().getStore().getAt(row));
+        var form = this.getClientRecord().getForm();
+        var territory_name = this.getClientGrid().getStore().getAt(row).data.territory.name;
+        form.loadRecord(this.getClientGrid().getStore().getAt(row));
+        //form.setValues({"territory":territory_name});
         this.getContentCards().getLayout().setActiveItem('ClientRecord');
     }
 

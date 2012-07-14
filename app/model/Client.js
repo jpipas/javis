@@ -17,7 +17,8 @@ Ext.define('JavisERP.model.Client', {
     extend: 'Ext.data.Model',
     alias: 'model.client',
     uses: [
-        'JavisERP.model.Territory'
+        'JavisERP.model.Territory',
+        'JavisERP.model.Contact'
     ],
 
     idProperty: 'id',
@@ -55,7 +56,17 @@ Ext.define('JavisERP.model.Client', {
             type: 'string'
         },
         {
+            mapping: 'territory.name',
             name: 'territory'
+        },
+        {
+            name: 'phone'
+        },
+        {
+            name: 'email_address'
+        },
+        {
+            name: 'fax'
         }
     ],
 
@@ -70,8 +81,16 @@ Ext.define('JavisERP.model.Client', {
         }
     },
 
-    hasMany: {
-        associationKey: 'territory',
-        model: 'JavisERP.model.Territory'
-    }
+    hasMany: [
+        {
+            associationKey: 'territory',
+            model: 'JavisERP.model.Territory',
+            name: 'territory'
+        },
+        {
+            associationKey: 'contact',
+            model: 'JavisERP.model.Contact',
+            name: 'contact'
+        }
+    ]
 });

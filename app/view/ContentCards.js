@@ -17,6 +17,7 @@ Ext.define('JavisERP.view.ContentCards', {
     extend: 'Ext.container.Container',
     alias: 'widget.contentCards',
     requires: [
+        'JavisERP.view.ContentPanel',
         'JavisERP.view.Activities',
         'JavisERP.view.ClientGrid',
         'JavisERP.view.TerritoryGrid',
@@ -34,16 +35,8 @@ Ext.define('JavisERP.view.ContentCards', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'panel',
-                    border: 0,
-                    itemId: 'Dashboard',
-                    activeItem: 0,
-                    layout: {
-                        type: 'fit'
-                    },
-                    preventHeader: false,
-                    title: 'NCPublisher Dashboard',
-                    titleCollapse: false
+                    xtype: 'portletpanel',
+                    itemId: 'PortalPanel'
                 },
                 {
                     xtype: 'activities',

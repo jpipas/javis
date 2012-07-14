@@ -1,3 +1,5 @@
+app/config/deploy.rb
+
 # Bootstrap
 app/bootstrap*
 

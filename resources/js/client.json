@@ -2,7 +2,7 @@
   "totalCount":4000,
   "clients":  [
   {
-  "id":1,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  "id":1,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954","phone":"(248) 548-8798","fax":"(125) 548-9875",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -14,7 +14,7 @@
     ]
     }
   },
-  {"id":2,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":2,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -26,7 +26,7 @@
     ]
     }
   },
-  {"id":3,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":3,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -38,7 +38,7 @@
     ]
     }
   },
-  {"id":4,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":4,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -50,7 +50,7 @@
     ]
     }
   },
-  {"id":5,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":5,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -62,7 +62,7 @@
     ]
     }
   },
-  {"id":6,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":6,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -74,7 +74,7 @@
     ]
     }
   },
-  {"id":7,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":7,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -86,7 +86,7 @@
     ]
     }
   },
-  {"id":8,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":8,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -98,7 +98,7 @@
     ]
     }
   },
-  {"id":9,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":9,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -110,7 +110,7 @@
     ]
     }
   },
-  {"id":10,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":10,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -122,7 +122,7 @@
     ]
     }
   },
-  {"id":11,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":11,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -134,7 +134,7 @@
     ]
     }
   },
-  {"id":12,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":12,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -146,7 +146,7 @@
     ]
     }
   },
-  {"id":13,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":13,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -158,7 +158,7 @@
     ]
     }
   },
-  {"id":14,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":14,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -170,7 +170,7 @@
     ]
     }
   },
-  {"id":15,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":15,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -182,7 +182,7 @@
     ]
     }
   },
-  {"id":16,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":16,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -194,7 +194,7 @@
     ]
     }
   },
-  {"id":17,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":17,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -206,7 +206,7 @@
     ]
     }
   },
-  {"id":18,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":18,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -218,7 +218,7 @@
     ]
     }
   },
-  {"id":19,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":19,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -230,7 +230,7 @@
     ]
     }
   },
-  {"id":20,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":20,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -242,7 +242,7 @@
     ]
     }
   },
-  {"id":21,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":21,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -254,7 +254,7 @@
     ]
     }
   },
-  {"id":22,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":22,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -266,7 +266,7 @@
     ]
     }
   },
-  {"id":23,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":23,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -278,7 +278,7 @@
     ]
     }
   },
-  {"id":24,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":24,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -290,7 +290,7 @@
     ]
     }
   },
-  {"id":25,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":25,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -302,7 +302,7 @@
     ]
     }
   },
-  {"id":26,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":26,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -314,7 +314,7 @@
     ]
     }
   },
-  {"id":27,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":27,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -326,7 +326,7 @@
     ]
     }
   },
-  {"id":28,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":28,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -338,7 +338,7 @@
     ]
     }
   },
-  {"id":29,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":29,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -350,7 +350,7 @@
     ]
     }
   },
-  {"id":30,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":30,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -362,7 +362,7 @@
     ]
     }
   },
-  {"id":31,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":31,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -374,7 +374,7 @@
     ]
     }
   },
-  {"id":32,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":32,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -386,7 +386,7 @@
     ]
     }
   },
-  {"id":33,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":33,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -398,7 +398,7 @@
     ]
     }
   },
-  {"id":34,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":34,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -410,7 +410,7 @@
     ]
     }
   },
-  {"id":35,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":35,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -422,7 +422,7 @@
     ]
     }
   },
-  {"id":36,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":36,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -434,7 +434,7 @@
     ]
     }
   },
-  {"id":37,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":37,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -446,7 +446,7 @@
     ]
     }
   },
-  {"id":38,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":38,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -458,7 +458,7 @@
     ]
     }
   },
-  {"id":39,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":39,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",
@@ -470,7 +470,7 @@
     ]
     }
   },
-  {"id":40,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","zip":"98765",
+  {"id":40,"name":"A Dignified Dog Academy","address1":"11340 SE 1st Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"98765",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -482,7 +482,7 @@
     ]
     }
   },
-  {"id":41,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","zip":"54321",
+  {"id":41,"name":"America In Home","address1":"320 E Buffalo Street","address2":"","city":"Milwaukee","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"54321",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -494,7 +494,7 @@
     ]
     }
   },
-  {"id":42,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","zip":"12345",
+  {"id":42,"name":"Cedar Valley","address1":"5280 Williamsburg Way","address2":"","city":"Madison","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"12345",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -506,7 +506,7 @@
     ]
     }
   },
-  {"id":43,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","zip":"87954",
+  {"id":43,"name":"1 800 Got Junk","address1":"4703 Burma Road","address2":"","city":"McFarland","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"87954",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -518,7 +518,7 @@
     ]
     }
   },
-  {"id":44,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","zip":"45678",
+  {"id":44,"name":"Bruce Pual Goodman","address1":"1131 E. Silver Springs Road","address2":"","city":"Ocala","state":"Florida","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"45678",
   "territory":
     {
     "id":"1","name":"Milwaukee",
@@ -530,7 +530,7 @@
     ]
     }
   },
-  {"id":45,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","zip":"56789",
+  {"id":45,"name":"1st American Bank","address1":"2424 Monetary Blvd","address2":"","city":"Hudson","state":"Wisconsin","phone":"(248) 548-8798","fax":"(125) 548-9875","zip":"56789",
     "territory":
     {
     "id":"2","name":"Madison",

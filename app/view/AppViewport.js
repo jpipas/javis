@@ -75,6 +75,7 @@ Ext.define('JavisERP.view.AppViewport', {
                 },
                 {
                     xtype: 'contentCards',
+                    itemId: 'AppBody',
                     flex: 1
                 },
                 {

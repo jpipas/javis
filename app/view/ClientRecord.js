@@ -74,26 +74,31 @@ Ext.define('JavisERP.view.ClientRecord', {
                             items: [
                                 {
                                     xtype: 'displayfield',
+                                    name: 'name',
                                     fieldLabel: 'Company Name',
                                     anchor: '95%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'territory',
                                     fieldLabel: 'Territory',
                                     anchor: '95%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'email_address',
                                     fieldLabel: 'Email Address',
                                     anchor: '95%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'phone',
                                     fieldLabel: 'Phone',
                                     anchor: '95%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'fax',
                                     fieldLabel: 'Fax',
                                     anchor: '95%'
                                 }
@@ -117,26 +122,31 @@ Ext.define('JavisERP.view.ClientRecord', {
                             items: [
                                 {
                                     xtype: 'displayfield',
+                                    name: 'address1',
                                     fieldLabel: 'Address Line 1',
                                     anchor: '100%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'address2',
                                     fieldLabel: 'Address Line 2',
                                     anchor: '100%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'city',
                                     fieldLabel: 'City',
                                     anchor: '100%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'state',
                                     fieldLabel: 'State',
                                     anchor: '100%'
                                 },
                                 {
                                     xtype: 'displayfield',
+                                    name: 'zip',
                                     fieldLabel: 'Zip',
                                     anchor: '100%'
                                 }
