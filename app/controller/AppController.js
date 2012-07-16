@@ -38,6 +38,8 @@ Ext.define('JavisERP.controller.AppController', {
             navigationChange: me.navigationClick,
             scope: me
         });
+
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
     },
 
     navigationClick: function(itemId) {

@@ -56,10 +56,6 @@ Ext.define('JavisERP.model.Client', {
             type: 'string'
         },
         {
-            mapping: 'territory.name',
-            name: 'territory'
-        },
-        {
             name: 'phone'
         },
         {
@@ -67,6 +63,10 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'fax'
+        },
+        {
+            mapping: 'territory.name',
+            name: 'territory'
         }
     ],
 
