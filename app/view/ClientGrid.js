@@ -109,12 +109,13 @@ Ext.define('JavisERP.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     getter: function(record) {
                         var obj = record.get('territory');
-                        return Ext.isObject( obj )  ? obj.name : '';
+                        return Ext.isObject( obj )  ? obj.name : obj;
                     },
                     setter: function(record, value) {
                         var obj = record.get('obj') || {};
                         record.set('territory', Ext.apply(obj,{name: value}));
                     },
+                    dataIndex: 'territory',
                     text: 'Territory'
                 }
             ],

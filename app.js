@@ -48,7 +48,8 @@ Ext.application({
         'ContentPanel',
         'Portlet',
         'PortalPanel',
-        'PortalColumn'
+        'PortalColumn',
+        'ContactGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
