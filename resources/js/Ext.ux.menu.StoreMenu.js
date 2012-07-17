@@ -44,6 +44,44 @@ Initial release
    13/06/2012: Ported to Ext 4.1 by Laurent Chenet - laurent.chenet@gmail.com (Tested only with parameter 'url')
 */
 
+
+
+
+/*  To USE:
+{
+           text: 'Grid Viewer',
+           menu: new Ext.ux.menu.StoreMenu({
+                    url: 'yoururl'
+           })
+}  
+
+JSON Answer:
+[{"text":"Playground dummy node","iconCls":"light_bulb","handler":"function(item) {gridViewerObj.OpenGridViewTab(9999,'light_bulb',\"Playground dummy node\");}","id_node_type":9999},
+{"text":"Annual Programme for Delegation","iconCls":"folder","handler":"function(item) {gridViewerObj.OpenGridViewTab(1,'folder',\"Annual Programme for Delegation\");}","id_node_type":1},
+{"text":"Domain","iconCls":"topic","handler":"function(item) {gridViewerObj.OpenGridViewTab(2,'topic',\"Domain\");}","id_node_type":2},
+{"text":"Decentralized programme","iconCls":"mail_send","handler":"function(item) {gridViewerObj.OpenGridViewTab(15,'mail_send',\"Decentralized programme\");}","id_node_type":15},
+{"text":"Programme","iconCls":"note_book","handler":"function(item) {gridViewerObj.OpenGridViewTab(3,'note_book',\"Programme\");}","id_node_type":3},
+{"text":"Decision","iconCls":"light_bulb","handler":"function(item) {gridViewerObj.OpenGridViewTab(4,'light_bulb',\"Decision\");}","id_node_type":4},
+{"text":"Decentralized decision","iconCls":"light_bulb","handler":"function(item) {gridViewerObj.OpenGridViewTab(16,'light_bulb',\"Decentralized decision\");}","id_node_type":16},
+{"text":"Component","iconCls":"puzzle","handler":"function(item) {gridViewerObj.OpenGridViewTab(12,'puzzle',\"Component\");}","id_node_type":12},
+{"text":"Priority Axis","iconCls":"warning","handler":"function(item) {gridViewerObj.OpenGridViewTab(5,'warning',\"Priority Axis\");}","id_node_type":5},
+{"text":"Focal Area","iconCls":"search","handler":"function(item) {gridViewerObj.OpenGridViewTab(6,'search',\"Focal Area\");}","id_node_type":6},
+{"text":"Sector","iconCls":"search","handler":"function(item) {gridViewerObj.OpenGridViewTab(7,'search',\"Sector\");}","id_node_type":7},
+{"text":"Project","iconCls":"note","handler":"function(item) {gridViewerObj.OpenGridViewTab(8,'note',\"Project\");}","id_node_type":8},
+{"text":"Sub-Project","iconCls":"note_book","handler":"function(item) {gridViewerObj.OpenGridViewTab(13,'note_book',\"Sub-Project\");}","id_node_type":13},
+{"text":"Activity-Envelope","iconCls":"mail_send","handler":"function(item) {gridViewerObj.OpenGridViewTab(14,'mail_send',\"Activity-Envelope\");}","id_node_type":14},
+{"text":"Procurement","iconCls":"shopping_cart","handler":"function(item) {gridViewerObj.OpenGridViewTab(9,'shopping_cart',\"Procurement\");}","id_node_type":9},
+{"text":"Contract","iconCls":"edit_page","handler":"function(item) {gridViewerObj.OpenGridViewTab(10,'edit_page',\"Contract\");}","id_node_type":10},
+{"text":"Financial Memorandum","iconCls":"mail_send","handler":"function(item) {gridViewerObj.OpenGridViewTab(17,'mail_send',\"Financial Memorandum\");}","id_node_type":17},
+{"text":"Payment","iconCls":"euro_currency_sign","handler":"function(item) {gridViewerObj.OpenGridViewTab(11,'euro_currency_sign',\"Payment\");}","id_node_type":11},
+{"text":"Objectives","iconCls":"search","handler":"function(item) {gridViewerObj.OpenGridViewTab(18,'search',\"Objectives\");}","id_node_type":18},
+{"text":"Decentralized project","iconCls":"note","handler":"function(item) {gridViewerObj.OpenGridViewTab(19,'note',\"Decentralized project\");}","id_node_type":19},
+{"text":"Local contract","iconCls":"edit_page","handler":"function(item) {gridViewerObj.OpenGridViewTab(20,'edit_page',\"Local contract\");}","id_node_type":20},
+{"text":"Local payment","iconCls":"euro_currency_sign","handler":"function(item) {gridViewerObj.OpenGridViewTab(21,'euro_currency_sign',\"Local payment\");}","id_node_type":21}]  
+*/
+
+
+
 Ext.namespace('Ext.ux.menu');
 Ext.define('Ext.ux.menu.StoreMenu', {
     extend: 'Ext.menu.Menu',    
