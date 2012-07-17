@@ -1,0 +1,8 @@
+{
+  "role":[
+  {"id":1,"description":"Primary Contact"},
+  {"id":2,"description":"Marketing Director"},
+  {"id":3,"description":"Decision Maker"},
+  {"id":4,"description":"Alternate Contact"},
+  ]
+}

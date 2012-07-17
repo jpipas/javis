@@ -175,7 +175,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'tabpanel',
                                     itemId: 'General-Sublists',
-                                    activeTab: 2,
+                                    activeTab: 0,
                                     items: [
                                         {
                                             xtype: 'panel',
@@ -183,7 +183,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             items: [
                                                 {
                                                     xtype: 'contactgrid',
-                                                    itemId: 'ContectGrid'
+                                                    itemId: 'ContactGrid'
                                                 }
                                             ],
                                             dockedItems: [

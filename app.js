@@ -30,7 +30,8 @@ Ext.application({
         'Payment',
         'Contact',
         'Activity',
-        'UserNote'
+        'UserNote',
+        'Role'
     ],
     stores: [
         'ClientStore',

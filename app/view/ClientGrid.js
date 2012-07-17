@@ -36,10 +36,13 @@ Ext.define('JavisERP.view.ClientGrid', {
                 {
                     xtype: 'actioncolumn',
                     draggable: false,
+                    frame: false,
                     itemId: 'actions',
+                    maxWidth: 50,
                     layout: {
                         type: 'fit'
                     },
+                    defaultWidth: 50,
                     sortable: false,
                     align: 'center',
                     flex: 1,
@@ -63,6 +66,7 @@ Ext.define('JavisERP.view.ClientGrid', {
                 },
                 {
                     xtype: 'numbercolumn',
+                    hidden: true,
                     dataIndex: 'id',
                     flex: 1,
                     text: 'ID',

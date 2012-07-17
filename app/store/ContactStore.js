@@ -23,8 +23,15 @@ Ext.define('JavisERP.store.ContactStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            storeId: 'MyJsonStore3',
-            model: 'JavisERP.model.Contact'
+            storeId: 'ContactStore',
+            model: 'JavisERP.model.Contact',
+            sorters: {
+                sorterFn: function(first, second) {
+                    var vals = [first,second];
+                    vals.sort();
+
+                }
+            }
         }, cfg)]);
     }
 });

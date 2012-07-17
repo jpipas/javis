@@ -1,0 +1,7 @@
+{
+  "totalCount":2,
+  "contact":[
+    {"id":1,"name":"Jeff Pipas","email_address":"jpipas@gmail.com","cell_phone":"(248) 703-0345", "role":{"id":1,"description":"Primary Contact"}},
+    {"id":2,"name":"Mark Kennedy","email_address":"mkennedy@gmail.com","cell_phone":"(248) 245-8795", "role":{"id":2,"description":"Marketing Director"}}
+  ]
+}

@@ -28,6 +28,10 @@ Ext.define('JavisERP.controller.ClientGridController', {
         {
             ref: 'clientRecord',
             selector: 'clientrecord'
+        },
+        {
+            ref: 'contactGrid',
+            selector: 'contactgrid'
         }
     ],
 
@@ -49,9 +53,10 @@ Ext.define('JavisERP.controller.ClientGridController', {
     },
 
     changeClientRecord: function(grid, col, row, record) {
+        this.getContentCards().getLayout().setActiveItem('ClientRecord');
         var form = this.getClientRecord().getForm();
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
-        this.getContentCards().getLayout().setActiveItem('ClientRecord');
+        var contacts = this.getContactGrid().getStore().load();
     }
 
 });
