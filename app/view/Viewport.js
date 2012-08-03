@@ -18,9 +18,9 @@ Ext.define('JavisERP.view.Viewport', {
     renderTo: Ext.getBody(),
     requires: [
         'JavisERP.view.AppViewport',
-        'JavisERP.view.ClientRecord',
         'JavisERP.view.Portlet',
         'JavisERP.view.PortalPanel',
-        'JavisERP.view.PortalColumn'
+        'JavisERP.view.PortalColumn',
+        'JavisERP.view.ContactWindow'
     ]
 });

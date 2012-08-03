@@ -70,7 +70,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                     xtype: 'gridcolumn',
                     getter: function(record) {
                         var obj = record.get('role');
-                        console.log(obj);
+                        //console.log(obj);
                         return Ext.isObject( obj )  ? obj.description : obj;
                     },
                     setter: function(record, value) {

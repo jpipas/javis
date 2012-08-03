@@ -39,7 +39,8 @@ Ext.application({
         'PaymentStore',
         'ContactStore',
         'ActivityStore',
-        'UserNoteStore'
+        'UserNoteStore',
+        'ContactRoleStore'
     ],
     views: [
         'AppViewport',
@@ -54,7 +55,8 @@ Ext.application({
         'Portlet',
         'PortalPanel',
         'PortalColumn',
-        'ContactGrid'
+        'ContactGrid',
+        'ContactWindow'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -62,6 +64,6 @@ Ext.application({
         'AppController',
         'MainNavController',
         'RecordNavController',
-        'ClientGridController'
+        'ClientController'
     ]
 });
