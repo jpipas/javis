@@ -39,7 +39,24 @@ Ext.define('JavisERP.view.ContactWindow', {
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top'
+                            dock: 'top',
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    iconCls: 'ui-silk ui-silk-disk',
+                                    text: 'Save'
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: 'Cancel',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick,
+                                            scope: me
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     ],
                     items: [
@@ -71,6 +88,10 @@ Ext.define('JavisERP.view.ContactWindow', {
         });
 
         me.callParent(arguments);
+    },
+
+    onButtonClick: function(button, e, options) {
+        console.log(button);
     }
 
 });
