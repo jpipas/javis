@@ -40,7 +40,8 @@ Ext.application({
         'ContactStore',
         'ActivityStore',
         'UserNoteStore',
-        'ContactRoleStore'
+        'ContactRoleStore',
+        'ActivityTypeStore'
     ],
     views: [
         'AppViewport',

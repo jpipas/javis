@@ -57,7 +57,7 @@ Ext.define('JavisERP.controller.ClientController', {
             }
         });
         me = this;
-
+        me.contactWindow = null;
         me.application.on({
             clientRecordChange: me.changeClientRecord,
             scope: me
@@ -71,10 +71,14 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     addContact: function() {
-        console.log(this.getContactGrid());
-        console.log(this.getClientRecord());
-        var contactWindow = new JavisERP.view.ContactWindow();
-        contactWindow.show();
+        if(!me.contactWindow){
+            me.contactWindow = new JavisERP.view.ContactWindow();
+        }
+        if(me.contactWindow.isVisible()){
+            me.contactWindow.hide();
+        } else {
+            me.contactWindow.show();
+        }
     },
 
     changeClientRecord: function(grid, col, row, record) {

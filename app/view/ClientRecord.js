@@ -175,7 +175,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'tabpanel',
                                     itemId: 'General-Sublists',
-                                    activeTab: 0,
+                                    activeTab: 1,
                                     items: [
                                         {
                                             xtype: 'panel',
@@ -219,6 +219,8 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     columns: [
                                                         {
                                                             xtype: 'actioncolumn',
+                                                            maxWidth: 50,
+                                                            defaultWidth: 50,
                                                             items: [
                                                                 {
 
@@ -294,6 +296,18 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                             xtype: 'button',
                                                             iconCls: 'ui-silk ui-silk-date-add',
                                                             text: 'New Event'
+                                                        },
+                                                        {
+                                                            xtype: 'tbseparator'
+                                                        },
+                                                        {
+                                                            xtype: 'combobox',
+                                                            itemId: 'typeFilter',
+                                                            hideLabel: true,
+                                                            emptyText: 'Filter Activity Type...',
+                                                            displayField: 'description',
+                                                            queryMode: 'local',
+                                                            store: 'ActivityTypeStore'
                                                         }
                                                     ]
                                                 }
