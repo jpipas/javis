@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.model.UserNote', {
     extend: 'Ext.data.Model',
+    alias: 'model.userNote',
 
     fields: [
         {

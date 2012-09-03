@@ -27,12 +27,13 @@ Ext.application({
         'Client',
         'Territory',
         'State',
-        'Payment',
+        'PaymentType',
         'Contact',
         'Activity',
         'UserNote',
         'Role',
-        'Publication'
+        'Publication',
+        'Contract'
     ],
     stores: [
         'ClientStore',
@@ -43,7 +44,8 @@ Ext.application({
         'UserNoteStore',
         'ContactRoleStore',
         'ActivityTypeStore',
-        'PublicationStore'
+        'PublicationStore',
+        'ContractStore'
     ],
     views: [
         'AppViewport',
@@ -53,14 +55,15 @@ Ext.application({
         'RecordNavigation',
         'ClientGrid',
         'TerritoryGrid',
-        'ClientRecord',
         'ContentPanel',
         'Portlet',
         'PortalPanel',
         'PortalColumn',
         'ContactGrid',
         'ContactWindow',
-        'PublicationGrid'
+        'PublicationGrid',
+        'ContractGrid',
+        'ActivityGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',

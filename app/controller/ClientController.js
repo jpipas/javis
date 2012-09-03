@@ -34,6 +34,10 @@ Ext.define('JavisERP.controller.ClientController', {
             selector: 'contactwindow'
         },
         {
+            ref: 'contractGrid',
+            selector: 'contractgrid'
+        },
+        {
             ref: 'contactGrid',
             selector: 'contactgrid'
         },
@@ -92,6 +96,7 @@ Ext.define('JavisERP.controller.ClientController', {
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
         var contacts = this.getContactGrid().getStore().load();
         var publications = this.getPublicationGrid().getStore().load();
+        var contracts = this.getContractGrid().getStore().load();
     }
 
 });

@@ -20,7 +20,10 @@ Ext.define('JavisERP.view.ClientRecord', {
     requires: [
         'JavisERP.view.RecordNavigation',
         'JavisERP.view.ContactGrid',
-        'JavisERP.view.PublicationGrid'
+        'JavisERP.view.ActivityGrid',
+        'JavisERP.view.UserNoteGrid',
+        'JavisERP.view.PublicationGrid',
+        'JavisERP.view.ContractGrid'
     ],
 
     id: 'clientrecord',
@@ -209,110 +212,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             title: 'Activities',
                                             items: [
                                                 {
-                                                    xtype: 'gridpanel',
-                                                    border: 0,
-                                                    itemId: 'ActivitiesGrid',
-                                                    preventHeader: true,
-                                                    title: 'My Grid Panel',
-                                                    forceFit: true,
-                                                    store: 'ActivityStore',
-                                                    viewConfig: {
-
-                                                    },
-                                                    columns: [
-                                                        {
-                                                            xtype: 'actioncolumn',
-                                                            maxWidth: 50,
-                                                            defaultWidth: 50,
-                                                            items: [
-                                                                {
-
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            hidden: true,
-                                                            dataIndex: 'id',
-                                                            text: 'Id'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'title',
-                                                            text: 'Title'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'date',
-                                                            text: 'Date'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'time',
-                                                            text: 'Time'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'owner',
-                                                            text: 'Owner'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'status',
-                                                            text: 'Status'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'assigned_to',
-                                                            text: 'Assigned To'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'type',
-                                                            text: 'Type'
-                                                        }
-                                                    ]
-                                                }
-                                            ],
-                                            dockedItems: [
-                                                {
-                                                    xtype: 'toolbar',
-                                                    dock: 'top',
-                                                    items: [
-                                                        {
-                                                            xtype: 'button',
-                                                            iconCls: 'ui-silk ui-silk-clock-add',
-                                                            text: 'New Task'
-                                                        },
-                                                        {
-                                                            xtype: 'tbseparator'
-                                                        },
-                                                        {
-                                                            xtype: 'button',
-                                                            iconCls: 'ui-silk ui-silk-telephone-add',
-                                                            text: 'New Phone Call'
-                                                        },
-                                                        {
-                                                            xtype: 'tbseparator'
-                                                        },
-                                                        {
-                                                            xtype: 'button',
-                                                            iconCls: 'ui-silk ui-silk-date-add',
-                                                            text: 'New Event'
-                                                        },
-                                                        {
-                                                            xtype: 'tbseparator'
-                                                        },
-                                                        {
-                                                            xtype: 'combobox',
-                                                            itemId: 'typeFilter',
-                                                            hideLabel: true,
-                                                            emptyText: 'Filter Activity Type...',
-                                                            displayField: 'description',
-                                                            queryMode: 'local',
-                                                            store: 'ActivityTypeStore'
-                                                        }
-                                                    ]
+                                                    xtype: 'activitygrid'
                                                 }
                                             ]
                                         },
@@ -321,64 +221,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             title: 'User Notes',
                                             items: [
                                                 {
-                                                    xtype: 'gridpanel',
-                                                    border: 0,
-                                                    preventHeader: true,
-                                                    title: 'User Notes',
-                                                    forceFit: true,
-                                                    store: 'UserNoteStore',
-                                                    viewConfig: {
-
-                                                    },
-                                                    columns: [
-                                                        {
-                                                            xtype: 'actioncolumn',
-                                                            items: [
-                                                                {
-
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            hidden: true,
-                                                            dataIndex: 'id',
-                                                            text: 'Id'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'date',
-                                                            text: 'Date'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'author',
-                                                            text: 'Author'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'title',
-                                                            text: 'Title'
-                                                        },
-                                                        {
-                                                            xtype: 'gridcolumn',
-                                                            dataIndex: 'memo',
-                                                            text: 'Memo'
-                                                        }
-                                                    ]
-                                                }
-                                            ],
-                                            dockedItems: [
-                                                {
-                                                    xtype: 'toolbar',
-                                                    dock: 'top',
-                                                    items: [
-                                                        {
-                                                            xtype: 'button',
-                                                            iconCls: 'ui-silk ui-silk-note-add',
-                                                            text: 'New Note'
-                                                        }
-                                                    ]
+                                                    xtype: 'usernotegrid'
                                                 }
                                             ]
                                         },
@@ -468,6 +311,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     xtype: 'tabpanel',
                                     height: 100,
                                     itemId: 'SalesSublistTabs',
+                                    bodyPadding: 5,
                                     activeTab: 0,
                                     plain: false,
                                     items: [
@@ -486,11 +330,20 @@ Ext.define('JavisERP.view.ClientRecord', {
                                         },
                                         {
                                             xtype: 'panel',
-                                            title: 'Contracts'
+                                            title: 'Advertisements'
                                         },
                                         {
                                             xtype: 'panel',
-                                            title: 'Advertisements'
+                                            layout: {
+                                                type: 'fit'
+                                            },
+                                            title: 'Contracts',
+                                            items: [
+                                                {
+                                                    xtype: 'contractgrid',
+                                                    maintainFlex: true
+                                                }
+                                            ]
                                         }
                                     ]
                                 }

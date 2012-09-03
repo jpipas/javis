@@ -82,13 +82,14 @@ Ext.define('JavisERP.view.AppViewport', {
                 {
                     xtype: 'panel',
                     flex: 1,
-                    contentEl: 'footer',
+                    autoRender: false,
+                    autoShow: false,
                     height: 50,
+                    html: '<div style="padding:10px;text-align:right;">Javis ERP &copy; 2012<br/>v1.0</div>',
                     maxHeight: 50,
                     stateful: false,
                     layout: {
-                        align: 'stretch',
-                        type: 'vbox'
+                        type: 'fit'
                     },
                     animCollapse: false,
                     preventHeader: true,

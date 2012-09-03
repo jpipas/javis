@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.model.Role', {
     extend: 'Ext.data.Model',
+    alias: 'model.contactRole',
 
     uses: [
         'JavisERP.model.Contact'

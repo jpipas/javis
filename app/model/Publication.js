@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.model.Publication', {
     extend: 'Ext.data.Model',
+    alias: 'model.publication',
 
     uses: [
         'JavisERP.model.Territory'

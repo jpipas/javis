@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.model.State', {
     extend: 'Ext.data.Model',
+    alias: 'model.state',
 
     fields: [
         {
