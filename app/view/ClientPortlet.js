@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.view.ClientPortlet', {
     extend: 'Ext.grid.Panel',
+    alias: 'widget.clientportlet',
 
     height: 250,
     itemId: 'clientportlet',
