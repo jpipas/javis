@@ -329,12 +329,14 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             items: [
                                                 {
                                                     xtype: 'advertisementgrid',
+                                                    border: 0,
                                                     header: false
                                                 }
                                             ]
                                         },
                                         {
                                             xtype: 'panel',
+                                            border: 0,
                                             layout: {
                                                 type: 'fit'
                                             },
@@ -342,12 +344,14 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             items: [
                                                 {
                                                     xtype: 'contractgrid',
+                                                    border: 0,
                                                     header: false
                                                 }
                                             ]
                                         },
                                         {
                                             xtype: 'panel',
+                                            border: 0,
                                             layout: {
                                                 type: 'fit'
                                             },
@@ -483,7 +487,7 @@ Ext.define('JavisERP.view.ClientRecord', {
     },
 
     onGridpanelBeforeRender: function(abstractcomponent, options) {
-        abstractcomponent.getDockedItems('toolbar[dock="bottom"]')[0].hide();
+        //abstractcomponent.getDockedItems('toolbar[dock="bottom"]')[0].hide();
     }
 
 });
