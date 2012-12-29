@@ -1,4 +1,4 @@
 javis
 ======
 
-An Open Source ERP built with Sencha and Symfony
+An Open Source ERP built with Sencha and Silex
