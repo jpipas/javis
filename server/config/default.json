@@ -1,0 +1,6 @@
+{
+    "debug": true,
+    "database": {},
+    "base.route": "/client/",
+    "log.level": 100
+}
