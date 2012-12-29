@@ -73,7 +73,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'name',
+                    dataIndex: 'company_name',
                     flex: 3,
                     text: 'Name'
                 },

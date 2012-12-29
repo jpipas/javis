@@ -19,7 +19,8 @@ Ext.define('JavisERP.model.Contract', {
 
     uses: [
         'JavisERP.model.Client',
-        'JavisERP.model.PaymentType'
+        'JavisERP.model.PaymentType',
+        'JavisERP.model.Advertisement'
     ],
 
     idProperty: 'id',
@@ -29,11 +30,8 @@ Ext.define('JavisERP.model.Contract', {
             name: 'id'
         },
         {
-            name: 'contract_number'
-        },
-        {
             name: 'client_name',
-            mapping: 'client.name'
+            mapping: 'client.company_name'
         },
         {
             name: 'total_sales',
@@ -55,7 +53,7 @@ Ext.define('JavisERP.model.Contract', {
         },
         {
             name: 'payment_type_id',
-            mapping: 'payment_type.name'
+            mapping: 'payment_type.description'
         },
         {
             name: 'sale_date',
@@ -65,12 +63,34 @@ Ext.define('JavisERP.model.Contract', {
 
     hasOne: [
         {
-            associationKey: 'client_id',
-            model: 'JavisERP.model.Client'
+            model: 'JavisERP.model.Client',
+            foreignKey: 'client_id'
         },
         {
-            associationKey: 'payment_type_id',
-            model: 'JavisERP.model.PaymentType'
+            model: 'JavisERP.model.PaymentType',
+            foreignKey: 'payment_type_id'
         }
-    ]
+    ],
+
+    hasMany: {
+        model: 'JavisERP.model.Advertisement',
+        foreignKey: 'advertisement_id',
+        name: 'advertisements'
+    },
+
+    proxy: {
+        type: 'rest',
+        api: {
+            create: '/server/web/index.php/contract/new',
+            read: '/server/web/index.php/contract/',
+            update: '/server/web/index.php/contract/update',
+            destory: '/server/web/index.php/contract/delete'
+        },
+        reader: {
+            type: 'json',
+            idProperty: 'id',
+            root: 'contract',
+            totalProperty: 'totalCount'
+        }
+    }
 });

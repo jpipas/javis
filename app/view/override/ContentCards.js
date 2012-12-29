@@ -32,6 +32,10 @@ Ext.define('JavisERP.view.override.ContentCards', {
                 {
                     xtype: 'contractgrid',
                     itemId: 'ContractGrid'
+                },
+                {
+                    xtype: 'advertisementgrid',
+                    itemId: 'AdvertisementGrid'
                 }
             ]
         });

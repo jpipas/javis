@@ -44,6 +44,8 @@ Ext.define('JavisERP.controller.AppController', {
         });
 
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
+        //this.getAdFormColumn1().add(pubComboField);
     },
 
     navigationClick: function(itemId) {

@@ -19,7 +19,8 @@ Ext.define('JavisERP.model.Advertisement', {
     uses: [
         'JavisERP.model.AdvertisementType',
         'JavisERP.model.AdvertisementSize',
-        'JavisERP.model.Publication'
+        'JavisERP.model.Publication',
+        'JavisERP.model.Client'
     ],
 
     idProperty: 'advertisement',
@@ -42,6 +43,9 @@ Ext.define('JavisERP.model.Advertisement', {
         },
         {
             name: 'modified_at'
+        },
+        {
+            name: 'client_id'
         }
     ],
 
@@ -57,12 +61,20 @@ Ext.define('JavisERP.model.Advertisement', {
         {
             associationKey: 'publication_id',
             model: 'JavisERP.model.Publication'
+        },
+        {
+            model: 'JavisERP.model.Client'
         }
     ],
 
     proxy: {
-        type: 'ajax',
-        url: '/resources/js/advertisement.json',
+        type: 'rest',
+        api: {
+            create: '/server/web/index.php/advertisement/new',
+            read: '/server/web/index.php/advertisement/',
+            update: '/server/web/index.php/advertisement/update',
+            destory: '/server/web/index.php/advertisement/delete'
+        },
         reader: {
             type: 'json',
             idProperty: 'id',

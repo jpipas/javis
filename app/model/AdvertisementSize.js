@@ -16,12 +16,37 @@
 Ext.define('JavisERP.model.AdvertisementSize', {
     extend: 'Ext.data.Model',
 
+    uses: [
+        'JavisERP.model.AdvertisementType'
+    ],
+
     fields: [
         {
             name: 'id'
         },
         {
-            name: 'size'
+            name: 'description'
+        },
+        {
+            name: 'ad_type_id'
         }
-    ]
+    ],
+
+    proxy: {
+        type: 'ajax',
+        url: 'resources/js/adSize.json',
+        reader: {
+            type: 'json',
+            idProperty: 'id',
+            root: 'adSize',
+            totalProperty: 'totalCount'
+        }
+    },
+
+    belongsTo: {
+        model: 'JavisERP.model.AdvertisementType',
+        getterName: 'AdType',
+        foreignKey: 'id',
+        setterName: 'AdType'
+    }
 });

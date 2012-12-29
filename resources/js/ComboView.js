@@ -1,12 +1,12 @@
 /**
  *   ComboView
  */
-Ext.define('JavisERP.view.ComboView', {
+Ext.define('Ext.ux.ComboView', {
     extend : 'Ext.view.View',
     alias : 'widget.comboview',
     /**
       * @cfg {Boolean} maxLength
-      * maximum length for viewItems. If text is longer, it gets 'ellipsisied'.
+      * maximum length for viewItems. If text is longer, it gets 'ellipsisied'.  
       */
     maxLength: 18,
     /**
@@ -16,17 +16,17 @@ Ext.define('JavisERP.view.ComboView', {
     removeOnDblClick: true,
     /**
       * @cfg {Boolean} inputWidth
-      * width for the inputfield
+      * width for the inputfield  
       */
     inputWidth: 40,
     itemSelector: 'li.x-boxselect-item',
     closeCls: 'x-boxselect-item-close',
      /**
      * Set Xtemplate fot the ComboView (called if me.tpl is not existing)
-     * @returns {Ext.XTemplate} Returns template
+     * @returns {Ext.XTemplate} Returns template 
      */
     setTpl: function() {
-        	var me = this,
+    	 var me = this,
             field = me.field,
             displayField = field.displayField,
             descField = field.descField,
@@ -90,7 +90,7 @@ Ext.define('JavisERP.view.ComboView', {
                 scope: me.field
             });
        }
-    },
+    }, 
     onItemClick: function (r, h, i, e, o) {
         if (e.getTarget('.' + this.closeCls)) {
             return this.onDataChange(r, 'remove')
@@ -112,7 +112,7 @@ Ext.define('JavisERP.view.ComboView', {
     },
     listeners: {
         refresh: {
-            fn: function () {
+            fn: function () { 
             	var me = this;
                 this.applyRenderSelectors();
                 this.addFocusListener(this);

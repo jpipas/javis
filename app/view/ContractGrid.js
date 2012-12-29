@@ -17,6 +17,7 @@ Ext.define('JavisERP.view.ContractGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.contractgrid',
 
+    itemId: 'ContractGrid',
     title: 'ContractsGrid',
     forceFit: true,
     store: 'ContractStore',
@@ -41,18 +42,13 @@ Ext.define('JavisERP.view.ContractGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    hidden: true,
                     dataIndex: 'id',
-                    text: 'Id'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'contract_number',
                     flex: 2,
                     text: 'Contract No.'
                 },
                 {
                     xtype: 'gridcolumn',
+                    hidden: true,
                     defaultWidth: 160,
                     dataIndex: 'client_name',
                     flex: 4,
@@ -108,6 +104,7 @@ Ext.define('JavisERP.view.ContractGrid', {
                     items: [
                         {
                             xtype: 'button',
+                            itemId: 'newcontract',
                             icon: '',
                             iconCls: 'ui-silk ui-silk-table-add',
                             text: 'New Contract'

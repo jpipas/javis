@@ -22,7 +22,21 @@ Ext.define('JavisERP.model.PaymentType', {
             name: 'id'
         },
         {
-            name: 'name'
+            name: 'description'
+        },
+        {
+            name: 'type'
         }
-    ]
+    ],
+
+    proxy: {
+        type: 'ajax',
+        url: '/resources/js/paymentType.json',
+        reader: {
+            type: 'json',
+            idProperty: 'id',
+            root: 'paymentType',
+            totalProperty: 'totalCount'
+        }
+    }
 });

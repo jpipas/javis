@@ -1,0 +1,20 @@
+{
+    "totalCount":15,
+    "adSize":[
+        {"id":1,"name":"Full Color","ad_type_id":1},
+        {"id":2,"name":"Half Color","ad_type_id":1},
+        {"id":3,"name":"Full B/W","ad_type_id":1},
+        {"id":4,"name":"Half B/W","ad_type_id":1},
+        {"id":5,"name":"2/3 Color","ad_type_id":2},
+        {"id":6,"name":"Full","ad_type_id":3},
+        {"id":7,"name":"1/2","ad_type_id":3},
+        {"id":8,"name":"1/4","ad_type_id":3},
+        {"id":9,"name":"1/8","ad_type_id":3},
+        {"id":10,"name":"Full","ad_type_id":4},
+        {"id":11,"name":"1/2","ad_type_id":4},
+        {"id":12,"name":"1/4","ad_type_id":4},
+        {"id":13,"name":"1/8","ad_type_id":4},
+        {"id":14,"name":"Full","ad_type_id":5},
+        {"id":15,"name":"Half","ad_type_id":5}
+    ]
+}

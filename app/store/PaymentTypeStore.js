@@ -15,6 +15,7 @@
 
 Ext.define('JavisERP.store.PaymentTypeStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.PaymentType',
 
     requires: [
         'JavisERP.model.PaymentType'
@@ -24,7 +25,7 @@ Ext.define('JavisERP.store.PaymentTypeStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            storeId: 'MyJsonStore11',
+            storeId: 'PaymentTypeStore',
             model: 'JavisERP.model.PaymentType'
         }, cfg)]);
     }

@@ -1,13 +1,13 @@
 /**
  *   ComboFieldBox
  */
-Ext.define('JavisERP.view.ComboFieldBox', {
+Ext.define('Ext.ux.ComboFieldBox', {
     extend : 'Ext.form.field.ComboBox',
 	alias : 'widget.combofieldbox',
-	requires: ['JavisERP.view.ComboView'],
+	requires: ['Ext.ux.ComboView'],
 	multiSelect: true,
 	/**
-     * @cfg
+ 	 * @cfg
 	 * maximum height for inputEl.
 	 */
 	maxHeight: 150,
@@ -177,16 +177,19 @@ Ext.define('JavisERP.view.ComboFieldBox', {
         	picker.preserveScrollOnRefresh = oldPr;
         }
         me.callParent([value, false]);
-        me.value = value // need to reset the value here: in case the store is not yeat loaded and multiSelect == true, me.value is set to [] during the callParent.
+        me.value = value; // need to reset the value here: in case the store is not yeat loaded and multiSelect == true, me.value is set to [] during the callParent.
         if(st.getCount() > 0 ) {return me.afterSetValue()}
-        if(!st.isLoading()) {st.load()}
+        if(!st.isLoading() && me._isStoreLoadCalled !== true) {
+            st.load();
+            me._isStoreLoadCalled = true;
+        }
         st.on('load', me.afterSetValue, me, {single: true});
     },
     getRawValue: function () {
         return Ext.value(this.rawValue, '');
     },
     getValue: function() {
-        //console.log(this.getValueStore().data.keys);
+        console.log(this.getValueStore().data.keys);
         return this.getValueStore().data.keys;
     },
     doRawQuery: function() {
@@ -311,7 +314,7 @@ Ext.define('JavisERP.view.ComboFieldBox', {
                 }
                 return true;
             };
-            me.view = new JavisERP.view.ComboView(Ext.apply({
+            me.view = new Ext.ux.ComboView(Ext.apply({
                 store: me.valueStore,
                 emptyText: me.emptyText || '',
                 field: me,

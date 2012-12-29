@@ -15,6 +15,9 @@
 
 Ext.define('JavisERP.controller.ClientController', {
     extend: 'Ext.app.Controller',
+    alias: 'controller.clientController',
+
+    id: 'clientcontroller',
 
     refs: [
         {
@@ -34,10 +37,6 @@ Ext.define('JavisERP.controller.ClientController', {
             selector: 'contactwindow'
         },
         {
-            ref: 'contractGrid',
-            selector: 'contractgrid'
-        },
-        {
             ref: 'contactGrid',
             selector: 'contactgrid'
         },
@@ -48,6 +47,18 @@ Ext.define('JavisERP.controller.ClientController', {
         {
             ref: 'clientPortlet',
             selector: 'clientportlet'
+        },
+        {
+            ref: 'contractWindow',
+            selector: 'contractwindow'
+        },
+        {
+            ref: 'contractGrid',
+            selector: '#clientcontractgrid'
+        },
+        {
+            ref: 'advertisementGrid',
+            selector: '#clientadgrid'
         }
     ],
 
@@ -59,9 +70,16 @@ Ext.define('JavisERP.controller.ClientController', {
         this.application.fireEvent('clientRecordChange',grid,col,row);
     },
 
+    onNewContractClick: function(target) {
+        this.application.fireEvent("addContract",target);
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
+        me.contractWindow = null;
+        me.adWindow = null;
+
         me.application.on({
             clientRecordChange: me.changeClientRecord,
             scope: me
@@ -72,6 +90,10 @@ Ext.define('JavisERP.controller.ClientController', {
             scope:me
         });
 
+        me.application.on({
+            addContract: me.addContract,
+            scope:me
+        });
 
         this.control({
             "clientrecord toolbar button[itemId=newcontact]": {
@@ -79,28 +101,51 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "clientgrid #actions, clientportlet #actions": {
                 click: this.onActionColumnClick
+            },
+            "clientrecord toolbar button[itemId=newcontract]": {
+                click: this.onNewContractClick
             }
         });
-    },
-
-    addContact: function() {
-        if(!me.contactWindow){
-            me.contactWindow = new JavisERP.view.ContactWindow();
-        }
-        if(me.contactWindow.isVisible()){
-            me.contactWindow.hide();
-        } else {
-            me.contactWindow.show();
-        }
     },
 
     changeClientRecord: function(grid, col, row, record) {
         this.getContentCards().getLayout().setActiveItem('ClientRecord');
         var form = this.getClientRecord().getForm();
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
-        var contacts = this.getContactGrid().getStore().load();
-        var publications = this.getPublicationGrid().getStore().load();
-        var contracts = this.getContractGrid().getStore().load();
+
+        var clientId = this.getClientGrid().getStore().getAt(row).data.id;
+        me.application.fireEvent("setClientId",clientId);
+
+        this.getContactGrid().getStore().clearFilter(true);
+        this.getContactGrid().getStore().filter("client_id", clientId);
+
+        this.getPublicationGrid().getStore().clearFilter(true);
+        this.getPublicationGrid().getStore().filter("client_id",clientId);
+
+
+        this.getContractGrid().getStore().clearFilter(true);
+        this.getContractGrid().getStore().filter("client_id",clientId);
+
+        this.getAdvertisementGrid().getStore().clearFilter(true);
+        this.getAdvertisementGrid().getStore().filter("client_id", clientId);
+
+    },
+
+    addContract: function() {
+        me.contractWindow = new JavisERP.view.ContractWindow();
+        me.contractWindow.show();
+    },
+
+    addContact: function() {
+        if(!me.contactWindow){
+            me.contactWindow = new JavisERP.view.ContactWindow();
+            console.log("Need a new window!");
+        }
+        if(me.contactWindow.isVisible()){
+            me.contactWindow.hide();
+        } else {
+            me.contactWindow.show();
+        }
     }
 
 });

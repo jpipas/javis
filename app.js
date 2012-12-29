@@ -27,11 +27,7 @@ Ext.application({
         'Activity',
         'UserNote',
         'Role',
-        'Publication',
-        'Contract',
-        'Advertisement',
-        'AdvertisementType',
-        'AdvertisementSize'
+        'Publication'
     ],
     stores: [
         'ClientStore',
@@ -44,7 +40,6 @@ Ext.application({
         'ActivityTypeStore',
         'PublicationStore',
         'ContractStore',
-        'AdvertisementStore',
         'PaymentTypeStore'
     ],
     views: [
@@ -60,7 +55,8 @@ Ext.application({
         'PublicationGrid',
         'ContractGrid',
         'ContractWindow',
-        'AdvertisementGrid'
+        'AdvertisementGrid',
+        'AdvertisementWindow'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -69,6 +65,14 @@ Ext.application({
         'MainNavController',
         'RecordNavController',
         'ClientController',
-        'Portal'
-    ]
+        'Portal',
+        'AdWindowController',
+        'ContractWindowController'
+    ],
+
+    launch: function() {
+        // can now be used to reference the application from anywhere!!
+        _myAppGlobal = this;
+    }
+
 });
