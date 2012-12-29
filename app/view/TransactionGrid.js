@@ -87,7 +87,7 @@ Ext.define('JavisERP.view.TransactionGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'created_at',
-                    text: 'Created At'
+                    text: 'Created On'
                 },
                 {
                     xtype: 'gridcolumn',

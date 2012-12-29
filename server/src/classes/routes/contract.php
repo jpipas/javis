@@ -17,7 +17,7 @@ class Contract implements ControllerProviderInterface
 
         $controllers->get('/', function (Application $app, Request $request) {
             $contract_array = $app['business.contract']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
-            $totalCount = $app['business.contract']->getTotalCount();
+            $totalCount = $app['business.contract']->getTotalCount($request->get('filter'));
 
             array_walk($contract_array,function($contract,$key) use (&$contract_array, &$app){
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);

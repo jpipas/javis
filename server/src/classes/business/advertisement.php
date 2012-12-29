@@ -11,10 +11,18 @@ class Advertisement extends AbstractBusinessService
         return 'advertisement';
     }
 
-    public function getAll($page = null,$start = 0,$limit = 0) {
+    public function getAll($page = null,$start = 0,$limit = 0,$filter) {
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
-        //$sql = "SELECT c.*,s.name as 'state' FROM client AS c LEFT JOIN state s ON c.state_id = s.id $limit_clause";
+        $where_clause = "";
+        if($filter){
+            $where_clause .= "WHERE ";
+            $filter_array = json_decode($filter,true);
+            foreach($filter_array as $fltr){
+                $where_clause .= $fltr['property']." = ".$fltr['value'];
+            }
+        }
+        $sql = "SELECT a.* FROM advertisement as a $where_clause $limit_clause";
         return $this->db->fetchAll($sql);
     }
 

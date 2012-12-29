@@ -50,8 +50,13 @@ Ext.define('JavisERP.model.Publication', {
     },
 
     proxy: {
-        type: 'ajax',
-        url: 'resources/js/publication.json',
+        type: 'rest',
+        api: {
+            create: '/server/web/index.php/publication/new',
+            read: '/server/web/index.php/publication/',
+            update: '/server/web/index.php/publication/update',
+            destroy: '/server/web/index.php/publication/destroy'
+        },
         reader: {
             type: 'json',
             idProperty: 'id',

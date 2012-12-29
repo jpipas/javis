@@ -4,15 +4,15 @@ namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
 
-class PaymentType extends AbstractBusinessService
+class AdType extends AbstractBusinessService
 {
     public function getTableName()
     {
-        return 'payment_type';
+        return 'ad_type';
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM payment_type";
+        $sql = "SELECT * FROM ad_type";
         return $this->db->fetchAll($sql);
     }
 

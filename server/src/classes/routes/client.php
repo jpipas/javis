@@ -18,7 +18,7 @@ class Client implements ControllerProviderInterface
         $controllers->get('/', function (Application $app, Request $request) {
             //print_r($request->get('limit'));
             $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'));
-            $totalCount = $app['business.client']->getTotalCount();
+            $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
                 $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);

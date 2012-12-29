@@ -15,8 +15,16 @@ abstract class AbstractBusinessService
         $this->db = $db;
     }
 
-    public function getTotalCount(){
-        $sql = "SELECT count(*) as 'totalCount' FROM ".$this->getTableName();
+    public function getTotalCount($filter = null){
+        $where_clause = "";
+        if($filter){
+            $where_clause .= "WHERE ";
+            $filter_array = json_decode($filter,true);
+            foreach($filter_array as $fltr){
+                $where_clause .= $fltr['property']." = ".$fltr['value'];
+            }
+        }
+        $sql = "SELECT count(*) as 'totalCount' FROM ".$this->getTableName()." ".$where_clause;
         return $this->db->fetchAssoc($sql);
     }
 

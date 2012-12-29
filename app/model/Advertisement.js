@@ -19,8 +19,8 @@ Ext.define('JavisERP.model.Advertisement', {
     uses: [
         'JavisERP.model.AdvertisementType',
         'JavisERP.model.AdvertisementSize',
-        'JavisERP.model.Publication',
-        'JavisERP.model.Client'
+        'JavisERP.model.Client',
+        'JavisERP.model.Publication'
     ],
 
     idProperty: 'advertisement',
@@ -30,13 +30,12 @@ Ext.define('JavisERP.model.Advertisement', {
             name: 'id'
         },
         {
-            name: 'ad_type_id'
+            name: 'ad_type_id',
+            mapping: 'ad_type.description'
         },
         {
-            name: 'ad_size_id'
-        },
-        {
-            name: 'publication_id'
+            name: 'ad_size_id',
+            mapping: 'ad_size.description'
         },
         {
             name: 'created_at'
@@ -59,10 +58,6 @@ Ext.define('JavisERP.model.Advertisement', {
             model: 'JavisERP.model.AdvertisementSize'
         },
         {
-            associationKey: 'publication_id',
-            model: 'JavisERP.model.Publication'
-        },
-        {
             model: 'JavisERP.model.Client'
         }
     ],
@@ -81,5 +76,10 @@ Ext.define('JavisERP.model.Advertisement', {
             root: 'advertisement',
             totalProperty: 'totalCount'
         }
+    },
+
+    hasMany: {
+        model: 'JavisERP.model.Publication',
+        name: 'publications'
     }
 });
