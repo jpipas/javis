@@ -19,7 +19,7 @@ class Advertisement extends AbstractBusinessService
     }
 
     public function getByContractId($contract_id) {
-        $sql = "SELECT * FROM advertisement WHERE contract_id = ?";
+        $sql = "SELECT a.* FROM advertisement as a LEFT JOIN contract_advertisement as ca ON a.id = ca.advertisement_id LEFT JOIN contract as c ON ca.contract_id = c.id WHERE c.id = ?";
         return $this->db->fetchAssoc($sql,array((int) $contract_id));
     }
 

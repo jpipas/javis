@@ -24,7 +24,8 @@ Ext.define('JavisERP.view.ClientRecord', {
         'JavisERP.view.UserNoteGrid',
         'JavisERP.view.ContractGrid',
         'JavisERP.view.AdvertisementGrid',
-        'JavisERP.view.PublicationGrid'
+        'JavisERP.view.PublicationGrid',
+        'JavisERP.view.TransactionGrid'
     ],
 
     id: 'clientrecord',
@@ -457,39 +458,8 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     ]
                                 },
                                 {
-                                    xtype: 'gridpanel',
-                                    flex: 1,
-                                    padding: '10 0',
-                                    autoScroll: true,
-                                    bodyBorder: false,
-                                    title: 'Transactions',
-                                    titleCollapse: true,
-                                    store: 'PaymentStore',
-                                    columns: [
-                                        {
-                                            xtype: 'gridcolumn',
-                                            dataIndex: 'string',
-                                            text: 'String'
-                                        },
-                                        {
-                                            xtype: 'numbercolumn',
-                                            dataIndex: 'number',
-                                            text: 'Number'
-                                        },
-                                        {
-                                            xtype: 'datecolumn',
-                                            dataIndex: 'date',
-                                            text: 'Date'
-                                        },
-                                        {
-                                            xtype: 'booleancolumn',
-                                            dataIndex: 'bool',
-                                            text: 'Boolean'
-                                        }
-                                    ],
-                                    viewConfig: {
-
-                                    }
+                                    xtype: 'transactiongrid',
+                                    flex: 1
                                 }
                             ]
                         }

@@ -27,7 +27,9 @@ Ext.application({
         'Activity',
         'UserNote',
         'Role',
-        'Publication'
+        'Publication',
+        'Payment',
+        'AppliedPayment'
     ],
     stores: [
         'ClientStore',
@@ -40,7 +42,8 @@ Ext.application({
         'ActivityTypeStore',
         'PublicationStore',
         'ContractStore',
-        'PaymentTypeStore'
+        'PaymentTypeStore',
+        'AppliedPaymentStore'
     ],
     views: [
         'AppViewport',
@@ -56,7 +59,8 @@ Ext.application({
         'ContractGrid',
         'ContractWindow',
         'AdvertisementGrid',
-        'AdvertisementWindow'
+        'AdvertisementWindow',
+        'TransactionGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',

@@ -24,6 +24,7 @@ Ext.define('JavisERP.store.AdvertisementStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
+            remoteFilter: true,
             storeId: 'MyJsonStore10',
             model: 'JavisERP.model.Advertisement'
         }, cfg)]);
