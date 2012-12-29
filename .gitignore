@@ -1,7 +1,8 @@
 app/config/deploy.rb
-
+server/cache/
 # Bootstrap
-app/bootstrap*
+
+
 
 # Symfony directories
 vendor/*
@@ -9,6 +10,3 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
