@@ -20,31 +20,30 @@ Ext.define('JavisERP.model.Contract', {
     uses: [
         'JavisERP.model.Client',
         'JavisERP.model.PaymentType',
-        'JavisERP.model.Advertisement'
+        'JavisERP.model.Duration'
     ],
 
     idProperty: 'id',
 
     fields: [
         {
-            name: 'id'
-        },
-        {
-            name: 'client_name',
-            mapping: 'client.company_name'
+            name: 'id',
+            type: 'int'
         },
         {
             name: 'total_sales',
             type: 'float'
         },
         {
-            name: 'discount'
+            name: 'discount',
+            type: 'float'
         },
         {
-            name: 'subtotal'
+            name: 'subtotal',
+            type: 'float'
         },
         {
-            name: 'first_month_payment',
+            name: 'first_months_payment',
             type: 'float'
         },
         {
@@ -58,6 +57,18 @@ Ext.define('JavisERP.model.Contract', {
         {
             name: 'sale_date',
             type: 'date'
+        },
+        {
+            name: 'client_id',
+            type: 'int'
+        },
+        {
+            name: 'design_fee',
+            type: 'float'
+        },
+        {
+            name: 'total_amount',
+            type: 'float'
         }
     ],
 
@@ -73,9 +84,8 @@ Ext.define('JavisERP.model.Contract', {
     ],
 
     hasMany: {
-        model: 'JavisERP.model.Advertisement',
-        foreignKey: 'advertisement_id',
-        name: 'advertisements'
+        model: 'JavisERP.model.Duration',
+        name: 'durations'
     },
 
     proxy: {
@@ -90,7 +100,8 @@ Ext.define('JavisERP.model.Contract', {
             type: 'json',
             idProperty: 'id',
             root: 'contract',
-            totalProperty: 'totalCount'
+            totalProperty: 'totalCount',
+            useSimpleAccessors: false
         }
     }
 });

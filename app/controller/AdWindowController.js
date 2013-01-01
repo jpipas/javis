@@ -29,7 +29,8 @@ Ext.define('JavisERP.controller.AdWindowController', {
     ],
     views: [
         'AdvertisementWindow',
-        'AdvertisementGrid'
+        'AdvertisementGrid',
+        'ContractWindow'
     ],
 
     refs: [
@@ -56,23 +57,41 @@ Ext.define('JavisERP.controller.AdWindowController', {
             ref: 'adSizeCombo',
             selector: 'combobox[cls=adSize]',
             xtype: 'combobox'
+        },
+        {
+            ref: 'contractWindow',
+            selector: 'window[cls=contractWindow]',
+            xtype: 'window'
         }
     ],
 
     onWindowAfterRender: function(abstractcomponent, options) {
         this.getAdForm().getForm().setValues({
             client: me.getClientNameField().getStore().getById(me.client_id).data.company_name,
-            client_id: me.client_id
+            client_id: me.client_id,
+            contract_id: this.getContractWindow().getComponent('ContractForm').getForm().findField('contract_id').getValue()
         });
     },
 
     onSaveClick: function(button, e, options) {
-        this.getAdForm().form.submit();
+        this.getAdForm().getForm().submit({
+            success: function(form,action){
+                me.getAdvertisementStoreStore().clearFilter(true);
+                me.getAdvertisementStoreStore().filter("contract_id",form.findField('contract_id').getValue());
+                form.owner.up().close();
+                Ext.Msg.alert('Success','Advertisement created successfully!');
+            },
+            failure: function(form,action){
+                Ext.Msg.alert('Failure','Something went wrong!');
+            }
+        });
+
     },
 
     onAdTypeChange: function(field, newValue, oldValue, options) {
+        this.getAdSizeCombo().clearValue();
         this.getAdSizeCombo().getStore().clearFilter(true);
-        this.getAdSizeCombo().getStore().filter("ad_type_id",newValue);
+        this.getAdSizeCombo().getStore().filter("type_id",newValue);
     },
 
     init: function(application) {

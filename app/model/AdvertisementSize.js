@@ -28,13 +28,13 @@ Ext.define('JavisERP.model.AdvertisementSize', {
             name: 'description'
         },
         {
-            name: 'ad_type_id'
+            name: 'type_id'
         }
     ],
 
     proxy: {
         type: 'ajax',
-        url: 'resources/js/adSize.json',
+        url: '/server/web/index.php/advertisement/size/',
         reader: {
             type: 'json',
             idProperty: 'id',

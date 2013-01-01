@@ -19,6 +19,9 @@ class Advertisement extends AbstractBusinessService
             $where_clause .= "WHERE ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
+                if($fltr['property'] == 'contract_id'){
+                   return $this->getByContractId($fltr['value']);
+                }
                 $where_clause .= $fltr['property']." = ".$fltr['value'];
             }
         }
@@ -26,9 +29,26 @@ class Advertisement extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
+    public function createAdvertisement($params){
+        $publications_array = $params['publicationlist'];
+        $contract_id = $params['contract_id'];
+        unset($params['publicationlist']);
+        unset($params['contract_id']);
+        //var_dump($params);
+        $this->db->insert('advertisement',$params);
+        $ad_id = $this->db->lastInsertId();
+        $this->db->insert('contract_advertisement',array("contract_id"=>$contract_id,"advertisement_id"=>$ad_id));
+        foreach($publications_array as $publication){
+            $this->db->insert('advertisement_publication', array("advertisement_id"=>$ad_id,"publication_id"=>$publication));
+        }
+        $advertisement = $this->getById($ad_id);
+        return $advertisement;
+    }
+
+
     public function getByContractId($contract_id) {
         $sql = "SELECT a.* FROM advertisement as a LEFT JOIN contract_advertisement as ca ON a.id = ca.advertisement_id LEFT JOIN contract as c ON ca.contract_id = c.id WHERE c.id = ?";
-        return $this->db->fetchAssoc($sql,array((int) $contract_id));
+        return $this->db->fetchAll($sql,array((int) $contract_id));
     }
 
 

@@ -17,9 +17,13 @@ Ext.define('JavisERP.view.ContractGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.contractgrid',
 
+    height: 200,
     itemId: 'ContractGrid',
+    minHeight: 200,
+    autoScroll: false,
     title: 'ContractsGrid',
     forceFit: true,
+    scroll: 'vertical',
     store: 'ContractStore',
 
     initComponent: function() {
@@ -74,7 +78,7 @@ Ext.define('JavisERP.view.ContractGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'first_month_payment',
+                    dataIndex: 'first_months_payment',
                     flex: 1,
                     text: 'First Months Payment'
                 },

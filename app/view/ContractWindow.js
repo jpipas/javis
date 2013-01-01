@@ -21,8 +21,10 @@ Ext.define('JavisERP.view.ContractWindow', {
         'JavisERP.view.AdvertisementGrid'
     ],
 
+    cls: 'contractWindow',
     width: 750,
     overflowY: 'auto',
+    resizable: false,
     autoDestroy: false,
     layout: {
         type: 'fit'
@@ -40,10 +42,8 @@ Ext.define('JavisERP.view.ContractWindow', {
                     cls: 'contractform',
                     itemId: 'ContractForm',
                     minHeight: 300,
-                    layout: {
-                        type: 'auto'
-                    },
                     bodyPadding: 5,
+                    url: '/server/web/index.php/contract/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
@@ -52,6 +52,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                             items: [
                                 {
                                     xtype: 'button',
+                                    cls: 'contractsave',
                                     iconCls: 'ui-silk ui-silk-disk',
                                     text: 'Save'
                                 },
@@ -73,37 +74,41 @@ Ext.define('JavisERP.view.ContractWindow', {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',
                             layout: {
-                                type: 'column'
+                                align: 'stretch',
+                                type: 'hbox'
                             },
                             items: [
                                 {
                                     xtype: 'fieldcontainer',
-                                    columnWidth: 0.5,
+                                    flex: 1,
+                                    cls: 'column1',
+                                    itemId: 'column1',
                                     defaults: {
-                                        padding: '5px 0px 0px 0px'
+                                        padding: '5px 0px 0px 0px',
+                                        anchor: '95%'
                                     },
                                     layout: {
-                                        type: 'column'
+                                        type: 'anchor'
                                     },
                                     labelAlign: 'right',
                                     items: [
                                         {
-                                            xtype: 'textfield',
+                                            xtype: 'displayfield',
+                                            name: 'id',
                                             fieldLabel: 'Contract Number',
                                             labelAlign: 'right'
                                         },
                                         {
-                                            xtype: 'combobox',
+                                            xtype: 'displayfield',
+                                            anchor: '95%',
                                             cls: 'clientnamefield',
-                                            name: 'client_id',
+                                            name: 'client_name',
                                             fieldLabel: 'Client',
-                                            labelAlign: 'right',
-                                            displayField: 'company_name',
-                                            store: 'ClientStore',
-                                            valueField: 'id'
+                                            labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'combobox',
+                                            anchor: '95%',
                                             name: 'payment_type_id',
                                             fieldLabel: 'Payment Type',
                                             labelAlign: 'right',
@@ -113,18 +118,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         },
                                         {
                                             xtype: 'numberfield',
-                                            fieldLabel: 'Total Sales Amount',
-                                            labelAlign: 'right',
-                                            minValue: 0,
-                                            listeners: {
-                                                change: {
-                                                    fn: me.onSalesAmountChange,
-                                                    scope: me
-                                                }
-                                            }
-                                        },
-                                        {
-                                            xtype: 'numberfield',
+                                            name: 'discount',
                                             fieldLabel: 'Discount (%)',
                                             labelAlign: 'right',
                                             maxValue: 1,
@@ -136,9 +130,44 @@ Ext.define('JavisERP.view.ContractWindow', {
                                                     scope: me
                                                 }
                                             }
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'fieldcontainer',
+                                    flex: 1,
+                                    border: 1,
+                                    defaults: {
+                                        padding: '5px 0px'
+                                    },
+                                    layout: {
+                                        type: 'anchor'
+                                    },
+                                    combineLabels: false,
+                                    labelAlign: 'right',
+                                    items: [
+                                        {
+                                            xtype: 'numberfield',
+                                            name: 'total_sales',
+                                            fieldLabel: 'Total Sales Amount',
+                                            labelAlign: 'right',
+                                            minValue: 0,
+                                            listeners: {
+                                                change: {
+                                                    fn: me.onSalesAmountChange,
+                                                    scope: me
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype: 'displayfield',
+                                            name: 'subtotal',
+                                            fieldLabel: 'Subtotal',
+                                            labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'numberfield',
+                                            name: 'design_fee',
                                             fieldLabel: 'Design Fee',
                                             labelAlign: 'right',
                                             step: 5,
@@ -148,36 +177,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                                                     scope: me
                                                 }
                                             }
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'fieldcontainer',
-                                    columnWidth: 0.5,
-                                    border: 1,
-                                    defaults: {
-                                        padding: '5px 0px'
-                                    },
-                                    layout: {
-                                        type: 'column'
-                                    },
-                                    combineLabels: false,
-                                    labelAlign: 'right',
-                                    items: [
-                                        {
-                                            xtype: 'textfield',
-                                            disabled: true,
-                                            fieldLabel: 'Subtotal',
-                                            labelAlign: 'right'
                                         },
                                         {
-                                            xtype: 'textfield',
+                                            xtype: 'numberfield',
                                             padding: '',
+                                            name: 'total_amount',
                                             fieldLabel: 'Total Amount',
                                             labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'numberfield',
+                                            name: 'first_months_payment',
                                             fieldLabel: '1st Mon. Payment',
                                             labelAlign: 'right',
                                             autoStripChars: false,
@@ -189,18 +199,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             }
                                         },
                                         {
-                                            xtype: 'textfield',
+                                            xtype: 'numberfield',
+                                            name: 'monthly_payment',
                                             fieldLabel: 'Montly Payment',
                                             labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'hiddenfield',
+                                            id: 'client_id',
+                                            itemId: 'client_id',
+                                            inputId: 'client_id',
                                             name: 'client_id'
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            name: 'contract_id',
-                                            fieldLabel: 'Label'
                                         }
                                     ]
                                 }
@@ -226,11 +235,11 @@ Ext.define('JavisERP.view.ContractWindow', {
         console.log("cancel this!");
     },
 
-    onSalesAmountChange: function(field, newValue, oldValue, options) {
+    onDiscountChange: function(field, newValue, oldValue, options) {
         this.runCalculations();
     },
 
-    onDiscountChange: function(field, newValue, oldValue, options) {
+    onSalesAmountChange: function(field, newValue, oldValue, options) {
         this.runCalculations();
     },
 
@@ -243,34 +252,36 @@ Ext.define('JavisERP.view.ContractWindow', {
     },
 
     runCalculations: function() {
-        var total_sales_amt = Ext.getCmp("total_sales_amount").getValue();
-        var discount = Ext.getCmp("discount").getValue();
-        var subtotal = Ext.getCmp("subtotal").getValue();
-        var design_fee = Ext.getCmp("design_fee").getValue();
+        var form = Ext.ComponentQuery.query('#ContractForm')[0].getForm();
+
+        var total_sales_amt = form.findField("total_sales").getValue();
+        var discount = form.findField("discount").getValue();
+        var subtotal = form.findField("subtotal").getValue();
+        var design_fee = form.findField("design_fee").getValue();
 
         var sub_total_calc = (total_sales_amt*(1-discount)).toFixed(2);
-        Ext.getCmp("subtotal").setValue(sub_total_calc);
+        form.findField("subtotal").setValue(sub_total_calc);
 
         var total_calc = parseFloat(sub_total_calc) + design_fee;
-        Ext.getCmp("total_amount").setValue(total_calc.toFixed(2));
+        form.findField("total_amount").setValue(total_calc.toFixed(2));
 
-        this.paymentCalcuations();
+        this.paymentCalculations();
     },
 
     paymentCalculations: function() {
-        var subtotal = Ext.getCmp("subtotal").getValue();
-        var design_fee = Ext.getCmp("design_fee").getValue();
-        var durations = Ext.getCmp("ad_duration").getValue();
+        var form = Ext.ComponentQuery.query('#ContractForm')[0].getForm();
 
-        var dur_array = durations.split(",");
-        var duration = dur_array.length;
+        var subtotal = form.findField("subtotal").getValue();
+        var design_fee = form.findField("design_fee").getValue();
+        var durations = form.findField("durationlist[]").getValue();
+        var duration = durations.length;
         if(duration===0){
             duration=1;
         }
         var first_month_calc = (subtotal/duration)+design_fee;
         var month_payment = (subtotal/duration);
-        Ext.getCmp("first_month_payment").setValue(first_month_calc.toFixed(2));
-        Ext.getCmp("monthly_payment").setValue(month_payment.toFixed(2));
+        form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));
+        form.findField("monthly_payment").setValue(month_payment.toFixed(2));
     }
 
 });

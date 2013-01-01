@@ -27,6 +27,8 @@ class Publication extends AbstractBusinessService
                                     left join client as cl on c.client_id = cl.id
                                     where cl.id = %d
                                     group by p.id",$fltr['value']);
+                } else if($fltr['property'] == 'description'){
+                    $where_clase = " description LIKE '%".$fltr['value']."'";
                 } else {
                     $where_clause .= $fltr['property']." = ".$fltr['value'];
                 }

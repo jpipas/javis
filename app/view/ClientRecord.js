@@ -314,9 +314,9 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 },
                                 {
                                     xtype: 'tabpanel',
-                                    height: 100,
+                                    height: 200,
                                     itemId: 'SalesSublistTabs',
-                                    maxHeight: 350,
+                                    maxHeight: 250,
                                     activeTab: 0,
                                     plain: false,
                                     items: [

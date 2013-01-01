@@ -43,7 +43,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                     id: 'adform',
                     itemId: 'adform',
                     bodyPadding: 10,
-                    url: 'server/web/index.php/advertisement/create',
+                    url: 'server/web/index.php/advertisement/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
@@ -134,18 +134,20 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                             items: [
                                                 {
                                                     xtype: 'checkboxfield',
-                                                    name: 'emailDesigner',
+                                                    name: 'email_designer',
                                                     fieldLabel: 'Label',
                                                     hideLabel: true,
-                                                    boxLabel: 'Notify Designer'
+                                                    boxLabel: 'Notify Designer',
+                                                    inputValue: '1'
                                                 },
                                                 {
                                                     xtype: 'checkboxfield',
                                                     margin: '0 10',
-                                                    name: 'emailClient',
+                                                    name: 'email_client',
                                                     fieldLabel: 'Label',
                                                     hideLabel: true,
-                                                    boxLabel: 'Notify Client'
+                                                    boxLabel: 'Notify Client',
+                                                    inputValue: '1'
                                                 }
                                             ]
                                         },

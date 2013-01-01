@@ -18,7 +18,8 @@ Ext.define('JavisERP.model.Publication', {
     alias: 'model.publication',
 
     uses: [
-        'JavisERP.model.Territory'
+        'JavisERP.model.Territory',
+        'JavisERP.model.Advertisement'
     ],
 
     fields: [
@@ -51,6 +52,7 @@ Ext.define('JavisERP.model.Publication', {
 
     proxy: {
         type: 'rest',
+        batchActions: true,
         api: {
             create: '/server/web/index.php/publication/new',
             read: '/server/web/index.php/publication/',
@@ -62,6 +64,15 @@ Ext.define('JavisERP.model.Publication', {
             idProperty: 'id',
             root: 'publication',
             totalProperty: 'totalCount'
+        },
+        writer: {
+            type: 'json',
+            encode: true
         }
+    },
+
+    hasMany: {
+        model: 'JavisERP.model.Advertisement',
+        name: 'advertisement'
     }
 });

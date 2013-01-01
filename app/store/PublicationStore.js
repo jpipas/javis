@@ -24,10 +24,14 @@ Ext.define('JavisERP.store.PublicationStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: true,
+            autoLoad: false,
+            batchUpdateMode: 'complete',
+            filterOnLoad: false,
             remoteFilter: true,
+            sortOnLoad: false,
             storeId: 'PublicationStore',
-            model: 'JavisERP.model.Publication'
+            model: 'JavisERP.model.Publication',
+            sortOnFilter: false
         }, cfg)]);
     }
 });

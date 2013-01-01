@@ -87,24 +87,27 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
     onButtonClick: function(button, e, options) {
         var adWindow = new JavisERP.view.AdvertisementWindow();
 
-        var comboFieldBox = Ext.create('JavisERP.view.ComboFieldBox',
+        var comboFieldBox = Ext.create('Ext.ux.form.field.BoxSelect',
             {
-                xtype: 'ComboFieldBox',
+                xtype: 'comboboxselect',
                 fieldLabel: 'Publication(s)',
                 displayField: 'description',
                 emptyText: 'select a publication...',
                 descField: 'id',
                 valueField: 'id',
-                store: 'PublicationStore',
+                store: 'StaticPublicationStore',
                 queryMode: 'local',
-                height:250,
+                growMax: 150,
                 anchor:'95%',
-                typeAhead: true,
-                name: 'publicationlist'
+                typeAdead:true,
+                stacked: true,
+                filterPickList:true,
+                name: 'publicationlist[]'
             });
 
         var container = adWindow.query('fieldcontainer > #adwindow_col1');
         container[0].insert(1,comboFieldBox);
+
         adWindow.show();
     }
 

@@ -114,7 +114,8 @@ Ext.define('JavisERP.controller.ClientController', {
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
 
         var clientId = this.getClientGrid().getStore().getAt(row).data.id;
-        me.application.fireEvent("setClientId",clientId);
+        var clientName = this.getClientGrid().getStore().getAt(row).data.company_name;
+        me.application.fireEvent("setClientFields",clientId,clientName);
 
         this.getContactGrid().getStore().clearFilter(true);
         this.getContactGrid().getStore().filter("client_id", clientId);
@@ -133,6 +134,23 @@ Ext.define('JavisERP.controller.ClientController', {
 
     addContract: function() {
         me.contractWindow = new JavisERP.view.ContractWindow();
+
+        me.contract_id = null;
+
+        me.contract = new JavisERP.model.Contract({
+            client_id: me.client_id
+        });
+
+        me.contract.save({
+            callback: function(record,operation,success){
+                me.contract_id = record.data.id;
+                me.contractWindow.getComponent('ContractForm').getForm().setValues({id: record.data.id});
+            }
+        });
+
+        this.getContractGrid().getStore().add(me.contract);
+        this.getAdvertisementGrid().getStore().clearFilter(true);
+        this.getAdvertisementGrid().getStore().filter("contract_id",me.contract_id);
         me.contractWindow.show();
     },
 

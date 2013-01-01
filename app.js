@@ -29,7 +29,8 @@ Ext.application({
         'Role',
         'Publication',
         'Payment',
-        'AppliedPayment'
+        'AppliedPayment',
+        'Duration'
     ],
     stores: [
         'ClientStore',
@@ -43,7 +44,9 @@ Ext.application({
         'PublicationStore',
         'ContractStore',
         'PaymentTypeStore',
-        'AppliedPaymentStore'
+        'AppliedPaymentStore',
+        'StaticPublicationStore',
+        'StaticDurationStore'
     ],
     views: [
         'AppViewport',
