@@ -30,8 +30,8 @@ class Contract implements ControllerProviderInterface
         });
 
 
-        $controllers->get('/duration', function(Application $app, Request $request) {
-            $duration_array = $app['business.duration']->getAll();
+        $controllers->get('/duration/', function(Application $app, Request $request) {
+            $duration_array = $app['business.duration']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
             return $app->json(array("totalCount"=>count($duration_array), "duration"=>$duration_array));
         });
 

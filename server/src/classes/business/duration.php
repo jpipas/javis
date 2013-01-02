@@ -11,8 +11,25 @@ class Duration extends AbstractBusinessService
         return 'duration';
     }
 
-    public function getAll() {
-        $sql = "SELECT * FROM duration";
+    public function getAll($page = null,$start = 0,$limit = 0,$filter) {
+        ($start === null)?$start = "":$start;
+        ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
+        $where_clause = "";
+        if($filter){
+            $where_clause .= "WHERE ";
+            $filter_array = json_decode($filter,true);
+            foreach($filter_array as $fltr){
+                if($fltr['property'] == 'contract_id'){
+                    $where_clause = sprintf(" left join contract_duration as cd on d.id = cd.duration_id
+                                    where cd.contract_id = %d",$fltr['value']);
+                } else if($fltr['property'] == 'description'){
+                    $where_clase = " description LIKE '%".$fltr['value']."'";
+                } else {
+                    $where_clause .= $fltr['property']." = ".$fltr['value'];
+                }
+            }
+        }
+        $sql = "SELECT d.* FROM duration as d $where_clause";
         return $this->db->fetchAll($sql);
     }
 

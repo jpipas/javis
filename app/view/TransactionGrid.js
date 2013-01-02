@@ -17,7 +17,6 @@ Ext.define('JavisERP.view.TransactionGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.transactiongrid',
 
-    padding: '10 0',
     autoScroll: true,
     bodyBorder: false,
     title: 'Transactions',
@@ -39,6 +38,7 @@ Ext.define('JavisERP.view.TransactionGrid', {
                         {
                             xtype: 'button',
                             cls: 'newPaymentButton',
+                            itemId: 'newPaymentButton',
                             iconCls: 'ui-silk ui-silk-money-add',
                             text: 'New Payment'
                         }

@@ -71,7 +71,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 emptyText: 'select a duration...',
                 descField: 'id',
                 valueField: 'id',
-                store: 'StaticDurationStore',
+                store: 'Duration',
                 queryMode: 'local',
                 typeAdead:true,
                 growMax:100,

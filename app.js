@@ -44,9 +44,8 @@ Ext.application({
         'PublicationStore',
         'ContractStore',
         'PaymentTypeStore',
-        'AppliedPaymentStore',
         'StaticPublicationStore',
-        'StaticDurationStore'
+        'Duration'
     ],
     views: [
         'AppViewport',
@@ -63,7 +62,8 @@ Ext.application({
         'ContractWindow',
         'AdvertisementGrid',
         'AdvertisementWindow',
-        'TransactionGrid'
+        'TransactionGrid',
+        'ContractPaymentWindow'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -74,7 +74,8 @@ Ext.application({
         'ClientController',
         'Portal',
         'AdWindowController',
-        'ContractWindowController'
+        'ContractWindowController',
+        'PaymentController'
     ],
 
     launch: function() {

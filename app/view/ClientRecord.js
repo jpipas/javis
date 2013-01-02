@@ -386,80 +386,24 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     }
                                                 }
                                             ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: {
-                                align: 'stretch',
-                                type: 'vbox'
-                            },
-                            bodyPadding: 5,
-                            title: 'Financial',
-                            items: [
-                                {
-                                    xtype: 'container',
-                                    flex: 1,
-                                    height: 50,
-                                    itemId: 'FinancialSublistHeader',
-                                    maxHeight: 50,
-                                    layout: {
-                                        align: 'stretch',
-                                        padding: '',
-                                        type: 'hbox'
-                                    },
-                                    items: [
-                                        {
-                                            xtype: 'container',
-                                            flex: 1,
-                                            items: [
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Label'
-                                                },
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Label'
-                                                }
-                                            ]
                                         },
                                         {
-                                            xtype: 'container',
-                                            flex: 1,
+                                            xtype: 'panel',
+                                            border: 0,
+                                            layout: {
+                                                type: 'fit'
+                                            },
+                                            title: 'Payments',
                                             items: [
                                                 {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Label'
-                                                },
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Label'
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'container',
-                                            flex: 1,
-                                            items: [
-                                                {
-                                                    xtype: 'textfield',
-                                                    fieldLabel: 'Label'
-                                                },
-                                                {
-                                                    xtype: 'checkboxfield',
-                                                    boxLabel: 'Box Label',
-                                                    boxLabelAlign: 'before'
+                                                    xtype: 'transactiongrid',
+                                                    border: 0,
+                                                    itemId: 'paymentGrid',
+                                                    header: false
                                                 }
                                             ]
                                         }
                                     ]
-                                },
-                                {
-                                    xtype: 'transactiongrid',
-                                    flex: 1
                                 }
                             ]
                         }

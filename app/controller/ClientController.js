@@ -74,6 +74,11 @@ Ext.define('JavisERP.controller.ClientController', {
         this.application.fireEvent("addContract",target);
     },
 
+    onNewPaymentButtonClick: function(button, e, options) {
+        var payment = new JavisERP.view.ContractPaymentWindow();
+        payment.show();
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
@@ -104,6 +109,9 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "clientrecord toolbar button[itemId=newcontract]": {
                 click: this.onNewContractClick
+            },
+            "button[cls=newPaymentButton]": {
+                click: this.onNewPaymentButtonClick
             }
         });
     },

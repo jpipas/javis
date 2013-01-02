@@ -22,6 +22,7 @@ Ext.define('JavisERP.view.Viewport', {
         'JavisERP.view.ClientPortlet',
         'JavisERP.view.ActivityPortlet',
         'JavisERP.view.ContractWindow',
-        'JavisERP.view.AdvertisementWindow'
+        'JavisERP.view.AdvertisementWindow',
+        'JavisERP.view.ContractPaymentWindow'
     ]
 });
