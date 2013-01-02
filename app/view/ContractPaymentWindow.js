@@ -48,7 +48,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             items: [
                                 {
                                     xtype: 'button',
-                                    cls: 'savebutton',
+                                    cls: 'paymentsavebutton',
                                     id: 'paymentsavebutton',
                                     itemId: 'paymentsavebutton',
                                     iconCls: 'ui-silk ui-silk-disk',
@@ -119,7 +119,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                                     items: [
                                         {
                                             xtype: 'combobox',
-                                            cls: 'adType',
+                                            cls: 'paymentType',
                                             itemId: 'payment_type_id',
                                             name: 'payment_type_id',
                                             fieldLabel: 'Payment Type',
@@ -132,7 +132,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                                         },
                                         {
                                             xtype: 'numberfield',
-                                            cls: 'adSize',
+                                            cls: 'paymentAmount',
                                             id: 'payment_amount',
                                             itemId: 'payment_amount',
                                             name: 'payment_amount',

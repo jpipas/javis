@@ -22,6 +22,9 @@ Ext.define('JavisERP.controller.PaymentController', {
         'PaymentStore',
         'ContractStore'
     ],
+    views: [
+        'ContractWindow'
+    ],
 
     refs: [
         {
@@ -32,6 +35,11 @@ Ext.define('JavisERP.controller.PaymentController', {
             ref: 'contractCombo',
             selector: 'combobox[cls=contractCombo]',
             xtype: 'combobox'
+        },
+        {
+            ref: 'contractWindow',
+            selector: 'window[cls=contractWindow]',
+            xtype: 'window'
         }
     ],
 
@@ -47,11 +55,11 @@ Ext.define('JavisERP.controller.PaymentController', {
                 store: 'Duration',
                 queryMode: 'local',
                 typeAdead:true,
-                growMax:100,
+                multiSelect:false,
                 filterPickList:true,
                 anchor:'95%',
                 name: 'durationlist[]',
-                cls:'durationlist'
+                cls:'paymentdurationlist'
             });
 
         //this.getContractStoreStore().filter('client_id',me.client_id);
@@ -65,6 +73,7 @@ Ext.define('JavisERP.controller.PaymentController', {
     onContractComboChange: function(field, newValue, oldValue, options) {
         this.getDurationStore().clearFilter(true);
         this.getDurationStore().filter('contract_id',newValue);
+        me.getPaymentWindow().getComponent('paymentForm').getForm().findField('payment_amount').setValue(me.getContractStoreStore().getById(newValue).data.monthly_payment);
 
     },
 

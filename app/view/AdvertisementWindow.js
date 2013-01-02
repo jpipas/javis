@@ -91,6 +91,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                     items: [
                                         {
                                             xtype: 'displayfield',
+                                            cls: 'clientnamefield',
                                             name: 'client',
                                             fieldLabel: 'Client'
                                         }

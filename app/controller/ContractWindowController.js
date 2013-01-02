@@ -24,7 +24,8 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     stores: [
         'ClientStore',
         'AdvertisementStore',
-        'ContractStore'
+        'ContractStore',
+        'Duration'
     ],
     views: [
         'ContractWindow'
@@ -33,8 +34,8 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     refs: [
         {
             ref: 'clientNameField',
-            selector: 'combobox[cls=clientnamefield]',
-            xtype: 'combobox'
+            selector: 'displayfield[cls=clientnamefield]',
+            xtype: 'displayfield'
         },
         {
             ref: 'durationList',
@@ -79,14 +80,14 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 name: 'durationlist[]',
                 cls:'durationlist'
             });
-
+        this.getDurationStore().clearFilter(true);
         var container = abstractcomponent.query('fieldcontainer > #column1');
         container[0].add(comboFieldBox);
 
     },
 
     runCalcs: function(target) {
-        me.getContractWindow().paymentCalculations();
+        this.getContractWindow().paymentCalculations();
     },
 
     onSaveButtonClick: function(button, e, options) {

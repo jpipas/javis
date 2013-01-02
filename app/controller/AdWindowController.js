@@ -59,6 +59,11 @@ Ext.define('JavisERP.controller.AdWindowController', {
             xtype: 'combobox'
         },
         {
+            ref: 'clientNameField',
+            selector: 'displayfield[cls=clientnamefield]',
+            xtype: 'displayfield'
+        },
+        {
             ref: 'contractWindow',
             selector: 'window[cls=contractWindow]',
             xtype: 'window'
@@ -67,17 +72,17 @@ Ext.define('JavisERP.controller.AdWindowController', {
 
     onWindowAfterRender: function(abstractcomponent, options) {
         this.getAdForm().getForm().setValues({
-            client: me.getClientNameField().getStore().getById(me.client_id).data.company_name,
+            client: this.getClientNameField().value,
             client_id: me.client_id,
-            contract_id: this.getContractWindow().getComponent('ContractForm').getForm().findField('contract_id').getValue()
+            contract_id: this.getContractWindow().getComponent('ContractForm').getForm().findField('id').getValue()
         });
     },
 
     onSaveClick: function(button, e, options) {
         this.getAdForm().getForm().submit({
             success: function(form,action){
-                me.getAdvertisementStoreStore().clearFilter(true);
-                me.getAdvertisementStoreStore().filter("contract_id",form.findField('contract_id').getValue());
+                me.getStore('AdvertisementStore').clearFilter(true);
+                me.getStore('AdvertisementStore').filter("contract_id",form.findField('contract_id').getValue());
                 form.owner.up().close();
                 Ext.Msg.alert('Success','Advertisement created successfully!');
             },
