@@ -12,10 +12,10 @@ An Open Source ERP built with Sencha and Silex
 5. Enjoy how much more work is left to do
 
 ##Requirements##
-*PHP 5.3.x
-*MySql
-*Composer
+* PHP 5.3.x
+* MySql
+* Composer
 
 ##Frameworks Used##
-*Silex
-*ExtJS
+* Silex
+* ExtJS
