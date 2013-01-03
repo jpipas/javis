@@ -1,5 +1,6 @@
 app/config/deploy.rb
 server/cache/
+server/config/composer.lock
 # Bootstrap
 
 
@@ -10,3 +11,7 @@ vendor/*
 */cache/*
 web/uploads/*
 web/bundles/*
+
+# Misc
+.idea/
+
