@@ -18,4 +18,4 @@ An Open Source ERP built with Sencha and Silex
 
 ##Frameworks Used##
 * Silex
-* ExtJS
+* ExtJS (Built [mostly] using Sencha Architect 2.x)
