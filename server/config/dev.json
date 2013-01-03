@@ -2,9 +2,9 @@
     "debug": true,
     "database.connection" : {
         "driver": "pdo_mysql",
-        "dbname": "javiserp",
+        "dbname": "jpipas_javiserp",
         "host": "127.0.0.1",
         "user": "root",
-        "password": ""
+        "password": "a9326001"
     }
 }

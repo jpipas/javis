@@ -54,7 +54,7 @@ $app->register(new MonologServiceProvider(), array(
 ));
 
 //load routes files
-$routesDir  = APP_PATH."/classes/routes";
+$routesDir  = APP_PATH."/Classes/Routes";
 $routes = scandir($routesDir);
 foreach ($routes as $file){
     if (pathinfo($file, PATHINFO_EXTENSION) === "php"){
@@ -65,7 +65,7 @@ foreach ($routes as $file){
 }
 
 //load business components
-$businessDir  = APP_PATH."/classes/business";
+$businessDir  = APP_PATH."/Classes/Business";
 $business = scandir($businessDir);
 $arryToLoad = array();
 foreach ($business as $file){
