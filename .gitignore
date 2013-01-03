@@ -1,6 +1,6 @@
 app/config/deploy.rb
 server/cache/
-server/config/composer.lock
+server/composer.lock
 # Bootstrap
 
 
