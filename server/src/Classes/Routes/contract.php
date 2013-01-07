@@ -21,9 +21,10 @@ class Contract implements ControllerProviderInterface
 
             array_walk($contract_array,function($contract,$key) use (&$contract_array, &$app){
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
-                $contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
+                $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
+                //$contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
-                $contract_array[$key]['duration'] = $app['business.duration']->getByContractId($contract['id']);
+                $contract_array[$key]['durations'] = $app['business.duration']->getByContractId($contract['id']);
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "contract"=>$contract_array));
@@ -41,8 +42,9 @@ class Contract implements ControllerProviderInterface
 
             array_walk($contract_array,function($contract,$key) use (&$contract_array, &$app){
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
-                $contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
+                $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
+                $contract_array[$key]['durations'] = $app['business.duration']->getByContractId($contract['id']);
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "contract"=>$contract_array));
@@ -62,7 +64,7 @@ class Contract implements ControllerProviderInterface
 
             array_walk($contract_array,function($contract,$key) use (&$contract_array, &$app){
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
-                $contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
+                $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
             });
             return $app->json(array("success"=>true,"contract"=>$contract_array));

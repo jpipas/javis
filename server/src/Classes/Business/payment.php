@@ -4,11 +4,11 @@ namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
 
-class contract extends AbstractBusinessService {
+class Payment extends AbstractBusinessService {
 
     public function getTableName()
     {
-        return 'contract';
+        return 'payment';
     }
 
     public function getAll($page = null,$start = 0,$limit = 0,$filter) {
@@ -22,35 +22,33 @@ class contract extends AbstractBusinessService {
                 $where_clause .= $fltr['property']." = ".$fltr['value'];
             }
         }
-        $sql = "SELECT c.* FROM contract as c $where_clause $limit_clause";
+        $sql = "SELECT p.* FROM payment as p $where_clause $limit_clause";
         return $this->db->fetchAll($sql);
     }
 
-    public function createContract($params) {
-        unset($params['durations']);
-        unset($params['payment_term_description']);
-        $this->db->insert('contract',$params);
-        $contract = $this->getById($this->db->lastInsertId());
-        return $contract;
+    public function createPayment($params) {
+        $this->db->insert('payment',$params);
+        $payment = $this->getById($this->db->lastInsertId());
+        return $payment;
     }
 
-    public function updateContract($id, $params) {
+    public function updatePayment($id, $params) {
         unset($params['id']);
         $duration_array = $params['durations'];
         unset($params['durations']);
         unset($params['client_name']);
         unset($params['payment_term_description']);
-        $this->db->update('contract',$params, array('id'=>$id));
-        $this->db->delete('contract_duration',array("contract_id"=>$id));
+        $this->db->update('payment',$params, array('id'=>$id));
+        $this->db->delete('payment_duration',array("payment_id"=>$id));
         foreach($duration_array as $duration){
-            $this->db->insert('contract_duration', array("contract_id"=>$id,"duration_id"=>$duration['id']));
+            $this->db->insert('payment_duration', array("payment_id"=>$id,"duration_id"=>$duration['id']));
         }
-        $contract = $this->getById($id);
-        return $contract;
+        $payment = $this->getById($id);
+        return $payment;
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM contract WHERE id = ?";
+        $sql = "SELECT * FROM payment WHERE id = ?";
         return $this->db->fetchAll($sql,array((int)$id));
     }
 }

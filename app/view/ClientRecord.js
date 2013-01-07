@@ -25,7 +25,7 @@ Ext.define('JavisERP.view.ClientRecord', {
         'JavisERP.view.ContractGrid',
         'JavisERP.view.AdvertisementGrid',
         'JavisERP.view.PublicationGrid',
-        'JavisERP.view.TransactionGrid'
+        'JavisERP.view.PaymentGrid'
     ],
 
     id: 'clientrecord',
@@ -396,9 +396,9 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             title: 'Payments',
                                             items: [
                                                 {
-                                                    xtype: 'transactiongrid',
+                                                    xtype: 'paymentgrid',
                                                     border: 0,
-                                                    itemId: 'paymentGrid',
+                                                    itemId: 'paymentgrid',
                                                     header: false
                                                 }
                                             ]

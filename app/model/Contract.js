@@ -19,7 +19,7 @@ Ext.define('JavisERP.model.Contract', {
 
     uses: [
         'JavisERP.model.Client',
-        'JavisERP.model.PaymentType',
+        'JavisERP.model.PaymentTerm',
         'JavisERP.model.Duration'
     ],
 
@@ -51,8 +51,8 @@ Ext.define('JavisERP.model.Contract', {
             type: 'float'
         },
         {
-            name: 'payment_type_id',
-            mapping: 'payment_type.description'
+            name: 'payment_term_description',
+            mapping: 'payment_term.description'
         },
         {
             name: 'sale_date',
@@ -78,8 +78,9 @@ Ext.define('JavisERP.model.Contract', {
             foreignKey: 'client_id'
         },
         {
-            model: 'JavisERP.model.PaymentType',
-            foreignKey: 'payment_type_id'
+            model: 'JavisERP.model.PaymentTerm',
+            foreignKey: 'payment_term_id',
+            name: 'payment_term'
         }
     ],
 
@@ -100,8 +101,7 @@ Ext.define('JavisERP.model.Contract', {
             type: 'json',
             idProperty: 'id',
             root: 'contract',
-            totalProperty: 'totalCount',
-            useSimpleAccessors: false
+            totalProperty: 'totalCount'
         }
     }
 });

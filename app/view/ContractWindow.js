@@ -109,11 +109,11 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         {
                                             xtype: 'combobox',
                                             anchor: '95%',
-                                            name: 'payment_type_id',
-                                            fieldLabel: 'Payment Type',
+                                            name: 'payment_term_id',
+                                            fieldLabel: 'Payment Term',
                                             labelAlign: 'right',
                                             displayField: 'description',
-                                            store: 'PaymentTypeStore',
+                                            store: 'PaymentTermStore',
                                             valueField: 'id'
                                         },
                                         {
@@ -273,7 +273,7 @@ Ext.define('JavisERP.view.ContractWindow', {
 
         var subtotal = form.findField("subtotal").getValue();
         var design_fee = form.findField("design_fee").getValue();
-        var durations = form.findField("durationlist[]").getValue();
+        var durations = form.findField("durations").getValue();
         var duration = durations.length;
         if(duration===0){
             duration=1;

@@ -26,22 +26,8 @@ Ext.define('JavisERP.store.Duration', {
         me.callParent([Ext.apply({
             autoLoad: true,
             remoteFilter: true,
-            storeId: 'MyJsonStore16',
-            model: 'JavisERP.model.Duration',
-            proxy: {
-                type: 'rest',
-                api: {
-                    create: '/server/web/index.php/duration/new',
-                    read: '/server/web/index.php/contract/duration/',
-                    update: '/server/web/index.php/duration/update',
-                    destory: '/server/web/index.php/duration/delete'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'duration',
-                    totalProperty: 'totalCount'
-                }
-            }
+            storeId: 'DurationStore',
+            model: 'JavisERP.model.Duration'
         }, cfg)]);
     }
 });

@@ -90,9 +90,9 @@ Ext.define('JavisERP.view.ContractGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'payment_type_id',
+                    dataIndex: 'payment_term_description',
                     flex: 2,
-                    text: 'Payment Type'
+                    text: 'Payment Terms'
                 },
                 {
                     xtype: 'gridcolumn',

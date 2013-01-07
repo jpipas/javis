@@ -31,7 +31,7 @@ Ext.define('JavisERP.model.Payment', {
         },
         {
             name: 'payment_type_id',
-            mapping: 'payment_type.type'
+            mapping: 'payment_type.description'
         },
         {
             name: 'created_at'
@@ -46,7 +46,7 @@ Ext.define('JavisERP.model.Payment', {
             name: 'update_user_id'
         },
         {
-            name: 'total_amount'
+            name: 'payment_amount'
         },
         {
             name: 'client_id',
@@ -54,6 +54,12 @@ Ext.define('JavisERP.model.Payment', {
         },
         {
             name: 'contract_id'
+        },
+        {
+            name: 'duration_id'
+        },
+        {
+            name: 'payment_category'
         }
     ],
 
@@ -67,6 +73,7 @@ Ext.define('JavisERP.model.Payment', {
         },
         reader: {
             type: 'json',
+            idProperty: 'id',
             root: 'payment',
             totalProperty: 'totalCount'
         }

@@ -23,7 +23,7 @@ class Duration extends AbstractBusinessService
                     $where_clause = sprintf(" left join contract_duration as cd on d.id = cd.duration_id
                                     where cd.contract_id = %d",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
-                    $where_clase = " description LIKE '%".$fltr['value']."'";
+                    $where_clause .= " description LIKE '%".$fltr['value']."%'";
                 } else {
                     $where_clause .= $fltr['property']." = ".$fltr['value'];
                 }

@@ -7,8 +7,9 @@ Ext.data.Model.prototype.setAssociatedData = function(fieldName, value) {
         storeName = association.storeName;
 
         if (association.name==fieldName){
+
             associatedStore = this[storeName];
-            if (associatedStore===null){
+            if (associatedStore == null){
                 this[storeName] = associatedStore =
                     Ext.create('Ext.data.Store', {
                     model: association.model

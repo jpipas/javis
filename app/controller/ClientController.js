@@ -59,6 +59,10 @@ Ext.define('JavisERP.controller.ClientController', {
         {
             ref: 'advertisementGrid',
             selector: '#clientadgrid'
+        },
+        {
+            ref: 'paymentGrid',
+            selector: '#paymentgrid'
         }
     ],
 
@@ -131,6 +135,8 @@ Ext.define('JavisERP.controller.ClientController', {
         this.getPublicationGrid().getStore().clearFilter(true);
         this.getPublicationGrid().getStore().filter("client_id",clientId);
 
+        this.getPaymentGrid().getStore().clearFilter(true);
+        this.getPaymentGrid().getStore().filter("client_id",clientId);
 
         this.getContractGrid().getStore().clearFilter(true);
         this.getContractGrid().getStore().filter("client_id",clientId);

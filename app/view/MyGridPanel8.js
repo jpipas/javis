@@ -13,9 +13,9 @@
  * Do NOT hand edit this file.
  */
 
-Ext.define('JavisERP.view.MyGridPanel8', {
+Ext.define('JavisERP.view.ActivityGrid', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.mygridpanel81',
+    alias: 'widget.activitygrid',
 
     border: 0,
     preventHeader: true,

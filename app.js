@@ -62,7 +62,7 @@ Ext.application({
         'ContractWindow',
         'AdvertisementGrid',
         'AdvertisementWindow',
-        'TransactionGrid',
+        'PaymentGrid',
         'ContractPaymentWindow'
     ],
     autoCreateViewport: true,
