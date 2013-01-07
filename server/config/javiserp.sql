@@ -76,10 +76,9 @@ CREATE TABLE `advertisement` (
   CONSTRAINT `ad_FK_8` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `ad_FK_9` FOREIGN KEY (`update_user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6498 DEFAULT CHARSET=latin1;
-delimiter ;;
+
 CREATE TRIGGER `cre_at` BEFORE INSERT ON `advertisement` FOR EACH ROW set new.created_at = now();
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Table structure for `advertisement_publication`
@@ -123,10 +122,9 @@ CREATE TABLE `client` (
   CONSTRAINT `client_FK_2` FOREIGN KEY (`territory_id`) REFERENCES `territory` (`id`),
   CONSTRAINT `client_FK_3` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1371 DEFAULT CHARSET=latin1;
-delimiter ;;
+
 CREATE TRIGGER `init_created_at` BEFORE INSERT ON `client` FOR EACH ROW set new.created_at = now();
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Table structure for `contract`
@@ -154,10 +152,9 @@ CREATE TABLE `contract` (
   CONSTRAINT `contract_FK_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`),
   CONSTRAINT `contract_FK_3` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2088 DEFAULT CHARSET=latin1;
-delimiter ;;
+
 CREATE TRIGGER `ct_created_at` BEFORE INSERT ON `contract` FOR EACH ROW set new.created_at = now();
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Table structure for `contract_advertisement`
@@ -229,10 +226,10 @@ CREATE TABLE `payment` (
   `update_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-delimiter ;;
+
+
 CREATE TRIGGER `pt_created_at` BEFORE INSERT ON `payment` FOR EACH ROW set new.created_at = now();
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Table structure for `payment_term`
@@ -270,6 +267,10 @@ CREATE TABLE `publication` (
   KEY `publication_FI_1` (`territory_id`),
   CONSTRAINT `publication_FK_1` FOREIGN KEY (`territory_id`) REFERENCES `territory` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
+delimiter ;;
+CREATE TRIGGER `pb_created_at` BEFORE INSERT ON `publication` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
 
 -- ----------------------------
 --  Table structure for `publication_zip`
@@ -322,11 +323,15 @@ CREATE TABLE `user` (
   `salt` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
   `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `last_login` datetime DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT '1',
   `is_super_admin` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `sf_guard_user_U_1` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+
+CREATE TRIGGER `usr_created_at` BEFORE INSERT ON `user` FOR EACH ROW set new.created_at = now();
+
 
 SET FOREIGN_KEY_CHECKS = 1;
