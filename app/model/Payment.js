@@ -37,7 +37,7 @@ Ext.define('JavisERP.model.Payment', {
             name: 'created_at'
         },
         {
-            name: 'update_at'
+            name: 'updated_at'
         },
         {
             name: 'insert_user_id'

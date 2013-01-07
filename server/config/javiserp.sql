@@ -1,13 +1,16 @@
 /*
+ Navicat Premium Data Transfer
+
+ Source Server         : Local DEV
  Source Server Type    : MySQL
- Source Server Version : 50154
- Source Database       : jpipas_javiserp
+ Source Server Version : 50166
+ Source Host           : localhost
 
  Target Server Type    : MySQL
- Target Server Version : 50154
+ Target Server Version : 50166
  File Encoding         : utf-8
 
- Date: 01/02/2013 18:24:11 PM
+ Date: 01/06/2013 22:35:01 PM
 */
 
 SET NAMES utf8;
@@ -72,7 +75,7 @@ CREATE TABLE `advertisement` (
   CONSTRAINT `ad_FK_6` FOREIGN KEY (`ad_size_id`) REFERENCES `ad_size` (`id`),
   CONSTRAINT `ad_FK_8` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `ad_FK_9` FOREIGN KEY (`update_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6496 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6498 DEFAULT CHARSET=latin1;
 delimiter ;;
 CREATE TRIGGER `cre_at` BEFORE INSERT ON `advertisement` FOR EACH ROW set new.created_at = now();
  ;;
@@ -89,7 +92,7 @@ CREATE TABLE `advertisement_publication` (
   PRIMARY KEY (`id`),
   KEY `advertisement_id` (`advertisement_id`),
   KEY `publication_id` (`publication_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4694 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4700 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `client`
@@ -132,7 +135,7 @@ DROP TABLE IF EXISTS `contract`;
 CREATE TABLE `contract` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_id` int(11) NOT NULL,
-  `payment_type_id` int(11) NOT NULL,
+  `payment_term_id` int(11) NOT NULL,
   `total_sales` decimal(11,2) DEFAULT NULL,
   `discount` decimal(5,3) DEFAULT NULL,
   `subtotal` decimal(11,2) DEFAULT NULL,
@@ -146,11 +149,11 @@ CREATE TABLE `contract` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `contract_FI_1` (`client_id`),
-  KEY `contract_FI_2` (`payment_type_id`),
+  KEY `contract_FI_2` (`payment_term_id`),
   KEY `contract_FI_3` (`insert_user_id`),
   CONSTRAINT `contract_FK_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`),
   CONSTRAINT `contract_FK_3` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2086 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2088 DEFAULT CHARSET=latin1;
 delimiter ;;
 CREATE TRIGGER `ct_created_at` BEFORE INSERT ON `contract` FOR EACH ROW set new.created_at = now();
  ;;
@@ -166,7 +169,7 @@ CREATE TABLE `contract_advertisement` (
   `contract_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `advertisement_id` (`advertisement_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5199 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5201 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `contract_duration`
@@ -179,7 +182,7 @@ CREATE TABLE `contract_duration` (
   PRIMARY KEY (`id`),
   KEY `indx_contr` (`contract_id`),
   KEY `indx_dur` (`duration_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21228 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `contract_payment`
@@ -192,7 +195,7 @@ CREATE TABLE `contract_payment` (
   PRIMARY KEY (`id`),
   KEY `payment_id` (`payment_id`),
   KEY `contract_id` (`contract_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `duration`
@@ -204,7 +207,43 @@ CREATE TABLE `duration` (
   `date_string` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_id` (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `payment`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment`;
+CREATE TABLE `payment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(60) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `contract_id` int(11) NOT NULL,
+  `duration_id` int(11) NOT NULL,
+  `payment_type_id` int(11) NOT NULL,
+  `payment_amount` decimal(11,2) NOT NULL,
+  `payment_category` varchar(40) NOT NULL,
+  `notify_client` varchar(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `insert_user_id` int(11) DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+delimiter ;;
+CREATE TRIGGER `pt_created_at` BEFORE INSERT ON `payment` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
+
+-- ----------------------------
+--  Table structure for `payment_term`
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_term`;
+CREATE TABLE `payment_term` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(30) NOT NULL,
+  `payment_type_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `payment_type`
@@ -213,7 +252,6 @@ DROP TABLE IF EXISTS `payment_type`;
 CREATE TABLE `payment_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
-  `type` varchar(70) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 

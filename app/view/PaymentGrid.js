@@ -82,8 +82,8 @@ Ext.define('JavisERP.view.PaymentGrid', {
                 {
                     xtype: 'gridcolumn',
                     hidden: true,
-                    dataIndex: 'update_at',
-                    text: 'Update_at'
+                    dataIndex: 'updated_at',
+                    text: 'Updated_at'
                 },
                 {
                     xtype: 'gridcolumn',
