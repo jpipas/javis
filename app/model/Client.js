@@ -82,7 +82,7 @@ Ext.define('JavisERP.model.Client', {
         reader: {
             type: 'json',
             idProperty: 'id',
-            root: 'clients',
+            root: 'client',
             totalProperty: 'totalCount'
         }
     },
