@@ -54,10 +54,10 @@ Ext.define('JavisERP.model.Publication', {
         type: 'rest',
         batchActions: true,
         api: {
-            create: '/server/web/index.php/publication/new',
-            read: '/server/web/index.php/publication/',
-            update: '/server/web/index.php/publication/update',
-            destroy: '/server/web/index.php/publication/destroy'
+            create: 'server/web/index.php/publication/new',
+            read: 'server/web/index.php/publication/',
+            update: 'server/web/index.php/publication/update',
+            destroy: 'server/web/index.php/publication/destroy'
         },
         reader: {
             type: 'json',

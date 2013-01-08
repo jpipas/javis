@@ -92,10 +92,10 @@ Ext.define('JavisERP.model.Contract', {
     proxy: {
         type: 'rest',
         api: {
-            create: '/server/web/index.php/contract/new',
-            read: '/server/web/index.php/contract/',
-            update: '/server/web/index.php/contract/update',
-            destory: '/server/web/index.php/contract/delete'
+            create: 'server/web/index.php/contract/new',
+            read: 'server/web/index.php/contract/',
+            update: 'server/web/index.php/contract/update',
+            destory: 'server/web/index.php/contract/delete'
         },
         reader: {
             type: 'json',
