@@ -24,6 +24,8 @@ class Duration extends AbstractBusinessService
                                     where cd.contract_id = %d",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
                     $where_clause .= " description LIKE '%".$fltr['value']."%'";
+                } else if($fltr['property'] == 'payment_window') {
+                    $where_clause .= " and d.id NOT IN (SELECT p.duration_id FROM payment p WHERE p.contract_id =".$fltr['value'].")";
                 } else {
                     $where_clause .= $fltr['property']." = ".$fltr['value'];
                 }

@@ -49,8 +49,14 @@ Ext.define('JavisERP.model.Payment', {
             name: 'payment_amount'
         },
         {
-            name: 'client_id',
+            name: 'client_name',
             mapping: 'client.company_name'
+        },
+        {
+            name: 'client_id'
+        },
+        {
+            name: 'client'
         },
         {
             name: 'contract_id'
@@ -88,7 +94,13 @@ Ext.define('JavisERP.model.Payment', {
         }
     ],
 
-    hasOne: {
-        model: 'JavisERP.model.PaymentType'
-    }
+    hasOne: [
+        {
+            model: 'JavisERP.model.PaymentType'
+        },
+        {
+            model: 'JavisERP.model.Client',
+            name: 'client'
+        }
+    ]
 });

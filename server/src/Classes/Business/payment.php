@@ -27,6 +27,8 @@ class Payment extends AbstractBusinessService {
     }
 
     public function createPayment($params) {
+        unset($params['client_name']);
+        unset($params['client']);
         $this->db->insert('payment',$params);
         $payment = $this->getById($this->db->lastInsertId());
         return $payment;

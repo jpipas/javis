@@ -5,10 +5,12 @@ Ext.define('JavisERP.controller.PaymentController', {
         'AppliedPaymentStore',
         'Duration',
         'PaymentStore',
-        'ContractStore'
+        'ContractStore',
+        'ClientStore'
     ],
     views: [
-        'ContractWindow'
+        'ContractWindow',
+        'ClientRecord'
     ],
 
     refs: [
@@ -29,6 +31,11 @@ Ext.define('JavisERP.controller.PaymentController', {
         {
             ref: 'paymentForm',
             selector: 'form[cls=paymentform]',
+            xtype: 'form'
+        },
+        {
+            ref: 'clientRecordForm',
+            selector: 'form[cls=clientform]',
             xtype: 'form'
         }
     ],
@@ -63,6 +70,7 @@ Ext.define('JavisERP.controller.PaymentController', {
     onContractComboChange: function(field, newValue, oldValue, options) {
         this.getDurationStore().clearFilter(true);
         this.getDurationStore().filter('contract_id',newValue);
+        this.getDurationStore().filter('payment_window',newValue);
         me.getPaymentWindow().getComponent('paymentForm').getForm().findField('payment_amount').setValue(me.getContractStoreStore().getById(newValue).data.monthly_payment);
     },
 
@@ -79,6 +87,9 @@ Ext.define('JavisERP.controller.PaymentController', {
                 if(operation.wasSuccessful){
                     me.getPaymentWindow().close();
                     me.getPaymentStoreStore().reload();
+                    me.getClientStoreStore().reload();
+                    var refreshedClient = new JavisERP.model.Client(record.data.client);
+                    me.getClientRecordForm().getForm().loadRecord(refreshedClient);
                     Ext.Msg.alert('Success','Payment saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');

@@ -123,6 +123,8 @@ Ext.define('JavisERP.controller.ClientController', {
     changeClientRecord: function(grid, col, row, record) {
         this.getContentCards().getLayout().setActiveItem('ClientRecord');
         var form = this.getClientRecord().getForm();
+        me.crec = this.getClientGrid().getStore().getAt(row);
+        //me.client = new JavisERP.model.Client(this.getClientGrid().getStore().getAt(row).data);
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
 
         var clientId = this.getClientGrid().getStore().getAt(row).data.id;

@@ -27,7 +27,7 @@ Ext.define('JavisERP.view.ClientRecord', {
         'JavisERP.view.PublicationGrid',
         'JavisERP.view.PaymentGrid'
     ],
-
+    cls: 'clientform',
     id: 'clientrecord',
     layout: {
         align: 'stretch',
@@ -282,7 +282,8 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     xtype: 'displayfield',
                                                     anchor: '95%',
                                                     fieldLabel: 'Remaining Months',
-                                                    labelWidth: 150
+                                                    labelWidth: 150,
+                                                    name: 'remaining_months'
                                                 }
                                             ]
                                         },
@@ -306,7 +307,8 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                 {
                                                     xtype: 'displayfield',
                                                     anchor: '95%',
-                                                    fieldLabel: 'Balance'
+                                                    fieldLabel: 'Balance',
+                                                    name: 'balance'
                                                 }
                                             ]
                                         }

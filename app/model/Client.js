@@ -68,6 +68,15 @@ Ext.define('JavisERP.model.Client', {
         {
             name: 'territory',
             mapping: 'territory.name'
+        },
+        {
+            name: 'balance'
+        },
+        {
+            name: 'remaining_months'
+        },
+        {
+            name: 'overdue_balance'
         }
     ],
 

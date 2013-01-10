@@ -46,7 +46,7 @@ Ext.define('JavisERP.view.PaymentGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'client_id',
+                    dataIndex: 'client_name',
                     text: 'Client'
                 },
                 {
