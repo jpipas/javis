@@ -58,7 +58,11 @@ class Publication implements ControllerProviderInterface
             return $app->json(array("success"=>true,"publication"=>$publication_array));
         });
 
-
+        $controllers->delete('/destroy/{id}', function(Application $app, $id, Request $request) {
+            $app['business.publication']->deleteById($id);
+            //$app['business.advertisement']->deleteByContractId($id);
+            return $app->json(array("success"=>true));
+        });
         return $controllers;
     }
 }

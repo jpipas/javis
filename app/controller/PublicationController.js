@@ -125,6 +125,27 @@ Ext.define('JavisERP.controller.PublicationController',{
     },
 
     deletePublication: function(record,grid) {
-
+        Ext.Msg.show({
+            title: 'Delete Publication?',
+            msg: 'You are about to delete this publication.  Deleting this publication will also delete all advertisements associated with this publication.  Proceed with caution.  Would you like to proceed?',
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.Msg.QUESTION,
+            fn: function(buttonId,text,opt){
+                switch(buttonId){
+                    case 'ok':
+                        record.destroy({
+                            success: function(){
+                                grid.getStore().reload();
+                            },
+                            failure: function(){
+                                alert("Could not delete publication!");
+                            }
+                        });
+                        break;
+                    case 'cancel':
+                        break;
+                }
+            }
+        });
     }
 });
