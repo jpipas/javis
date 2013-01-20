@@ -73,7 +73,8 @@ Ext.define('JavisERP.model.Client', {
             name: 'balance'
         },
         {
-            name: 'remaining_months'
+            name: 'remaining_months',
+            mapping: 'remaining_months.cnt'
         },
         {
             name: 'overdue_balance'
@@ -86,7 +87,7 @@ Ext.define('JavisERP.model.Client', {
             create: 'server/web/index.php/client/new',
             read: 'server/web/index.php/client/',
             update: 'server/web/index.php/client/update',
-            destory: 'server/web/index.php/client/delete'
+            destroy: 'server/web/index.php/client/delete'
         },
         reader: {
             type: 'json',

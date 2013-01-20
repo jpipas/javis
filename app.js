@@ -75,7 +75,8 @@ Ext.application({
         'Portal',
         'AdWindowController',
         'ContractWindowController',
-        'PaymentController'
+        'PaymentController',
+        'ContractGridController'
     ],
 
     launch: function() {

@@ -95,7 +95,7 @@ Ext.define('JavisERP.model.Contract', {
             create: 'server/web/index.php/contract/new',
             read: 'server/web/index.php/contract/',
             update: 'server/web/index.php/contract/update',
-            destory: 'server/web/index.php/contract/delete'
+            destroy: 'server/web/index.php/contract/delete'
         },
         reader: {
             type: 'json',

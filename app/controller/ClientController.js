@@ -82,6 +82,26 @@ Ext.define('JavisERP.controller.ClientController', {
         var payment = new JavisERP.view.ContractPaymentWindow();
         payment.show();
     },
+    onSalesTabChange: function(panel,newCard,oldCard,e){
+        switch(newCard.cls){
+            case 'clientadvertisements':
+                this.getAdvertisementGrid().getStore().clearFilter(true);
+                this.getAdvertisementGrid().getStore().filter("client_id", me.client_id);
+                break;
+            case 'clientcontracts':
+                this.getContractGrid().getStore().clearFilter(true);
+                this.getContractGrid().getStore().filter("client_id",me.client_id);
+                break;
+            case 'clientpublications':
+                this.getPublicationGrid().getStore().clearFilter(true);
+                this.getPublicationGrid().getStore().filter("client_id",me.client_id);
+                break;
+            case 'clientpayments':
+                this.getPaymentGrid().getStore().clearFilter(true);
+                this.getPaymentGrid().getStore().filter("client_id",me.client_id);
+                break;
+        }
+    },
 
     init: function(application) {
         me = this;
@@ -116,6 +136,9 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "button[cls=newPaymentButton]": {
                 click: this.onNewPaymentButtonClick
+            },
+            "tabpanel[cls=salestab]": {
+                tabchange: this.onSalesTabChange
             }
         });
     },
@@ -152,7 +175,6 @@ Ext.define('JavisERP.controller.ClientController', {
         me.contractWindow = new JavisERP.view.ContractWindow();
 
         me.contract_id = null;
-
         me.contract = new JavisERP.model.Contract({
             client_id: me.client_id
         });
@@ -160,11 +182,10 @@ Ext.define('JavisERP.controller.ClientController', {
         me.contract.save({
             callback: function(record,operation,success){
                 me.contract_id = record.data.id;
-                me.contractWindow.getComponent('ContractForm').getForm().setValues({id: record.data.id});
+                me.contractWindow.getComponent('contractform').getForm().setValues({id: record.data.id});
             }
         });
 
-        this.getContractGrid().getStore().add(me.contract);
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",me.contract_id);
         me.contractWindow.show();

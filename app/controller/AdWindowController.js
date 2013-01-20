@@ -74,7 +74,7 @@ Ext.define('JavisERP.controller.AdWindowController', {
         this.getAdForm().getForm().setValues({
             client: this.getClientNameField().value,
             client_id: me.client_id,
-            contract_id: this.getContractWindow().getComponent('ContractForm').getForm().findField('id').getValue()
+            contract_id: this.getContractWindow().getComponent('contractform').getForm().findField('id').getValue()
         });
     },
 

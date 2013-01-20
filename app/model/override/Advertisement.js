@@ -59,7 +59,7 @@ Ext.define('JavisERP.model.override.Advertisement', {
             create: 'server/web/index.php/advertisement/create',
             read: 'server/web/index.php/advertisement/',
             update: 'server/web/index.php/advertisement/update',
-            destory: 'server/web/index.php/advertisement/delete'
+            destroy: 'server/web/index.php/advertisement/delete'
         },
         reader: {
             type: 'json',

@@ -54,6 +54,7 @@ Ext.define('JavisERP.controller.AppController', {
         var xtype = this.getContentCards().getLayout().getActiveItem().getXType();
 
         if(xtype.indexOf("grid") != -1){
+            this.getContentCards().getLayout().getActiveItem().getStore().clearFilter(true);
             this.getContentCards().getLayout().getActiveItem().getStore().load();
         }
     }

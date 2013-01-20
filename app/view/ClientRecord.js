@@ -281,7 +281,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                 {
                                                     xtype: 'displayfield',
                                                     anchor: '95%',
-                                                    fieldLabel: 'Remaining Months',
+                                                    fieldLabel: 'Unsettled Months',
                                                     labelWidth: 150,
                                                     name: 'remaining_months'
                                                 }
@@ -318,6 +318,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     xtype: 'tabpanel',
                                     height: 200,
                                     itemId: 'SalesSublistTabs',
+                                    cls: 'salestab',
                                     maxHeight: 250,
                                     activeTab: 0,
                                     plain: false,
@@ -329,6 +330,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                 type: 'fit'
                                             },
                                             title: 'Contracts',
+                                            cls:'clientcontracts',
                                             items: [
                                                 {
                                                     xtype: 'contractgrid',
@@ -350,6 +352,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             layout: {
                                                 type: 'fit'
                                             },
+                                            cls: 'clientadvertisements',
                                             title: 'Advertisements',
                                             items: [
                                                 {
@@ -374,6 +377,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                 type: 'fit'
                                             },
                                             title: 'Publications',
+                                            cls: 'clientpublications',
                                             items: [
                                                 {
                                                     xtype: 'publicationgrid',
@@ -396,6 +400,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                 type: 'fit'
                                             },
                                             title: 'Payments',
+                                            cls: 'clientpayments',
                                             items: [
                                                 {
                                                     xtype: 'paymentgrid',
@@ -426,6 +431,7 @@ Ext.define('JavisERP.view.ClientRecord', {
     },
 
     onPublicationGridBeforeRender: function(abstractcomponent, options) {
+        abstractcomponent.columns[0].hide(); // hide actions column
         abstractcomponent.getDockedItems('toolbar[dock="bottom"]')[0].hide();
         abstractcomponent.getDockedItems('toolbar[dock="top"]')[0].hide();
     }

@@ -70,6 +70,12 @@ class Contract implements ControllerProviderInterface
             return $app->json(array("success"=>true,"contract"=>$contract_array));
 
         });
+
+        $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+            $app['business.contract']->deleteById($id);
+            $app['business.advertisement']->deleteByContractId($id);
+            return $app->json(array("success"=>true));
+        });
         return $controllers;
     }
 

@@ -17,8 +17,9 @@ abstract class AbstractBusinessService
 
     public function getTotalCount($filter = null){
         $where_clause = "";
+        $where_clause .= "WHERE deleted_at is null";
         if($filter){
-            $where_clause .= "WHERE ";
+            $where_clause .= " AND ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 $where_clause .= $fltr['property']." = ".$fltr['value'];

@@ -1,6 +1,6 @@
 Ext.define('JavisERP.view.PortletPanel', {
-    extend: 'JavisERP.view.PortalPanel',    
-    
+    extend: 'JavisERP.view.PortalPanel',
+
     alias: 'widget.portletpanel',
 
     uses: ['JavisERP.util.Constants'],
@@ -19,18 +19,20 @@ Ext.define('JavisERP.view.PortletPanel', {
             }
         }];
     },
-    
+
     initComponent: function() {
-        
+
         Ext.apply(this, {
-          
+
             items: [{
                 id: 'col-1',
                 items: [{
                     id: 'portlet-3',
-                    title: 'Welcome to NCPublishers Backoffice',
+                    title: 'Welcome to Best Version Media\'s Backoffice',
                     tools: this.getTools(),
 					minHeight: 150,
+                    overflow:false,
+                    autoScroll: true,
                     html: JavisERP.util.Constants.bogusMarkup
                 },{
                   id: 'portlet-4',
@@ -52,9 +54,9 @@ Ext.define('JavisERP.view.PortletPanel', {
                     items: Ext.create('JavisERP.view.ActivityPortlet')
                 }]
             }]
-            
+
         });
-                
+
         this.callParent(arguments);
     }
 });

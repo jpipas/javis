@@ -35,11 +35,15 @@ Ext.define('JavisERP.controller.ContractWindowController', {
             ref: 'contractWindow',
             selector: 'window[cls=contractWindow]',
             xtype: 'window'
+        },
+        {
+            ref: 'contractGrid',
+            selector: 'contractgrid'
         }
     ],
 
     onWindowAfterRender: function(abstractcomponent, options) {
-        abstractcomponent.getComponent('ContractForm').getForm().setValues({
+        abstractcomponent.getComponent('contractform').getForm().setValues({
             client_name: this.getClientName(),
             client_id: this.getClientId()
         });
@@ -59,6 +63,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 queryMode: 'local',
                 typeAdead:true,
                 growMax:100,
+                delimiter: ',',
                 filterPickList:true,
                 name: 'durations',
                 cls:'durationlist'
@@ -69,12 +74,17 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
     },
 
+    onWindowClose: function(panel, eOpts){
+        this.getContractGrid().getStore().reload();
+    },
+
     runCalcs: function(target) {
         this.getContractWindow().paymentCalculations();
     },
 
     onSaveButtonClick: function(button, e, options) {
         var fields = this.getContractForm().getForm().getValues(false,false,false,true);
+        me.contract = new JavisERP.model.Contract({id: fields['id']});
         for(var key in fields){
             me.contract.set(key,fields[key]);
         }
@@ -96,8 +106,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     me.getContractWindow().close();
-                    me.getContractStoreStore().reload();
-                    Ext.Msg.alert('Success','Contract created successfully!');
+                    Ext.Msg.alert('Success','Contract saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');
                 }
@@ -114,11 +123,11 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
         me.client_id = null;
         me.client_name = null;
-
         this.control({
             "window[cls=contractWindow]": {
                 afterrender: this.onWindowAfterRender,
-                beforeshow: this.onWindowBeforeShow
+                beforeshow: this.onWindowBeforeShow,
+                close: this.onWindowClose
             },
             "comboboxselect[cls=durationlist]": {
                 change: this.runCalcs

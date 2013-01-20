@@ -77,7 +77,7 @@ Ext.define('JavisERP.model.Advertisement', {
             create: 'server/web/index.php/advertisement/new',
             read: 'server/web/index.php/advertisement/',
             update: 'server/web/index.php/advertisement/update',
-            destory: 'server/web/index.php/advertisement/delete'
+            destroy: 'server/web/index.php/advertisement/delete'
         },
         writer: {
             type: 'json',

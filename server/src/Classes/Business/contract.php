@@ -15,8 +15,9 @@ class contract extends AbstractBusinessService {
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $where_clause = "";
+        $where_clause .= "WHERE deleted_at is null ";
         if($filter){
-            $where_clause .= "WHERE ";
+            $where_clause .= " AND ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 $where_clause .= $fltr['property']." = ".$fltr['value'];
@@ -50,7 +51,11 @@ class contract extends AbstractBusinessService {
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM contract WHERE id = ?";
+        $sql = "SELECT * FROM contract WHERE id = ? and deleted_at is null";
         return $this->db->fetchAll($sql,array((int)$id));
+    }
+
+    public function deleteById($id) {
+        return $this->db->update('contract',array("deleted_at" => "now()"), array("id" => $id));
     }
 }

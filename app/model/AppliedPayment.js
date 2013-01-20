@@ -40,7 +40,7 @@ Ext.define('JavisERP.model.AppliedPayment', {
             create: 'server/web/index.php/applypayment/new',
             read: 'server/web/index.php/applypayment/',
             update: 'server/web/index.php/applypayment/update',
-            destory: 'server/web/index.php/applypayment/delete'
+            destroy: 'server/web/index.php/applypayment/delete'
         },
         reader: {
             type: 'json',

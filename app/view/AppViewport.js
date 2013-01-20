@@ -63,7 +63,7 @@ Ext.define('JavisERP.view.AppViewport', {
                             id: 'logo',
                             width: 209,
                             shadow: false,
-                            src: 'resources/images/NCLogo.jpg'
+                            src: 'resources/images/BVM_logo_horiz_shadow.jpg'
                         }
                     ],
                     items: [
@@ -91,7 +91,7 @@ Ext.define('JavisERP.view.AppViewport', {
                     autoRender: false,
                     autoShow: false,
                     height: 50,
-                    html: '<div style="padding:10px;text-align:right;">Javis ERP &copy; 2012<br/>v1.0</div>',
+                    html: '<div style="padding:10px;text-align:right;">Javis ERP &copy; 2012-2013<br/>v1.0</div>',
                     maxHeight: 50,
                     layout: {
                         type: 'fit'

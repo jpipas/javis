@@ -25,7 +25,7 @@ Ext.define('JavisERP.view.ContractWindow', {
     width: 750,
     overflowY: 'auto',
     resizable: false,
-    autoDestroy: false,
+    autoDestroy: true,
     layout: {
         type: 'fit'
     },
@@ -40,7 +40,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                 {
                     xtype: 'form',
                     cls: 'contractform',
-                    itemId: 'ContractForm',
+                    itemId: 'contractform',
                     minHeight: 300,
                     bodyPadding: 5,
                     url: '/server/web/index.php/contract/new',
@@ -59,12 +59,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                 {
                                     xtype: 'button',
                                     text: 'Cancel',
-                                    listeners: {
-                                        click: {
-                                            fn: me.onButtonClick1,
-                                            scope: me
-                                        }
-                                    }
+                                    cls: 'cancelContract'
                                 }
                             ]
                         }
@@ -231,7 +226,7 @@ Ext.define('JavisERP.view.ContractWindow', {
         me.callParent(arguments);
     },
 
-    onButtonClick1: function(button, e, options) {
+    onCancelClick: function(button, e, options) {
         console.log("cancel this!");
     },
 
@@ -252,7 +247,7 @@ Ext.define('JavisERP.view.ContractWindow', {
     },
 
     runCalculations: function() {
-        var form = Ext.ComponentQuery.query('#ContractForm')[0].getForm();
+        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
 
         var total_sales_amt = form.findField("total_sales").getValue();
         var discount = form.findField("discount").getValue();
@@ -269,7 +264,7 @@ Ext.define('JavisERP.view.ContractWindow', {
     },
 
     paymentCalculations: function() {
-        var form = Ext.ComponentQuery.query('#ContractForm')[0].getForm();
+        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
 
         var subtotal = form.findField("subtotal").getValue();
         var design_fee = form.findField("design_fee").getValue();

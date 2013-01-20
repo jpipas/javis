@@ -23,7 +23,7 @@ Ext.define('JavisERP.view.ContentPanel', {
         type: 'fit'
     },
     preventHeader: false,
-    title: 'NCPublisher Dashboard',
+    title: 'Best Version Media Dashboard',
     titleCollapse: false,
 
     initComponent: function() {

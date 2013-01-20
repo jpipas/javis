@@ -22,6 +22,7 @@ class Client implements ControllerProviderInterface
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
                 $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
+                $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
             });
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "client"=>$client_array));
         });

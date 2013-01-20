@@ -15,8 +15,9 @@ class Advertisement extends AbstractBusinessService
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $where_clause = "";
+        $where_clause = "WHERE deleted_at is null";
         if($filter){
-            $where_clause .= "WHERE ";
+            $where_clause .= " AND ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 if($fltr['property'] == 'contract_id'){
@@ -47,8 +48,14 @@ class Advertisement extends AbstractBusinessService
 
 
     public function getByContractId($contract_id) {
-        $sql = "SELECT a.* FROM advertisement as a LEFT JOIN contract_advertisement as ca ON a.id = ca.advertisement_id LEFT JOIN contract as c ON ca.contract_id = c.id WHERE c.id = ?";
+        $sql = "SELECT a.* FROM advertisement as a LEFT JOIN contract_advertisement as ca ON a.id = ca.advertisement_id LEFT JOIN contract as c ON ca.contract_id = c.id WHERE c.id = ? AND a.deleted_at is null";
         return $this->db->fetchAll($sql,array((int) $contract_id));
+    }
+
+    public function deleteByContractId($contract_id) {
+        $sql = "UPDATE advertisement a SET a.deleted_at = NOW() WHERE a.id IN (SELECT advertisement_id FROM contract_advertisement WHERE contract_id = ?)";
+        return $this->db->executeQuery($sql,array((int) $contract_id));
+        //$this->db->update('advertisement',array("deleted_at"=>"now"),array("contract_id"=>$contract_id));
     }
 
 
