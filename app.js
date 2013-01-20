@@ -63,7 +63,8 @@ Ext.application({
         'AdvertisementGrid',
         'AdvertisementWindow',
         'PaymentGrid',
-        'ContractPaymentWindow'
+        'ContractPaymentWindow',
+        'PublicationWindow'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -76,7 +77,8 @@ Ext.application({
         'AdWindowController',
         'ContractWindowController',
         'PaymentController',
-        'ContractGridController'
+        'ContractGridController',
+        'PublicationController'
     ],
 
     launch: function() {

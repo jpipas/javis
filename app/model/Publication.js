@@ -71,8 +71,12 @@ Ext.define('JavisERP.model.Publication', {
         }
     },
 
-    hasMany: {
+    hasMany: [{
         model: 'JavisERP.model.Advertisement',
         name: 'advertisement'
-    }
+    },
+    {
+        model: 'JavisERP.model.PostalCode',
+        name: 'postal_code'
+    }]
 });

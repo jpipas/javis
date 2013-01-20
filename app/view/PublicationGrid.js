@@ -22,7 +22,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
     columnLines: false,
     forceFit: true,
     store: 'PublicationStore',
-
+    features: [{ftype:'grouping'}],
     initComponent: function() {
         var me = this;
 
@@ -55,17 +55,19 @@ Ext.define('JavisERP.view.PublicationGrid', {
             },
             columns: [
                 {
-                    xtype: 'actioncolumn',
+                    xtype: 'rowactions',
                     maxWidth: 80,
                     defaultWidth: 80,
-                    items: [
+                    actions: [
                         {
-                            icon: 'resources/icons/newspaper.png',
-                            tooltip: 'View Publication'
+                            iconCls: 'ui-silk ui-silk-newspaper-go',
+                            tooltip: 'Edit Publication',
+                            callback: Ext.emptyFn
                         },
                         {
-                            icon: 'resources/icons/newspaper_go.png',
-                            tooltip: 'Edit Publication'
+                            iconCls: 'ui-silk ui-silk-newspaper-delete',
+                            tooltip: 'Delete Publication',
+                            callback: Ext.emptyFn
                         }
                     ]
                 },

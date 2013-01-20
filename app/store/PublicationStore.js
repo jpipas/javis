@@ -29,9 +29,11 @@ Ext.define('JavisERP.store.PublicationStore', {
             filterOnLoad: false,
             remoteFilter: true,
             sortOnLoad: false,
+            groupField: 'contact_email',
             storeId: 'PublicationStore',
             model: 'JavisERP.model.Publication',
-            sortOnFilter: false
+            sortOnFilter: false,
+            pageSize: '45'
         }, cfg)]);
     }
 });

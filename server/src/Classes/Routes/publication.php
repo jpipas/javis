@@ -22,7 +22,7 @@ class Publication implements ControllerProviderInterface
             array_walk($publication_array,function($publication,$key) use (&$publication_array, &$app){
                 //$publication_array[$key]['publication'] = $app['business.publication']->getBypublicationId($publication['id']);
                 $publication_array[$key]['territory'] = $app['business.territory']->getById($publication['territory_id']);
-                //$publication_array[$key]['ad_type'] = $app['business.adtype']->getById($publication['ad_type_id']);
+                $publication_array[$key]['postal_code'] = $app['business.postalcode']->getByPublicationId($publication['id']);
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "publication"=>$publication_array));
