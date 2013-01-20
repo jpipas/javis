@@ -76,7 +76,7 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                         {
                                             xtype: 'comboboxselect',
                                             fieldLabel: 'Postal Code(s)',
-                                            displayField: 'postal_code',
+                                            displayField: 'iso_code',
                                             emptyText: 'select a postal code...',
                                             descField: 'id',
                                             valueField: 'id',
@@ -110,14 +110,18 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                             itemId: 'territory_id',
                                             name: 'territory_id',
                                             fieldLabel: 'Territory',
-                                            displayField: 'description',
-                                            store: 'Territory',
+                                            displayField: 'name',
+                                            store: 'TerritoryStore',
                                             valueField: 'id'
                                         },
                                         {
                                             xtype: 'textfield',
                                             name: 'contact_email',
                                             fieldLabel: 'Contact Email'
+                                        },
+                                        {
+                                            xtype: 'hiddenfield',
+                                            name: 'id'
                                         }
                                     ]
                                 }

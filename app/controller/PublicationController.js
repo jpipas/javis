@@ -3,14 +3,35 @@ Ext.define('JavisERP.controller.PublicationController',{
     alias: 'controller.publicationcontroller',
 
     models: [
-        'Publication'
+        'Publication',
+        'PostalCode'
     ],
     stores: [
-        'PublicationStore'
+        'PublicationStore',
+        'PostalCode'
     ],
     views: [
         'PublicationWindow',
         'PublicationGrid'
+    ],
+
+    refs: [
+        {
+            ref: 'postalCodeList',
+            selector: 'comboboxselect[cls=postalCodeList]'
+        },
+        {
+            ref: 'publicationForm',
+            selector: 'form[cls=publicationform]'
+        },
+        {
+            ref: 'publicationWindow',
+            selector: 'publicationwindow'
+        },
+        {
+            ref: 'publicationGrid',
+            selector: 'publicationgrid'
+        }
     ],
 
     onPublicationActionClick: function(grid,record,action,idx,col,e,target) {
@@ -25,17 +46,85 @@ Ext.define('JavisERP.controller.PublicationController',{
         }
     },
 
+    onNewPublicationClick: function(button, e, options) {
+        var publicationWindow = new JavisERP.view.PublicationWindow();
+        publicationWindow.show();
+    },
+
+    onSavePublicationClick: function(button, e, options) {
+        var fields = this.getPublicationForm().getForm().getValues(false,false,false,true);
+        me.publication = new JavisERP.model.Publication({id: fields['id']});
+        for(var key in fields){
+            me.publication.set(key,fields[key]);
+        }
+
+        var postalcodes = [];
+        var recs = this.getPostalCodeList().getValueRecords();
+        for(var key1 in recs){
+            var postalcode = new JavisERP.model.PostalCode();
+            postalcode.set("id",recs[key1].data.id);
+            postalcode.set("iso_code",recs[key1].data.iso_code);
+            postalcodes.push(postalcode);
+        }
+
+        me.publication.setAssociatedData("postalcodes",postalcodes);
+        me.publication.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
+
+        me.publication.save({
+            callback: function(record,operation){
+                if(operation.wasSuccessful){
+                    me.getPublicationWindow().close();
+                    Ext.Msg.alert('Success','Publication saved successfully!');
+                } else {
+                    Ext.Msg.alert('Failure','Something went wrong!');
+                }
+            }
+        });
+    },
+
+    onWindowClose: function(panel, eOpts){
+        this.getPublicationGrid().getStore().reload();
+    },
+
     init: function(application) {
         me = this;
         this.control({
-            "window[cls=publicationwindow]": {
-                afterrender: this.onWindowAfterRender,
-                beforeshow: this.onWindowBeforeShow,
+            "publicationwindow": {
                 close: this.onWindowClose
             },
             "publicationgrid rowactions": {
-                action: me.onPublicationActionClick
+                action: this.onPublicationActionClick
+            },
+            "publicationgrid toolbar button[cls=newpublication]": {
+                click: this.onNewPublicationClick
+            },
+            "publicationwindow toolbar button[cls=publicationsavebutton]": {
+                click: this.onSavePublicationClick
             }
         });
+    },
+
+    editPublication: function(record) {
+        me.publicationWindow = new JavisERP.view.PublicationWindow();
+        var publicationForm = this.getPublicationForm();
+        me.publicationWindow.show();
+        this.getPublicationModel().load(record.data.id,{
+            success: function(model){
+                publicationForm.loadRecord(model);
+                publicationForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
+                me.postalcodes = publicationForm.getForm().findField('postal_codes');
+                var valArray = [];
+                Ext.each(model.raw.postal_code, function(arr,index,postalcodeItself){
+                    valArray.push(arr.id);
+                });
+                me.postalcodes.setValue(valArray);
+            }
+        });
+
+
+    },
+
+    deletePublication: function(record,grid) {
+
     }
 });

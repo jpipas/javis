@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 class PostalCode implements ControllerProviderInterface
 {
 
-
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];

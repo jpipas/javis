@@ -18,7 +18,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
     alias: 'widget.publicationgrid',
 
     width: 815,
-    title: 'PublicationGrid',
+    title: 'Publication List',
     columnLines: false,
     forceFit: true,
     store: 'PublicationStore',
@@ -35,6 +35,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
                         {
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-newspaper-add',
+                            cls: 'newpublication',
                             text: 'New Publication'
                         }
                     ]
@@ -60,12 +61,12 @@ Ext.define('JavisERP.view.PublicationGrid', {
                     defaultWidth: 80,
                     actions: [
                         {
-                            iconCls: 'ui-silk ui-silk-newspaper-go',
+                            iconCls: 'edit_action ui-silk ui-silk-newspaper-go',
                             tooltip: 'Edit Publication',
                             callback: Ext.emptyFn
                         },
                         {
-                            iconCls: 'ui-silk ui-silk-newspaper-delete',
+                            iconCls: 'delete_action ui-silk ui-silk-newspaper-delete',
                             tooltip: 'Delete Publication',
                             callback: Ext.emptyFn
                         }

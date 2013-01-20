@@ -30,7 +30,8 @@ Ext.application({
         'Publication',
         'Payment',
         'AppliedPayment',
-        'Duration'
+        'Duration',
+        'PostalCode'
     ],
     stores: [
         'ClientStore',
@@ -45,7 +46,8 @@ Ext.application({
         'ContractStore',
         'PaymentTypeStore',
         'StaticPublicationStore',
-        'Duration'
+        'Duration',
+        'PostalCode'
     ],
     views: [
         'AppViewport',

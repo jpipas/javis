@@ -61,4 +61,35 @@ class Publication extends AbstractBusinessService
         $sql = "SELECT count(*) as 'totalCount' FROM publication as p $where_clause";
         return $this->db->fetchAssoc($sql);
     }
+
+    public function createPublication($params){
+        unset($params['advertisement'],$params['postal_code'],$params['territory']);
+        $postal_code_array = $params['postal_codes'];
+        unset($params['postal_codes']);
+        $this->db->insert('publication',$params);
+        $pub_id = $this->db->lastInsertId();
+        foreach($postal_code_array as $postal_code){
+            $this->db->insert('publication_zip', array('publication_id' => $pub_id, 'postal_code_id' => $postal_code));
+        }
+        $publication = $this->getById($pub_id);
+        return $publication;
+    }
+
+    public function updatePublication($id, $params) {
+        unset($params['advertisement'],$params['postal_code'],$params['territory'],$params['id']);
+        $postal_code_array = $params['postal_codes'];
+        unset($params['postal_codes']);
+        $this->db->update('publication',$params, array('id'=>$id));
+        $this->db->delete('publication_zip',array("publication_id"=>$id));
+        foreach($postal_code_array as $postal_code){
+            $this->db->insert('publication_zip', array('publication_id' => $id, 'postal_code_id' => $postal_code));
+        }
+        $publication = $this->getById($pub_id);
+        return $publication;
+    }
+
+    public function getById($id) {
+        $sql = "SELECT * FROM publication WHERE id = ? and deleted_at is null";
+        return $this->db->fetchAll($sql,array((int)$id));
+    }
 }
