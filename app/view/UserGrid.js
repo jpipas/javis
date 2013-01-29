@@ -7,7 +7,7 @@ Ext.define('JavisERP.view.UserGrid', {
     title: 'List: Employees',
     store: 'User',
     itemId: 'UserGrid',
-    forceFit: false,
+    forceFit: true,
     scroll: 'vertical',
     initComponent: function() {
         var me = this;
@@ -18,9 +18,26 @@ Ext.define('JavisERP.view.UserGrid', {
             },
             columns: [
                 {
+                    xtype: 'rowactions',
+                    flex: 1,
+                    actions: [
+                        {
+                            iconCls: 'edit_action ui-silk ui-silk-user-edit',
+                            tooltip: 'Edit Employee',
+                            callback: Ext.emptyFn
+                        },
+                        {
+                            iconCls: 'delete_action ui-silk ui-silk-user-delete',
+                            tooltip: 'Delete Employee',
+                            callback: Ext.emptyFn
+                        }
+                    ]
+                },
+                {
                     xtype: 'gridcolumn',
                     dataIndex: 'id',
-                    text: 'Id'
+                    text: 'Id',
+                    hidden: true
                 },
                 {
                     xtype: 'gridcolumn',
@@ -34,18 +51,13 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'password',
-                    text: 'Password'
-                },
-                {
-                    xtype: 'gridcolumn',
                     dataIndex: 'first_name',
-                    text: 'First_name'
+                    text: 'First Name'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'last_name',
-                    text: 'Last_name'
+                    text: 'Last Name'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -55,22 +67,17 @@ Ext.define('JavisERP.view.UserGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'manager_user_id',
-                    text: 'Manager_user_id'
+                    text: 'Manager'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'territory_id',
-                    text: 'Territory_id'
+                    text: 'Territory'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'created_at',
-                    text: 'Created_at'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'deleted_at',
-                    text: 'Deleted_at'
+                    text: 'Date Created'
                 }
             ],
             dockedItems: [
