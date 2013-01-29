@@ -7,7 +7,7 @@ Ext.define('JavisERP.view.PaymentGrid', {
     title: 'Payments',
     titleCollapse: true,
     store: 'PaymentStore',
-
+    forceFit: true,
     initComponent: function() {
         var me = this;
 

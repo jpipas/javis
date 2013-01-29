@@ -44,7 +44,7 @@ Ext.define('JavisERP.view.PortletPanel', {
                 id: 'col-2',
                 items: [{
                     id: 'portlet-1',
-                    title: 'Client Portlet',
+                    title: 'Customer Portlet',
                     tools: this.getTools(),
                     items: Ext.create('JavisERP.view.ClientPortlet')
                 },{

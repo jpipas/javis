@@ -6,8 +6,10 @@ use Silex\Provider\MonologServiceProvider;
 use Igorw\Silex\ConfigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TwigServiceProvider;
 use Monolog\Logger;
 use JavisERP\Silex\Provider\Service\BusinessServiceProvider;
+use JavisERP\System\UserProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -22,7 +24,9 @@ $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new HttpCacheServiceProvider(), array("http_cache.cache_dir" => ROOT_PATH."/cache/",   ));
-
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../templates'
+));
 //loading default configuration
 $app->register(new ConfigServiceProvider(ROOT_PATH."/config/default.json"));
 
@@ -45,6 +49,27 @@ if ($app->offsetExists("database.connection")) {
             "db.options" => $app["database.connection"],
     ));
 }
+
+//configure security
+$app->register(new Silex\Provider\SecurityServiceProvider());
+
+$app['security.firewalls'] = array(
+    'login' => array(
+        'pattern' => '^/login$'
+    ),
+    'backoffice' => array(
+        'pattern' => '^/admin',
+        'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
+        'users' => $app->share(function () use ($app) {
+            return new UserProvider($app['db']);
+        })
+    )
+);
+
+$app['security.role_hierarchy'] = array(
+    'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH', 'ROLE_DESIGNER', 'ROLE_FINANCE')
+);
+
 
 //registering logger
 $app->register(new MonologServiceProvider(), array(
@@ -79,8 +104,16 @@ $app->register(new BusinessServiceProvider(),array("business.container" =>  $arr
 
 //handling calls to the root to a default route manager
 $app->get("/", function () use ($app) {
-    $request = Request::create($app["base.route"], "GET");
-    return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
+    return $app['twig']->render('index.html');
+    //$request = Request::create($app["base.route"], "GET");
+    //return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
+});
+
+$app->get("/login", function(Request $request) use ($app) {
+    return $app['twig']->render('login.html', array(
+        'error'         => $app['security.last_error']($request),
+        'last_username' => $app['session']->get('_security.last_username')
+    ));
 });
 
 //managing errors

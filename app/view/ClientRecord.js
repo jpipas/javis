@@ -47,7 +47,8 @@ Ext.define('JavisERP.view.ClientRecord', {
             dockedItems: [
                 {
                     xtype: 'recordnav',
-                    itemId: 'RecordNavigation',
+                    itemId: 'ClientRecordNavigation',
+                    cls: 'clientrecordnav',
                     flex: 1,
                     dock: 'top'
                 }
@@ -432,6 +433,9 @@ Ext.define('JavisERP.view.ClientRecord', {
 
     onPublicationGridBeforeRender: function(abstractcomponent, options) {
         abstractcomponent.columns[0].hide(); // hide actions column
+        abstractcomponent.getStore().clearGrouping();
+        abstractcomponent.getStore().reload();
+        //abstractcomponent.fireEvent('groupchange',abstractcomponent,null);
         abstractcomponent.getDockedItems('toolbar[dock="bottom"]')[0].hide();
         abstractcomponent.getDockedItems('toolbar[dock="top"]')[0].hide();
     }

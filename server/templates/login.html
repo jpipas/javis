@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" xmlns:og="http://opengraphprotocol.org/schema/">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Best Version Media - Backoffice &rsaquo; Log In</title>
+<link rel="stylesheet" type="text/css" href="/resources/css/login.css" />
+</head>
+<body class="login">
+    <div id="login">
+        <img src="/resources/images/BVM_logo_horiz_shadow.jpg" width="400px" style="margin:auto;"/>
+
+        <form name="loginform" id="loginform" action="{{ path('login_check') }}" method="post">
+            <h4 style="color:red;font-family:sans-serif;">{{ error }}</h4>
+            <p>
+                <label for="user_login">Username<br />
+                <input type="text" name="_username" id="user_login" class="input" value="{{ last_username}}" size="20" tabindex="10" /></label>
+            </p>
+            <p>
+                <label for="user_pass">Password<br />
+                <input type="password" name="_password" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
+            </p>
+
+            <p class="submit">
+                <input type="submit" name="javis-submit" id="javis-submit" class="button-primary" value="Log In" tabindex="100" />
+            </p>
+        </form>
+    </div>
+    <div class="clear"></div>
+</body>
+</html>

@@ -26,7 +26,9 @@ Ext.define('JavisERP.store.ClientStore', {
         me.callParent([Ext.apply({
             storeId: 'ClientStore',
             model: 'JavisERP.model.Client',
-            pageSize: 45
+            pageSize: 45,
+            remoteSort: true,
+            remoteFilter: true
         }, cfg)]);
     }
 });

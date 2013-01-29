@@ -22,7 +22,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
     columnLines: false,
     forceFit: true,
     store: 'PublicationStore',
-    features: [{ftype:'grouping'}],
+    features: [Ext.create('Ext.grid.feature.Grouping')],
     initComponent: function() {
         var me = this;
 

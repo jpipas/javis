@@ -158,15 +158,15 @@ Ext.define('JavisERP.view.NavBar', {
                                 items: [
                                     {
                                         xtype: 'menuitem',
-                                        itemId: 'SalesRepGrid',
+                                        itemId: 'UserGrid',
                                         iconCls: 'ui-silk ui-silk-user-gray',
-                                        text: 'Sales Reps'
+                                        text: 'Employees'
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'ClientGrid',
                                         iconCls: 'ui-silk ui-silk-group',
-                                        text: 'Clients'
+                                        text: 'Customers'
                                     },
                                     {
                                         xtype: 'menuitem',

@@ -6,7 +6,8 @@ Ext.define('JavisERP.controller.PaymentController', {
         'Duration',
         'PaymentStore',
         'ContractStore',
-        'ClientStore'
+        'ClientStore',
+        'PaymentTypeStore'
     ],
     views: [
         'ContractWindow',
@@ -59,7 +60,6 @@ Ext.define('JavisERP.controller.PaymentController', {
                 cls:'contractdurationlist'
             });
 
-        //this.getpaymentStoreStore().filter('client_id',me.client_id);
         abstractcomponent.down().getForm().findField('client_name').setValue(me.client_name);
         abstractcomponent.down().getForm().findField('client_id').setValue(me.client_id);
         var container = abstractcomponent.query('fieldcontainer > #column1');
@@ -71,7 +71,9 @@ Ext.define('JavisERP.controller.PaymentController', {
         this.getDurationStore().clearFilter(true);
         this.getDurationStore().filter('contract_id',newValue);
         this.getDurationStore().filter('payment_window',newValue);
-        me.getPaymentWindow().getComponent('paymentForm').getForm().findField('payment_amount').setValue(me.getContractStoreStore().getById(newValue).data.monthly_payment);
+        this.getPaymentTypeStoreStore().load();
+        this.getPaymentWindow().getComponent('paymentForm').getForm().findField('payment_amount').setValue(this.getContractStoreStore().getById(newValue).data.monthly_payment);
+        this.getPaymentWindow().getComponent('paymentForm').getForm().findField('payment_type_id').setValue(this.getContractStoreStore().getById(newValue).raw.payment_term.payment_type_id);
     },
 
     onPaymentSaveButtonClick: function(button, e, options) {
@@ -82,14 +84,18 @@ Ext.define('JavisERP.controller.PaymentController', {
             me.payment.set(key,fields[key]);
         }
         me.payment.set('type',"Customer Payment");
+        var pWindow = this.getPaymentWindow();
+        var pStore = this.getPaymentStoreStore();
+        var cStore = this.getClientStoreStore();
+        var cRecordForm = this.getClientRecordForm();
         me.payment.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
-                    me.getPaymentWindow().close();
-                    me.getPaymentStoreStore().reload();
-                    me.getClientStoreStore().reload();
+                    pWindow.close();
+                    pStore.reload();
+                    cStore.reload();
                     var refreshedClient = new JavisERP.model.Client(record.data.client);
-                    me.getClientRecordForm().getForm().loadRecord(refreshedClient);
+                    cRecordForm.getForm().loadRecord(refreshedClient);
                     Ext.Msg.alert('Success','Payment saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');
@@ -100,8 +106,6 @@ Ext.define('JavisERP.controller.PaymentController', {
 
     init: function(application) {
         me = this;
-
-
         this.control({
             "#paymentWindow": {
                 beforeshow: this.onPaymentWindowBeforeShow

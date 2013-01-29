@@ -63,6 +63,10 @@ Ext.define('JavisERP.controller.ClientController', {
         {
             ref: 'paymentGrid',
             selector: '#paymentgrid'
+        },
+        {
+            ref: 'editButton',
+            selector: 'button[cls=edit_button]'
         }
     ],
 
@@ -103,6 +107,15 @@ Ext.define('JavisERP.controller.ClientController', {
         }
     },
 
+    onEditButtonClick: function(button, e, options){
+        console.log("Editing!");
+    },
+
+    onListViewClick: function(button, e, options){
+        //console.log("List View!");
+        this.application.fireEvent('navigationChange',button.itemId);
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
@@ -136,6 +149,12 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "button[cls=newPaymentButton]": {
                 click: this.onNewPaymentButtonClick
+            },
+            "recordnav[cls=clientrecordnav] button[cls=edit_button]": {
+                click: this.onEditButtonClick
+            },
+            "recordnav[cls=clientrecordnav] button[cls=listview_button]": {
+                click: this.onListViewClick
             },
             "tabpanel[cls=salestab]": {
                 tabchange: this.onSalesTabChange

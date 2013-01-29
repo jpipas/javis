@@ -1,5 +1,6 @@
 {
     "debug": true,
+    "base.route": "/client",
     "database.connection" : {
         "driver": "pdo_mysql",
         "dbname": "jpipas_javiserp",

@@ -36,10 +36,12 @@ Ext.define('JavisERP.view.RecordNavigation', {
                 },
                 {
                     xtype: 'button',
+                    cls: 'edit_button',
                     text: 'Edit'
                 },
                 {
                     xtype: 'button',
+                    cls: 'new_button',
                     text: 'New'
                 },
                 {
@@ -47,7 +49,8 @@ Ext.define('JavisERP.view.RecordNavigation', {
                 },
                 {
                     xtype: 'button',
-                    itemId: 'ClientGrid',
+                    //itemId: 'ClientGrid',
+                    cls: 'listview_button',
                     text: 'List View'
                 }
             ]

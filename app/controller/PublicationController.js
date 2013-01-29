@@ -69,11 +69,11 @@ Ext.define('JavisERP.controller.PublicationController',{
 
         me.publication.setAssociatedData("postalcodes",postalcodes);
         me.publication.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
-
+        var pWindow = this.getPublicationWindow();
         me.publication.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
-                    me.getPublicationWindow().close();
+                    pWindow.close();
                     Ext.Msg.alert('Success','Publication saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');

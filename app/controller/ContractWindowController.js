@@ -33,8 +33,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         },
         {
             ref: 'contractWindow',
-            selector: 'window[cls=contractWindow]',
-            xtype: 'window'
+            selector: 'window[cls=contractWindow]'
         },
         {
             ref: 'contractGrid',
@@ -101,11 +100,11 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
         me.contract.setAssociatedData("durations",durations);
         me.contract.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
-
+        var cWindow = this.getContractWindow();
         me.contract.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
-                    me.getContractWindow().close();
+                    cWindow.close();
                     Ext.Msg.alert('Success','Contract saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');

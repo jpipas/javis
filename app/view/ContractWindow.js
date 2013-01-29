@@ -118,7 +118,8 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             labelAlign: 'right',
                                             maxValue: 1,
                                             minValue: 0,
-                                            step: 0.05,
+                                            decimalPrecision: 3,
+                                            step: 0.001,
                                             listeners: {
                                                 change: {
                                                     fn: me.onDiscountChange,
