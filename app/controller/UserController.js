@@ -11,6 +11,10 @@ Ext.define('JavisERP.controller.UserController', {
     ],
 
     refs: [
+        {
+            ref: 'userForm',
+            selector: 'form[cls=userForm]'
+        }
         //{
         //    ref: 'advertisementGrid',
         //    selector: '#clientadgrid'
@@ -44,31 +48,31 @@ Ext.define('JavisERP.controller.UserController', {
             }
         });
 
+        Ext.apply(Ext.form.field.VTypes, {
+            password: function(val, field) {
+                if (field.initialPassField) {
+                    var pwd = field.up('form').down('#' + field.initialPassField);
+                    return (val == pwd.getValue());
+                }
+                return true;
+            },
+            passwordText: 'Passwords do not match'
+        });
+
     },
 
     editUser: function(record){
-        me.userWindow = new JavisERP.view.UserWindow();
-        //var userForm = this.getContractForm();
-        me.userWindow.show();
-/*
-        this.getContractModel().load(record.data.id,{
+        //console.log(record);
+        var uWindow = new JavisERP.view.UserWindow();
+        var userForm = this.getUserForm();
+        //console.log(this.getUserModel());
+        this.getUserModel().load(record.data.id, {
             success: function(model){
-                contractForm.loadRecord(model);
-                contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
-                me.durfield = contractForm.getForm().findField('durations');
-                var valArray = [];
-                Ext.each(model.raw.durations, function(arr,index,durationItself){
-                    valArray.push(parseInt(arr.id,10));
-                });
-                me.durfield.setValue(valArray);
-                me.contractWindow.runCalculations();
+                userForm.loadRecord(model);
+                uWindow.show();
             }
         });
 
-        me.contractWindow.show();
-        this.getAdvertisementGrid().getStore().clearFilter(true);
-        this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
-*/
     },
 
     deleteUser: function(record,grid){

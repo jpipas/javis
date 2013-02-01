@@ -39,6 +39,10 @@ Ext.define('JavisERP.model.User', {
         },
         {
             name: 'deleted_at'
+        },
+        {
+            name: 'territory',
+            mapping: 'territory.name'
         }
     ],
 

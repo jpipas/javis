@@ -41,13 +41,13 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'email',
-                    text: 'Email'
+                    dataIndex: 'username',
+                    text: 'Username'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'username',
-                    text: 'Username'
+                    dataIndex: 'email',
+                    text: 'Email'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -71,7 +71,7 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'territory_id',
+                    dataIndex: 'territory',
                     text: 'Territory'
                 },
                 {

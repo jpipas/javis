@@ -5,12 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50166
  Source Host           : localhost
+ Source Database       : javiserp
 
  Target Server Type    : MySQL
  Target Server Version : 50166
  File Encoding         : utf-8
 
- Date: 01/06/2013 22:35:01 PM
+ Date: 02/01/2013 08:36:59 AM
 */
 
 SET NAMES utf8;
@@ -22,12 +23,20 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `ad_size`;
 CREATE TABLE `ad_size` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(40) DEFAULT NULL,
+  `description` varchar(40) NOT NULL,
   `type_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`type_id`),
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `size_FI_1` (`type_id`),
-  CONSTRAINT `size_FK_1` FOREIGN KEY (`id`) REFERENCES `ad_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+  CONSTRAINT `size_FK_1` FOREIGN KEY (`type_id`) REFERENCES `ad_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `ad_size`
+-- ----------------------------
+BEGIN;
+INSERT INTO `ad_size` VALUES ('1', 'Full Color', '1', null), ('2', 'Half Color', '1', null), ('3', 'Full B/W', '1', null), ('4', 'Half B/W', '1', null), ('5', '2/3 Color', '2', null), ('6', 'Full', '3', null), ('7', '1/2H', '3', null), ('8', '1/4H', '3', null), ('9', '1/8', '3', null), ('10', 'Full', '4', null), ('11', '1/2H', '4', null), ('12', '1/4H', '4', null), ('13', '1/8', '4', null), ('14', 'Full', '5', null), ('15', '1/2', '5', null), ('16', '1/2V', '3', null), ('17', '1/4V', '3', null), ('18', '1/2V', '4', null), ('19', '1/4V', '4', null);
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `ad_type`
@@ -36,6 +45,7 @@ DROP TABLE IF EXISTS `ad_type`;
 CREATE TABLE `ad_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(30) DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
@@ -54,12 +64,13 @@ CREATE TABLE `advertisement` (
   `seasonal_promo` tinyint(4) DEFAULT NULL,
   `is_active` tinyint(4) DEFAULT NULL,
   `exp_date` date DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
   `insert_user_id` int(11) DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `update_user_id` int(11) DEFAULT NULL,
   `email_client` tinyint(4) DEFAULT '0',
   `email_designer` tinyint(4) DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ad_FI_1` (`client_id`),
   KEY `ad_FI_2` (`designer_id`),
@@ -75,9 +86,11 @@ CREATE TABLE `advertisement` (
   CONSTRAINT `ad_FK_6` FOREIGN KEY (`ad_size_id`) REFERENCES `ad_size` (`id`),
   CONSTRAINT `ad_FK_8` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `ad_FK_9` FOREIGN KEY (`update_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6498 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=6503 DEFAULT CHARSET=latin1;
+delimiter ;;
 CREATE TRIGGER `cre_at` BEFORE INSERT ON `advertisement` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
 
 
 -- ----------------------------
@@ -91,7 +104,8 @@ CREATE TABLE `advertisement_publication` (
   PRIMARY KEY (`id`),
   KEY `advertisement_id` (`advertisement_id`),
   KEY `publication_id` (`publication_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4700 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4716 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 --  Table structure for `client`
@@ -114,6 +128,7 @@ CREATE TABLE `client` (
   `insert_user_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `client_FI_1` (`state_id`),
   KEY `client_FI_2` (`territory_id`),
@@ -122,8 +137,10 @@ CREATE TABLE `client` (
   CONSTRAINT `client_FK_2` FOREIGN KEY (`territory_id`) REFERENCES `territory` (`id`),
   CONSTRAINT `client_FK_3` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1371 DEFAULT CHARSET=latin1;
-
+delimiter ;;
 CREATE TRIGGER `init_created_at` BEFORE INSERT ON `client` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
 
 
 -- ----------------------------
@@ -145,15 +162,18 @@ CREATE TABLE `contract` (
   `insert_user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `contract_FI_1` (`client_id`),
   KEY `contract_FI_2` (`payment_term_id`),
   KEY `contract_FI_3` (`insert_user_id`),
   CONSTRAINT `contract_FK_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`),
   CONSTRAINT `contract_FK_3` FOREIGN KEY (`insert_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2088 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=2122 DEFAULT CHARSET=latin1;
+delimiter ;;
 CREATE TRIGGER `ct_created_at` BEFORE INSERT ON `contract` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
 
 
 -- ----------------------------
@@ -166,7 +186,8 @@ CREATE TABLE `contract_advertisement` (
   `contract_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `advertisement_id` (`advertisement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5201 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5206 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 --  Table structure for `contract_duration`
@@ -179,20 +200,7 @@ CREATE TABLE `contract_duration` (
   PRIMARY KEY (`id`),
   KEY `indx_contr` (`contract_id`),
   KEY `indx_dur` (`duration_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21228 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Table structure for `contract_payment`
--- ----------------------------
-DROP TABLE IF EXISTS `contract_payment`;
-CREATE TABLE `contract_payment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `payment_id` int(11) NOT NULL,
-  `contract_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `payment_id` (`payment_id`),
-  KEY `contract_id` (`contract_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21347 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `duration`
@@ -202,9 +210,10 @@ CREATE TABLE `duration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
   `date_string` date DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `payment`
@@ -224,11 +233,13 @@ CREATE TABLE `payment` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `insert_user_id` int(11) DEFAULT NULL,
   `update_user_id` int(11) DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
-
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+delimiter ;;
 CREATE TRIGGER `pt_created_at` BEFORE INSERT ON `payment` FOR EACH ROW set new.created_at = now();
+ ;;
+delimiter ;
 
 
 -- ----------------------------
@@ -239,8 +250,10 @@ CREATE TABLE `payment_term` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
   `payment_type_id` int(11) DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
 
 -- ----------------------------
 --  Table structure for `payment_type`
@@ -249,8 +262,23 @@ DROP TABLE IF EXISTS `payment_type`;
 CREATE TABLE `payment_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(30) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
+-- ----------------------------
+--  Table structure for `postal_code`
+-- ----------------------------
+DROP TABLE IF EXISTS `postal_code`;
+CREATE TABLE `postal_code` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `iso_code` varchar(8) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_indx` (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `publication`
@@ -263,14 +291,11 @@ CREATE TABLE `publication` (
   `territory_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `publication_FI_1` (`territory_id`),
   CONSTRAINT `publication_FK_1` FOREIGN KEY (`territory_id`) REFERENCES `territory` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
-delimiter ;;
-CREATE TRIGGER `pb_created_at` BEFORE INSERT ON `publication` FOR EACH ROW set new.created_at = now();
- ;;
-delimiter ;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `publication_zip`
@@ -278,12 +303,13 @@ delimiter ;
 DROP TABLE IF EXISTS `publication_zip`;
 CREATE TABLE `publication_zip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `zip_code` varchar(10) DEFAULT NULL,
+  `postal_code_id` int(10) NOT NULL,
   `publication_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `publication_zip_FI_1` (`publication_id`),
   CONSTRAINT `publication_zip_FK_1` FOREIGN KEY (`publication_id`) REFERENCES `publication` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=312 DEFAULT CHARSET=latin1;
+
 
 -- ----------------------------
 --  Table structure for `state`
@@ -312,6 +338,7 @@ CREATE TABLE `territory` (
   CONSTRAINT `territory_FK_2` FOREIGN KEY (`manager_id`) REFERENCES `sf_guard_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
+
 -- ----------------------------
 --  Table structure for `user`
 -- ----------------------------
@@ -319,19 +346,19 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(128) NOT NULL,
-  `algorithm` varchar(128) NOT NULL DEFAULT 'sha1',
+  `email` varchar(255) NOT NULL,
   `salt` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `roles` varchar(255) NOT NULL DEFAULT 'ROLE_USER',
+  `manager_user_id` int(11) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT '1',
-  `is_super_admin` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `territory_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sf_guard_user_U_1` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
-
-CREATE TRIGGER `usr_created_at` BEFORE INSERT ON `user` FOR EACH ROW set new.created_at = now();
-
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;
