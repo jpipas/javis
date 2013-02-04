@@ -28,7 +28,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                     id: 'adform',
                     itemId: 'adform',
                     bodyPadding: 10,
-                    url: 'server/web/index.php/advertisement/new',
+                    url: '/server/web/index.php/advertisement/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',

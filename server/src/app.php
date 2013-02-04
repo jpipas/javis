@@ -50,21 +50,19 @@ if ($app->offsetExists("database.connection")) {
     ));
 }
 
-//configure security
-$app->register(new Silex\Provider\SecurityServiceProvider());
-
 $app['security.firewalls'] = array(
-    'login' => array(
-        'pattern' => '^/login$'
-    ),
     'backoffice' => array(
-        'pattern' => '^/admin',
-        'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
+        'pattern' => '^/backoffice',
+        'form' => array('login_path' => '/login', 'check_path' => '/backoffice/login_check'),
         'users' => $app->share(function () use ($app) {
             return new UserProvider($app['db']);
         })
     )
 );
+
+//configure security
+$app->register(new Silex\Provider\SecurityServiceProvider());
+
 
 $app['security.role_hierarchy'] = array(
     'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH', 'ROLE_DESIGNER', 'ROLE_FINANCE')
@@ -103,10 +101,8 @@ foreach ($business as $file){
 $app->register(new BusinessServiceProvider(),array("business.container" =>  $arryToLoad));
 
 //handling calls to the root to a default route manager
-$app->get("/", function () use ($app) {
+$app->get("/backoffice", function () use ($app) {
     return $app['twig']->render('index.html');
-    //$request = Request::create($app["base.route"], "GET");
-    //return $app->handle($request, HttpKernelInterface::SUB_REQUEST);
 });
 
 $app->get("/login", function(Request $request) use ($app) {

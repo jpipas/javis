@@ -53,12 +53,12 @@ Ext.define('JavisERP.view.ClientPortlet', {
                         {
                             altText: 'Edit',
                             disabled: false,
-                            icon: 'resources/icons/user_edit.png',
+                            icon: '/resources/icons/user_edit.png',
                             tooltip: 'Edit'
                         },
                         {
                             altText: 'View',
-                            icon: 'resources/icons/user.png',
+                            icon: '/resources/icons/user.png',
                             tooltip: 'View'
                         }
                     ]

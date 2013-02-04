@@ -86,7 +86,7 @@ Ext.application({
         'PublicationController',
         'UserController'
     ],
-
+    appFolder: '/app',
     launch: function() {
         // can now be used to reference the application from anywhere!!
         _myAppGlobal = this;

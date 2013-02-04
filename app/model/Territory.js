@@ -35,8 +35,14 @@ Ext.define('JavisERP.model.Territory', {
     ],
 
     proxy: {
-        type: 'ajax',
-        url: 'resources/js/territory.json',
+        type: 'rest',
+        api: {
+            create: '/server/web/index.php/territory/new',
+            read: '/server/web/index.php/territory/',
+            update: '/server/web/index.php/territory/update',
+            destroy: '/server/web/index.php/territory/delete'
+        },
+        //url: 'resources/js/territory.json',
         reader: {
             type: 'json',
             idProperty: 'id',

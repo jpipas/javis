@@ -43,7 +43,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                     itemId: 'contractform',
                     minHeight: 300,
                     bodyPadding: 5,
-                    url: '/server/web/index.php/contract/new',
+                    url: '//server/web/index.php/contract/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',

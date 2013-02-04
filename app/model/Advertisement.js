@@ -74,10 +74,10 @@ Ext.define('JavisERP.model.Advertisement', {
     proxy: {
         type: 'rest',
         api: {
-            create: 'server/web/index.php/advertisement/new',
-            read: 'server/web/index.php/advertisement/',
-            update: 'server/web/index.php/advertisement/update',
-            destroy: 'server/web/index.php/advertisement/delete'
+            create: '/server/web/index.php/advertisement/new',
+            read: '/server/web/index.php/advertisement/',
+            update: '/server/web/index.php/advertisement/update',
+            destroy: '/server/web/index.php/advertisement/delete'
         },
         writer: {
             type: 'json',

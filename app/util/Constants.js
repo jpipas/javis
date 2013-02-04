@@ -3,7 +3,7 @@ Ext.define('JavisERP.util.Constants', {
     singleton: true,
 
     bogusMarkup: '<div id="start-div" style="padding:5px;">'+
-    '<div style="float:right;"><img src="resources/images/BVM_logo_stacked_shadow.jpg" width="200"></div>'+
+    '<div style="float:right;"><img src="/resources/images/BVM_logo_stacked_shadow.jpg" width="200"></div>'+
     '<div style="padding:0px 10px;"><h2>Welcome!</h2><p>'+
     'This is your dashboard.  A dashboard is information at your fingertips!  Above you will find the navigation menu. Eventually '+
     'we can spice this welcome screen up a bit to show statistics, or whatever else is needed for a moments glance.<br /><br /></p>'+

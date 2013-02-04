@@ -41,23 +41,25 @@ Ext.define('JavisERP.model.User', {
             name: 'deleted_at'
         },
         {
-            name: 'territory',
+            name: 'territory_name',
             mapping: 'territory.name'
+        },
+        {
+            name: 'territory'
         }
     ],
 
     proxy: {
         type: 'rest',
         api: {
-            create: 'server/web/index.php/user/new',
-            read: 'server/web/index.php/user/',
-            update: 'server/web/index.php/user/update',
-            destroy: 'server/web/index.php/user/delete'
+            create: '/server/web/index.php/user/new',
+            read: '/server/web/index.php/user/',
+            update: '/server/web/index.php/user/update',
+            destroy: '/server/web/index.php/user/delete'
         },
         reader: {
             type: 'json',
             idProperty: 'id',
-            messageProperty: 'message',
             root: 'user',
             totalProperty: 'totalCount'
         }

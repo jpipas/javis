@@ -8,6 +8,7 @@ Ext.define('JavisERP.view.UserWindow', {
     ],
 
     id: 'userWindow',
+    cls: 'userWindow',
     itemId: 'userWindow',
     width: 750,
     autoDestroy: false,
@@ -36,8 +37,8 @@ Ext.define('JavisERP.view.UserWindow', {
                             items: [
                                 {
                                     xtype: 'button',
-                                    cls: 'savebutton',
-                                    id: 'savebutton',
+                                    cls: 'usersavebutton',
+                                    id: 'usersavebutton',
                                     itemId: 'savebutton',
                                     iconCls: 'ui-silk ui-silk-disk',
                                     text: 'Save'
@@ -128,19 +129,19 @@ Ext.define('JavisERP.view.UserWindow', {
                                         {
                                             xtype: 'textfield',
                                             cls: 'firstname',
-                                            name: 'firstname',
+                                            name: 'first_name',
                                             fieldLabel: 'First Name'
                                         },
                                         {
                                             xtype: 'textfield',
                                             cls: 'lastname',
-                                            name: 'lastname',
+                                            name: 'last_name',
                                             fieldLabel: 'Last Name'
                                         },
                                         {
                                             xtype: 'combobox',
                                             cls: 'territory',
-                                            itemId: 'adtypeid',
+                                            itemId: 'territory_id',
                                             name: 'territory_id',
                                             fieldLabel: 'Territory',
                                             displayField: 'name',
@@ -151,7 +152,7 @@ Ext.define('JavisERP.view.UserWindow', {
                                             xtype: 'combobox',
                                             cls: 'manager',
                                             id: 'manager_user_id',
-                                            itemId: 'adsizeid',
+                                            itemId: 'manager_user_id',
                                             name: 'manager_user_id',
                                             fieldLabel: 'Manager',
                                             displayField: 'username',

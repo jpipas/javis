@@ -63,7 +63,7 @@ Ext.define('JavisERP.view.AppViewport', {
                             id: 'logo',
                             width: 209,
                             shadow: false,
-                            src: 'resources/images/BVM_logo_horiz_shadow.jpg'
+                            src: '/resources/images/BVM_logo_horiz_shadow.jpg'
                         }
                     ],
                     items: [

@@ -10,15 +10,20 @@ Ext.define('JavisERP.controller.UserController', {
         'User'
     ],
 
+    stores: [
+        'User',
+        'TerritoryStore'
+    ],
+
     refs: [
         {
             ref: 'userForm',
             selector: 'form[cls=userForm]'
+        },
+        {
+            ref: 'userWindow',
+            selector: 'window[cls=userWindow]'
         }
-        //{
-        //    ref: 'advertisementGrid',
-        //    selector: '#clientadgrid'
-        //},
     ],
     onUserActionClick: function(grid,record,action,idx,col,e,target) {
         var doAction = action.split(" ",1);
@@ -37,6 +42,29 @@ Ext.define('JavisERP.controller.UserController', {
         me.userWindow.show();
     },
 
+    onUserSaveButtonClick: function(button, options, e){
+        var fields = this.getUserForm().getForm().getValues(false,false,false,true);
+        me.user = new JavisERP.model.User();
+        for(var key in fields){
+            //console.log(key+":"+fields[key]);
+            me.user.set(key,fields[key]);
+        }
+        var uWindow = this.getUserWindow();
+        var uStore = this.getUserStore();
+        me.user.save({
+            callback: function(record,operation){
+                console.log(operation);
+                if(operation.wasSuccessful){
+                    uWindow.close();
+                    uStore.reload();
+                    Ext.Msg.alert('Success','Employee saved successfully!');
+                } else {
+                    Ext.Msg.alert('Failure','Something went wrong!');
+                }
+            }
+        });
+    },
+
     init: function(application) {
         me = this;
         me.control({
@@ -45,6 +73,9 @@ Ext.define('JavisERP.controller.UserController', {
             },
             "usergrid toolbar button[itemId=newuser]": {
                 click: me.onNewUserClick
+            },
+            "button[cls=usersavebutton]": {
+                click: this.onUserSaveButtonClick
             }
         });
 
@@ -62,24 +93,23 @@ Ext.define('JavisERP.controller.UserController', {
     },
 
     editUser: function(record){
-        //console.log(record);
         var uWindow = new JavisERP.view.UserWindow();
-        var userForm = this.getUserForm();
         //console.log(this.getUserModel());
         this.getUserModel().load(record.data.id, {
-            success: function(model){
-                userForm.loadRecord(model);
-                uWindow.show();
+            success: function(record,operation){
+                me.getUserForm().getForm().loadRecord(record);
+                me.getUserForm().getForm().findField('password').reset();
+                me.getUserForm().getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
+                me.getUserForm().getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
             }
         });
-
+        uWindow.show();
     },
 
     deleteUser: function(record,grid){
-        /*
         Ext.Msg.show({
-            title: 'Delete Contract?',
-            msg: 'You are about to delete this contract.  Would you like to proceed?',
+            title: 'Delete Employee?',
+            msg: 'You are about to delete this user.  Would you like to proceed?',
             buttons: Ext.Msg.OKCANCEL,
             icon: Ext.Msg.QUESTION,
             fn: function(buttonId,text,opt){
@@ -90,7 +120,7 @@ Ext.define('JavisERP.controller.UserController', {
                                 grid.getStore().reload();
                             },
                             failure: function(){
-                                alert("Could not delete contract!");
+                                alert("Could not delete user!");
                             }
                         });
                         break;
@@ -99,7 +129,6 @@ Ext.define('JavisERP.controller.UserController', {
                 }
             }
         });
-        */
     }
 
 });

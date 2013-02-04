@@ -84,10 +84,10 @@ Ext.define('JavisERP.model.Client', {
     proxy: {
         type: 'rest',
         api: {
-            create: 'server/web/index.php/client/new',
-            read: 'server/web/index.php/client/',
-            update: 'server/web/index.php/client/update',
-            destroy: 'server/web/index.php/client/delete'
+            create: '/server/web/index.php/client/new',
+            read: '/server/web/index.php/client/',
+            update: '/server/web/index.php/client/update',
+            destroy: '/server/web/index.php/client/delete'
         },
         reader: {
             type: 'json',
