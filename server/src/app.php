@@ -51,9 +51,10 @@ if ($app->offsetExists("database.connection")) {
 }
 
 $app['security.firewalls'] = array(
-    'backoffice' => array(
+    'secured' => array(
         'pattern' => '^/backoffice',
         'form' => array('login_path' => '/login', 'check_path' => '/backoffice/login_check'),
+        'logout' => array('logout_path' => '/backoffice/logout'),
         'users' => $app->share(function () use ($app) {
             return new UserProvider($app['db']);
         })
