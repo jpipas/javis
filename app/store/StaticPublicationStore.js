@@ -29,7 +29,7 @@ Ext.define('JavisERP.store.StaticPublicationStore', {
             model: 'JavisERP.model.Publication',
             proxy: {
                 type: 'ajax',
-                url: '//server/web/index.php/publication/',
+                url: '/server/web/index.php/publication/',
                 reader: {
                     type: 'json',
                     root: 'publication',

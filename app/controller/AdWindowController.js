@@ -29,8 +29,7 @@ Ext.define('JavisERP.controller.AdWindowController', {
     ],
     views: [
         'AdvertisementWindow',
-        'AdvertisementGrid',
-        'ContractWindow'
+        'AdvertisementGrid'
     ],
 
     refs: [

@@ -52,7 +52,6 @@ Ext.define('JavisERP.model.Publication', {
 
     proxy: {
         type: 'rest',
-        batchActions: true,
         api: {
             create: '/server/web/index.php/publication/new',
             read: '/server/web/index.php/publication/',

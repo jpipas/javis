@@ -69,6 +69,13 @@ Ext.define('JavisERP.model.Contract', {
         {
             name: 'total_amount',
             type: 'float'
+        },
+        {
+            name: 'territory_id',
+            type: 'int'
+        },
+        {
+            name: 'durations'
         }
     ],
 
@@ -81,6 +88,10 @@ Ext.define('JavisERP.model.Contract', {
             model: 'JavisERP.model.PaymentTerm',
             foreignKey: 'payment_term_id',
             name: 'payment_term'
+        },
+        {
+            model: 'JavisERP.model.Territory',
+            foreignKey: 'territory_id'
         }
     ],
 

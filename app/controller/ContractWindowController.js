@@ -11,10 +11,8 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         'AdvertisementStore',
         'ContractStore',
         'Duration',
-        'PaymentTermStore'
-    ],
-    views: [
-        'ContractWindow'
+        'PaymentTermStore',
+        'TerritoryStore'
     ],
 
     refs: [
@@ -49,28 +47,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     },
 
     onWindowBeforeShow: function(abstractcomponent, options) {
-
-        var comboFieldBox = Ext.create('Ext.ux.form.field.BoxSelect',
-            {
-                xtype: 'comboboxselect',
-                fieldLabel: 'Duration(s)',
-                displayField: 'description',
-                emptyText: 'select a duration...',
-                descField: 'id',
-                valueField: 'id',
-                store: 'Duration',
-                queryMode: 'local',
-                typeAdead:true,
-                growMax:100,
-                delimiter: ',',
-                filterPickList:true,
-                name: 'durations',
-                cls:'durationlist'
-            });
         this.getDurationStore().clearFilter(true);
-        var container = abstractcomponent.query('fieldcontainer > #column1');
-        container[0].add(comboFieldBox);
-
     },
 
     onWindowClose: function(panel, eOpts){

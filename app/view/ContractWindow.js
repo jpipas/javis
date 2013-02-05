@@ -17,10 +17,6 @@ Ext.define('JavisERP.view.ContractWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.contractwindow',
 
-    requires: [
-        'JavisERP.view.AdvertisementGrid'
-    ],
-
     cls: 'contractWindow',
     width: 750,
     overflowY: 'auto',
@@ -43,7 +39,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                     itemId: 'contractform',
                     minHeight: 300,
                     bodyPadding: 5,
-                    url: '//server/web/index.php/contract/new',
+                    url: '/server/web/index.php/contract/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
@@ -104,6 +100,16 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         {
                                             xtype: 'combobox',
                                             anchor: '95%',
+                                            name: 'territory_id',
+                                            fieldLabel: 'Territory',
+                                            labelAlign: 'right',
+                                            displayField: 'name',
+                                            store: 'TerritoryStore',
+                                            valueField: 'id'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            anchor: '95%',
                                             name: 'payment_term_id',
                                             fieldLabel: 'Payment Term',
                                             labelAlign: 'right',
@@ -126,6 +132,22 @@ Ext.define('JavisERP.view.ContractWindow', {
                                                     scope: me
                                                 }
                                             }
+                                        },
+                                        {
+                                            xtype: 'comboboxselect',
+                                            fieldLabel: 'Duration(s)',
+                                            displayField: 'description',
+                                            emptyText: 'select a duration...',
+                                            descField: 'id',
+                                            valueField: 'id',
+                                            store: 'Duration',
+                                            queryMode: 'local',
+                                            typeAdead:true,
+                                            growMax:100,
+                                            delimiter: ',',
+                                            filterPickList:true,
+                                            name: 'durations',
+                                            cls:'durationlist'
                                         }
                                     ]
                                 },

@@ -27,11 +27,11 @@ $app->register(new HttpCacheServiceProvider(), array("http_cache.cache_dir" => R
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../templates'
 ));
+
+
 //loading default configuration
 $app->register(new ConfigServiceProvider(ROOT_PATH."/config/default.json"));
-
 $env = getenv("APP_ENV") ? getenv("APP_ENV") : "dev";
-date_default_timezone_set('America/Detroit');
 //overwriting configuration with enviroment specific
 $app->register(new ConfigServiceProvider(ROOT_PATH."/config/$env.json"));
 

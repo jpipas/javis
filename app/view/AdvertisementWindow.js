@@ -3,7 +3,6 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
     alias: 'widget.adwindow',
 
     requires: [
-        'JavisERP.view.ComboView',
         'JavisERP.view.ComboFieldBox'
     ],
 

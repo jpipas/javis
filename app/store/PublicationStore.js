@@ -25,11 +25,9 @@ Ext.define('JavisERP.store.PublicationStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             autoLoad: false,
-            batchUpdateMode: 'complete',
             filterOnLoad: false,
             remoteFilter: true,
             sortOnLoad: false,
-            groupField: 'contact_email',
             storeId: 'PublicationStore',
             model: 'JavisERP.model.Publication',
             sortOnFilter: false,

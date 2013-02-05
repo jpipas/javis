@@ -22,6 +22,10 @@ Ext.define('JavisERP.controller.ContractGridController', {
         {
             ref: 'contractWindow',
             selector: 'contractwindow'
+        },
+        {
+            ref: 'clientRecord',
+            selector: 'clientrecord'
         }
     ],
     onContractActionClick: function(grid,record,action,idx,col,e,target) {
@@ -62,12 +66,15 @@ Ext.define('JavisERP.controller.ContractGridController', {
                 me.contractWindow.runCalculations();
             }
         });
-
-        me.contractWindow.show();
+        var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
+        myMask.show();
+        setTimeout(function() {
+            myMask.hide();
+            me.contractWindow.show();
+        },2500);
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
     },
-
     deleteContract: function(record,grid){
         Ext.Msg.show({
             title: 'Delete Contract?',
