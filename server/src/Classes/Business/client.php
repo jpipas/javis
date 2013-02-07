@@ -38,7 +38,7 @@ class Client extends AbstractBusinessService
     }
 
     public function getRemainingMonths($id){
-        $sql = "SELECT CASE WHEN COUNT(p.id) = 0 THEN COUNT(cd.id) ELSE COUNT(cd.id)-COUNT(p.id) END as 'cnt' from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id left join contract as c on cd.contract_id = c.id where c.client_id = ? GROUP BY c.client_id";
-        return $this->db->fetchAssoc($sql,array((int) $id));
+        $sql = "SELECT (dr - pd) as 'cnt' FROM (SELECT count(p.id) AS 'pd' FROM payment p WHERE p.contract_id IN (select id from contract where client_id = ? and deleted_at is null)) AS payments, (SELECT count(cd.id) AS 'dr' FROM contract_duration cd WHERE contract_id IN (select id from contract where client_id = ? and deleted_at is null)) AS durations";
+        return $this->db->fetchAssoc($sql,array((int) $id,(int) $id));
     }
 }
