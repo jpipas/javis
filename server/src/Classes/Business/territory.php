@@ -12,7 +12,7 @@ class Territory extends AbstractBusinessService
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM territory";
+        $sql = "SELECT * FROM territory ORDER BY name ASC";
         return $this->db->fetchAll($sql);
     }
 

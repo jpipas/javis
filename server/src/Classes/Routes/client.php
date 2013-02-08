@@ -28,6 +28,17 @@ class Client implements ControllerProviderInterface
         });
 
 
+        $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+            $client_array = $app['business.client']->getById($id);
+            $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
+
+            array_walk($client_array,function($client,$key) use (&$client_array, &$app){
+               $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
+            });
+
+            return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"client"=>$client_array));
+        });
+
         return $controllers;
     }
 }

@@ -96,6 +96,7 @@ Ext.define('JavisERP.controller.PaymentController', {
                     cStore.reload();
                     var refreshedClient = new JavisERP.model.Client(record.data.client);
                     cRecordForm.getForm().loadRecord(refreshedClient);
+                    cRecordForm.getForm().findField('remaining_months').setValue(refreshedClient.data.remaining_months.cnt);
                     Ext.Msg.alert('Success','Payment saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');

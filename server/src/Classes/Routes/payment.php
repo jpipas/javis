@@ -21,6 +21,7 @@ class Payment implements ControllerProviderInterface
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
+                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -35,6 +36,7 @@ class Payment implements ControllerProviderInterface
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
+                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -56,6 +58,7 @@ class Payment implements ControllerProviderInterface
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
+                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
