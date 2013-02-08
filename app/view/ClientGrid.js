@@ -63,6 +63,12 @@ Ext.define('JavisERP.view.ClientGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'stage',
+                    flex: 1,
+                    text: 'Stage'
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'address1',
                     flex: 3,
                     text: 'Address'

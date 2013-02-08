@@ -9,11 +9,11 @@ Ext.define('JavisERP.view.Portlet', {
     layout: 'fit',
     anchor: '100%',
     frame: true,
-    closable: true,
+    closable: false,
     collapsible: true,
     animCollapse: true,
     draggable: {
-        moveOnDrag: false    
+        moveOnDrag: false
     },
     cls: 'x-portlet',
 

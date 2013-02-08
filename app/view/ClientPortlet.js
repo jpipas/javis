@@ -27,7 +27,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
     forceFit: true,
     scroll: 'vertical',
     store: 'ClientStore',
-
+    features: [{ftype: 'filters'}],
     initComponent: function() {
         var me = this;
 
@@ -75,7 +75,18 @@ Ext.define('JavisERP.view.ClientPortlet', {
                     xtype: 'gridcolumn',
                     dataIndex: 'company_name',
                     flex: 3,
-                    text: 'Name'
+                    text: 'Name',
+                    filterable: true
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'stage',
+                    flex: 1,
+                    text: 'Stage',
+                    filter: {
+                        type: 'list',
+                        store: this.getStore().collect('stage')
+                    }
                 },
                 {
                     xtype: 'gridcolumn',

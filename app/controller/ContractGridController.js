@@ -68,7 +68,7 @@ Ext.define('JavisERP.controller.ContractGridController', {
         });
         var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
         myMask.show();
-        setTimeout(function() {
+        Ext.defer(function() {
             myMask.hide();
             me.contractWindow.show();
         },2500);

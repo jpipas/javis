@@ -78,6 +78,9 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'overdue_balance'
+        },
+        {
+            name: 'stage'
         }
     ],
 
