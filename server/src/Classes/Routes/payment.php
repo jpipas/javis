@@ -23,7 +23,7 @@ class Payment implements ControllerProviderInterface
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $subReq = Request::create('/client/'.$payment['client_id'],'GET');
                 $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(), true);
-                $client_array[$key]['salesrep'] = $cl_array['client'][0];
+                $payment_array[$key]['client'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -39,7 +39,7 @@ class Payment implements ControllerProviderInterface
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $subReq = Request::create('/client/'.$payment['client_id'],'GET');
                 $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] = $cl_array['client'][0];
+                $payment_array[$key]['client'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -50,8 +50,6 @@ class Payment implements ControllerProviderInterface
         $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $payment = $app['business.payment']->updatepayment($id, $params);
-            //$payment['payment_id'] = $payment['id'];
-
             return $app->json(array("success"=>true,"payment"=>$payment));
         });
 
@@ -62,7 +60,7 @@ class Payment implements ControllerProviderInterface
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
                 $subReq = Request::create('/client/'.$payment['client_id'],'GET');
                 $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] = $cl_array['client'][0];
+                $payment_array[$key]['client'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
