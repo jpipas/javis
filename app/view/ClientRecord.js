@@ -34,7 +34,7 @@ Ext.define('JavisERP.view.ClientRecord', {
         type: 'vbox'
     },
     bodyPadding: 5,
-    title: 'Client Record',
+    title: 'Customer Record',
 
     initComponent: function() {
         var me = this;
@@ -87,6 +87,12 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     anchor: '95%',
                                     name: 'company_name',
                                     fieldLabel: 'Company Name'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    anchor: '95%',
+                                    name: 'stage',
+                                    fieldLabel: 'Client Stage'
                                 },
                                 {
                                     xtype: 'displayfield',
@@ -277,6 +283,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     xtype: 'displayfield',
                                                     anchor: '95%',
                                                     fieldLabel: 'Assigned Sales Rep',
+                                                    name: 'salesrep_id',
                                                     labelWidth: 150
                                                 },
                                                 {

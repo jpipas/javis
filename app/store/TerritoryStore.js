@@ -24,6 +24,7 @@ Ext.define('JavisERP.store.TerritoryStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
+            autoLoad: true,
             storeId: 'TerritoryStore',
             model: 'JavisERP.model.Territory'
         }, cfg)]);

@@ -213,7 +213,6 @@ Ext.define('JavisERP.controller.ClientController', {
     addContact: function() {
         if(!me.contactWindow){
             me.contactWindow = new JavisERP.view.ContactWindow();
-            console.log("Need a new window!");
         }
         if(me.contactWindow.isVisible()){
             me.contactWindow.hide();

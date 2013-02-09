@@ -22,7 +22,7 @@ class User implements ControllerProviderInterface
 
             array_walk($user_array,function($user,$key) use (&$user_array, &$app){
                 $user_array[$key]['territory'] = $app['business.territory']->getById($user['territory_id']);
-                //$user_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
+                $user_array[$key]['fullname'] = $user['first_name']." ".$user['last_name'];
             });
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "user"=>$user_array));
         });
@@ -33,6 +33,7 @@ class User implements ControllerProviderInterface
 
             array_walk($user_array,function($user,$key) use (&$user_array, &$app){
                $user_array[$key]['territory'] = $app['business.territory']->getById($user['territory_id']);
+               $user_array[$key]['fullname'] = $user['first_name']." ".$user['last_name'];
             });
 
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"user"=>$user_array));

@@ -16,7 +16,7 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-
+Ext.Loader.setPath("Ext.ux", "http://cdn.sencha.io/ext-4.1.1a-gpl/examples/ux");
 Ext.application({
     models: [
         'Client',

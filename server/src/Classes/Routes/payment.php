@@ -6,6 +6,7 @@ use Silex\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class Payment implements ControllerProviderInterface
 {
@@ -20,8 +21,9 @@ class Payment implements ControllerProviderInterface
             $totalCount = $app['business.payment']->getTotalCount($request->get('filter'));
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
-                $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
-                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
+                $subReq = Request::create('/client/'.$payment['client_id'],'GET');
+                $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(), true);
+                $client_array[$key]['salesrep'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -35,8 +37,9 @@ class Payment implements ControllerProviderInterface
             $totalCount = $app['business.payment']->getTotalCount($request->get('filter'));
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
-                $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
-                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
+                $subReq = Request::create('/client/'.$payment['client_id'],'GET');
+                $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
+                $client_array[$key]['salesrep'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });
@@ -57,8 +60,9 @@ class Payment implements ControllerProviderInterface
             $payment_array = $app['business.payment']->createPayment($params);
 
             array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
-                $payment_array[$key]['client'] = $app['business.client']->getById($payment['client_id']);
-                $payment_array[$key]['client']['remaining_months'] = $app['business.client']->getRemainingMonths($payment['client_id']);
+                $subReq = Request::create('/client/'.$payment['client_id'],'GET');
+                $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
+                $client_array[$key]['salesrep'] = $cl_array['client'][0];
                 $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
                 $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
             });

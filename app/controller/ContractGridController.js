@@ -58,11 +58,8 @@ Ext.define('JavisERP.controller.ContractGridController', {
                 contractForm.loadRecord(model);
                 contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
                 me.durfield = contractForm.getForm().findField('durations');
-                var valArray = [];
-                Ext.each(model.raw.durations, function(arr,index,durationItself){
-                    valArray.push(parseInt(arr.id,10));
-                });
-                me.durfield.setValue(valArray);
+                me.durfield.setValue(model.raw.durations);
+                console.log(model.raw.durations);
                 me.contractWindow.runCalculations();
             }
         });
@@ -71,7 +68,7 @@ Ext.define('JavisERP.controller.ContractGridController', {
         Ext.defer(function() {
             myMask.hide();
             me.contractWindow.show();
-        },2500);
+        },1000);
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
     },

@@ -11,7 +11,9 @@ class Client extends AbstractBusinessService
         return 'client';
     }
 
-    public function getAll($page = null,$start = 0,$limit = 0) {
+    public function getAll($page = null,$start = 0,$limit = 0,$filter) {
+        $wherestr = $this->getWhereString($filter);
+
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $sql = "SELECT c.*,s.name as 'state',
@@ -20,6 +22,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN payment p ON c.id = p.client_id
         LEFT JOIN contract con ON c.id = con.client_id
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
+        WHERE $wherestr
         GROUP BY c.id
         $limit_clause";
         return $this->db->fetchAll($sql);

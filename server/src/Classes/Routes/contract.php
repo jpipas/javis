@@ -44,7 +44,12 @@ class Contract implements ControllerProviderInterface
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
                 $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
-                $contract_array[$key]['durations'] = $app['business.duration']->getByContractId($contract['id']);
+                $durArray = array();
+                foreach($app['business.duration']->getByContractId($contract['id']) as $duration){
+                    settype($duration['id'], "integer");
+                    array_push($durArray,$duration['id']);
+                }
+                $contract_array[$key]['durations'] = $durArray;
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "contract"=>$contract_array));

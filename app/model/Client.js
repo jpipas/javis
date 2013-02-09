@@ -81,6 +81,10 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'stage'
+        },
+        {
+            name: 'salesrep_id',
+            mapping: 'salesrep.fullname'
         }
     ],
 
@@ -99,6 +103,12 @@ Ext.define('JavisERP.model.Client', {
             totalProperty: 'totalCount'
         }
     },
+    hasOne: [
+        {
+            model: 'JavisERP.model.User',
+            name: 'salesrep'
+        }
+    ],
 
     hasMany: [
         {

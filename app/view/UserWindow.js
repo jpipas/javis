@@ -82,6 +82,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                         },
                                         {
                                             xtype: 'textfield',
+                                            cls: 'email',
+                                            name: 'email',
+                                            fieldLabel: 'Email'
+                                        },
+                                        {
+                                            xtype: 'textfield',
                                             cls: 'password',
                                             name: 'password',
                                             id: 'password',
@@ -104,12 +110,6 @@ Ext.define('JavisERP.view.UserWindow', {
                                             inputType: 'password',
                                             vtype: 'password',
                                             initialPassField: 'password'
-                                        },
-                                        {
-                                            xtype: 'textfield',
-                                            cls: 'email',
-                                            name: 'email',
-                                            fieldLabel: 'Email'
                                         }
                                     ]
                                 },
