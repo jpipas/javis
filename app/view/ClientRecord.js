@@ -85,6 +85,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
+                                    readOnly: true,
                                     name: 'company_name',
                                     fieldLabel: 'Company Name'
                                 },
@@ -104,17 +105,20 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     xtype: 'displayfield',
                                     anchor: '95%',
                                     name: 'email_address',
+                                    readOnly: true,
                                     fieldLabel: 'Email Address'
                                 },
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
+                                    readOnly: true,
                                     name: 'phone',
                                     fieldLabel: 'Phone'
                                 },
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
+                                    readOnly: true,
                                     name: 'fax',
                                     fieldLabel: 'Fax'
                                 }
@@ -135,31 +139,31 @@ Ext.define('JavisERP.view.ClientRecord', {
                             items: [
                                 {
                                     xtype: 'displayfield',
-                                    anchor: '100%',
+                                    readOnly: true,
                                     name: 'address1',
                                     fieldLabel: 'Address Line 1'
                                 },
                                 {
                                     xtype: 'displayfield',
-                                    anchor: '100%',
+                                    readOnly: true,
                                     name: 'address2',
                                     fieldLabel: 'Address Line 2'
                                 },
                                 {
                                     xtype: 'displayfield',
-                                    anchor: '100%',
+                                    readOnly: true,
                                     name: 'city',
                                     fieldLabel: 'City'
                                 },
                                 {
                                     xtype: 'displayfield',
-                                    anchor: '100%',
+                                    anchor: '95%',
                                     name: 'state',
                                     fieldLabel: 'State'
                                 },
                                 {
                                     xtype: 'displayfield',
-                                    anchor: '100%',
+                                    anchor: '95%',
                                     name: 'zip',
                                     fieldLabel: 'Zip'
                                 }
@@ -439,9 +443,8 @@ Ext.define('JavisERP.view.ClientRecord', {
     },
 
     onPublicationGridBeforeRender: function(abstractcomponent, options) {
-        abstractcomponent.columns[0].hide(); // hide actions column
-        abstractcomponent.getStore().clearGrouping();
-        abstractcomponent.getStore().reload();
+        //abstractcomponent.getStore().clearGrouping();
+        //abstractcomponent.getStore().reload();
         //abstractcomponent.fireEvent('groupchange',abstractcomponent,null);
         abstractcomponent.getDockedItems('toolbar[dock="bottom"]')[0].hide();
         abstractcomponent.getDockedItems('toolbar[dock="top"]')[0].hide();

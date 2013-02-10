@@ -19,6 +19,18 @@ Ext.define('JavisERP.controller.ClientController', {
 
     id: 'clientcontroller',
 
+    views: [
+        'ClientWindow',
+        'ClientRecord'
+    ],
+
+    stores: [
+        'State',
+        'TerritoryStore',
+        'CustomerStage',
+        'PostalCode'
+    ],
+
     refs: [
         {
             ref: 'clientGrid',
@@ -107,8 +119,13 @@ Ext.define('JavisERP.controller.ClientController', {
         }
     },
 
+    onNewButtonClick: function(button, e, options){
+        var win = new JavisERP.view.ClientWindow();
+        win.show();
+    },
+
     onEditButtonClick: function(button, e, options){
-        console.log("Editing!");
+        console.log(me.client_id);
     },
 
     onListViewClick: function(button, e, options){
@@ -156,6 +173,9 @@ Ext.define('JavisERP.controller.ClientController', {
             "recordnav[cls=clientrecordnav] button[cls=listview_button]": {
                 click: this.onListViewClick
             },
+            "recordnav[cls=clientrecordnav] button[cls=new_button]": {
+                click: this.onNewButtonClick
+            },
             "tabpanel[cls=salestab]": {
                 tabchange: this.onSalesTabChange
             }
@@ -166,7 +186,6 @@ Ext.define('JavisERP.controller.ClientController', {
         this.getContentCards().getLayout().setActiveItem('ClientRecord');
         var form = this.getClientRecord().getForm();
         me.crec = this.getClientGrid().getStore().getAt(row);
-        //me.client = new JavisERP.model.Client(this.getClientGrid().getStore().getAt(row).data);
         form.loadRecord(this.getClientGrid().getStore().getAt(row));
 
         var clientId = this.getClientGrid().getStore().getAt(row).data.id;

@@ -40,6 +40,15 @@ Ext.define('JavisERP.model.Publication', {
         },
         {
             name: 'territory_id'
+        },
+        {
+            name: 'edit_action'
+        },
+        {
+            name: 'delete_action'
+        },
+        {
+            name: 'view_action'
         }
     ],
 
