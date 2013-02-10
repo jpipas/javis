@@ -17,8 +17,6 @@ Ext.define('JavisERP.view.ContactGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.contactgrid',
 
-    border: 0,
-    preventHeader: true,
     title: 'Contact List',
     forceFit: true,
     store: 'ContactStore',
@@ -31,6 +29,20 @@ Ext.define('JavisERP.view.ContactGrid', {
             viewConfig: {
 
             },
+            dockedItems: [
+                {
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        {
+                            xtype: 'button',
+                            itemId: 'newcontact',
+                            iconCls: 'ui-silk ui-silk-vcard-add',
+                            text: 'New Contact'
+                        }
+                    ]
+                }
+            ],
             columns: [
                 {
                     xtype: 'actioncolumn',

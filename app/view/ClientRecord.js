@@ -203,21 +203,8 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     xtype: 'contactgrid',
                                                     itemId: 'ContactGrid',
                                                     header: false,
-                                                    hideHeaders: false
-                                                }
-                                            ],
-                                            dockedItems: [
-                                                {
-                                                    xtype: 'toolbar',
-                                                    dock: 'top',
-                                                    items: [
-                                                        {
-                                                            xtype: 'button',
-                                                            itemId: 'newcontact',
-                                                            iconCls: 'ui-silk ui-silk-vcard-add',
-                                                            text: 'New Contact'
-                                                        }
-                                                    ]
+                                                    hideHeaders: false,
+                                                    border: 0
                                                 }
                                             ]
                                         },

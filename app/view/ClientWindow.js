@@ -183,6 +183,15 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            xtype: 'contactgrid',
+                            cls: 'contactgrid',
+                            height: 150,
+                            id: 'contactgrid',
+                            title: 'Contacts',
+                            itemId: 'contactgrid',
+                            padding: '10px 0px'
                         }
                     ]
                 }
