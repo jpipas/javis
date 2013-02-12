@@ -121,6 +121,8 @@ Ext.define('JavisERP.controller.ClientController', {
 
     onNewButtonClick: function(button, e, options){
         var win = new JavisERP.view.ClientWindow();
+        this.getContactGrid().getStore().clearFilter(true);
+        this.getContactGrid().getStore().filter("client_id",me.client_id);
         win.show();
     },
 
