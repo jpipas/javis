@@ -82,10 +82,6 @@ Ext.define('JavisERP.controller.ClientController', {
         }
     ],
 
-    onNewContactClick: function(target) {
-        this.application.fireEvent("addContact",target);
-    },
-
     onActionColumnClick: function(grid, col, row) {
         this.application.fireEvent('clientRecordChange',grid,col,row);
     },
@@ -119,6 +115,10 @@ Ext.define('JavisERP.controller.ClientController', {
         }
     },
 
+    onSaveContactClick: function(button, e, option){
+        console.log("saving contact!");
+    },
+
     onNewButtonClick: function(button, e, options){
         var win = new JavisERP.view.ClientWindow();
         this.getContactGrid().getStore().clearFilter(true);
@@ -135,6 +135,28 @@ Ext.define('JavisERP.controller.ClientController', {
         this.application.fireEvent('navigationChange',button.itemId);
     },
 
+    onNewContactButtonClick: function(button, e, options){
+        me.contactWindow = new JavisERP.view.ContactWindow();
+
+        me.contact_id = null;
+        me.contact = new JavisERP.model.Contact({
+            client_id: me.client_id
+        });
+
+        me.contact.save({
+            callback: function(record,operation,success){
+                me.contact_id = record.data.id;
+                me.contactWindow.getComponent('contactform').getForm().setValues({
+                    client_name: me.client_name,
+                    client_id: me.client_id,
+                    id: record.data.id
+                });
+            }
+        });
+
+        me.contactWindow.show();
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
@@ -147,19 +169,11 @@ Ext.define('JavisERP.controller.ClientController', {
         });
 
         me.application.on({
-            addContact: me.addContact,
-            scope:me
-        });
-
-        me.application.on({
             addContract: me.addContract,
             scope:me
         });
 
         this.control({
-            "clientrecord toolbar button[itemId=newcontact]": {
-                click: this.onNewContactClick
-            },
             "clientgrid #actions, clientportlet #actions": {
                 click: this.onActionColumnClick
             },
@@ -180,6 +194,12 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "tabpanel[cls=salestab]": {
                 tabchange: this.onSalesTabChange
+            },
+            "button[cls=saveContactButton]": {
+                click: this.onSaveContactClick
+            },
+            "contactgrid toolbar button[cls=newcontact]": {
+                click: this.onNewContactButtonClick
             }
         });
     },
@@ -229,17 +249,6 @@ Ext.define('JavisERP.controller.ClientController', {
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",me.contract_id);
         me.contractWindow.show();
-    },
-
-    addContact: function() {
-        if(!me.contactWindow){
-            me.contactWindow = new JavisERP.view.ContactWindow();
-        }
-        if(me.contactWindow.isVisible()){
-            me.contactWindow.hide();
-        } else {
-            me.contactWindow.show();
-        }
     }
 
 });

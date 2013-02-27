@@ -48,6 +48,17 @@ class Client implements ControllerProviderInterface
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"client"=>$client_array));
         });
 
+        $controllers->post('/new', function(Application $app, Request $request) {
+
+        });
+
+        $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $client = $app['business.client']->updateClient($id, $params);
+
+            return $app->json(array("success"=>true,"client"=>$client));
+        });
+
         return $controllers;
     }
 }

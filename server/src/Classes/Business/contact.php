@@ -24,4 +24,17 @@ class Contact extends AbstractBusinessService
         return $this->db->fetchAll($sql, array((int) $client_id));
     }
 
+    public function getById($id) {
+        $sql = "SELECT * FROM contact WHERE id = ? and deleted_at is null";
+        return $this->db->fetchAll($sql,array((int)$id));
+    }
+
+    public function createContact($params) {
+        unset($params['role']);
+        unset($params['id']);
+        $this->db->insert('contact',$params);
+        $contact = $this->getById($this->db->lastInsertId());
+        return $contact;
+    }
+
 }

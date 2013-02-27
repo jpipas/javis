@@ -36,6 +36,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                     items: [
                         {
                             xtype: 'button',
+                            cls: 'newcontact',
                             itemId: 'newcontact',
                             iconCls: 'ui-silk ui-silk-vcard-add',
                             text: 'New Contact'

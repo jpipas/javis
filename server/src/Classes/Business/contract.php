@@ -4,7 +4,7 @@ namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
 
-class contract extends AbstractBusinessService {
+class Contract extends AbstractBusinessService {
 
     public function getTableName()
     {
