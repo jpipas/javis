@@ -37,4 +37,11 @@ class Contact extends AbstractBusinessService
         return $contact;
     }
 
+    public function updateContact($id, $params) {
+        unset($params['id']);
+        $this->db->update('contact',$params, array('id'=>$id));
+        $contact = $this->getById($id);
+        return $contact;
+    }
+
 }

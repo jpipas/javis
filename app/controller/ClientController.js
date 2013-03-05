@@ -79,6 +79,10 @@ Ext.define('JavisERP.controller.ClientController', {
         {
             ref: 'editButton',
             selector: 'button[cls=edit_button]'
+        },
+        {
+            ref: 'contactForm',
+            selector: 'form[cls=contactform]'
         }
     ],
 
@@ -116,7 +120,23 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onSaveContactClick: function(button, e, option){
-        console.log("saving contact!");
+        var fields = this.getContactForm().getForm().getValues(false,false,false,true);
+        me.contact = new JavisERP.model.Contact({id: fields['id']});
+        for(var key in fields){
+            me.contact.set(key,fields[key]);
+        }
+
+        var cWindow = this.getContactWindow();
+        me.contact.save({
+            callback: function(record,operation){
+                if(operation.wasSuccessful){
+                    cWindow.close();
+                    Ext.Msg.alert('Success','Contact saved successfully!');
+                } else {
+                    Ext.Msg.alert('Failure','Something went wrong!');
+                }
+            }
+        });
     },
 
     onNewButtonClick: function(button, e, options){
@@ -137,7 +157,7 @@ Ext.define('JavisERP.controller.ClientController', {
 
     onNewContactButtonClick: function(button, e, options){
         me.contactWindow = new JavisERP.view.ContactWindow();
-
+        me.contact = null;
         me.contact_id = null;
         me.contact = new JavisERP.model.Contact({
             client_id: me.client_id

@@ -21,7 +21,9 @@ Ext.define('JavisERP.view.ContactGrid', {
     forceFit: true,
     store: 'ContactStore',
     columnLines: false,
-
+    scroll: 'vertical',
+    autoScroll: true,
+    height:350,
     initComponent: function() {
         var me = this;
 
@@ -66,7 +68,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'name',
+                    dataIndex: 'full_name',
                     text: 'Name'
                 },
                 {
@@ -76,7 +78,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'cell_phone',
+                    dataIndex: 'phone',
                     text: 'Cell Phone'
                 },
                 {
