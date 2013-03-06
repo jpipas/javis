@@ -27,6 +27,7 @@ Ext.define('JavisERP.view.ContactWindow', {
     title: 'New Contact',
     modal: true,
     autoDestroy: true,
+    cls: 'contactWindow',
 
     initComponent: function() {
         var me = this;
@@ -108,6 +109,8 @@ Ext.define('JavisERP.view.ContactWindow', {
                             itemId: 'role',
                             name: 'role_id',
                             fieldLabel: 'Role',
+                            valueField: 'id',
+                            editable: false,
                             displayField: 'description',
                             store: 'ContactRoleStore',
                             labelAlign: 'right'

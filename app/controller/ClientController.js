@@ -177,6 +177,10 @@ Ext.define('JavisERP.controller.ClientController', {
         me.contactWindow.show();
     },
 
+    onContactWindowClose: function(panel, eOpts){
+        this.getContactGrid().getStore().reload();
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
@@ -220,6 +224,9 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "contactgrid toolbar button[cls=newcontact]": {
                 click: this.onNewContactButtonClick
+            },
+            "window[cls=contactWindow]": {
+                close: this.onContactWindowClose
             }
         });
     },

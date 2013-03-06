@@ -35,27 +35,27 @@ abstract class AbstractBusinessService
             for ($i=0;$i<count($filter);$i++){
                 switch($filter[$i]['data']['type']){
                     case 'string' : $qs .= " AND ".$filter[$i]['field']." LIKE '%".$filter[$i]['data']['value']."%'"; break;
-                    case 'list' : 
+                    case 'list' :
                         if (strstr($filter[$i]['data']['value'],',')){
                             $fi = explode(',',$filter[$i]['data']['value']);
                             for ($q=0;$q<count($fi);$q++){
                                 $fi[$q] = "'".$fi[$q]."'";
                             }
                             $filter[$i]['data']['value'] = implode(',',$fi);
-                            $qs .= " AND ".$filter[$i]['field']." IN (".$filter[$i]['data']['value'].")"; 
+                            $qs .= " AND ".$filter[$i]['field']." IN (".$filter[$i]['data']['value'].")";
                         }else{
-                            $qs .= " AND ".$filter[$i]['field']." = '".$filter[$i]['data']['value']."'"; 
+                            $qs .= " AND ".$filter[$i]['field']." = '".$filter[$i]['data']['value']."'";
                         }
                     break;
                     case 'boolean' : $qs .= " AND ".$filter[$i]['field']." = ".($filter[$i]['data']['value']); break;
-                    case 'numeric' : 
+                    case 'numeric' :
                         switch ($filter[$i]['data']['comparison']) {
                             case 'eq' : $qs .= " AND ".$filter[$i]['field']." = ".$filter[$i]['data']['value']; break;
                             case 'lt' : $qs .= " AND ".$filter[$i]['field']." < ".$filter[$i]['data']['value']; break;
                             case 'gt' : $qs .= " AND ".$filter[$i]['field']." > ".$filter[$i]['data']['value']; break;
                         }
                     break;
-                    case 'date' : 
+                    case 'date' :
                         switch ($filter[$i]['data']['comparison']) {
                             case 'eq' : $qs .= " AND ".$filter[$i]['field']." = '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'"; break;
                             case 'lt' : $qs .= " AND ".$filter[$i]['field']." < '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'"; break;
@@ -63,9 +63,15 @@ abstract class AbstractBusinessService
                         }
                     break;
                 }
-            }   
+            }
             $where .= $qs;
 
+        } else {
+            $filter_array = json_decode($filter,true);
+            for($i=0;$i<count($filter_array);$i++){
+                $qs .= " AND ".$filter_array[$i]['property']." = ".$filter_array[$i]['value'];
+            }
+            $where .= $qs;
         }
         return $where;
     }

@@ -26,14 +26,7 @@ Ext.define('JavisERP.store.ContactStore', {
         me.callParent([Ext.apply({
             remoteFilter: true,
             storeId: 'ContactStore',
-            model: 'JavisERP.model.Contact',
-            sorters: {
-                sorterFn: function(first, second) {
-                    var vals = [first,second];
-                    vals.sort();
-
-                }
-            }
+            model: 'JavisERP.model.Contact'
         }, cfg)]);
     }
 });

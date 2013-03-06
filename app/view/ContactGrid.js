@@ -79,7 +79,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'phone',
-                    text: 'Cell Phone'
+                    text: 'Phone'
                 },
                 {
                     xtype: 'gridcolumn',
