@@ -7,7 +7,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostalCode implements ControllerProviderInterface
+class Postalcode implements ControllerProviderInterface
 {
 
     public function connect(Application $app)

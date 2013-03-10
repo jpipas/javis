@@ -31,10 +31,22 @@ Ext.define('JavisERP.controller.ClientController', {
         'PostalCode'
     ],
 
+    models: [
+        'Client'
+    ],
+
     refs: [
         {
             ref: 'clientGrid',
             selector: 'clientgrid'
+        },
+        {
+            ref: 'clientForm',
+            selector: 'clientwindow form[cls=clientform]'
+        },
+        {
+            ref: 'clientWindow',
+            selector: 'clientwindow'
         },
         {
             ref: 'contentCards',
@@ -98,6 +110,7 @@ Ext.define('JavisERP.controller.ClientController', {
         var payment = new JavisERP.view.ContractPaymentWindow();
         payment.show();
     },
+
     onSalesTabChange: function(panel,newCard,oldCard,e){
         switch(newCard.cls){
             case 'clientadvertisements':
@@ -147,11 +160,53 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onEditButtonClick: function(button, e, options){
-        console.log(me.client_id);
+        me.clientWindow = new JavisERP.view.ClientWindow();
+        var clientForm = this.getClientForm();
+        this.getClientModel().load(me.client_id,{
+            success: function(model){
+                clientForm.loadRecord(model);
+                console.log(model);
+                clientForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
+                clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));
+                clientForm.getForm().findField('postal_code_id').setValue(new JavisERP.model.PostalCode(model.raw.postal_code));
+                clientForm.getForm().findField('salesrep_id').setValue(new JavisERP.model.User(model.raw.salesrep));
+            }
+        });
+        var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
+        myMask.show();
+        Ext.defer(function() {
+            myMask.hide();
+            me.clientWindow.show();
+        },500);
+        this.getContactGrid().getStore().clearFilter(true);
+        this.getContactGrid().getStore().filter("client_id",me.client_id);
+    },
+
+    onSaveClientButtonClick: function(button, e, options){
+        var fields = this.getClientForm().getForm().getValues(false,false,false,true);
+        me.client = new JavisERP.model.Client({id: fields['id']});
+        for(var key in fields){
+            me.client.set(key,fields[key]);
+        }
+
+        var cWindow = this.getClientWindow();
+        var cRecordForm = this.getClientRecordForm();
+        me.client.save({
+            callback: function(record,operation){
+                if(operation.wasSuccessful){
+                    var refreshedClient = new JavisERP.model.Client(record.data.client);
+                    cRecordForm.getForm().loadRecord(refreshedClient);
+                    cWindow.close();
+                    Ext.Msg.alert('Success','Client saved successfully!');
+                } else {
+                    Ext.Msg.alert('Failure','Something went wrong!');
+                }
+            }
+        });
+
     },
 
     onListViewClick: function(button, e, options){
-        //console.log("List View!");
         this.application.fireEvent('navigationChange',button.itemId);
     },
 
@@ -227,6 +282,9 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "window[cls=contactWindow]": {
                 close: this.onContactWindowClose
+            },
+            "button[cls=clientsavebutton]": {
+                click: this.onSaveClientButtonClick
             }
         });
     },

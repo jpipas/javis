@@ -23,12 +23,20 @@ Ext.define('JavisERP.model.State', {
         },
         {
             name: 'name'
+        },
+        {
+            name: 'abbr'
         }
     ],
 
     proxy: {
-        type: 'ajax',
-        url: '/resources/js/state.json',
+        type: 'rest',
+        api: {
+            create: '/server/web/index.php/state/new',
+            read: '/server/web/index.php/state/',
+            update: '/server/web/index.php/state/update',
+            destroy: '/server/web/index.php/state/delete'
+        },
         reader: {
             type: 'json',
             idProperty: 'id',

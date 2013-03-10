@@ -68,7 +68,7 @@ Ext.define('JavisERP.controller.ContractGridController', {
         Ext.defer(function() {
             myMask.hide();
             me.contractWindow.show();
-        },1000);
+        },1500);
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
     },

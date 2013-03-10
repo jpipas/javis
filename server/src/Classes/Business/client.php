@@ -44,4 +44,12 @@ class Client extends AbstractBusinessService
         $sql = "SELECT (dr - pd) as 'cnt' FROM (SELECT count(p.id) AS 'pd' FROM payment p WHERE p.contract_id IN (select id from contract where client_id = ? and deleted_at is null)) AS payments, (SELECT count(cd.id) AS 'dr' FROM contract_duration cd WHERE contract_id IN (select id from contract where client_id = ? and deleted_at is null)) AS durations";
         return $this->db->fetchAssoc($sql,array((int) $id,(int) $id));
     }
+
+    public function updateClient($id, $params) {
+        unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
+        unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep']);
+        $this->db->update('client',$params, array('id'=>$id));
+        $client = $this->getById($id);
+        return $client;
+    }
 }

@@ -4,7 +4,7 @@ namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
 
-class PostalCode extends AbstractBusinessService
+class Postalcode extends AbstractBusinessService
 {
     public function getTableName()
     {

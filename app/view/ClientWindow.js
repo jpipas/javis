@@ -75,7 +75,7 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     items: [
                                         {
                                             xtype: 'textfield',
-                                            name: 'client_name',
+                                            name: 'company_name',
                                             fieldLabel: 'Company Name'
                                         },
                                         {
@@ -131,12 +131,12 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     items: [
                                         {
                                             xtype: 'textfield',
-                                            name: 'address_1',
+                                            name: 'address1',
                                             fieldLabel: 'Address Line 1'
                                         },
                                         {
                                             xtype: 'textfield',
-                                            name: 'address_2',
+                                            name: 'address2',
                                             fieldLabel: 'Address Line 2'
                                         },
                                         {
@@ -151,7 +151,6 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             valueField: 'id',
                                             store: 'State',
                                             queryMode: 'local',
-                                            typeAdead:true,
                                             name: 'state_id'
                                         },
                                         {
@@ -161,13 +160,12 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             valueField: 'id',
                                             store: 'PostalCode',
                                             queryMode: 'local',
-                                            typeAdead:true,
                                             name: 'postal_code_id'
                                         },
                                         {
                                             xtype: 'combobox',
                                             fieldLabel: 'Assigned Sales Rep',
-                                            displayField: 'username',
+                                            displayField: 'fullname',
                                             valueField: 'id',
                                             store: 'User',
                                             queryMode: 'local',
@@ -176,9 +174,9 @@ Ext.define('JavisERP.view.ClientWindow', {
                                         },
                                         {
                                             xtype: 'hiddenfield',
-                                            cls: 'payment_client_id',
-                                            itemId: 'client_id',
-                                            name: 'client_id'
+                                            cls: 'id',
+                                            itemId: 'id',
+                                            name: 'id'
                                         }
                                     ]
                                 }

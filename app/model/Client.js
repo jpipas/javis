@@ -50,11 +50,13 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'state',
-            type: 'string'
+            type: 'string',
+            mapping: 'state.name'
         },
         {
-            name: 'zip',
-            type: 'string'
+            name: 'postal_code',
+            type: 'string',
+            mapping: 'postal_code.iso_code'
         },
         {
             name: 'phone'
@@ -89,8 +91,11 @@ Ext.define('JavisERP.model.Client', {
             name: 'stage'
         },
         {
-            name: 'salesrep_id',
+            name: 'salesrep',
             mapping: 'salesrep.fullname'
+        },
+        {
+            name: 'salesrep_id'
         }
     ],
 
