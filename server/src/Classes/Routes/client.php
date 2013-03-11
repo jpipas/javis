@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class Client implements ControllerProviderInterface
 {
 
-
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
@@ -53,14 +52,18 @@ class Client implements ControllerProviderInterface
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
-
+            //$client = $app['business.client']->createClient(array("insert_user_id"=>$app['current_user']));
+            $user = $app['session']->get("user_token");
+            print_r($user['user']->getUsername());
+            return $app->json(array("success"=>true,"client"=>1));
         });
 
         $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $client = $app['business.client']->updateClient($id, $params);
-
-            return $app->json(array("success"=>true,"client"=>$client));
+            $subReq = Request::create('/client/'.$id,'GET');
+            $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
+            return $app->json($client_return);
         });
 
         return $controllers;

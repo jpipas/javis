@@ -29,6 +29,9 @@ Ext.define('JavisERP.model.User', {
             name: 'roles'
         },
         {
+            name: 'fullname'
+        },
+        {
             name: 'manager_user_id'
         },
         {

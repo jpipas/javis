@@ -96,6 +96,9 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'salesrep_id'
+        },
+        {
+            name: 'insert_user_id'
         }
     ],
 

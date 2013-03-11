@@ -57,6 +57,10 @@ Ext.define('JavisERP.controller.ClientController', {
             selector: 'clientrecord'
         },
         {
+            ref: 'clientRecordForm',
+            selector: 'clientrecord form[cls=clientform]'
+        },
+        {
             ref: 'contactWindow',
             selector: 'contactwindow'
         },
@@ -153,10 +157,19 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onNewButtonClick: function(button, e, options){
-        var win = new JavisERP.view.ClientWindow();
+        me.clientWindow = new JavisERP.view.ClientWindow();
+        me.client_id = null;
+        me.client = new JavisERP.model.Client();
+        me.client.save({
+            callback: function(record,operation,success){
+                me.client_id = record.data.id;
+                me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id});
+            }
+        });
+
         this.getContactGrid().getStore().clearFilter(true);
         this.getContactGrid().getStore().filter("client_id",me.client_id);
-        win.show();
+        me.clientWindow.show();
     },
 
     onEditButtonClick: function(button, e, options){
@@ -165,7 +178,6 @@ Ext.define('JavisERP.controller.ClientController', {
         this.getClientModel().load(me.client_id,{
             success: function(model){
                 clientForm.loadRecord(model);
-                console.log(model);
                 clientForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
                 clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));
                 clientForm.getForm().findField('postal_code_id').setValue(new JavisERP.model.PostalCode(model.raw.postal_code));
@@ -190,11 +202,11 @@ Ext.define('JavisERP.controller.ClientController', {
         }
 
         var cWindow = this.getClientWindow();
-        var cRecordForm = this.getClientRecordForm();
+        var cRecordForm = this.getClientRecord();
         me.client.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
-                    var refreshedClient = new JavisERP.model.Client(record.data.client);
+                    var refreshedClient = new JavisERP.model.Client(record.data);
                     cRecordForm.getForm().loadRecord(refreshedClient);
                     cWindow.close();
                     Ext.Msg.alert('Success','Client saved successfully!');

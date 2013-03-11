@@ -34,7 +34,7 @@ $app->register(new ConfigServiceProvider(ROOT_PATH."/config/default.json"));
 $env = getenv("APP_ENV") ? getenv("APP_ENV") : "dev";
 //overwriting configuration with enviroment specific
 $app->register(new ConfigServiceProvider(ROOT_PATH."/config/$env.json"));
-
+$app['debug'] = true;
 //turn on error reporting for dev purpose
 if ($env === "dev"){
     error_reporting(E_ALL | E_STRICT);
@@ -103,6 +103,8 @@ $app->register(new BusinessServiceProvider(),array("business.container" =>  $arr
 
 //handling calls to the root to a default route manager
 $app->get("/backoffice", function () use ($app) {
+    $token = $app['security']->getToken();
+    $app['session']->set('user_token',array('user'=>$token->getUser()));
     return $app['twig']->render('index.html');
 });
 
