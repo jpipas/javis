@@ -102,11 +102,13 @@ Ext.define('JavisERP.view.ClientWindow', {
                                         {
                                             xtype: 'textfield',
                                             name: 'email_address',
+                                            vtype: 'email',
                                             fieldLabel: 'Email Address'
                                         },
                                         {
                                             xtype: 'textfield',
                                             name: 'phone',
+                                            vtype: 'phone',
                                             fieldLabel: 'Phone'
                                         },
                                         {
@@ -181,15 +183,6 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            xtype: 'contactgrid',
-                            cls: 'contactgrid',
-                            height: 150,
-                            id: 'contactgrid',
-                            title: 'Contacts',
-                            itemId: 'contactgrid',
-                            padding: '10px 0px'
                         }
                     ]
                 }

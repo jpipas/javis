@@ -159,17 +159,20 @@ Ext.define('JavisERP.controller.ClientController', {
     onNewButtonClick: function(button, e, options){
         me.clientWindow = new JavisERP.view.ClientWindow();
         me.client_id = null;
-        me.client = new JavisERP.model.Client();
+        me.client = new JavisERP.model.Client({stage: 'CUSTOMER'});
+        var conGrid = this.getContactGrid();
         me.client.save({
             callback: function(record,operation,success){
                 me.client_id = record.data.id;
-                me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id});
+                console.log(record);
+                me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
+                me.clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
+                me.clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));
+                conGrid.getStore().clearFilter(true);
+                conGrid.getStore().filter("client_id",me.client_id);
+                me.clientWindow.show();
             }
         });
-
-        this.getContactGrid().getStore().clearFilter(true);
-        this.getContactGrid().getStore().filter("client_id",me.client_id);
-        me.clientWindow.show();
     },
 
     onEditButtonClick: function(button, e, options){
@@ -208,6 +211,8 @@ Ext.define('JavisERP.controller.ClientController', {
                 if(operation.wasSuccessful){
                     var refreshedClient = new JavisERP.model.Client(record.data);
                     cRecordForm.getForm().loadRecord(refreshedClient);
+                    me.client_id = record.data.id;
+                    me.client_name = record.data.company_name;
                     cWindow.close();
                     Ext.Msg.alert('Success','Client saved successfully!');
                 } else {

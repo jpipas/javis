@@ -32,7 +32,8 @@ Ext.application({
         'AppliedPayment',
         'Duration',
         'PostalCode',
-        'User'
+        'User',
+        'AdList'
     ],
     stores: [
         'ClientStore',
@@ -49,7 +50,8 @@ Ext.application({
         'StaticPublicationStore',
         'Duration',
         'PostalCode',
-        'User'
+        'User',
+        'AdList'
     ],
     views: [
         'AppViewport',
@@ -67,7 +69,8 @@ Ext.application({
         'ContractPaymentWindow',
         'PublicationWindow',
         'UserGrid',
-        'UserWindow'
+        'UserWindow',
+        'AdListGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',

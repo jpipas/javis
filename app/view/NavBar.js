@@ -166,7 +166,19 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         itemId: 'ClientGrid',
                                         iconCls: 'ui-silk ui-silk-group',
-                                        text: 'Customers'
+                                        text: 'Customers',
+                                        menu: {
+                                            xtype: 'menu',
+                                            width: 120,
+                                            items: [
+                                                {
+                                                    xtype: 'menuitem',
+                                                    iconCls: 'ui-silk ui-silk-group-add',
+                                                    itemId: 'newCustomer',
+                                                    text: 'New Customer'
+                                                }
+                                            ]
+                                        }
                                     },
                                     {
                                         xtype: 'menuitem',
@@ -213,6 +225,7 @@ Ext.define('JavisERP.view.NavBar', {
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'AdListGrid',
                                         iconCls: 'ui-silk ui-silk-application-view-list',
                                         text: 'Ad List'
                                     },

@@ -45,23 +45,27 @@ class Client implements ControllerProviderInterface
                 $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
                 $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
                 $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] = $usr_array['user'][0];
+                if(array_key_exists(0,$usr_array['user'])){
+                    $client_array[$key]['salesrep'] =  $usr_array['user'][0];
+                }
             });
 
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"client"=>$client_array));
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
-            //$client = $app['business.client']->createClient(array("insert_user_id"=>$app['current_user']));
             $user = $app['session']->get("user_token");
-            print_r($user['user']->getUsername());
-            return $app->json(array("success"=>true,"client"=>1));
+            $params = array("insert_user_id"=>$user['user']->getId(),"salesrep_id"=>$user['user']->getId(),"stage"=>"CUSTOMER","territory_id"=>$user['user']->getTerritoryId());
+            $client_id = $app['business.client']->createClient($params);
+            $subReq = Request::create('/client/'.$client_id,'GET');
+            $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
+            return $app->json($client_return);
         });
 
         $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
-            $client = $app['business.client']->updateClient($id, $params);
-            $subReq = Request::create('/client/'.$id,'GET');
+            $client_id = $app['business.client']->updateClient($id, $params);
+            $subReq = Request::create('/client/'.$client_id,'GET');
             $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
             return $app->json($client_return);
         });

@@ -16,7 +16,7 @@
 Ext.define('JavisERP.view.ClientPortlet', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientportlet',
-    
+
     requires:[
         'Ext.ux.grid.FiltersFeature'
     ],
@@ -119,7 +119,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'zip',
+                    dataIndex: 'postal_code',
                     flex: 1,
                     text: 'Zip',
                     filter: {

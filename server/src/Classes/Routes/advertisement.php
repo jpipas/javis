@@ -46,6 +46,13 @@ class Advertisement implements ControllerProviderInterface
             return $app->json(array("success"=>true,"advertisement"=>$advertisement));
 
         });
+
+        $controllers->get('/list/', function(Application $app, Request $request) {
+            //$params = $request->request->all();
+            $adlist = $app['business.adlist']->getList();
+            return $app->json(array("ad_list"=>$adlist));
+        });
+
         return $controllers;
     }
 }

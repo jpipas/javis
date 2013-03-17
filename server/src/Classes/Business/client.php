@@ -45,17 +45,18 @@ class Client extends AbstractBusinessService
         return $this->db->fetchAssoc($sql,array((int) $id,(int) $id));
     }
 
-    public function createClient() {
+    public function createClient($params) {
         $this->db->insert('client',$params);
-        $client = $this->getById($this->db->lastInsertId());
-        return $client;
+        $client_id = $this->db->lastInsertId();
+        return $client_id;
     }
 
     public function updateClient($id, $params) {
         unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
-        unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep']);
+        unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
+        unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name']);
         $this->db->update('client',$params, array('id'=>$id));
-        $client = $this->getById($id);
-        return $client;
+        $client_id = $id;
+        return $client_id;
     }
 }

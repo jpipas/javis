@@ -8,23 +8,23 @@ class User extends AbstractBusinessService
 {
     public function getTableName()
     {
-        return 'user';
+        return 'employee';
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM employee";
         return $this->db->fetchAll($sql);
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM user WHERE id = ?";
+        $sql = "SELECT * FROM employee WHERE id = ?";
         return $this->db->fetchAll($sql,array((int) $id));
     }
 
     public function createUser($params) {
-        //unset($params['durations']);
-        unset($params['territory_name'], $params['territory']);
-        $this->db->insert('user',$params);
+        unset($params['territory_name'], $params['territory'], $params['fullname']);
+        $params['role'] = "ROLE_USER";
+        $this->db->insert('employee',$params);
         $user = $this->getById($this->db->lastInsertId());
         return $user;
     }

@@ -83,7 +83,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
-                                    name: 'territory',
+                                    name: 'territory_name',
                                     fieldLabel: 'Territory'
                                 },
                                 {
@@ -259,7 +259,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     xtype: 'displayfield',
                                                     anchor: '95%',
                                                     fieldLabel: 'Assigned Sales Rep',
-                                                    name: 'salesrep',
+                                                    name: 'salesrep_name',
                                                     labelWidth: 150
                                                 },
                                                 {

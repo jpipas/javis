@@ -10,7 +10,8 @@ Ext.define('JavisERP.view.ContentCards', {
         'JavisERP.view.PublicationGrid',
         'JavisERP.view.AdvertisementGrid',
         'JavisERP.view.ContractGrid',
-        'JavisERP.view.UserGrid'
+        'JavisERP.view.UserGrid',
+        'JavisERP.view.AdListGrid'
     ],
 
     layout: {
@@ -57,6 +58,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'usergrid',
                     itemId: 'UserGrid'
+                },
+                {
+                    xtype: 'adlistgrid',
+                    itemId: 'AdListGrid'
                 }
             ]
         });

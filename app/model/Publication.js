@@ -42,6 +42,13 @@ Ext.define('JavisERP.model.Publication', {
             name: 'territory_id'
         },
         {
+            name: 'designer_id'
+        },
+        {
+            name: 'designer',
+            mapping: 'employee.fullname'
+        },
+        {
             name: 'edit_action'
         },
         {
