@@ -84,7 +84,8 @@ Ext.application({
         'PaymentController',
         'ContractGridController',
         'PublicationController',
-        'UserController'
+        'UserController',
+        'AdListController'
     ],
     appFolder: '/app',
     launch: function() {

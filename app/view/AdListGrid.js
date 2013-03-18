@@ -4,7 +4,7 @@ Ext.define('JavisERP.view.AdListGrid', {
     require: [
         'Ext.ux.grid.Printer'
     ],
-
+    features: [{ftype:'filters',local: false, filters:[{type:'string',dataIndex:'cl.territory_id'},{type:'string',dataIndex:'p.id'},{type:'string',dataIndex:'d.id'}]}],
     height: 200,
     itemId: 'AdListGrid',
     minHeight: 200,
@@ -17,27 +17,7 @@ Ext.define('JavisERP.view.AdListGrid', {
         var me = this;
 
         Ext.applyIf(me, {
-            viewConfig: {
-
-            },
-            //selModel: Ext.create('Ext.selection.CheckboxModel',{mode: 'SIMPLE'}),
             columns: [
-                /*{
-                    xtype: 'rowactions',
-                    flex: 1,
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-folder-edit',
-                            tooltip: 'Edit Contract',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-folder-delete',
-                            tooltip: 'Delete Contract',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },*/
                 {
                     xtype: 'gridcolumn',
                     defaultWidth: 160,
@@ -83,19 +63,19 @@ Ext.define('JavisERP.view.AdListGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'publication_id',
+                    dataIndex: 'p.id',
                     hidden: true,
                     text: 'Publication ID'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'duration_id',
+                    dataIndex: 'd.id',
                     hidden: true,
                     text: 'Duration ID'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'territory_id',
+                    dataIndex: 'cl.territory_id',
                     hidden: true,
                     text: 'Territory ID'
                 }
@@ -117,6 +97,53 @@ Ext.define('JavisERP.view.AdListGrid', {
                                 Ext.ux.grid.Printer.stylesheetPath = '/resources/css/print.css';
                                 Ext.ux.grid.Printer.print(me);
                             }
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'combobox',
+                            displayField: 'name',
+                            valueField: 'id',
+                            emptyText: 'Territory',
+                            store: 'TerritoryStore',
+                            editable: false,
+                            name: 'territory_id',
+                            itemId: 'territory'
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'combobox',
+                            displayField: 'description',
+                            valueField: 'id',
+                            emptyText: 'Publication',
+                            store: 'PublicationStore',
+                            queryMode: 'remote',
+                            itemId: 'publication',
+                            typeAhead: true,
+                            name: 'publication_id'
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'combobox',
+                            displayField: 'description',
+                            valueField: 'id',
+                            emptyText: 'Month/Year',
+                            store: 'Duration',
+                            queryMode: 'local',
+                            itemId: 'duration',
+                            typeAhead: true,
+                            name: 'duration_id'
+                        },
+                        {
+                            xtype: 'button',
+                            iconCls: 'ui-silk ui-silk-application-go',
+                            itemId: 'generate_ad_list',
+                            text: 'Generate Ad List'
                         }
                     ]
                 },

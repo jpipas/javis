@@ -25,7 +25,7 @@ Ext.define('JavisERP.store.StaticDurationStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             autoLoad: true,
-            storeId: 'MyJsonStore16',
+            storeId: 'StaticDurationStore',
             model: 'JavisERP.model.Duration',
             proxy: {
                 type: 'ajax',

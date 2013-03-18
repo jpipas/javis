@@ -16,8 +16,8 @@ class Publication implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
-            $publication_array = $app['business.publication']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
-            $totalCount = $app['business.publication']->getTotalCount($request->get('filter'));
+            $publication_array = $app['business.publication']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('query'));
+            $totalCount = $app['business.publication']->getTotalCount($request->get('filter'),$request->get('query'));
 
             array_walk($publication_array,function($publication,$key) use (&$publication_array, &$app){
                 //$publication_array[$key]['publication'] = $app['business.publication']->getBypublicationId($publication['id']);

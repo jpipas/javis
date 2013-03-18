@@ -49,7 +49,7 @@ class Advertisement implements ControllerProviderInterface
 
         $controllers->get('/list/', function(Application $app, Request $request) {
             //$params = $request->request->all();
-            $adlist = $app['business.adlist']->getList();
+            $adlist = $app['business.adlist']->getList($request->get('filter'));
             return $app->json(array("ad_list"=>$adlist));
         });
 

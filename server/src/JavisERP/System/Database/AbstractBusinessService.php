@@ -34,7 +34,16 @@ abstract class AbstractBusinessService
         if (is_array($filter)) {
             for ($i=0;$i<count($filter);$i++){
                 switch($filter[$i]['data']['type']){
-                    case 'string' : $qs .= " AND ".$filter[$i]['field']." LIKE '%".$filter[$i]['data']['value']."%'"; break;
+                    case 'string' :
+                        switch ($filter[$i]['field']){
+                            case 'cl.territory_id':
+                            case 'p.id':
+                            case 'd.id':
+                                $qs .= " AND ".$filter[$i]['field']." = ".$filter[$i]['data']['value'];break;
+                            default:
+                                $qs .= " AND ".$filter[$i]['field']." LIKE '%".$filter[$i]['data']['value']."%'"; break;
+                        }
+                    break;
                     case 'list' :
                         if (strstr($filter[$i]['data']['value'],',')){
                             $fi = explode(',',$filter[$i]['data']['value']);

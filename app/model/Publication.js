@@ -24,29 +24,26 @@ Ext.define('JavisERP.model.Publication', {
 
     fields: [
         {
-            name: 'id',
-            mapping: 'id'
+            name: 'id'
         },
         {
-            name: 'description',
-            mapping: 'description'
+            name: 'description'
         },
         {
             name: 'contact_email'
         },
         {
-            name: 'territory',
+            name: 'territory_name',
             mapping: 'territory.name'
         },
         {
             name: 'territory_id'
         },
         {
-            name: 'designer_id'
+            name: 'created_at'
         },
         {
-            name: 'designer',
-            mapping: 'employee.fullname'
+            name: 'deleted_at'
         },
         {
             name: 'edit_action'
@@ -56,6 +53,9 @@ Ext.define('JavisERP.model.Publication', {
         },
         {
             name: 'view_action'
+        },
+        {
+            name: 'postal_code'
         }
     ],
 
@@ -84,14 +84,5 @@ Ext.define('JavisERP.model.Publication', {
             type: 'json',
             encode: true
         }
-    },
-
-    hasMany: [{
-        model: 'JavisERP.model.Advertisement',
-        name: 'advertisement'
-    },
-    {
-        model: 'JavisERP.model.PostalCode',
-        name: 'postal_code'
-    }]
+    }
 });
