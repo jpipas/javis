@@ -12,7 +12,7 @@ Ext.define('JavisERP.store.User', {
             remoteFilter: true,
             remoteSort: true,
             autoLoad: true,
-            storeId: 'UserSTore',
+            storeId: 'UserStore',
             model: 'JavisERP.model.User'
         }, cfg)]);
     }

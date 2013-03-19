@@ -85,7 +85,8 @@ Ext.application({
         'ContractGridController',
         'PublicationController',
         'UserController',
-        'AdListController'
+        'AdListController',
+        'TerritoryController'
     ],
     appFolder: '/app',
     launch: function() {

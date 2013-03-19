@@ -18,12 +18,12 @@ class User extends AbstractBusinessService
 
     public function getById($id) {
         $sql = "SELECT * FROM employee WHERE id = ?";
-        return $this->db->fetchAll($sql,array((int) $id));
+        return $this->db->fetchAssoc($sql,array((int) $id));
     }
 
     public function createUser($params) {
         unset($params['territory_name'], $params['territory'], $params['fullname']);
-        $params['role'] = "ROLE_USER";
+        $params['roles'] = "ROLE_USER";
         $this->db->insert('employee',$params);
         $user = $this->getById($this->db->lastInsertId());
         return $user;

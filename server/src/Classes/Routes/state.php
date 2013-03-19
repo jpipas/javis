@@ -16,11 +16,10 @@ class State implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
-            $territory_array = $app['business.state']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+            $state_array = $app['business.state']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
             $totalCount = $app['business.state']->getTotalCount($request->get('filter'));
-            return $app->json(array("totalCount"=>$totalCount['totalCount'], "state"=>$territory_array));
+            return $app->json(array("totalCount"=>$totalCount['totalCount'], "state"=>$state_array));
         });
-
 
         return $controllers;
     }

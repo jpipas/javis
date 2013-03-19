@@ -21,7 +21,7 @@ Ext.define('JavisERP.view.TerritoryGrid', {
     itemId: 'clientgrid',
     width: 868,
     autoScroll: false,
-    title: 'List: Clients',
+    title: 'List: Territory',
     forceFit: true,
     scroll: 'none',
     scrollDelta: 150,
@@ -44,6 +44,18 @@ Ext.define('JavisERP.view.TerritoryGrid', {
             },
             dockedItems: [
                 {
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                    {
+                        xtype: 'button',
+                        iconCls: 'ui-silk ui-silk-map-add',
+                        itemId: 'newterritory',
+                        text: 'New Territory'
+                    }
+                    ]
+                },
+                {
                     xtype: 'pagingtoolbar',
                     dock: 'bottom',
                     itemId: 'TerritoryPagingToolbar',
@@ -51,17 +63,11 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                     store: 'TerritoryStore'
                 }
             ],
-            tools: [
-                {
-                    xtype: 'tool',
-                    itemId: 'printTool',
-                    type: 'print'
-                }
-            ],
             columns: [
                 {
                     xtype: 'numbercolumn',
                     dataIndex: 'id',
+                    hidden: true,
                     text: 'ID',
                     format: '0'
                 },
@@ -72,8 +78,13 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'state',
+                    dataIndex: 'state_name',
                     text: 'State'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'manager_username',
+                    text: 'Manager'
                 }
             ]
         });

@@ -66,7 +66,7 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'manager_user_id',
+                    dataIndex: 'manager_username',
                     text: 'Manager'
                 },
                 {

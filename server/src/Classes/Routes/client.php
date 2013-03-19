@@ -23,7 +23,7 @@ class Client implements ControllerProviderInterface
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
                 $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
                 $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] = $usr_array['user'][0];
+                $client_array[$key]['salesrep'] = $usr_array['user'];
                 $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
                 $client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
                 $client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
@@ -46,7 +46,7 @@ class Client implements ControllerProviderInterface
                 $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
                 $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
                 if(array_key_exists(0,$usr_array['user'])){
-                    $client_array[$key]['salesrep'] =  $usr_array['user'][0];
+                    $client_array[$key]['salesrep'] =  $usr_array['user'];
                 }
             });
 

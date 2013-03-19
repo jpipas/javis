@@ -1,3 +1,5 @@
+Options +FollowSymlinks
+
 RewriteEngine On
 RewriteRule ^(/app.js)$ $1 [L]
 RewriteRule ^(/(resources|app)/.*/?)$ $1 [L]

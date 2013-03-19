@@ -44,11 +44,24 @@ Ext.define('JavisERP.model.User', {
             name: 'deleted_at'
         },
         {
+            name: 'territory'
+        },
+        {
             name: 'territory_name',
             mapping: 'territory.name'
         },
         {
             name: 'territory'
+        },
+        {
+            name: 'last_login'
+        },
+        {
+            name: 'manager'
+        },
+        {
+            name: 'manager_username',
+            mapping: 'manager.username'
         }
     ],
 
@@ -66,10 +79,5 @@ Ext.define('JavisERP.model.User', {
             root: 'user',
             totalProperty: 'totalCount'
         }
-    },
-
-    hasOne: {
-        associationKey: 'territory_id',
-        model: 'JavisERP.model.Territory'
     }
 });

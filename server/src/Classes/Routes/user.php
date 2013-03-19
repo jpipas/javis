@@ -23,6 +23,7 @@ class User implements ControllerProviderInterface
             array_walk($user_array,function($user,$key) use (&$user_array, &$app){
                 $user_array[$key]['territory'] = $app['business.territory']->getById($user['territory_id']);
                 $user_array[$key]['fullname'] = $user['first_name']." ".$user['last_name'];
+                $user_array[$key]['manager'] = $app['business.user']->getById($user['manager_user_id']);
             });
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "user"=>$user_array));
         });
@@ -30,12 +31,8 @@ class User implements ControllerProviderInterface
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
             $user_array = $app['business.user']->getById($id);
             $totalCount = $app['business.user']->getTotalCount($request->get('filter'));
-
-            array_walk($user_array,function($user,$key) use (&$user_array, &$app){
-               $user_array[$key]['territory'] = $app['business.territory']->getById($user['territory_id']);
-               $user_array[$key]['fullname'] = $user['first_name']." ".$user['last_name'];
-            });
-
+            $user_array['territory'] = $app['business.territory']->getOneById($user_array['territory_id']);
+            $user_array['fullname'] = $user_array['first_name']." ".$user_array['last_name'];
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"user"=>$user_array));
         });
 

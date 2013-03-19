@@ -31,6 +31,26 @@ Ext.define('JavisERP.model.Territory', {
         {
             name: 'name',
             type: 'string'
+        },
+        {
+            name: 'state_id'
+        },
+        {
+            name: 'state'
+        },
+        {
+            name: 'state_name',
+            mapping: 'state.name'
+        },
+        {
+            name: 'manager_username',
+            mapping: 'manager.username'
+        },
+        {
+            name: 'manager_id'
+        },
+        {
+            name: 'manager'
         }
     ],
 
