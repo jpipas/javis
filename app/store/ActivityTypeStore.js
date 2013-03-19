@@ -24,7 +24,7 @@ Ext.define('JavisERP.store.ActivityTypeStore', {
             storeId: 'activityTypeStore',
             proxy: {
                 type: 'ajax',
-                url: 'resources/js/activityType.json',
+                url: '/resources/js/activityType.json',
                 reader: {
                     type: 'json',
                     idProperty: 'id',

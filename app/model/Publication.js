@@ -56,15 +56,11 @@ Ext.define('JavisERP.model.Publication', {
         },
         {
             name: 'postal_code'
+        },
+        {
+            name: 'territory'
         }
     ],
-
-    belongsTo: {
-        associationKey: 'territory',
-        model: 'JavisERP.model.Territory',
-        getterName: 'territory',
-        foreignKey: ''
-    },
 
     proxy: {
         type: 'rest',

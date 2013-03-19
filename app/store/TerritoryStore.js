@@ -26,6 +26,7 @@ Ext.define('JavisERP.store.TerritoryStore', {
         me.callParent([Ext.apply({
             autoLoad: true,
             storeId: 'TerritoryStore',
+            pageSize: 50,
             model: 'JavisERP.model.Territory'
         }, cfg)]);
     }
