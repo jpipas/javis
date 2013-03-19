@@ -2,6 +2,7 @@ app/config/deploy.rb
 server/cache/
 server/composer.lock
 dev.json
+.htaccess
 # Bootstrap
 
 
