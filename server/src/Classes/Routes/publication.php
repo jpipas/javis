@@ -23,8 +23,8 @@ class Publication implements ControllerProviderInterface
                 //$publication_array[$key]['publication'] = $app['business.publication']->getBypublicationId($publication['id']);
                 $publication_array[$key]['territory'] = $app['business.territory']->getById($publication['territory_id']);
                 $publication_array[$key]['postal_code'] = $app['business.postalcode']->getByPublicationId($publication['id']);
-                $publication_array[$key]['edit_action'] = true;
-                $publication_array[$key]['delete_action'] = true;
+                $publication_array[$key]['edit_action'] = false;
+                $publication_array[$key]['delete_action'] = false;
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "publication"=>$publication_array));

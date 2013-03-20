@@ -1,7 +1,7 @@
 Ext.define('JavisERP.view.ClientGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientgrid',
-    requires:[
+    requires: [
         'Ext.ux.grid.FiltersFeature'
     ],
     height: 250,
@@ -39,12 +39,12 @@ Ext.define('JavisERP.view.ClientGrid', {
                         {
                             altText: 'Edit',
                             disabled: false,
-                            icon: 'resources/icons/user_edit.png',
+                            icon: '/resources/icons/user_edit.png',
                             tooltip: 'Edit'
                         },
                         {
                             altText: 'View',
-                            icon: 'resources/icons/user.png',
+                            icon: '/resources/icons/user.png',
                             tooltip: 'View'
                         }
                     ]
@@ -95,28 +95,20 @@ Ext.define('JavisERP.view.ClientGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'state',
+                    dataIndex: 'state_name',
                     flex: 1,
                     text: 'State'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'zip',
+                    dataIndex: 'postal_code_iso',
                     flex: 1,
                     text: 'Zip',
                     filterable: true
                 },
                 {
                     xtype: 'gridcolumn',
-                    getter: function(record) {
-                        var obj = record.get('territory');
-                        return Ext.isObject( obj )  ? obj.name : obj;
-                    },
-                    setter: function(record, value) {
-                        var obj = record.get('obj') || {};
-                        record.set('territory', Ext.apply(obj,{name: value}));
-                    },
-                    dataIndex: 'territory',
+                    dataIndex: 'territory_name',
                     flex: 1,
                     text: 'Territory',
                     filterable: true

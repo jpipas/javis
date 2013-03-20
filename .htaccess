@@ -1,6 +1,6 @@
-Options +FollowSymlinks
+#Options +FollowSymlinks
 
-RewriteEngine On
-RewriteRule ^(/app.js)$ $1 [L]
-RewriteRule ^(/(resources|app)/.*/?)$ $1 [L]
-RewriteRule ^/(.*)$ /server/web/index.php/$1
+#RewriteEngine On
+#RewriteRule ^(/app.js)$ $1 [L]
+#RewriteRule ^(/(resources|app|)/.*/?)$ $1 [L]
+#RewriteRule ^/(.*)$ /server/web/index.php/$1

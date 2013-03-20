@@ -1,8 +1,0 @@
-{
-	"totalCount":3,
-	"activity": [
-		{"id":1,"description":"Tasks"},
-		{"id":2,"description":"Events"},
-		{"id":3,"description":"Phone Calls"}
-	]
-}

@@ -3,6 +3,7 @@
 namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
+use \DateTime;
 
 class Publication extends AbstractBusinessService
 {
@@ -16,7 +17,7 @@ class Publication extends AbstractBusinessService
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $where_clause = "WHERE deleted_at is null ";
         if($filter){
-            $where_clause .= "WHERE deleted_at is null AND ";
+            $where_clause = "WHERE deleted_at is null ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 if($fltr['property'] == 'client_id'){
@@ -28,7 +29,9 @@ class Publication extends AbstractBusinessService
                                     where cl.id = %d and p.deleted_at is null
                                     group by p.id",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
-                    $where_clase = " description LIKE '%".$fltr['value']."'";
+                    if(array_key_exists('value', $fltr)){
+                       $where_clase = " description LIKE '%".$fltr['value']."'";
+                    }
                 } else {
                     $where_clause .= $fltr['property']." = ".$fltr['value'];
                 }
@@ -44,7 +47,7 @@ class Publication extends AbstractBusinessService
     public function getTotalCount($filter = null,$query=null) {
         $where_clause = "WHERE deleted_at is null ";
         if($filter){
-            $where_clause = "WHERE deleted_at is null AND ";
+            $where_clause = "WHERE deleted_at is null ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 if($fltr['property'] == 'client_id'){
@@ -55,6 +58,10 @@ class Publication extends AbstractBusinessService
                                     left join client as cl on c.client_id = cl.id
                                     where cl.id = %d AND p.deleted_at is null
                                     group by p.id",$fltr['value']);
+                } else if($fltr['property'] == 'description'){
+                    if(array_key_exists('value', $fltr)){
+                       $where_clase = " description LIKE '%".$fltr['value']."'";
+                    }
                 } else {
                     $where_clause .= $fltr['property']." = ".$fltr['value'];
                 }
@@ -67,7 +74,8 @@ class Publication extends AbstractBusinessService
     }
 
     public function createPublication($params){
-        unset($params['advertisement'],$params['postal_code'],$params['territory']);
+        unset($params['advertisement'],$params['postal_code'],$params['territory'],$params['id'],$params['territory_name']);
+        unset($params['edit_action'],$params['view_action'],$params['delete_action'],$params['deleted_at'],$params['created_at']);
         $postal_code_array = $params['postal_codes'];
         unset($params['postal_codes']);
         $this->db->insert('publication',$params);
@@ -80,7 +88,8 @@ class Publication extends AbstractBusinessService
     }
 
     public function updatePublication($id, $params) {
-        unset($params['advertisement'],$params['postal_code'],$params['territory'],$params['id']);
+        unset($params['advertisement'],$params['postal_code'],$params['territory'],$params['id'],$params['territory_name']);
+        unset($params['edit_action'],$params['view_action'],$params['delete_action'],$params['deleted_at'],$params['created_at']);
         $postal_code_array = $params['postal_codes'];
         unset($params['postal_codes']);
         $this->db->update('publication',$params, array('id'=>$id));
@@ -93,7 +102,8 @@ class Publication extends AbstractBusinessService
     }
 
     public function deleteById($id) {
-        return $this->db->update('publication',array("deleted_at" => "now()"), array("id" => $id));
+        $time = new DateTime('NOW');
+        return $this->db->update('publication',array("deleted_at" => $time->format('Y-m-d H:i:s')), array("id" => $id));
     }
 
     public function getById($id) {

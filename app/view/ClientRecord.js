@@ -143,13 +143,13 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
-                                    name: 'state',
+                                    name: 'state_name',
                                     fieldLabel: 'State'
                                 },
                                 {
                                     xtype: 'displayfield',
                                     anchor: '95%',
-                                    name: 'postal_code',
+                                    name: 'postal_code_iso',
                                     fieldLabel: 'Zip'
                                 }
                             ]
@@ -267,7 +267,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                                     anchor: '95%',
                                                     fieldLabel: 'Unsettled Months',
                                                     labelWidth: 150,
-                                                    name: 'remaining_months'
+                                                    name: 'remaining_months_cnt'
                                                 }
                                             ]
                                         },

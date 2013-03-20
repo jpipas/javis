@@ -17,6 +17,7 @@ Ext.define('JavisERP.controller.AppController', {
     extend: 'Ext.app.Controller',
 
     stores: [
+        'ClientStore',
         'ActivityStore',
         'TerritoryStore'
     ],

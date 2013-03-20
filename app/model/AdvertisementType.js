@@ -30,16 +30,12 @@ Ext.define('JavisERP.model.AdvertisementType', {
     ],
 
     proxy: {
-        type: 'ajax',
+        type: 'rest',
         url: '/server/web/index.php/advertisement/type/',
         reader: {
             type: 'json',
             root: 'adType',
             totalProperty: 'totalCount'
         }
-    },
-
-    hasMany: {
-        model: 'JavisERP.model.AdvertisementSize'
     }
 });

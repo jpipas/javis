@@ -32,21 +32,33 @@ Ext.define('JavisERP.model.Client', {
             type: 'string'
         },
         {
-            name: 'state',
+            name: 'state'
+        },
+        {
+            name: 'state_name',
             type: 'string',
             mapping: 'state.name'
         },
         {
-            name: 'postal_code',
+            name: 'postal_code_iso',
             type: 'string',
             mapping: 'postal_code.iso_code'
+        },
+        {
+            name: 'postal_code'
         },
         {
             name: 'postal_code_id',
             type: 'int'
         },
         {
+            name: 'zip'
+        },
+        {
             name: 'phone'
+        },
+        {
+            name: 'cell'
         },
         {
             name: 'email_address'
@@ -71,7 +83,10 @@ Ext.define('JavisERP.model.Client', {
             name: 'balance'
         },
         {
-            name: 'remaining_months',
+            name: 'remaining_months'
+        },
+        {
+            name: 'remaining_months_cnt',
             mapping: 'remaining_months.cnt'
         },
         {
@@ -102,6 +117,8 @@ Ext.define('JavisERP.model.Client', {
         {
             name: 'deleted_at'
         }
+
+
     ],
 
     proxy: {
@@ -118,24 +135,5 @@ Ext.define('JavisERP.model.Client', {
             root: 'client',
             totalProperty: 'totalCount'
         }
-    },
-    hasOne: [
-        {
-            model: 'JavisERP.model.User',
-            name: 'salesrep'
-        }
-    ],
-
-    hasMany: [
-        {
-            associationKey: 'territory',
-            model: 'JavisERP.model.Territory',
-            name: 'territory'
-        },
-        {
-            associationKey: 'contact',
-            model: 'JavisERP.model.Contact',
-            name: 'contact'
-        }
-    ]
+    }
 });

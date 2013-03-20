@@ -30,13 +30,8 @@ Ext.define('JavisERP.model.Role', {
         }
     ],
 
-    belongsTo: {
-        associationKey: 'role',
-        model: 'JavisERP.model.Contact'
-    },
-
     proxy: {
-        type: 'ajax',
+        type: 'rest',
         url: 'resources/js/role.json',
         reader: {
             type: 'json',

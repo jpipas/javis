@@ -1,8 +1,0 @@
-{
-  "state": [
-    {"id":"1","name":"Wisconsin","abbr":"WI"},
-    {"id":"2","name":"Minnesota","abbr":"MN"},
-    {"id":"3","name":"California","abbr":"CA"},
-    {"id":"4","name":"Florida","abbr":"FL"},
-  ]
-}

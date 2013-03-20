@@ -31,15 +31,6 @@ Ext.define('JavisERP.model.Contact', {
         }
     ],
 
-    hasOne: {
-            model: 'JavisERP.model.Client',
-            foreignKey: 'client_id'
-    },
-    hasMany: {
-        model: 'JavisERP.model.Role',
-        name: 'role'
-    },
-
     proxy: {
         type: 'rest',
         api: {

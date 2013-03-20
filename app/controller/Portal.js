@@ -21,6 +21,10 @@ Ext.define('JavisERP.controller.Portal', {
         'ActivityPortlet'
     ],
 
+    stores: [
+        'ClientStore'
+    ],
+
     init: function(application) {
         this.control({
             'clientportlet': {
@@ -29,7 +33,7 @@ Ext.define('JavisERP.controller.Portal', {
             'portlet': {
                 close: this.onPortletClose
             }
-        }); 
+        });
     },
 
     onPortletClose: function(portlet) {

@@ -69,10 +69,5 @@ Ext.define('JavisERP.model.Territory', {
             root: 'territory',
             totalProperty: 'totalCount'
         }
-    },
-
-    hasMany: {
-        associationKey: 'states',
-        model: 'JavisERP.model.State'
     }
 });

@@ -45,9 +45,8 @@ class Client implements ControllerProviderInterface
                 $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
                 $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
                 $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                if(array_key_exists(0,$usr_array['user'])){
-                    $client_array[$key]['salesrep'] =  $usr_array['user'];
-                }
+                $client_array[$key]['salesrep'] =  $usr_array['user'];
+
             });
 
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"client"=>$client_array));

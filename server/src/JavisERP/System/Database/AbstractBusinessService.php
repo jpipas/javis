@@ -78,7 +78,9 @@ abstract class AbstractBusinessService
         } else {
             $filter_array = json_decode($filter,true);
             for($i=0;$i<count($filter_array);$i++){
-                $qs .= " AND ".$filter_array[$i]['property']." = ".$filter_array[$i]['value'];
+                if(array_key_exists('value',$filter_array[$i])){
+                   $qs .= " AND ".$filter_array[$i]['property']." = ".$filter_array[$i]['value'];
+                }
             }
             $where .= $qs;
         }

@@ -14,9 +14,14 @@
  */
 
 Ext.Loader.setConfig({
-    enabled: true
+    enabled: true,
+    paths: {
+        'Ext': 'http://cdn.sencha.com/ext-4.2.0-gpl/src/',
+        'Ext.ux': 'http://cdn.sencha.com/ext-4.2.0-gpl/examples/ux/',
+        'JavisERP':'/app'
+    }
 });
-Ext.Loader.setPath("Ext.ux", "http://cdn.sencha.io/ext-4.1.1a-gpl/examples/ux");
+
 Ext.application({
     models: [
         'Client',
@@ -54,7 +59,7 @@ Ext.application({
         'AdList'
     ],
     views: [
-        'AppViewport',
+        'Viewport',
         'NavBar',
         'ContentCards',
         'Activities',

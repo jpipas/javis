@@ -39,7 +39,7 @@ Ext.define('JavisERP.view.ContactGrid', {
                     align: 'center',
                     items: [
                         {
-                            icon: 'resources/icons/vcard.png',
+                            icon: '/resources/icons/vcard.png',
                             tooltip: 'View'
                         }
                     ]

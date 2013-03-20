@@ -25,6 +25,7 @@ Ext.define('JavisERP.controller.ClientController', {
     ],
 
     stores: [
+        'ClientStore',
         'State',
         'TerritoryStore',
         'CustomerStage',
@@ -164,7 +165,6 @@ Ext.define('JavisERP.controller.ClientController', {
         me.client.save({
             callback: function(record,operation,success){
                 me.client_id = record.data.id;
-                console.log(record);
                 me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
                 me.clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
                 me.clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));

@@ -54,7 +54,8 @@ class Client extends AbstractBusinessService
     public function updateClient($id, $params) {
         unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
         unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
-        unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name']);
+        unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name'],$params['state_name']);
+        unset($params['postal_code_iso'],$params['remaining_months_cnt']);
         $this->db->update('client',$params, array('id'=>$id));
         $client_id = $id;
         return $client_id;

@@ -16,8 +16,7 @@
 Ext.define('JavisERP.view.ClientPortlet', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientportlet',
-
-    requires:[
+    requires: [
         'Ext.ux.grid.FiltersFeature'
     ],
 
@@ -31,7 +30,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
     forceFit: true,
     scroll: 'vertical',
     store: 'ClientStore',
-    features: [{ftype: 'filters'}],
+    //features: [{ftype: 'filters'}],
     initComponent: function() {
         var me = this;
 
@@ -113,13 +112,13 @@ Ext.define('JavisERP.view.ClientPortlet', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'state',
+                    dataIndex: 'state_name',
                     flex: 1,
                     text: 'State'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'postal_code',
+                    dataIndex: 'postal_code_iso',
                     flex: 1,
                     text: 'Zip',
                     filter: {
@@ -128,15 +127,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    getter: function(record) {
-                        var obj = record.get('territory');
-                        return Ext.isObject( obj )  ? obj.name : obj;
-                    },
-                    setter: function(record, value) {
-                        var obj = record.get('obj') || {};
-                        record.set('territory', Ext.apply(obj,{name: value}));
-                    },
-                    dataIndex: 'territory',
+                    dataIndex: 'territory_name',
                     flex: 1,
                     text: 'Territory',
                     filter: {

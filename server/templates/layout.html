@@ -2,8 +2,7 @@
 <html>
     <head>
         <title>{% block title 'Backoffice' %} - Best Version Media</title>
-        <script src="http://extjs.cachefly.net/ext-4.1.1a-gpl/ext-all-debug.js"></script>
-        <link rel="stylesheet" href="http://extjs.cachefly.net/ext-4.1.1a-gpl/resources/css/ext-all.css">
+        <link rel="stylesheet" href="http://extjs.cachefly.net/ext-4.2.0-gpl/resources/css/ext-all.css">
         <!--
         <script type="text/javascript" src="resources/js/ext/ext-all-debug.js"></script>
         <link rel="stylesheet" type="text/css" href="resources/js/ext/resources/css/ext-all.css"/>
@@ -13,20 +12,26 @@
         <link rel="stylesheet" type="text/css" href="/resources/css/portal.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/BoxSelect.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/css/RowActions.css"/>
-        <link rel="stylesheet" type="text/css" href="resources/css/print.css"/>
-
-        <script src="/resources/js/ext_patches/js/Ext/patch/deepEquals.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/resources/js/ext_patches/js/Ext/patch/ColumnSetterGetter.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/resources/js/ext_patches/js/Ext/patch/JsonPath.js" type="text/javascript" charset="utf-8"></script>
-        <script src="/resources/js/Ext.ux.menu.StoreMenu.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="/resources/css/print.css"/>
+        <!-- <x-compile> -->
+        <!-- <x-bootstrap> -->
+        <script src="http://cdn.sencha.com/ext-4.2.0-gpl/ext-all.js" type="text/javascript"></script>
         <script src="/resources/js/JavisERP.writer.JsonWithAssociations.js" type="text/javascript" charset="utf-8"></script>
         <script src="/resources/js/BoxSelect.js" type="text/javascript" charset="utf-8"></script>
         <script src="/resources/js/RowActions.js" type="text/javascript" charset="utf-8"></script>
         <script src="/resources/js/Printer.js" type="text/javascript" charset="utf-8"></script>
-
-        <script type="text/javascript" src="/app.js"></script>
+        <!-- </x-bootstrap> -->
+        <script type="text/javascript" src="app.js"></script>
+          <!-- </x-compile> -->
     </head>
     <body>
+        <script>
+            var myMask = new Ext.LoadMask(Ext.getBody(),{msg:"Loading..."});
+            myMask.show();
+            Ext.defer(function() {
+                myMask.hide();
+            },4000);
+        </script>
         {% block content %}{% endblock %}
     </body>
 </html>

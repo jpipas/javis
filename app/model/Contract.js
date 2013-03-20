@@ -64,27 +64,6 @@ Ext.define('JavisERP.model.Contract', {
         }
     ],
 
-    hasOne: [
-        {
-            model: 'JavisERP.model.Client',
-            foreignKey: 'client_id'
-        },
-        {
-            model: 'JavisERP.model.PaymentTerm',
-            foreignKey: 'payment_term_id',
-            name: 'payment_term'
-        },
-        {
-            model: 'JavisERP.model.Territory',
-            foreignKey: 'territory_id'
-        }
-    ],
-
-    hasMany: {
-        model: 'JavisERP.model.Duration',
-        name: 'durations'
-    },
-
     proxy: {
         type: 'rest',
         api: {

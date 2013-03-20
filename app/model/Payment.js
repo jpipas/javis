@@ -83,24 +83,5 @@ Ext.define('JavisERP.model.Payment', {
             root: 'payment',
             totalProperty: 'totalCount'
         }
-    },
-
-    belongsTo: [
-        {
-            model: 'JavisERP.model.Client'
-        },
-        {
-            model: 'JavisERP.model.Contract'
-        }
-    ],
-
-    hasOne: [
-        {
-            model: 'JavisERP.model.PaymentType'
-        },
-        {
-            model: 'JavisERP.model.Client',
-            name: 'client'
-        }
-    ]
+    }
 });
