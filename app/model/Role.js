@@ -31,7 +31,7 @@ Ext.define('JavisERP.model.Role', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'ajax',
         url: 'resources/js/role.json',
         reader: {
             type: 'json',

@@ -122,7 +122,7 @@ Ext.define('JavisERP.model.Client', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
         api: {
             create: '/server/web/index.php/client/new',
             read: '/server/web/index.php/client/',

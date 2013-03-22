@@ -38,8 +38,8 @@ Ext.define('JavisERP.view.ContractGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'id',
-                    flex: 2,
+                    dataIndex: 'contract_number',
+                    flex: 1,
                     text: 'Contract No.'
                 },
                 {

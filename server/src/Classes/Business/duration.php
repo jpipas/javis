@@ -11,25 +11,30 @@ class Duration extends AbstractBusinessService
         return 'duration';
     }
 
-    public function getAll($page = null,$start = 0,$limit = 0,$filter) {
+    public function getAll($page = null,$start = 0,$limit = 0,$filter,$query) {
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $where_clause = "";
         if($filter){
-            $where_clause .= "WHERE ";
+            $where_clause .= "WHERE 0 = 0 ";
             $filter_array = json_decode($filter,true);
             foreach($filter_array as $fltr){
                 if($fltr['property'] == 'contract_id'){
                     $where_clause = sprintf(" left join contract_duration as cd on d.id = cd.duration_id
                                     where cd.contract_id = %d",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
-                    $where_clause .= " description LIKE '%".$fltr['value']."%'";
+                    if(array_key_exists('value', $fltr)){
+                        $where_clause .= " AND description LIKE '%".$fltr['value']."%'";
+                    }
                 } else if($fltr['property'] == 'payment_window') {
-                    $where_clause .= " and d.id NOT IN (SELECT p.duration_id FROM payment p WHERE p.contract_id =".$fltr['value'].")";
+                    $where_clause .= " AND d.id NOT IN (SELECT p.duration_id FROM payment p WHERE p.contract_id =".$fltr['value'].")";
                 } else {
-                    $where_clause .= $fltr['property']." = ".$fltr['value'];
+                    $where_clause .= " AND ".$fltr['property']." = ".$fltr['value'];
                 }
             }
+        }
+        if($query){
+            $where_clause .= "WHERE description LIKE '%$query%'";
         }
         $sql = "SELECT d.* FROM duration as d $where_clause";
         return $this->db->fetchAll($sql);

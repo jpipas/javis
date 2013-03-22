@@ -84,8 +84,16 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     labelAlign: 'right',
                                     items: [
                                         {
-                                            xtype: 'displayfield',
+                                            xtype: 'hidden',
                                             name: 'id',
+                                            fieldLabel: 'Contract ID',
+                                            labelAlign: 'right'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            anchor: '95%',
+                                            cls: 'contract_number',
+                                            name: 'contract_number',
                                             fieldLabel: 'Contract Number',
                                             labelAlign: 'right'
                                         },
@@ -134,18 +142,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             }
                                         },
                                         {
-                                            xtype: 'comboboxselect',
+                                            xtype: 'combobox',
+                                            multiSelect:true,
                                             fieldLabel: 'Duration(s)',
                                             displayField: 'description',
                                             emptyText: 'select a duration...',
                                             descField: 'id',
                                             valueField: 'id',
                                             store: 'Duration',
-                                            queryMode: 'local',
+                                            queryMode: 'remote',
                                             typeAdead:true,
-                                            growMax:100,
-                                            delimiter: ',',
-                                            filterPickList:true,
+                                            editable:false,
                                             name: 'durations',
                                             cls:'durationlist'
                                         }
@@ -291,7 +298,8 @@ Ext.define('JavisERP.view.ContractWindow', {
 
         var subtotal = form.findField("subtotal").getValue();
         var design_fee = form.findField("design_fee").getValue();
-        var durations = form.findField("durations").getValue();
+        var durations = form.findField("durations").getRawValue();
+        //console.log(durations);
         var duration = durations.length;
         if(duration===0){
             duration=1;

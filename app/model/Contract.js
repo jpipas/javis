@@ -5,7 +5,8 @@ Ext.define('JavisERP.model.Contract', {
     uses: [
         'JavisERP.model.Client',
         'JavisERP.model.PaymentTerm',
-        'JavisERP.model.Duration'
+        'JavisERP.model.Duration',
+        'JavisERP.util.SilexRest'
     ],
 
     idProperty: 'id',
@@ -13,6 +14,10 @@ Ext.define('JavisERP.model.Contract', {
     fields: [
         {
             name: 'id',
+            type: 'int'
+        },
+        {
+            name: 'contract_number',
             type: 'int'
         },
         {
@@ -40,6 +45,9 @@ Ext.define('JavisERP.model.Contract', {
             mapping: 'payment_term.description'
         },
         {
+            name: 'payment_term_id'
+        },
+        {
             name: 'sale_date',
             type: 'date'
         },
@@ -65,13 +73,15 @@ Ext.define('JavisERP.model.Contract', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
+        /*appendId: false,
         api: {
             create: '/server/web/index.php/contract/new',
             read: '/server/web/index.php/contract/',
             update: '/server/web/index.php/contract/update',
             destroy: '/server/web/index.php/contract/delete'
-        },
+        },*/
+        url: '/server/web/index.php/contract/',
         reader: {
             type: 'json',
             idProperty: 'id',

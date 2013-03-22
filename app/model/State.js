@@ -15,7 +15,7 @@ Ext.define('JavisERP.model.State', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
         api: {
             create: '/server/web/index.php/state/new',
             read: '/server/web/index.php/state/',

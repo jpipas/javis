@@ -19,7 +19,7 @@ Ext.define('JavisERP.view.ClientRecord', {
         type: 'vbox'
     },
     bodyPadding: 5,
-    title: 'Customer Record',
+    title: 'Client Record',
 
     initComponent: function() {
         var me = this;
@@ -43,7 +43,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                     xtype: 'fieldcontainer',
                     flex: 1,
                     itemId: 'RecordHeader',
-                    minHeight: 100,
+                    minHeight: 200,
                     defaults: {
                         labelAlign: 'right'
                     },
@@ -99,6 +99,13 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     readOnly: true,
                                     name: 'phone',
                                     fieldLabel: 'Phone'
+                                },
+                                {
+                                    xtype: 'displayfield',
+                                    anchor: '95%',
+                                    readOnly: true,
+                                    name: 'cell',
+                                    fieldLabel: 'Mobile'
                                 },
                                 {
                                     xtype: 'displayfield',

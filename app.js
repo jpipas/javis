@@ -16,9 +16,9 @@
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext': 'http://cdn.sencha.com/ext-4.2.0-gpl/src/',
-        'Ext.ux': 'http://cdn.sencha.com/ext-4.2.0-gpl/examples/ux/',
-        'JavisERP':'/app'
+        'Ext': 'http://cdn.sencha.io/ext-4.2.0-gpl/src/',
+        'Ext.ux': 'http://cdn.sencha.io/ext-4.2.0-gpl/examples/ux/'
+        //'JavisERP':'/app'
     }
 });
 

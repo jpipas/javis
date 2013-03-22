@@ -23,7 +23,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         },
         {
             ref: 'durationList',
-            selector: 'comboboxselect[cls=durationlist]'
+            selector: 'combobox[cls=durationlist]'
         },
         {
             ref: 'contractForm',
@@ -66,12 +66,12 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         }
 
         var durations = [];
-        var recs = this.getDurationList().getValueRecords();
+        var recs = this.getDurationList().getValue();
         for(var key1 in recs){
             var duration = new JavisERP.model.Duration();
-            duration.set("id",recs[key1].data.id);
-            duration.set("description",recs[key1].data.description);
-            duration.set("date_string",recs[key1].data.date_string);
+            duration.set("id",recs[key1]);
+            //duration.set("description",recs[key1].data.description);
+            //duration.set("date_string",recs[key1].data.date_string);
             durations.push(duration);
         }
 
@@ -105,7 +105,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 beforeshow: this.onWindowBeforeShow,
                 close: this.onWindowClose
             },
-            "comboboxselect[cls=durationlist]": {
+            "combobox[cls=durationlist]": {
                 change: this.runCalcs
             },
             "button[cls=contractsave]": {

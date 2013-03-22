@@ -168,8 +168,8 @@ Ext.define('JavisERP.controller.ClientController', {
                 me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
                 me.clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
                 me.clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));
-                conGrid.getStore().clearFilter(true);
-                conGrid.getStore().filter("client_id",me.client_id);
+                //conGrid.getStore().clearFilter(true);
+                //conGrid.getStore().filter("client_id",me.client_id);
                 me.clientWindow.show();
             }
         });
@@ -342,7 +342,7 @@ Ext.define('JavisERP.controller.ClientController', {
         });
 
         me.contract.save({
-            callback: function(record,operation,success){
+            callback: function(record){
                 me.contract_id = record.data.id;
                 me.contractWindow.getComponent('contractform').getForm().setValues({id: record.data.id});
             }

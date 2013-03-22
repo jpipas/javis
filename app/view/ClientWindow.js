@@ -10,7 +10,7 @@ Ext.define('JavisERP.view.ClientWindow', {
     layout: {
         type: 'fit'
     },
-    title: 'Customer',
+    title: 'Client',
     modal: true,
 
     initComponent: function() {
@@ -80,7 +80,7 @@ Ext.define('JavisERP.view.ClientWindow', {
                                         },
                                         {
                                             xtype: 'combobox',
-                                            fieldLabel: 'Customer Stage',
+                                            fieldLabel: 'Client Stage',
                                             displayField: 'id',
                                             emptyText: 'Select a stage...',
                                             valueField: 'id',
@@ -110,6 +110,12 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             name: 'phone',
                                             vtype: 'phone',
                                             fieldLabel: 'Phone'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            name: 'cell',
+                                            vtype: 'phone',
+                                            fieldLabel: 'Mobile Phone'
                                         },
                                         {
                                             xtype: 'textfield',

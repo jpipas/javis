@@ -32,7 +32,7 @@ class Contract implements ControllerProviderInterface
 
 
         $controllers->get('/duration/', function(Application $app, Request $request) {
-            $duration_array = $app['business.duration']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+            $duration_array = $app['business.duration']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('query'));
             return $app->json(array("totalCount"=>count($duration_array), "duration"=>$duration_array));
         });
 
@@ -53,6 +53,12 @@ class Contract implements ControllerProviderInterface
             });
 
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "contract"=>$contract_array));
+        });
+
+        $controllers->put('/{id}', function(Application $app, $id, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $contract = $app['business.contract']->updateContract($id, $params);
+            return $app->json(array("success"=>true,"contract"=>$contract));
         });
 
         $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
@@ -77,10 +83,19 @@ class Contract implements ControllerProviderInterface
         });
 
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+            //$params = json_decode($request->getContent(),true);
             $app['business.contract']->deleteById($id);
             $app['business.advertisement']->deleteByContractId($id);
             return $app->json(array("success"=>true));
         });
+/*
+        $controllers->delete('/', function(Application $app, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $app['business.contract']->deleteById($params['id']);
+            $app['business.advertisement']->deleteByContractId($params['id']);
+            return $app->json(array("success"=>true));
+        });
+*/
         return $controllers;
     }
 

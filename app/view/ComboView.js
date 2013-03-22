@@ -26,7 +26,7 @@ Ext.define('JavisERP.view.ComboView', {
      * @returns {Ext.XTemplate} Returns template
      */
     setTpl: function() {
-        	var me = this,
+         var me = this,
             field = me.field,
             displayField = field.displayField,
             descField = field.descField,
@@ -43,17 +43,17 @@ Ext.define('JavisERP.view.ComboView', {
                         '<div class="x-tab-close-btn ', me.closeCls, '"></div>',
                     '</li>',
                 '</tpl>',
-			    '<li class="x-boxselect-input"><input style="width:10px;"/></li>', // need this to manage focus; width of input is larger in createNewOnEnter is set to true
+                '<li class="x-boxselect-input"><input style="width:10px;"/></li>', // need this to manage focus; width of input is larger in createNewOnEnter is set to true
             '</ul>', {
             compiled: true,
             disableFormats: true,
             length: me.maxLength,
             ellipsis: function (txt) {
-                return Ext.String.ellipsis(txt, this.length)
+                return Ext.String.ellipsis(txt, this.length);
             },
             emptyText: me.emptyText,
             empty : function(values) {
-                return   '<span class="empty">' + (values.length  ? '' : this.emptyText )+ '</span>'
+                return   '<span class="empty">' + (values.length  ? '' : this.emptyText )+ '</span>';
             }
         });
         delete me.emptyText;
@@ -61,18 +61,18 @@ Ext.define('JavisERP.view.ComboView', {
     },
     initComponent: function () {
         var me = this;
-        if (!me.tpl) {me.tpl= me.setTpl()}
+        if (!me.tpl) {me.tpl= me.setTpl();}
         if (!me.selModel) {
             me.selModel = {enableKeyNav: false};
         }
-        me.callParent(arguments)
+        me.callParent(arguments);
     },
     renderSelectors: {
         inputEl: 'input',
         emptyEl: 'span.empty'
     },
     getFocusEl: function () {
-        return this.inputEl
+        return this.inputEl;
     },
     addFocusListener: function (force) {
         var me = this,  focusEl;
@@ -81,7 +81,7 @@ Ext.define('JavisERP.view.ComboView', {
             me.field.el.on({
                 click: me.field.onFocus,
                 scope: me.field
-            })
+            });
         }
         if ((focusEl = me.getFocusEl()) && force) {
             focusEl.on({
@@ -93,27 +93,27 @@ Ext.define('JavisERP.view.ComboView', {
     },
     onItemClick: function (r, h, i, e, o) {
         if (e.getTarget('.' + this.closeCls)) {
-            return this.onDataChange(r, 'remove')
+            return this.onDataChange(r, 'remove');
         }
-        this.highlightItem(h)
+        this.highlightItem(h);
     },
     onItemDblClick: function (r, h, i, e, o) {
         if (this.removeOnDblClick) {
-            this.onDataChange(r, 'remove')
+            this.onDataChange(r, 'remove');
         }
     },
     onDataChange: function (r, action) {
         var me = this;
-        if(me.field.readOnly || me.field.disabled) {return}
+        if(me.field.readOnly || me.field.disabled) {return;}
         if (action == 'remove') {
-            me.store.remove(r)
+            me.store.remove(r);
         }
-        me.field.setStoreValues()
+        me.field.setStoreValues();
     },
     listeners: {
         refresh: {
             fn: function () {
-            	var me = this;
+                var me = this;
                 this.applyRenderSelectors();
                 this.addFocusListener(this);
             }
@@ -122,12 +122,9 @@ Ext.define('JavisERP.view.ComboView', {
     onDestroy: function () {
         var me = this,
             focusEl;
-        if (focusEl = me.getFocusEl()) {
-            focusEl.clearListeners()
+        if (focusEl == me.getFocusEl()) {
+            focusEl.clearListeners();
         }
     }
 /*::::*/
 });
-
-
-

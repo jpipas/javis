@@ -35,7 +35,7 @@ Ext.define('JavisERP.model.AppliedPayment', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
         api: {
             create: '/server/web/index.php/applypayment/new',
             read: '/server/web/index.php/applypayment/',

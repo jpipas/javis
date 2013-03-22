@@ -24,13 +24,13 @@ Ext.define('JavisERP.view.RecordNavigation', {
             items: [
                 {
                     xtype: 'button',
-                    id: 'back-arrow',
+                    cls: 'back-arrow',
                     iconCls: 'ui-silk ui-silk-control-rewind',
                     tooltip: 'Prev. Record'
                 },
                 {
                     xtype: 'button',
-                    id: 'next-arrow',
+                    cls: 'next-arrow',
                     iconCls: 'ui-silk ui-silk-control-fastforward',
                     tooltip: 'Next Record'
                 },

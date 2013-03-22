@@ -53,7 +53,7 @@ Ext.define('JavisERP.controller.UserController', {
         var uStore = this.getUserStore();
         me.user.save({
             callback: function(record,operation){
-                console.log(operation);
+//                console.log(operation);
                 if(operation.wasSuccessful){
                     uWindow.close();
                     uStore.reload();

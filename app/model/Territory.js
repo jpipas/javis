@@ -55,7 +55,7 @@ Ext.define('JavisERP.model.Territory', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
         api: {
             create: '/server/web/index.php/territory/new',
             read: '/server/web/index.php/territory/',

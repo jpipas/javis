@@ -160,13 +160,13 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         itemId: 'UserGrid',
                                         iconCls: 'ui-silk ui-silk-user-gray',
-                                        text: 'Employees'
+                                        text: 'Publishers'
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'ClientGrid',
                                         iconCls: 'ui-silk ui-silk-group',
-                                        text: 'Customers',
+                                        text: 'Clients',
                                         menu: {
                                             xtype: 'menu',
                                             width: 120,

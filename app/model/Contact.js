@@ -32,7 +32,7 @@ Ext.define('JavisERP.model.Contact', {
     ],
 
     proxy: {
-        type: 'rest',
+        type: 'srest',
         api: {
             create: '/server/web/index.php/contact/new',
             read: '/server/web/index.php/contact/',

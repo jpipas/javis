@@ -44,7 +44,7 @@ class Contract extends AbstractBusinessService {
         $this->db->update('contract',$params, array('id'=>$id));
         $this->db->delete('contract_duration',array("contract_id"=>$id));
         foreach($duration_array as $duration){
-            $this->db->insert('contract_duration', array("contract_id"=>$id,"duration_id"=>$duration['id']));
+            $this->db->insert('contract_duration', array("contract_id"=>$id,"duration_id"=>$duration));
         }
         $contract = $this->getById($id);
         return $contract;
