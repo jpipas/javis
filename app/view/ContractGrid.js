@@ -39,7 +39,7 @@ Ext.define('JavisERP.view.ContractGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'contract_number',
-                    flex: 1,
+                    flex: 2,
                     text: 'Contract No.'
                 },
                 {
@@ -47,12 +47,13 @@ Ext.define('JavisERP.view.ContractGrid', {
                     hidden: true,
                     defaultWidth: 160,
                     dataIndex: 'client_name',
-                    flex: 4,
+                    flex: 3,
                     text: 'Client Name'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'total_sales',
+                    renderer: 'usMoney',
                     flex: 2,
                     text: 'Total Sales Amt.'
                 },
@@ -65,31 +66,35 @@ Ext.define('JavisERP.view.ContractGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'subtotal',
+                    renderer: 'usMoney',
                     flex: 2,
                     text: 'Subtotal'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'total_amount',
+                    renderer: 'usMoney',
                     flex: 2,
                     text: 'Total'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'first_months_payment',
+                    renderer: 'usMoney',
                     flex: 2,
                     text: 'First Payment'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'monthly_payment',
+                    renderer: 'usMoney',
                     flex: 2,
                     text: 'Monthly Payment'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'payment_term_description',
-                    flex: 3,
+                    flex: 2,
                     text: 'Payment Terms'
                 },
                 {

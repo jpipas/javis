@@ -51,7 +51,7 @@ Ext.define('JavisERP.view.NavBar', {
                             menu: {
                                 xtype: 'menu',
                                 width: 120,
-                                title: 'HomeMenu',
+                                //title: 'HomeMenu',
                                 items: [
                                     {
                                         xtype: 'menuitem',
@@ -77,7 +77,7 @@ Ext.define('JavisERP.view.NavBar', {
                             menu: {
                                 xtype: 'menu',
                                 width: 120,
-                                title: 'ActivitiesMenu',
+                                //title: 'ActivitiesMenu',
                                 items: [
                                     {
                                         xtype: 'menuitem',
@@ -153,14 +153,14 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'Lists',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
-                                title: 'ListMenu',
+                                width: 220,
+                                //title: 'ListMenu',
                                 items: [
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'UserGrid',
                                         iconCls: 'ui-silk ui-silk-user-gray',
-                                        text: 'Publishers'
+                                        text: 'Independent Contractors'
                                     },
                                     {
                                         xtype: 'menuitem',
@@ -216,7 +216,7 @@ Ext.define('JavisERP.view.NavBar', {
                             menu: {
                                 xtype: 'menu',
                                 width: 120,
-                                title: 'ReportsMenu',
+                                //title: 'ReportsMenu',
                                 items: [
                                     {
                                         xtype: 'menuitem',

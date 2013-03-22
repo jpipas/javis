@@ -84,7 +84,7 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'manager_username',
-                    text: 'Manager'
+                    text: 'Publisher'
                 }
             ]
         });

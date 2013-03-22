@@ -12,6 +12,7 @@ class AdList extends AbstractBusinessService
     }
 
     public function getList($filter = null) {
+        $wherestr = "0 = 0";
         if($filter) {
             $wherestr = $this->getWhereString($filter);
         }

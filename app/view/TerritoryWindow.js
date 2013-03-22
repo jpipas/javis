@@ -66,7 +66,7 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                         },
                         {
                             xtype: 'combobox',
-                            fieldLabel: 'Manager',
+                            fieldLabel: 'Publisher',
                             displayField: 'fullname',
                             labelAlign: 'right',
                             valueField: 'id',

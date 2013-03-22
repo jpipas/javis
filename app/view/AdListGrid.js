@@ -96,6 +96,10 @@ Ext.define('JavisERP.view.AdListGrid', {
                             handler : function(){
                                 Ext.ux.grid.Printer.printAutomatically = false;
                                 Ext.ux.grid.Printer.stylesheetPath = '/resources/css/print.css';
+                                var pub = Ext.getCmp('publication_adlist');
+                                var ter = Ext.getCmp('territory_adlist');
+                                var dur = Ext.getCmp('duration_adlist');
+                                Ext.ux.grid.Printer.mainTitle = ter.getStore().getById(ter.getValue()).data.name+' - '+pub.getStore().getById(pub.getValue()).data.description+' - '+dur.getStore().getById(dur.getValue()).data.description;
                                 Ext.ux.grid.Printer.print(me);
                             }
                         },
@@ -110,7 +114,17 @@ Ext.define('JavisERP.view.AdListGrid', {
                             store: 'TerritoryStore',
                             editable: false,
                             name: 'territory_id',
-                            itemId: 'territory'
+                            itemId: 'territory',
+                            id: 'territory_adlist',
+                            listeners: {
+                                change: {
+                                    fn: function() {
+                                        //console.log(this.getValue());
+                                        Ext.getCmp('publication_adlist').getStore().clearFilter();
+                                        Ext.getCmp('publication_adlist').getStore().filter('territory_id',this.getValue());
+                                    }
+                                }
+                            }
                         },
                         {
                             xtype: 'tbseparator'
@@ -122,6 +136,7 @@ Ext.define('JavisERP.view.AdListGrid', {
                             emptyText: 'Publication',
                             store: 'PublicationStore',
                             itemId: 'publication',
+                            id: 'publication_adlist',
                             typeAhead: true,
                             name: 'publication_id'
                         },
@@ -136,6 +151,7 @@ Ext.define('JavisERP.view.AdListGrid', {
                             store: 'Duration',
                             queryMode: 'local',
                             itemId: 'duration',
+                            id: 'duration_adlist',
                             typeAhead: true,
                             name: 'duration_id'
                         },

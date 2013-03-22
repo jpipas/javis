@@ -2,9 +2,9 @@ Ext.define('JavisERP.view.UserGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.usergrid',
 
-    height: 250,
-    width: 400,
-    title: 'List: Employees',
+    minHeight: 250,
+    //width: 400,
+    title: 'List: Independent Contractors',
     store: 'User',
     itemId: 'UserGrid',
     forceFit: true,
@@ -42,41 +42,49 @@ Ext.define('JavisERP.view.UserGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'username',
+                    flex: 1,
                     text: 'Username'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'email',
+                    flex: 3,
                     text: 'Email'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'first_name',
+                    flex: 2,
                     text: 'First Name'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'last_name',
+                    flex: 2,
                     text: 'Last Name'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'roles',
+                    flex: 1,
                     text: 'Roles'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'manager_username',
+                    flex: 1,
                     text: 'Manager'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'territory_name',
+                    flex: 1,
                     text: 'Territory'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'created_at',
+                    flex: 2,
                     text: 'Date Created'
                 }
             ],

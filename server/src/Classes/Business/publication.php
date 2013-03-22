@@ -30,10 +30,10 @@ class Publication extends AbstractBusinessService
                                     group by p.id",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
                     if(array_key_exists('value', $fltr)){
-                       $where_clase = " description LIKE '%".$fltr['value']."'";
+                       $where_clase = "AND description LIKE '%".$fltr['value']."'";
                     }
                 } else {
-                    $where_clause .= $fltr['property']." = ".$fltr['value'];
+                    $where_clause .= " AND ".$fltr['property']." = ".$fltr['value'];
                 }
             }
         } else if($query){
@@ -60,14 +60,14 @@ class Publication extends AbstractBusinessService
                                     group by p.id",$fltr['value']);
                 } else if($fltr['property'] == 'description'){
                     if(array_key_exists('value', $fltr)){
-                       $where_clase = " description LIKE '%".$fltr['value']."'";
+                       $where_clase = "AND description LIKE '%".$fltr['value']."' ";
                     }
                 } else {
-                    $where_clause .= $fltr['property']." = ".$fltr['value'];
+                    $where_clause .= "AND ".$fltr['property']." = ".$fltr['value']." ";
                 }
             }
         } else if($query){
-            $where_clause .= "AND description LIKE '%".$query."%'";
+            $where_clause .= "AND description LIKE '%".$query."%' ";
         }
         $sql = "SELECT count(*) as 'totalCount' FROM publication as p $where_clause";
         return $this->db->fetchAssoc($sql);
