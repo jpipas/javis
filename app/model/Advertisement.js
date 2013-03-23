@@ -34,6 +34,15 @@ Ext.define('JavisERP.model.Advertisement', {
         },
         {
             name: 'publications'
+        },
+        {
+            name: 'edit_action'
+        },
+        {
+            name: 'view_action'
+        },
+        {
+            name: 'delete_action'
         }
     ],
 

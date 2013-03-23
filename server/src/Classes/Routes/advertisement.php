@@ -18,11 +18,19 @@ class Advertisement implements ControllerProviderInterface
         $controllers->get('/', function (Application $app, Request $request) {
             $advertisement_array = $app['business.advertisement']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
             //$totalCount = $app['business.advertisement']->getTotalCount($request->get('filter'));
-
-            array_walk($advertisement_array,function($advertisement,$key) use (&$advertisement_array, &$app){
+            $user = $app['session']->get("user_token");
+            array_walk($advertisement_array,function($advertisement,$key) use (&$advertisement_array, &$app, &$user){
                 //$advertisement_array[$key]['publication'] = $app['business.publication']->getByAdvertisementId($advertisement['id']);
                 $advertisement_array[$key]['ad_size'] = $app['business.adsize']->getById($advertisement['ad_size_id']);
                 $advertisement_array[$key]['ad_type'] = $app['business.adtype']->getById($advertisement['ad_type_id']);
+                $roles = $user['user']->getRoles();
+                //$app['monolog']->info($roles[0]);
+                switch($roles[0]){
+                  case 'ROLE_ADMIN':
+                    $advertisement_array[$key]['view_action'] = false;
+                    $advertisement_array[$key]['edit_action'] = false;
+                    $advertisement_array[$key]['delete_action'] = false;
+                }
             });
 
             return $app->json(array("totalCount"=>count($advertisement_array), "advertisement"=>$advertisement_array));

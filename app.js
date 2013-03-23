@@ -91,7 +91,8 @@ Ext.application({
         'PublicationController',
         'UserController',
         'AdListController',
-        'TerritoryController'
+        'TerritoryController',
+        'AdvertisementGridController'
     ],
     appFolder: '/app',
     launch: function() {
