@@ -52,6 +52,25 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
             ],
             columns: [
                 {
+                    xtype: 'rowactions',
+                    maxWidth: 80,
+                    defaultWidth: 80,
+                    actions: [
+                        {
+                            iconCls: 'view_action ui-silk ui-silk-layout',
+                            tooltip: 'View Advertisement',
+                            hideIndex: 'view_action',
+                            callback: Ext.emptyFn
+                        },
+                        {
+                            iconCls: 'delete_action ui-silk ui-silk-layout-delete',
+                            tooltip: 'Delete Advertisement',
+                            hideIndex: 'delete_action',
+                            callback: Ext.emptyFn
+                        }
+                    ]
+                },
+                {
                     xtype: 'gridcolumn',
                     dataIndex: 'id',
                     text: 'ID'
@@ -86,28 +105,6 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
 
     onButtonClick: function(button, e, options) {
         var adWindow = new JavisERP.view.AdvertisementWindow();
-
-        var comboFieldBox = Ext.create('Ext.ux.form.field.BoxSelect',
-            {
-                xtype: 'comboboxselect',
-                fieldLabel: 'Publication(s)',
-                displayField: 'description',
-                emptyText: 'select a publication...',
-                descField: 'id',
-                valueField: 'id',
-                store: 'StaticPublicationStore',
-                queryMode: 'local',
-                growMax: 150,
-                anchor:'95%',
-                typeAdead:true,
-                stacked: true,
-                filterPickList:true,
-                name: 'publicationlist[]'
-            });
-
-        var container = adWindow.query('fieldcontainer > #adwindow_col1');
-        container[0].insert(1,comboFieldBox);
-
         adWindow.show();
     }
 

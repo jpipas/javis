@@ -78,6 +78,22 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                             cls: 'clientnamefield',
                                             name: 'client',
                                             fieldLabel: 'Client'
+                                        },
+                                        {
+                                            xtype: 'comboboxselect',
+                                            fieldLabel: 'Publication(s)',
+                                            displayField: 'description',
+                                            emptyText: 'select a publication...',
+                                            descField: 'id',
+                                            valueField: 'id',
+                                            store: 'StaticPublicationStore',
+                                            queryMode: 'local',
+                                            growMax: 150,
+                                            anchor:'95%',
+                                            typeAdead:true,
+                                            stacked: true,
+                                            filterPickList:true,
+                                            name: 'publicationlist[]'
                                         }
                                     ]
                                 },

@@ -30,6 +30,11 @@ class Advertisement extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
+    public function getById($id){
+        $sql = "SELECT a.* FROM advertisement as a WHERE a.id = ?";
+        return $this->db->fetchAll($sql,array((int) $id));
+    }
+
     public function createAdvertisement($params){
         $publications_array = $params['publicationlist'];
         $contract_id = $params['contract_id'];

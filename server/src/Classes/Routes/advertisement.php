@@ -36,6 +36,18 @@ class Advertisement implements ControllerProviderInterface
             return $app->json(array("totalCount"=>count($advertisement_array), "advertisement"=>$advertisement_array));
         });
 
+        $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+            $advertisement_array = $app['business.advertisement']->getById($id);
+            //$totalCount = $app['business.advertisement']->getTotalCount($request->get('filter'));
+
+            array_walk($advertisement_array,function($advertisement,$key) use (&$advertisement_array, &$app){
+                $advertisement_array[$key]['ad_size'] = $app['business.adsize']->getById($advertisement['ad_size_id']);
+                $advertisement_array[$key]['ad_type'] = $app['business.adtype']->getById($advertisement['ad_type_id']);
+            });
+
+            return $app->json(array("success"=>true,"advertisement"=>$advertisement_array));
+        });
+
         $controllers->get('/type/', function (Application $app, Request $request) {
             $ad_type = $app['business.adtype']->getAll();
             return $app->json(array("totalCount"=>count($ad_type), "adType"=>$ad_type));
