@@ -244,7 +244,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                             xtype: 'advertisementgrid',
                             cls: 'contractadgrid',
                             height: 150,
-                            id: 'contractadgrid',
+                            //id: 'contractadgrid',
                             itemId: 'contractadgrid',
                             padding: '10px 0px'
                         }

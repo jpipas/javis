@@ -20,7 +20,7 @@ class Advertisement implements ControllerProviderInterface
             //$totalCount = $app['business.advertisement']->getTotalCount($request->get('filter'));
             $user = $app['session']->get("user_token");
             array_walk($advertisement_array,function($advertisement,$key) use (&$advertisement_array, &$app, &$user){
-                //$advertisement_array[$key]['publication'] = $app['business.publication']->getByAdvertisementId($advertisement['id']);
+                $advertisement_array[$key]['publication'] = $app['business.publication']->getByAdvertisementId($advertisement['id']);
                 $advertisement_array[$key]['ad_size'] = $app['business.adsize']->getById($advertisement['ad_size_id']);
                 $advertisement_array[$key]['ad_type'] = $app['business.adtype']->getById($advertisement['ad_type_id']);
                 $roles = $user['user']->getRoles();
@@ -41,6 +41,7 @@ class Advertisement implements ControllerProviderInterface
             //$totalCount = $app['business.advertisement']->getTotalCount($request->get('filter'));
 
             array_walk($advertisement_array,function($advertisement,$key) use (&$advertisement_array, &$app){
+                $advertisement_array[$key]['publication'] = $app['business.publication']->getByAdvertisementId($advertisement['id']);
                 $advertisement_array[$key]['ad_size'] = $app['business.adsize']->getById($advertisement['ad_size_id']);
                 $advertisement_array[$key]['ad_type'] = $app['business.adtype']->getById($advertisement['ad_type_id']);
             });

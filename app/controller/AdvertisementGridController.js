@@ -13,7 +13,7 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
     refs: [
         {
             ref: 'advertisementGrid',
-            selector: '#clientadgrid'
+            selector: 'advertisementgrid'
         },
         {
             ref: 'advertisementForm',
@@ -82,17 +82,14 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         me.adWindow = new JavisERP.view.AdvertisementWindow();
         this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
         var advertisementForm = this.getAdvertisementForm();
+        var adGrid = this.getAdvertisementGrid();
         this.getAdvertisementModel().load(record.data.id,{
             success: function(model){
                 advertisementForm.loadRecord(model);
+                console.log(model);
             }
         });
-        var myMask = new Ext.LoadMask(this.getAdvertisementGrid(),{msg:"Loading..."});
-        myMask.show();
-        Ext.defer(function() {
-            myMask.hide();
-            me.adWindow.show();
-        },500);
+        me.adWindow.show();
     }
 
 });
