@@ -51,17 +51,24 @@ Ext.define('JavisERP.controller.ContractGridController', {
     },
 
     editContract: function(record){
-        me.contractWindow = new JavisERP.view.ContractWindow();
-        var contractForm = this.getContractForm();
+        var contractForm = null;
+        if(!this.getContractWindow()){
+            me.contractWindow = new JavisERP.view.ContractWindow();
+            contractForm = this.getContractForm();
+        } else {
+            me.contractWindow = this.getContractWindow();
+            contractForm = me.contractWindow.getComponent('contractform');
+        }
         this.getContractModel().load(record.data.id,{
             success: function(model){
-                console.log(model);
                 contractForm.loadRecord(model);
                 contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
+                contractForm.getForm().findField('client_name').setValue(model.raw.client.company_name);
+
                 me.durfield = contractForm.getForm().findField('durations');
                 me.durfield.setValue(model.raw.durations);
                 //console.log(model.raw.durations);
-                me.contractWindow.runCalculations();
+                //me.contractWindow.runCalculations();
             }
         });
         // var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});

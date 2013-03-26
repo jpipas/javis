@@ -50,8 +50,13 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         this.getDurationStore().clearFilter(true);
     },
 
+    onWindowClose: function(abstractcomponent,options) {
+        //console.log("in beforedestroy");
+        this.getContractWindow().close();
+    },
+
     runCalcs: function(target) {
-        this.getContractWindow().paymentCalculations();
+        this.paymentCalculations();
     },
 
     onSaveButtonClick: function(button, e, options) {
@@ -66,8 +71,6 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         for(var key1 in recs){
             var duration = new JavisERP.model.Duration();
             duration.set("id",recs[key1]);
-            //duration.set("description",recs[key1].data.description);
-            //duration.set("date_string",recs[key1].data.date_string);
             durations.push(duration);
         }
 
@@ -100,14 +103,28 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         this.control({
             "window[cls=contractWindow]": {
                 afterrender: this.onWindowAfterRender,
-                beforeshow: this.onWindowBeforeShow
+                beforeshow: this.onWindowBeforeShow,
+                hide: this.onWindowClose
             },
             "combobox[cls=durationlist]": {
-                change: this.runCalcs
+                //change: this.runCalcs
             },
             "button[cls=contractsave]": {
                 click: this.onSaveButtonClick
+            },
+            "form numberfield[name=discount]":{
+                //change: this.runCalculations
+            },
+            "form numberfield[name=total_sales]":{
+                //change: this.runCalculations
+            },
+            "form numberfield[name=design_fee]":{
+                //change: this.runCalculations
+            },
+            "form numberfield[name=first_months_payment]":{
+                //change: this.paymentCalculations
             }
+
         });
     },
 
@@ -123,6 +140,40 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
     getClientName: function() {
         return me.client_name;
+    },
+
+    runCalculations: function() {
+        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
+
+        var total_sales_amt = form.findField("total_sales").getValue();
+        var discount = form.findField("discount").getValue();
+        var subtotal = form.findField("subtotal").getValue();
+        var design_fee = form.findField("design_fee").getValue();
+
+        var sub_total_calc = (total_sales_amt*(1-discount)).toFixed(2);
+        form.findField("subtotal").setValue(sub_total_calc);
+
+        var total_calc = parseFloat(sub_total_calc) + design_fee;
+        form.findField("total_amount").setValue(total_calc.toFixed(2));
+
+        this.paymentCalculations();
+    },
+
+    paymentCalculations: function() {
+        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
+
+        var subtotal = form.findField("subtotal").getValue();
+        var design_fee = form.findField("design_fee").getValue();
+        var durations = form.findField("durations").getRawValue();
+        //console.log(durations);
+        var duration = durations.length;
+        if(duration===0){
+            duration=1;
+        }
+        var first_month_calc = (subtotal/duration)+design_fee;
+        var month_payment = (subtotal/duration);
+        form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));
+        form.findField("monthly_payment").setValue(month_payment.toFixed(2));
     }
 
 });

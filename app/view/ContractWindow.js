@@ -26,6 +26,8 @@ Ext.define('JavisERP.view.ContractWindow', {
     },
     title: 'Contract',
     modal: true,
+    autoDestroy: false,
+    closeAction: 'hide',
 
     initComponent: function() {
         var me = this;
@@ -38,7 +40,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                     itemId: 'contractform',
                     minHeight: 300,
                     bodyPadding: 5,
-                    url: '/server/web/index.php/contract/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
@@ -132,13 +133,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             maxValue: 1,
                                             minValue: 0,
                                             decimalPrecision: 3,
-                                            step: 0.001,
-                                            listeners: {
-                                                change: {
-                                                    fn: me.onDiscountChange,
-                                                    scope: me
-                                                }
-                                            }
+                                            step: 0.001
                                         },
                                         {
                                             xtype: 'combobox',
@@ -175,13 +170,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             name: 'total_sales',
                                             fieldLabel: 'Total Sales Amount',
                                             labelAlign: 'right',
-                                            minValue: 0,
-                                            listeners: {
-                                                change: {
-                                                    fn: me.onSalesAmountChange,
-                                                    scope: me
-                                                }
-                                            }
+                                            minValue: 0
                                         },
                                         {
                                             xtype: 'displayfield',
@@ -194,13 +183,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             name: 'design_fee',
                                             fieldLabel: 'Design Fee',
                                             labelAlign: 'right',
-                                            step: 5,
-                                            listeners: {
-                                                change: {
-                                                    fn: me.onDesignFeeChange,
-                                                    scope: me
-                                                }
-                                            }
+                                            step: 5
                                         },
                                         {
                                             xtype: 'numberfield',
@@ -214,13 +197,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             name: 'first_months_payment',
                                             fieldLabel: '1st Mon. Payment',
                                             labelAlign: 'right',
-                                            autoStripChars: false,
-                                            listeners: {
-                                                change: {
-                                                    fn: me.onFirstMonthsPaymentChange,
-                                                    scope: me
-                                                }
-                                            }
+                                            autoStripChars: false
                                         },
                                         {
                                             xtype: 'numberfield',
@@ -253,60 +230,5 @@ Ext.define('JavisERP.view.ContractWindow', {
         });
 
         me.callParent(arguments);
-    },
-
-    onCancelClick: function(button, e, options) {
-        console.log("cancel this!");
-    },
-
-    onDiscountChange: function(field, newValue, oldValue, options) {
-        this.runCalculations();
-    },
-
-    onSalesAmountChange: function(field, newValue, oldValue, options) {
-        this.runCalculations();
-    },
-
-    onDesignFeeChange: function(field, newValue, oldValue, options) {
-        this.runCalculations();
-    },
-
-    onFirstMonthsPaymentChange: function(field, newValue, oldValue, options) {
-        this.paymentCalculations();
-    },
-
-    runCalculations: function() {
-        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
-
-        var total_sales_amt = form.findField("total_sales").getValue();
-        var discount = form.findField("discount").getValue();
-        var subtotal = form.findField("subtotal").getValue();
-        var design_fee = form.findField("design_fee").getValue();
-
-        var sub_total_calc = (total_sales_amt*(1-discount)).toFixed(2);
-        form.findField("subtotal").setValue(sub_total_calc);
-
-        var total_calc = parseFloat(sub_total_calc) + design_fee;
-        form.findField("total_amount").setValue(total_calc.toFixed(2));
-
-        this.paymentCalculations();
-    },
-
-    paymentCalculations: function() {
-        var form = Ext.ComponentQuery.query('#contractform')[0].getForm();
-
-        var subtotal = form.findField("subtotal").getValue();
-        var design_fee = form.findField("design_fee").getValue();
-        var durations = form.findField("durations").getRawValue();
-        //console.log(durations);
-        var duration = durations.length;
-        if(duration===0){
-            duration=1;
-        }
-        var first_month_calc = (subtotal/duration)+design_fee;
-        var month_payment = (subtotal/duration);
-        form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));
-        form.findField("monthly_payment").setValue(month_payment.toFixed(2));
     }
-
 });

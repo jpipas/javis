@@ -78,10 +78,6 @@ Ext.define('JavisERP.controller.ClientController', {
             selector: 'clientportlet'
         },
         {
-            ref: 'contractWindow',
-            selector: 'contractwindow'
-        },
-        {
             ref: 'contractGrid',
             selector: '#clientcontractgrid'
         },
