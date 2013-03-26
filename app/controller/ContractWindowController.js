@@ -50,10 +50,6 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         this.getDurationStore().clearFilter(true);
     },
 
-    onWindowClose: function(panel, eOpts){
-        this.getContractGrid().getStore().reload();
-    },
-
     runCalcs: function(target) {
         this.getContractWindow().paymentCalculations();
     },
@@ -78,9 +74,11 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         me.contract.setAssociatedData("durations",durations);
         me.contract.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
         var cWindow = this.getContractWindow();
+        var cGrid = this.getContractGrid();
         me.contract.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
+                    cGrid.getStore().reload();
                     cWindow.close();
                     Ext.Msg.alert('Success','Contract saved successfully!');
                 } else {
@@ -102,8 +100,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         this.control({
             "window[cls=contractWindow]": {
                 afterrender: this.onWindowAfterRender,
-                beforeshow: this.onWindowBeforeShow,
-                close: this.onWindowClose
+                beforeshow: this.onWindowBeforeShow
             },
             "combobox[cls=durationlist]": {
                 change: this.runCalcs

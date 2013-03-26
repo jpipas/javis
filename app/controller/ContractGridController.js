@@ -64,12 +64,12 @@ Ext.define('JavisERP.controller.ContractGridController', {
                 me.contractWindow.runCalculations();
             }
         });
-        var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
-        myMask.show();
-        Ext.defer(function() {
-            myMask.hide();
+        // var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
+        // myMask.show();
+        // Ext.defer(function() {
+        //     myMask.hide();
             me.contractWindow.show();
-        },1500);
+        //},1500);
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
     },

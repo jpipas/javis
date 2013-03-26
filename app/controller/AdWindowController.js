@@ -61,11 +61,6 @@ Ext.define('JavisERP.controller.AdWindowController', {
             ref: 'clientNameField',
             selector: 'displayfield[cls=clientnamefield]',
             xtype: 'displayfield'
-        },
-        {
-            ref: 'contractWindow',
-            selector: 'window[cls=contractWindow]',
-            xtype: 'window'
         }
     ],
 

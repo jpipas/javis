@@ -21,7 +21,6 @@ Ext.define('JavisERP.view.ContractWindow', {
     width: 750,
     overflowY: 'auto',
     resizable: false,
-    autoDestroy: true,
     layout: {
         type: 'fit'
     },
