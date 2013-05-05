@@ -17,7 +17,13 @@ class Client implements ControllerProviderInterface
 
         $controllers->get('/', function (Application $app, Request $request) {
             //print_r($request->get('limit'));
-            $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+            $client_array = array();
+            if($request->get('search')){
+                $client_array = $app['business.client']->searchForClient($request->get('search'));
+                return print_r($client_array);
+            } else {
+                $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+            }
             $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){

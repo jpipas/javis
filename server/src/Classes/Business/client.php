@@ -60,4 +60,15 @@ class Client extends AbstractBusinessService
         $client_id = $id;
         return $client_id;
     }
+
+    public function searchForClient($search) {
+        $search_string = json_decode($search,TRUE);
+        $fields = $search_string['fields'];
+        $query = $search_string['query'];
+        if(is_array($fields)){
+             for ($i=0;$i<count($fields);$i++){
+
+             }
+        }
+    }
 }

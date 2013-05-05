@@ -18,7 +18,7 @@ Ext.define('JavisERP.model.Contract', {
         },
         {
             name: 'contract_number',
-            type: 'int'
+            type: 'string'
         },
         {
             name: 'total_sales',
@@ -74,13 +74,6 @@ Ext.define('JavisERP.model.Contract', {
 
     proxy: {
         type: 'srest',
-        /*appendId: false,
-        api: {
-            create: '/server/web/index.php/contract/new',
-            read: '/server/web/index.php/contract/',
-            update: '/server/web/index.php/contract/update',
-            destroy: '/server/web/index.php/contract/delete'
-        },*/
         url: '/server/web/index.php/contract/',
         reader: {
             type: 'json',
