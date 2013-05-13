@@ -174,7 +174,7 @@ Ext.define('JavisERP.view.NavBar', {
                                                 {
                                                     xtype: 'menuitem',
                                                     iconCls: 'ui-silk ui-silk-group-add',
-                                                    itemId: 'newCustomer',
+                                                    itemId: 'new_customer',
                                                     text: 'New Customer'
                                                 }
                                             ]

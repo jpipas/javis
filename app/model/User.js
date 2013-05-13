@@ -67,12 +67,7 @@ Ext.define('JavisERP.model.User', {
 
     proxy: {
         type: 'srest',
-        api: {
-            create: '/server/web/index.php/user/new',
-            read: '/server/web/index.php/user/',
-            update: '/server/web/index.php/user/update',
-            destroy: '/server/web/index.php/user/delete'
-        },
+        url: '/server/web/index.php/user/',
         reader: {
             type: 'json',
             idProperty: 'id',

@@ -95,12 +95,13 @@ Ext.define('JavisERP.controller.UserController', {
     editUser: function(record){
         var uWindow = new JavisERP.view.UserWindow();
         //console.log(this.getUserModel());
+        var uForm = this.getUserForm();
         this.getUserModel().load(record.data.id, {
             success: function(record,operation){
-                me.getUserForm().getForm().loadRecord(record);
-                me.getUserForm().getForm().findField('password').reset();
-                me.getUserForm().getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
-                me.getUserForm().getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
+                uForm.getForm().loadRecord(record);
+                uForm.getForm().findField('password').reset();
+                uForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
+                uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
             }
         });
         uWindow.show();

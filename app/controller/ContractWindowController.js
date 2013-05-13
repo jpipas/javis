@@ -61,6 +61,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
     onSaveButtonClick: function(button, e, options) {
         var fields = this.getContractForm().getForm().getValues(false,false,false,true);
+        //console.log(fields);
         me.contract = new JavisERP.model.Contract({id: fields['id']});
         for(var key in fields){
             me.contract.set(key,fields[key]);
@@ -78,6 +79,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         me.contract.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
         var cWindow = this.getContractWindow();
         var cGrid = this.getContractGrid();
+        //console.log(me.contract);
         me.contract.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
@@ -107,22 +109,22 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 hide: this.onWindowClose
             },
             "combobox[cls=durationlist]": {
-                //change: this.runCalcs
+                change: this.runCalcs
             },
             "button[cls=contractsave]": {
                 click: this.onSaveButtonClick
             },
             "form numberfield[name=discount]":{
-                //change: this.runCalculations
+                change: this.runCalculations
             },
             "form numberfield[name=total_sales]":{
-                //change: this.runCalculations
+                change: this.runCalculations
             },
             "form numberfield[name=design_fee]":{
-                //change: this.runCalculations
+                change: this.runCalculations
             },
             "form numberfield[name=first_months_payment]":{
-                //change: this.paymentCalculations
+                change: this.paymentCalculations
             }
 
         });
@@ -165,11 +167,12 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         var subtotal = form.findField("subtotal").getValue();
         var design_fee = form.findField("design_fee").getValue();
         var durations = form.findField("durations").getRawValue();
-        //console.log(durations);
-        var duration = durations.length;
+
+        var duration = durations.split(",").length;
         if(duration===0){
             duration=1;
         }
+        //console.log(duration);
         var first_month_calc = (subtotal/duration)+design_fee;
         var month_payment = (subtotal/duration);
         form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));

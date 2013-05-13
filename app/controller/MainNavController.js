@@ -13,7 +13,13 @@ Ext.define('JavisERP.controller.MainNavController', {
     },
 
     onMenuitemClick: function(item, e, options) {
-        this.application.fireEvent('navigationChange',item.itemId);
+
+        if(item.itemId == 'new_customer'){
+            this.onNewCustomerClick();
+        } else {
+            this.application.fireEvent('navigationChange',item.itemId);
+        }
+
     },
 
     init: function(application) {
@@ -25,6 +31,12 @@ Ext.define('JavisERP.controller.MainNavController', {
                 click: this.onMenuitemClick
             }
         });
+    },
+
+    onNewCustomerClick: function() {
+        //console.log("creating a new customer from main nav");
+        this.application.fireEvent('navigationChange','ClientRecord');
+        this.application.fireEvent('createClientRecord');
     }
 
 });

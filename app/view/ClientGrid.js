@@ -130,6 +130,15 @@ Ext.define('JavisERP.view.ClientGrid', {
                     itemId: 'ClientPagingToolbar',
                     displayInfo: true,
                     store: 'ClientStore'
+                },
+                {
+                    xtype: 'gridsearchingbar',
+                    inputWidth: 200,
+                    grid: this,
+                    showSelectAll: true,
+                    menuIconCls: 'ui-silk ui-silk-magnifier',
+                    disableIndexes: ['id'],
+                    items: ['->']
                 }
             ],
             tools: [

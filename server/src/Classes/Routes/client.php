@@ -19,12 +19,13 @@ class Client implements ControllerProviderInterface
             //print_r($request->get('limit'));
             $client_array = array();
             if($request->get('search')){
-                $client_array = $app['business.client']->searchForClient($request->get('search'));
-                return print_r($client_array);
+                $client_array = $app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),FALSE);
+                $totalCount['totalCount'] = count($app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),TRUE));
             } else {
                 $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+                $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
             }
-            $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
+
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
                 $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
@@ -67,7 +68,7 @@ class Client implements ControllerProviderInterface
             return $app->json($client_return);
         });
 
-        $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
+        $controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $client_id = $app['business.client']->updateClient($id, $params);
             $subReq = Request::create('/client/'.$client_id,'GET');

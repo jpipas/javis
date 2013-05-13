@@ -16,6 +16,7 @@ class Client extends AbstractBusinessService
 
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
+
         $sql = "SELECT c.*,s.name as 'state',
         TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) as 'balance' FROM client AS c
         LEFT JOIN state s ON c.state_id = s.id
@@ -25,6 +26,7 @@ class Client extends AbstractBusinessService
         WHERE $wherestr
         GROUP BY c.id
         $limit_clause";
+        //return print_r($sql);
         return $this->db->fetchAll($sql);
     }
 
@@ -61,14 +63,48 @@ class Client extends AbstractBusinessService
         return $client_id;
     }
 
-    public function searchForClient($search) {
+    public function searchForClient($search,$page = null,$start = 0,$limit = 0,$isCount = false) {
+        ($start === null)?$start = "":$start;
+        ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $search_string = json_decode($search,TRUE);
         $fields = $search_string['fields'];
         $query = $search_string['query'];
+        $wherestr = " 0 = 0 ";
+        $js = "";
+        $qs = "";
+        ($isCount)?$limit_clause="":$limit_clause = $limit_clause;
+        //{"fields":["company_name","stage","address1","address2","city","state_name","postal_code_iso","territory_name"],"query":"Wauwa"}
         if(is_array($fields)){
              for ($i=0;$i<count($fields);$i++){
-
+                switch($fields[$i]){
+                    case 'territory_name':
+                        $js .= " LEFT JOIN territory ON c.territory_id = territory.id";
+                        $qs .= " OR territory.name LIKE '%".$query."%'";
+                        break;
+                    case 'postal_code_iso':
+                        $js .= " LEFT JOIN postal_code ON c.postal_code_id = postal_code.id";
+                        $qs .= " OR postal_code.iso_code LIKE '%".$query."%'";
+                        break;
+                    case 'state_name':
+                        $qs .= " OR s.name LIKE '%".$query."%'";
+                        break;
+                    default:
+                        $qs .= " OR ".$fields[$i]." LIKE '%".$query."%'"; break;
+                }
              }
         }
+        $wherestr .= $qs;
+        $wherestr = substr_replace($wherestr," AND ",7,3);
+        $sql = "SELECT c.*,s.name as 'state',
+        TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) as 'balance' FROM client AS c
+        LEFT JOIN state s ON c.state_id = s.id
+        LEFT JOIN payment p ON c.id = p.client_id
+        LEFT JOIN contract con ON c.id = con.client_id
+        LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
+        $js
+        WHERE $wherestr
+        GROUP BY c.id
+        $limit_clause";
+        return $this->db->fetchAll($sql);
     }
 }

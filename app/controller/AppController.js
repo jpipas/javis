@@ -44,10 +44,8 @@ Ext.define('JavisERP.controller.AppController', {
             navigationChange: me.navigationClick,
             scope: me
         });
-
+        // Not sure this is doing anything at the moment
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-
-        //this.getAdFormColumn1().add(pubComboField);
     },
 
     navigationClick: function(itemId) {
@@ -56,6 +54,7 @@ Ext.define('JavisERP.controller.AppController', {
         var xtype = this.getContentCards().getLayout().getActiveItem().getXType();
 
         if(xtype.indexOf("grid") != -1){
+            // if its a grid clear the filter and reload the store
             this.getContentCards().getLayout().getActiveItem().getStore().clearFilter(true);
             this.getContentCards().getLayout().getActiveItem().getStore().load();
         }

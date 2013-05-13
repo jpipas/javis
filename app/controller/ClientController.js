@@ -265,6 +265,11 @@ Ext.define('JavisERP.controller.ClientController', {
             scope:me
         });
 
+        me.application.on({
+            createClientRecord: me.onNewButtonClick,
+            scope: me
+        });
+
         this.control({
             "clientgrid #actions, clientportlet #actions": {
                 click: this.onActionColumnClick
