@@ -132,6 +132,10 @@ class Client extends AbstractBusinessService
                 $property = 't.name';break;
             case 'salesrep_name':
                 $property = 'e.username';break;
+            default:
+                $property = 'c.id';
+                $direction = "ASC";
+                break;
         }
         return "ORDER BY $property $direction";
     }
