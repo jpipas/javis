@@ -7,7 +7,7 @@ Ext.define('JavisERP.view.ClientGrid', {
     height: 250,
     itemId: 'clientgrid',
     width: 868,
-    autoScroll: false,
+    autoScroll: true,
     title: 'List: Client',
     columnLines: true,
     forceFit: true,
@@ -61,7 +61,7 @@ Ext.define('JavisERP.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'company_name',
                     flex: 3,
-                    text: 'Name',
+                    text: 'Business Name',
                     filterable: true
                 },
                 {
@@ -73,6 +73,12 @@ Ext.define('JavisERP.view.ClientGrid', {
                         type: 'list',
                         options: ['CUSTOMER','PROSPECT','LEAD']
                     }
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'salesrep_name',
+                    flex: 3,
+                    text: 'Sales Rep'
                 },
                 {
                     xtype: 'gridcolumn',

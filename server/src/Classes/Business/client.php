@@ -11,9 +11,9 @@ class Client extends AbstractBusinessService
         return 'client';
     }
 
-    public function getAll($page = null,$start = 0,$limit = 0,$filter) {
+    public function getAll($page = null,$start = 0,$limit = 0,$filter,$sort) {
         $wherestr = $this->getWhereString($filter);
-
+        $sortstr = $this->getSortString($sort);
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
 
@@ -22,9 +22,13 @@ class Client extends AbstractBusinessService
         LEFT JOIN state s ON c.state_id = s.id
         LEFT JOIN payment p ON c.id = p.client_id
         LEFT JOIN contract con ON c.id = con.client_id
+        LEFT JOIN territory t ON c.territory_id = t.id
+        LEFT JOIN employee e ON c.salesrep_id = e.id
+        LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         WHERE $wherestr
         GROUP BY c.id
+        $sortstr
         $limit_clause";
         //return print_r($sql);
         return $this->db->fetchAll($sql);
@@ -63,10 +67,11 @@ class Client extends AbstractBusinessService
         return $client_id;
     }
 
-    public function searchForClient($search,$page = null,$start = 0,$limit = 0,$isCount = false) {
+    public function searchForClient($search,$page = null,$start = 0,$limit = 0,$isCount = false,$sort) {
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $search_string = json_decode($search,TRUE);
+        $sortstr = $this->getSortString($sort);
         $fields = $search_string['fields'];
         $query = $search_string['query'];
         $wherestr = " 0 = 0 ";
@@ -88,6 +93,10 @@ class Client extends AbstractBusinessService
                     case 'state_name':
                         $qs .= " OR s.name LIKE '%".$query."%'";
                         break;
+                    case 'salesrep_name':
+                        $js .= " LEFT JOIN employee ON c.salesrep_id = employee.id";
+                        $qs .= " OR employee.first_name LIKE '%".$query."%' OR employee.last_name LIKE '%".$query."%' OR employee.username LIKE '%".$query."%'";
+                        break;
                     default:
                         $qs .= " OR ".$fields[$i]." LIKE '%".$query."%'"; break;
                 }
@@ -100,11 +109,30 @@ class Client extends AbstractBusinessService
         LEFT JOIN state s ON c.state_id = s.id
         LEFT JOIN payment p ON c.id = p.client_id
         LEFT JOIN contract con ON c.id = con.client_id
+        LEFT JOIN territory t ON c.territory_id = t.id
+        LEFT JOIN employee e ON c.salesrep_id = e.id
+        LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         $js
         WHERE $wherestr
         GROUP BY c.id
+        $sortstr
         $limit_clause";
         return $this->db->fetchAll($sql);
+    }
+
+    public function getSortString($sort){
+        $sort_string = json_decode($sort,TRUE);
+        $property = $sort_string[0]['property'];
+        $direction = $sort_string[0]['direction'];
+        switch($property){
+            case 'postal_code_iso':
+                $property = 'pc.iso_code';break;
+            case 'territory_name':
+                $property = 't.name';break;
+            case 'salesrep_name':
+                $property = 'e.username';break;
+        }
+        return "ORDER BY $property $direction";
     }
 }

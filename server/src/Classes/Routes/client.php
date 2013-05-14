@@ -19,10 +19,10 @@ class Client implements ControllerProviderInterface
             //print_r($request->get('limit'));
             $client_array = array();
             if($request->get('search')){
-                $client_array = $app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),FALSE);
-                $totalCount['totalCount'] = count($app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),TRUE));
+                $client_array = $app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),FALSE,$request->get('sort'));
+                $totalCount['totalCount'] = count($app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),TRUE,$request->get('sort')));
             } else {
-                $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'));
+                $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('sort'));
                 $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
             }
 

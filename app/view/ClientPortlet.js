@@ -78,7 +78,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
                     xtype: 'gridcolumn',
                     dataIndex: 'company_name',
                     flex: 3,
-                    text: 'Name',
+                    text: 'Business Name',
                     filterable: true
                 },
                 {
@@ -90,6 +90,12 @@ Ext.define('JavisERP.view.ClientPortlet', {
                         type: 'list',
                         options: ['CUSTOMER','PROSPECT','LEAD']
                     }
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'salesrep_name',
+                    flex: 3,
+                    text: 'Sales Rep'
                 },
                 {
                     xtype: 'gridcolumn',
