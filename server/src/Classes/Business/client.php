@@ -58,10 +58,25 @@ class Client extends AbstractBusinessService
     }
 
     public function updateClient($id, $params) {
+        // search for new postal code
+        $postal_code = $params['postal_code_id'];
+        $sql = "SELECT * FROM postal_code WHERE iso_code = $postal_code";
+        $rs = $this->db->fetchAll($sql);
+        if(count($rs) == 0){
+            // add the new postal code
+            $array = array();
+            $array['iso_code'] = $postal_code;
+            $this->db->insert('postal_code',$array);
+            $postal_code_id = $this->db->lastInsertId();
+        } else {
+            $postal_code_id = $rs[0]['id'];
+        }
+
         unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
         unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
         unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name'],$params['state_name']);
         unset($params['postal_code_iso'],$params['remaining_months_cnt']);
+        $params['postal_code_id'] = $postal_code_id;
         $this->db->update('client',$params, array('id'=>$id));
         $client_id = $id;
         return $client_id;
@@ -133,8 +148,12 @@ class Client extends AbstractBusinessService
             case 'salesrep_name':
                 $property = 'e.username';break;
             default:
-                $property = 'c.id';
-                $direction = "ASC";
+                if($property == null){
+                    $property = 'c.id';
+                }
+                if($direction == null){
+                  $direction = 'ASC';
+                }
                 break;
         }
         return "ORDER BY $property $direction";

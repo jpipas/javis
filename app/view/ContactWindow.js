@@ -53,6 +53,7 @@ Ext.define('JavisERP.view.ContactWindow', {
                                 },
                                 {
                                     xtype: 'button',
+                                    cls: 'cancelContactButton',
                                     text: 'Cancel'
                                 }
                             ]

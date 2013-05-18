@@ -12,7 +12,7 @@ class User extends AbstractBusinessService
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM employee";
+        $sql = "SELECT * FROM employee ORDER BY username ASC";
         return $this->db->fetchAll($sql);
     }
 
