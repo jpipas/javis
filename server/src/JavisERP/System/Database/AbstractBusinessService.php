@@ -28,6 +28,10 @@ abstract class AbstractBusinessService
         return $this->db->fetchAssoc($sql,array((int) $id));
     }
 
+    public function deleteById($id) {
+        return $this->db->update($this->getTableName(),array("deleted_at" => "now()"), array("id" => $id));
+    }
+
     public function getWhereString($filter){
         $where = " 0 = 0 ";
         $qs = "";

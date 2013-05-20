@@ -165,10 +165,10 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             xtype: 'combobox',
                                             fieldLabel: 'Zip',
                                             displayField: 'iso_code',
-                                            valueField: 'id',
+                                            valueField: 'iso_code',
                                             store: 'PostalCode',
                                             queryMode: 'local',
-                                            name: 'postal_code_id'
+                                            name: 'postal_code_iso'
                                         },
                                         {
                                             xtype: 'combobox',

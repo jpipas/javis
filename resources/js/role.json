@@ -1,8 +1,0 @@
-{
-  "role":[
-  {"id":1,"description":"Owner"},
-  {"id":2,"description":"Part Owner"},
-  {"id":3,"description":"Marketing Director"},
-  {"id":4,"description":"Assistant"},
-  ]
-}

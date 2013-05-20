@@ -50,10 +50,9 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
     },
 
     editAdvertisement: function(record){
-
-        //this.getAdvertisementGrid().getStore().clearFilter(true);
-        //this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
+        // not there yet!
     },
+
     deleteAdvertisement: function(record,grid){
         Ext.Msg.show({
             title: 'Delete Advertisement?',
@@ -80,13 +79,16 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
     },
     viewAdvertisement: function(record){
         me.adWindow = new JavisERP.view.AdvertisementWindow();
+        // this is view mode - remove the save button!
         this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
         var advertisementForm = this.getAdvertisementForm();
         var adGrid = this.getAdvertisementGrid();
         this.getAdvertisementModel().load(record.data.id,{
             success: function(model){
                 advertisementForm.loadRecord(model);
-                console.log(model);
+                me.publicationfield = advertisementForm.getForm().findField('publicationlist');
+                console.log(model.raw);
+                me.publicationfield.setValue(model.raw.publication);
             }
         });
         me.adWindow.show();

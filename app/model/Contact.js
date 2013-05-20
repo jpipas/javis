@@ -11,8 +11,7 @@ Ext.define('JavisERP.model.Contact', {
 
     fields: [
         {
-            name: 'id',
-            type: 'int'
+            name: 'id'
         },
         {
             name: 'full_name'
@@ -28,6 +27,19 @@ Ext.define('JavisERP.model.Contact', {
         },
         {
             name: 'client_id'
+        },
+        {
+            name: 'role'
+        },
+        {
+            name: 'role_name',
+            mapping: 'role.description'
+        },
+        {
+            name: 'revoke_view'
+        },
+        {
+            name: 'revoke_delete'
         }
     ],
 

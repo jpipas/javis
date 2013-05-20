@@ -59,9 +59,10 @@ class Client extends AbstractBusinessService
 
     public function updateClient($id, $params) {
         // search for new postal code
-        $postal_code = $params['postal_code_id'];
+        $postal_code = $params['postal_code_iso'];
         $sql = "SELECT * FROM postal_code WHERE iso_code = $postal_code";
         $rs = $this->db->fetchAll($sql);
+        $postal_code_id = null;
         if(count($rs) == 0){
             // add the new postal code
             $array = array();

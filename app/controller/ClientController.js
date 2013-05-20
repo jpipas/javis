@@ -29,11 +29,13 @@ Ext.define('JavisERP.controller.ClientController', {
         'State',
         'TerritoryStore',
         'CustomerStage',
-        'PostalCode'
+        'PostalCode',
+        'ContactRoleStore'
     ],
 
     models: [
-        'Client'
+        'Client',
+        'Contact'
     ],
 
     refs: [
@@ -141,10 +143,12 @@ Ext.define('JavisERP.controller.ClientController', {
         }
 
         var cWindow = this.getContactWindow();
+        var cGrid = this.getContactGrid();
         me.contact.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     cWindow.close();
+                    cGrid.getStore().reload();
                     Ext.Msg.alert('Success','Contact saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');
@@ -179,8 +183,8 @@ Ext.define('JavisERP.controller.ClientController', {
                 clientForm.loadRecord(model);
                 clientForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
                 clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));
-                clientForm.getForm().findField('postal_code_id').setValue(new JavisERP.model.PostalCode(model.raw.postal_code));
-                clientForm.getForm().findField('salesrep_id').setValue(new JavisERP.model.User(model.raw.salesrep));
+                clientForm.getForm().findField('postal_code_iso').setValue(new JavisERP.model.PostalCode(model.raw.postal_code));
+                clientForm.getForm().findField('salesrep_id').setValue(new JavisERP.model.User(model.raw.salesrep) );
             }
         });
         var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
@@ -246,7 +250,92 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onContactWindowClose: function(panel, eOpts){
-        this.getContactGrid().getStore().reload();
+        if(this.getContactForm().getForm().isDirty()){
+            Ext.Msg.show({
+                 title:'Save Changes?',
+                 msg: 'You are closing a tab that has unsaved changes. Would you like to save your changes?',
+                 buttons: Ext.Msg.YESNO,
+                 icon: Ext.Msg.QUESTION,
+                 fn: this.windowClosedDecision,
+                 panel: panel
+            });
+        } else {
+            me.contactWindow.close();
+        }
+    },
+
+    windowClosedDecision: function(button,text,opts){
+        if(button == "yes"){
+            this.onSaveContactClick();
+        } else {
+            me.contactWindow.close();
+            me.contact.destroy();
+            this.getContactGrid().getStore().reload();
+        }
+    },
+
+    onContactActionClick: function(grid,record,action,idx,col,e,target) {
+        var doAction = action.split(" ",1);
+        switch(doAction[0]){
+            case 'edit_action':
+                this.editContact(record);
+                break;
+            case 'delete_action':
+                this.deleteContact(record,grid);
+                break;
+            case 'view_action':
+                this.viewContact(record);
+                break;
+        }
+    },
+
+    viewContact: function(record){
+        // not used
+    },
+
+    deleteContact: function(record,grid){
+        Ext.Msg.show({
+            title: 'Delete Contact?',
+            msg: 'You are about to delete this contact from this client.  Are you sure?',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.QUESTION,
+            fn: function(button, text, opts){
+                switch(button){
+                    case 'yes':
+                        record.destroy({
+                            success: function(){
+                                grid.getStore().reload();
+                            },
+                            failure: function(){
+                                alert("Could not delete contact!");
+                            }
+                        });
+                        break;
+                    case 'no':
+                        //this.close();
+                        break;
+                }
+            }
+        });
+    },
+
+    editContact: function(record){
+        me.contactWindow = new JavisERP.view.ContactWindow();
+        //this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
+        var contactForm = this.getContactForm();
+        //var adGrid = this.getAdvertisementGrid();
+        this.getContactRoleStoreStore().load();
+        this.getContactModel().load(record.data.id,{
+            success: function(model){
+                contactForm.loadRecord(model);
+                contactForm.getForm().setValues({
+                    client_name: me.client_name,
+                    client_id: me.client_id
+                });
+                //contactForm.getForm().findField('role_id').setValue(new JavisERP.model.Role(model.raw.role_id));
+            }
+        });
+        me.contactWindow.show();
     },
 
     init: function(application) {
@@ -298,11 +387,14 @@ Ext.define('JavisERP.controller.ClientController', {
             "contactgrid toolbar button[cls=newcontact]": {
                 click: this.onNewContactButtonClick
             },
-            "window[cls=contactWindow]": {
-                close: this.onContactWindowClose
+            "button[cls=cancelContactButton]": {
+                click: this.onContactWindowClose
             },
             "button[cls=clientsavebutton]": {
                 click: this.onSaveClientButtonClick
+            },
+            "contactgrid rowactions": {
+                action: me.onContactActionClick
             }
         });
     },

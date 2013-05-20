@@ -24,18 +24,8 @@ Ext.define('JavisERP.store.ContactRoleStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            storeId: 'MyJsonStore6',
-            model: 'JavisERP.model.Role',
-            proxy: {
-                type: 'ajax',
-                url: 'resources/js/role.json',
-                reader: {
-                    type: 'json',
-                    idProperty: 'id',
-                    root: 'role',
-                    totalProperty: 'totalCount'
-                }
-            }
+            storeId: 'RoleStore',
+            model: 'JavisERP.model.Role'
         }, cfg)]);
     }
 });

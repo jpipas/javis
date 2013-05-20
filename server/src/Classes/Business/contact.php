@@ -15,12 +15,12 @@ class Contact extends AbstractBusinessService
         $wherestr = $this->getWhereString($filter);
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
-        $sql = "SELECT * FROM contact WHERE $wherestr $limit_clause";
+        $sql = "SELECT * FROM contact WHERE $wherestr and deleted_at is null $limit_clause";
         return $this->db->fetchAll($sql);
     }
 
     public function getByClientId($client_id) {
-        $sql = "SELECT * FROM contact where client_id = ?";
+        $sql = "SELECT * FROM contact where client_id = ? and deleted_at is null";
         return $this->db->fetchAll($sql, array((int) $client_id));
     }
 
@@ -31,14 +31,14 @@ class Contact extends AbstractBusinessService
 
     public function createContact($params) {
         unset($params['role']);
-        unset($params['id']);
+        unset($params['id'],$params['revoke_view'],$params['revoke_edit'],$params['revoke_delete'],$params['role_name']);
         $this->db->insert('contact',$params);
         $contact = $this->getById($this->db->lastInsertId());
         return $contact;
     }
 
     public function updateContact($id, $params) {
-        unset($params['id']);
+        unset($params['id'],$params['revoke_view'],$params['revoke_edit'],$params['revoke_delete'],$params['role'],$params['role_name']);
         $this->db->update('contact',$params, array('id'=>$id));
         $contact = $this->getById($id);
         return $contact;

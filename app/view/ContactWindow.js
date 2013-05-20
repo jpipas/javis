@@ -23,7 +23,7 @@ Ext.define('JavisERP.view.ContactWindow', {
     layout: {
         type: 'fit'
     },
-    closeAction: 'hide',
+    closable: false,
     title: 'New Contact',
     modal: true,
     autoDestroy: true,
@@ -39,6 +39,7 @@ Ext.define('JavisERP.view.ContactWindow', {
                     cls: 'contactform',
                     itemId: 'contactform',
                     bodyPadding: 10,
+                    trackResetOnLoad: true,
                     title: '',
                     dockedItems: [
                         {
@@ -93,6 +94,7 @@ Ext.define('JavisERP.view.ContactWindow', {
                             anchor: '100%',
                             itemId: 'email_address',
                             name: 'email_address',
+                            vtype: 'email',
                             fieldLabel: 'Email Address',
                             labelAlign: 'right'
                         },
@@ -101,6 +103,7 @@ Ext.define('JavisERP.view.ContactWindow', {
                             anchor: '100%',
                             itemId: 'cell_phone',
                             name: 'phone',
+                            vtype: 'phone',
                             fieldLabel: 'Phone Number',
                             labelAlign: 'right'
                         },

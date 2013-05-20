@@ -22,6 +22,10 @@ Ext.Loader.setConfig({
     }
 });
 
+// remove the tooltip minWidth!
+// http://stackoverflow.com/questions/15834689/extjs-4-2-tooltips-not-wide-enough-to-see-contents
+delete Ext.tip.Tip.prototype.minWidth;
+
 Ext.application({
     models: [
         'Client',

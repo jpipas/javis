@@ -31,10 +31,16 @@ Ext.define('JavisERP.model.Role', {
     ],
 
     proxy: {
-        type: 'ajax',
-        url: 'resources/js/role.json',
+        type: 'srest',
+        api: {
+            create: '/server/web/index.php/contactrole/new',
+            read: '/server/web/index.php/contactrole/',
+            update: '/server/web/index.php/contactrole/update',
+            destroy: '/server/web/index.php/contactrole/delete'
+        },
         reader: {
             type: 'json',
+            idProperty: 'id',
             root: 'role',
             totalProperty: 'totalCount'
         }
