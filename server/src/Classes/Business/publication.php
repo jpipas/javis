@@ -113,6 +113,6 @@ class Publication extends AbstractBusinessService
 
     public function getByAdvertisementId($id) {
         $sql = "SELECT p.* FROM publication p LEFT JOIN advertisement_publication ap ON p.id = ap.publication_id LEFT JOIN advertisement a ON ap.advertisement_id = a.id WHERE a.id = ? ORDER BY p.description";
-        return $this->db->fetchAssoc($sql,array((int)$id));
+        return $this->db->fetchAll($sql,array((int)$id));
     }
 }

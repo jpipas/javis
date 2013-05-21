@@ -26,6 +26,27 @@ Ext.Loader.setConfig({
 // http://stackoverflow.com/questions/15834689/extjs-4-2-tooltips-not-wide-enough-to-see-contents
 delete Ext.tip.Tip.prototype.minWidth;
 
+// http://stackoverflow.com/questions/1287584/how-do-i-force-the-display-of-a-decimal-in-an-extjs-numberfield-to-a-certain-pre
+Ext.override(Ext.form.NumberField, {
+    forcePrecision : false,
+
+    valueToRaw: function(value) {
+        var me = this,
+            decimalSeparator = me.decimalSeparator;
+        value = me.parseValue(value);
+        value = me.fixPrecision(value);
+        value = Ext.isNumber(value) ? value : parseFloat(String(value).replace(decimalSeparator, '.'));
+        if (isNaN(value))
+        {
+          value = '';
+        } else {
+          value = me.forcePrecision ? value.toFixed(me.decimalPrecision) : parseFloat(value);
+          value = String(value).replace(".", decimalSeparator);
+        }
+        return value;
+    }
+});
+
 Ext.application({
     models: [
         'Client',

@@ -87,8 +87,7 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
             success: function(model){
                 advertisementForm.loadRecord(model);
                 me.publicationfield = advertisementForm.getForm().findField('publicationlist');
-                console.log(model.raw);
-                me.publicationfield.setValue(model.raw.publication);
+                me.publicationfield.setValue(model.raw.publications);
             }
         });
         me.adWindow.show();

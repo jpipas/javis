@@ -25,9 +25,9 @@ Ext.define('JavisERP.view.ContractWindow', {
         type: 'fit'
     },
     title: 'Contract',
+    closable: false,
     modal: true,
     autoDestroy: false,
-    closeAction: 'hide',
 
     initComponent: function() {
         var me = this;
@@ -38,6 +38,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                     xtype: 'form',
                     cls: 'contractform',
                     itemId: 'contractform',
+                    trackResetOnLoad: true,
                     minHeight: 300,
                     bodyPadding: 5,
                     dockedItems: [
@@ -170,18 +171,23 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             name: 'total_sales',
                                             fieldLabel: 'Total Sales Amount',
                                             labelAlign: 'right',
+                                            forcePrecision: true,
+                                            decimalPrecision: 2,
                                             minValue: 0
                                         },
                                         {
                                             xtype: 'displayfield',
                                             name: 'subtotal',
                                             fieldLabel: 'Subtotal',
+                                            decimalPrecision: 2,
                                             labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'numberfield',
                                             name: 'design_fee',
                                             fieldLabel: 'Design Fee',
+                                            forcePrecision: true,
+                                            decimalPrecision: 2,
                                             labelAlign: 'right',
                                             step: 5
                                         },
@@ -190,12 +196,16 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             padding: '',
                                             name: 'total_amount',
                                             fieldLabel: 'Total Amount',
+                                            forcePrecision: true,
+                                            decimalPrecision: 2,
                                             labelAlign: 'right'
                                         },
                                         {
                                             xtype: 'numberfield',
                                             name: 'first_months_payment',
                                             fieldLabel: '1st Mon. Payment',
+                                            decimalPrecision: 2,
+                                            forcePrecision: true,
                                             labelAlign: 'right',
                                             autoStripChars: false
                                         },
@@ -203,6 +213,8 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             xtype: 'numberfield',
                                             name: 'monthly_payment',
                                             fieldLabel: 'Montly Payment',
+                                            decimalPrecision: 2,
+                                            forcePrecision: true,
                                             labelAlign: 'right'
                                         },
                                         {

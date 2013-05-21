@@ -61,23 +61,16 @@ Ext.define('JavisERP.controller.ContractGridController', {
         }
         this.getContractModel().load(record.data.id,{
             success: function(model){
-                //console.log(model);
                 contractForm.loadRecord(model);
                 contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
                 contractForm.getForm().findField('client_name').setValue(model.raw.client[0].company_name);
 
                 me.durfield = contractForm.getForm().findField('durations');
                 me.durfield.setValue(model.raw.durations);
-                //console.log(model.raw.durations);
-                //me.contractWindow.runCalculations();
             }
         });
-        // var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
-        // myMask.show();
-        // Ext.defer(function() {
-        //     myMask.hide();
-            me.contractWindow.show();
-        //},1500);
+
+        me.contractWindow.show();
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("contract_id",record.data.id);
     },

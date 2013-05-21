@@ -24,7 +24,7 @@ Ext.define('JavisERP.store.PublicationStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: false,
+            autoLoad: true,
             filterOnLoad: false,
             remoteFilter: true,
             sortOnLoad: false,

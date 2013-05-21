@@ -253,7 +253,7 @@ Ext.define('JavisERP.controller.ClientController', {
         if(this.getContactForm().getForm().isDirty()){
             Ext.Msg.show({
                  title:'Save Changes?',
-                 msg: 'You are closing a tab that has unsaved changes. Would you like to save your changes?',
+                 msg: 'You are closing a window that has unsaved changes. Would you like to save your changes?',
                  buttons: Ext.Msg.YESNO,
                  icon: Ext.Msg.QUESTION,
                  fn: this.windowClosedDecision,
@@ -269,7 +269,7 @@ Ext.define('JavisERP.controller.ClientController', {
             this.onSaveContactClick();
         } else {
             me.contactWindow.close();
-            me.contact.destroy();
+            //me.contact.destroy();
             this.getContactGrid().getStore().reload();
         }
     },
