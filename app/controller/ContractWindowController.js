@@ -94,7 +94,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     },
 
     onCancelButtonClick: function(button,e,opts) {
-        if(this.getContactForm().getForm().isDirty()){
+        if(button.up('form').getForm().isDirty()){
             Ext.Msg.show({
                  title:'Save Changes?',
                  msg: 'You are closing a window that has unsaved changes. Would you like to save your changes?',
@@ -104,7 +104,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                  panel: panel
             });
         } else {
-            me.contactWindow.close();
+            button.up('window').close();
         }
     },
 
@@ -112,9 +112,11 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         if(button == "yes"){
             this.onSaveButtonClick();
         } else {
-            me.contractWindow.close();
-            //me.contact.destroy();
-            this.getContactGrid().getStore().reload();
+            if(button.up('form').getForm().findField('is_new').getValue() == "1"){
+                console.log("you're new - you should be deleted!");
+            }
+            this.getContractWindow().close();
+            this.getContractGrid().getStore().reload();
         }
     },
 
@@ -151,7 +153,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
             "form numberfield[name=first_months_payment]":{
                 change: this.paymentCalculations
             },
-            "button[cls=contractcancel]": {
+            "button[cls=cancelContract]": {
                 click: this.onCancelButtonClick
             }
 

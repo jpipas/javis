@@ -431,7 +431,8 @@ Ext.define('JavisERP.controller.ClientController', {
 
         me.contract_id = null;
         me.contract = new JavisERP.model.Contract({
-            client_id: me.client_id
+            client_id: me.client_id,
+            is_new: "1"
         });
 
         me.contract.save({

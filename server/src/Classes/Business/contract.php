@@ -28,7 +28,7 @@ class Contract extends AbstractBusinessService {
     }
 
     public function createContract($params) {
-        unset($params['durations']);
+        unset($params['durations'],$params['is_new']);
         unset($params['payment_term_description']);
         $this->db->insert('contract',$params);
         $contract = $this->getById($this->db->lastInsertId());
@@ -36,7 +36,7 @@ class Contract extends AbstractBusinessService {
     }
 
     public function updateContract($id, $params) {
-        unset($params['id']);
+        unset($params['id'],$params['is_new']);
         $duration_array = $params['durations'];
         unset($params['durations']);
         unset($params['client_name']);

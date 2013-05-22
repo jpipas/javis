@@ -69,6 +69,9 @@ Ext.define('JavisERP.model.Contract', {
         },
         {
             name: 'durations'
+        },
+        {
+            name: 'is_new'
         }
     ],
 

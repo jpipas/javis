@@ -147,7 +147,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             store: 'Duration',
                                             queryMode: 'remote',
                                             typeAdead:true,
-                                            editable:false,
                                             name: 'durations',
                                             cls:'durationlist'
                                         }
@@ -223,6 +222,13 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             itemId: 'client_id',
                                             inputId: 'client_id',
                                             name: 'client_id'
+                                        },
+                                        {
+                                            xtype: 'hiddenfield',
+                                            id: 'is_new',
+                                            itemId: 'is_new',
+                                            inputId: 'is_new',
+                                            name: 'is_new'
                                         }
                                     ]
                                 }
