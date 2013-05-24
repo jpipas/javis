@@ -158,6 +158,10 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     anchor: '95%',
                                     name: 'postal_code_iso',
                                     fieldLabel: 'Zip'
+                                },
+                                {
+                                    xtype: 'hiddenfield',
+                                    name: 'id'
                                 }
                             ]
                         }

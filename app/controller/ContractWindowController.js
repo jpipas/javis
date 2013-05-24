@@ -4,7 +4,8 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
     models: [
         'Contract',
-        'Advertisement'
+        'Advertisement',
+        'Client'
     ],
     stores: [
         'ClientStore',
@@ -36,11 +37,19 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         {
             ref: 'contractGrid',
             selector: 'contractgrid'
+        },
+        {
+            ref: 'advertisementGrid',
+            selector: 'advertisementgrid'
+        },
+        {
+            ref: 'clientForm',
+            selector: 'form[cls=clientform]'
         }
     ],
 
     onWindowAfterRender: function(abstractcomponent, options) {
-        abstractcomponent.getComponent('contractform').getForm().setValues({
+        this.getContractForm().getForm().setValues({
             client_name: this.getClientName(),
             client_id: this.getClientId()
         });
@@ -48,11 +57,6 @@ Ext.define('JavisERP.controller.ContractWindowController', {
 
     onWindowBeforeShow: function(abstractcomponent, options) {
         this.getDurationStore().clearFilter(true);
-    },
-
-    onWindowClose: function(abstractcomponent,options) {
-        //console.log("in beforedestroy");
-        this.getContractWindow().close();
     },
 
     runCalcs: function(target) {
@@ -93,18 +97,25 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         });
     },
 
-    onCancelButtonClick: function(button,e,opts) {
-        if(button.up('form').getForm().isDirty()){
+    onCancelButtonClick: function(button,e,opts){
+        button.up('window').close();
+    },
+
+    onWindowClose: function(panel,opts) {
+        //this.getAdvertisementGrid().destroy();
+        if(this.getContractForm().getForm().isDirty()){
             Ext.Msg.show({
                  title:'Save Changes?',
                  msg: 'You are closing a window that has unsaved changes. Would you like to save your changes?',
                  buttons: Ext.Msg.YESNO,
                  icon: Ext.Msg.QUESTION,
                  fn: this.windowClosedDecision,
-                 panel: panel
+                 form: this.getContractForm(),
+                 grid: this.getContractGrid()
             });
         } else {
-            button.up('window').close();
+            //this.getAdvertisementGrid().destroy();
+            this.getContractWindow().hide();
         }
     },
 
@@ -112,11 +123,11 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         if(button == "yes"){
             this.onSaveButtonClick();
         } else {
-            if(button.up('form').getForm().findField('is_new').getValue() == "1"){
+            if(opts.form.getForm().findField('is_new').getValue() == "1"){
                 console.log("you're new - you should be deleted!");
             }
-            this.getContractWindow().close();
-            this.getContractGrid().getStore().reload();
+            opts.grid.getStore().reload();
+            return true;
         }
     },
 
@@ -133,7 +144,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
             "window[cls=contractWindow]": {
                 afterrender: this.onWindowAfterRender,
                 beforeshow: this.onWindowBeforeShow,
-                hide: this.onWindowClose
+                beforeclose: this.onWindowClose
             },
             "combobox[cls=durationlist]": {
                 change: this.runCalcs
@@ -161,17 +172,16 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     },
 
     setClientFields: function(clientId, clientName) {
-        //console.log("setting: "+clientId);
         me.client_id = clientId;
         me.client_name = clientName;
     },
 
     getClientId: function() {
-        return me.client_id;
+        return this.getClientForm().getForm().findField('id').getValue();
     },
 
     getClientName: function() {
-        return me.client_name;
+        return this.getClientForm().getForm().findField('company_name').getValue();
     },
 
     runCalculations: function() {

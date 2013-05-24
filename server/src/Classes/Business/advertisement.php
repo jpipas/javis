@@ -36,11 +36,13 @@ class Advertisement extends AbstractBusinessService
     }
 
     public function createAdvertisement($params){
+        $publications_array = array();
         $publications_array = $params['publicationlist'];
         $contract_id = $params['contract_id'];
+        //echo $contract_id;
         unset($params['publicationlist']);
-        unset($params['contract_id']);
-        //var_dump($params);
+        unset($params['contract_id'],$params['deleted_at'],$params['created_at'],$params['updated_at']);
+        unset($params['edit_action'], $params['view_action'], $params['delete_action'], $params['publications'], $params['client']);
         $this->db->insert('advertisement',$params);
         $ad_id = $this->db->lastInsertId();
         $this->db->insert('contract_advertisement',array("contract_id"=>$contract_id,"advertisement_id"=>$ad_id));
@@ -54,6 +56,8 @@ class Advertisement extends AbstractBusinessService
 
     public function getByContractId($contract_id) {
         $sql = "SELECT a.* FROM advertisement as a LEFT JOIN contract_advertisement as ca ON a.id = ca.advertisement_id LEFT JOIN contract as c ON ca.contract_id = c.id WHERE c.id = ? AND a.deleted_at is null";
+        //echo $contract_id;
+        //echo $sql;
         return $this->db->fetchAll($sql,array((int) $contract_id));
     }
 

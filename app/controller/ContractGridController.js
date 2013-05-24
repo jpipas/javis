@@ -13,7 +13,7 @@ Ext.define('JavisERP.controller.ContractGridController', {
     refs: [
         {
             ref: 'advertisementGrid',
-            selector: '#clientadgrid'
+            selector: 'advertisementgrid'
         },
         {
             ref: 'contractForm',

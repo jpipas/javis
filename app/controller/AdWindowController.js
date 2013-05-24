@@ -25,7 +25,8 @@ Ext.define('JavisERP.controller.AdWindowController', {
     stores: [
         'AdSizeStore',
         'AdTypeStore',
-        'AdvertisementStore'
+        'AdvertisementStore',
+        'PublicationStore'
     ],
     views: [
         'AdvertisementWindow',
@@ -58,33 +59,68 @@ Ext.define('JavisERP.controller.AdWindowController', {
             xtype: 'combobox'
         },
         {
+            ref: 'publicationList',
+            selector: 'combobox[cls=publicationlist]'
+        },
+        {
             ref: 'clientNameField',
             selector: 'displayfield[cls=clientnamefield]',
             xtype: 'displayfield'
+        },
+        {
+            ref: 'advertisementGrid',
+            selector: 'advertisementgrid'
+        },
+        {
+            ref: 'contractForm',
+            selector: 'form[cls=contractform]'
         }
     ],
 
     onWindowAfterRender: function(abstractcomponent, options) {
+        var contractId = this.getContractForm().getForm().findField('id').getValue();
+        var contractTerritoryId = this.getContractForm().getForm().findField('territory_id').getValue();
         this.getAdForm().getForm().setValues({
             client: this.getClientNameField().value,
             client_id: me.client_id,
-            contract_id: me.conract_id
+            contract_id: contractId
         });
+        this.getPublicationList().getStore().clearFilter();
+        this.getPublicationList().getStore().filter('territory_id',contractTerritoryId);
     },
 
     onSaveClick: function(button, e, options) {
-        this.getAdForm().getForm().submit({
-            success: function(form,action){
-                me.getStore('AdvertisementStore').clearFilter(true);
-                me.getStore('AdvertisementStore').filter("contract_id",form.findField('contract_id').getValue());
-                form.owner.up().close();
-                Ext.Msg.alert('Success','Advertisement created successfully!');
-            },
-            failure: function(form,action){
-                Ext.Msg.alert('Failure','Something went wrong!');
+        var fields = this.getAdForm().getForm().getValues(false,false,false,true);
+        //console.log(fields);
+        me.ad = new JavisERP.model.Advertisement({id: fields['id']});
+        for(var key in fields){
+            me.ad.set(key,fields[key]);
+        }
+
+        var publications = [];
+        var recs = this.getPublicationList().getValue();
+        for(var key1 in recs){
+            var publication = new JavisERP.model.Publication();
+            publication.set("id",recs[key1]);
+            publications.push(publication);
+        }
+
+        me.ad.setAssociatedData("publications",publications);
+        me.ad.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
+        var aWindow = this.getAdWindow();
+        var aGrid = this.getAdvertisementGrid();
+        //console.log(me.contract);
+        me.ad.save({
+            callback: function(record,operation){
+                if(operation.wasSuccessful){
+                    aGrid.getStore().reload();
+                    aWindow.close();
+                    Ext.Msg.alert('Success','Advertisement saved successfully!');
+                } else {
+                    Ext.Msg.alert('Failure','Something went wrong!');
+                }
             }
         });
-
     },
 
     onAdTypeChange: function(field, newValue, oldValue, options) {

@@ -93,7 +93,9 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                             typeAdead:true,
                                             //editable: false,
                                             multiSelect:true,
-                                            name: 'publicationlist'
+                                            id: 'publicationlist',
+                                            name: 'publicationlist',
+                                            cls: 'publicationlist'
                                         }
                                     ]
                                 },
@@ -164,8 +166,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                         },
                                         {
                                             xtype: 'hiddenfield',
-                                            name: 'contract_id',
-                                            fieldLabel: 'Label'
+                                            name: 'contract_id'
                                         }
                                     ]
                                 }

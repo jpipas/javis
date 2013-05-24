@@ -256,8 +256,7 @@ Ext.define('JavisERP.controller.ClientController', {
                  msg: 'You are closing a window that has unsaved changes. Would you like to save your changes?',
                  buttons: Ext.Msg.YESNO,
                  icon: Ext.Msg.QUESTION,
-                 fn: this.windowClosedDecision,
-                 panel: panel
+                 fn: this.windowClosedDecision
             });
         } else {
             me.contactWindow.close();

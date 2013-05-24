@@ -36,12 +36,12 @@ class Duration extends AbstractBusinessService
         if($query){
             $where_clause .= "WHERE description LIKE '%$query%'";
         }
-        $sql = "SELECT d.* FROM duration as d $where_clause";
+        $sql = "SELECT d.* FROM duration as d $where_clause ORDER BY d.date_string";
         return $this->db->fetchAll($sql);
     }
 
     public function getByContractId($id){
-        $sql = "SELECT d.* FROM duration as d LEFT JOIN contract_duration as cd on d.id = cd.duration_id WHERE cd.contract_id = $id";
+        $sql = "SELECT d.* FROM duration as d LEFT JOIN contract_duration as cd on d.id = cd.duration_id WHERE cd.contract_id = $id ORDER BY d.date_string";
         return $this->db->fetchAll($sql);
     }
 

@@ -66,10 +66,10 @@ class Advertisement implements ControllerProviderInterface
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
-            $params = $request->request->all();
-            //var_dump($params);
+            $params = json_decode($request->getContent(),true);
+            $user = $app['session']->get("user_token");
+            $params['insert_user_id'] = $user['user']->getId();
             $advertisement = $app['business.advertisement']->createAdvertisement($params);
-            //$contract['contract_id']=$contract['id'];
             return $app->json(array("success"=>true,"advertisement"=>$advertisement));
 
         });

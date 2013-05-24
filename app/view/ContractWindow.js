@@ -19,15 +19,15 @@ Ext.define('JavisERP.view.ContractWindow', {
 
     cls: 'contractWindow',
     width: 750,
-    overflowY: 'auto',
-    resizable: false,
+    hidden: false,
     layout: {
         type: 'fit'
     },
     title: 'Contract',
-    closable: false,
+    closable: true,
     modal: true,
-    autoDestroy: false,
+    //autoDestroy: true,
+    closeAction: 'hide',
 
     initComponent: function() {
         var me = this;
@@ -52,12 +52,12 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     cls: 'contractsave',
                                     iconCls: 'ui-silk ui-silk-disk',
                                     text: 'Save'
-                                },
+                                }/*,
                                 {
                                     xtype: 'button',
                                     text: 'Cancel',
                                     cls: 'cancelContract'
-                                }
+                                }*/
                             ]
                         }
                     ],

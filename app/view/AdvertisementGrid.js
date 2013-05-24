@@ -23,6 +23,7 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
     forceFit: true,
     hideHeaders: false,
     store: 'AdvertisementStore',
+    //closeAction: 'destroy',
 
     initComponent: function() {
         var me = this;
@@ -40,6 +41,7 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-layout-add',
                             text: 'New Advertisement',
+                            cls:'newAdvertisementButton',
                             listeners: {
                                 click: {
                                     fn: me.onButtonClick,
@@ -107,5 +109,4 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
         var adWindow = new JavisERP.view.AdvertisementWindow();
         adWindow.show();
     }
-
 });
