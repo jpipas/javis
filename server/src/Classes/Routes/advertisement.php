@@ -80,6 +80,13 @@ class Advertisement implements ControllerProviderInterface
             return $app->json(array("ad_list"=>$adlist));
         });
 
+        $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+            //$params = json_decode($request->getContent(),true);
+            $app['business.advertisement']->deleteById($id);
+            //$app['business.advertisement']->deleteByContractId($id);
+            return $app->json(array("success"=>true));
+        });
+
         return $controllers;
     }
 }

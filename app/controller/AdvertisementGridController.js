@@ -10,6 +10,10 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         'Advertisement'
     ],
 
+    stores: [
+        'PublicationStore'
+    ],
+
     refs: [
         {
             ref: 'advertisementGrid',
@@ -22,6 +26,18 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         {
             ref: 'advertisementToolbar',
             selector: 'adwindow toolbar'
+        },
+        {
+            ref: 'advertisementWindow',
+            selector: 'adwindow'
+        },
+        {
+            ref: 'contractForm',
+            selector: 'form[cls=contractform]'
+        },
+        {
+            ref: 'publicationList',
+            selector: 'combobox[cls=publicationlist]'
         }
     ],
     onAdvertisementActionClick: function(grid,record,action,idx,col,e,target) {
@@ -78,15 +94,24 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         });
     },
     viewAdvertisement: function(record){
-        me.adWindow = new JavisERP.view.AdvertisementWindow();
+        var advertisementForm = null;
+        if(!this.getAdvertisementWindow()){
+            me.adWindow = new JavisERP.view.AdvertisementWindow();
+            advertisementForm = this.getAdvertisementForm();
+        } else {
+            me.adWindow = this.getAdvertisementWindow();
+            advertisementForm = me.adWindow.getComponent('adform');
+        }
+
         // this is view mode - remove the save button!
         this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
-        var advertisementForm = this.getAdvertisementForm();
-        var adGrid = this.getAdvertisementGrid();
+        this.getPublicationStoreStore().clearFilter(true);
+        this.getPublicationStoreStore().filter("territory_id",this.getContractForm().getForm().findField('territory_id').getValue());
+
         this.getAdvertisementModel().load(record.data.id,{
             success: function(model){
                 advertisementForm.loadRecord(model);
-                me.publicationfield = advertisementForm.getForm().findField('publicationlist');
+                me.publicationfield = advertisementForm.getForm().findField('publications');
                 me.publicationfield.setValue(model.raw.publications);
             }
         });

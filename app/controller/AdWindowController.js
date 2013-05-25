@@ -85,8 +85,6 @@ Ext.define('JavisERP.controller.AdWindowController', {
             client_id: me.client_id,
             contract_id: contractId
         });
-        this.getPublicationList().getStore().clearFilter();
-        this.getPublicationList().getStore().filter('territory_id',contractTerritoryId);
     },
 
     onSaveClick: function(button, e, options) {

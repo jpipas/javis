@@ -22,7 +22,8 @@ Ext.define('JavisERP.model.AdvertisementType', {
 
     fields: [
         {
-            name: 'id'
+            name: 'id',
+            type: 'int'
         },
         {
             name: 'description'

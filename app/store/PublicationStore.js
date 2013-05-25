@@ -25,12 +25,9 @@ Ext.define('JavisERP.store.PublicationStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             //autoLoad: true,
-            filterOnLoad: false,
             remoteFilter: true,
-            sortOnLoad: false,
             storeId: 'PublicationStore',
             model: 'JavisERP.model.Publication',
-            sortOnFilter: false,
             pageSize: '45'
         }, cfg)]);
     }

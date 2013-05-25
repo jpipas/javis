@@ -37,10 +37,10 @@ class Advertisement extends AbstractBusinessService
 
     public function createAdvertisement($params){
         $publications_array = array();
-        $publications_array = $params['publicationlist'];
+        $publications_array = $params['publications'];
         $contract_id = $params['contract_id'];
         //echo $contract_id;
-        unset($params['publicationlist']);
+        unset($params['publications']);
         unset($params['contract_id'],$params['deleted_at'],$params['created_at'],$params['updated_at']);
         unset($params['edit_action'], $params['view_action'], $params['delete_action'], $params['publications'], $params['client']);
         $this->db->insert('advertisement',$params);
@@ -67,5 +67,7 @@ class Advertisement extends AbstractBusinessService
         //$this->db->update('advertisement',array("deleted_at"=>"now"),array("contract_id"=>$contract_id));
     }
 
-
+    public function deleteById($id) {
+        return $this->db->update('advertisement',array("deleted_at" => "now()"), array("id" => $id));
+    }
 }

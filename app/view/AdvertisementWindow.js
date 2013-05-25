@@ -81,21 +81,17 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                         },
                                         {
                                             xtype: 'combobox',
-                                            fieldLabel: 'Publication(s)',
+                                            multiSelect:true,
+                                            fieldLabel: 'Publications(s)',
                                             displayField: 'description',
-                                            emptyText: 'select a publication...',
+                                            emptyText: 'select a publicatoin...',
                                             descField: 'id',
                                             valueField: 'id',
                                             store: 'PublicationStore',
-                                            queryMode: 'local',
-                                            growMax: 150,
-                                            anchor:'95%',
+                                            queryMode: 'remote',
                                             typeAdead:true,
-                                            //editable: false,
-                                            multiSelect:true,
-                                            id: 'publicationlist',
-                                            name: 'publicationlist',
-                                            cls: 'publicationlist'
+                                            name: 'publications',
+                                            cls:'publicationlist'
                                         }
                                     ]
                                 },

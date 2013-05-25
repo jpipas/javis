@@ -24,7 +24,8 @@ Ext.define('JavisERP.model.Publication', {
 
     fields: [
         {
-            name: 'id'
+            name: 'id',
+            type: 'int'
         },
         {
             name: 'description'

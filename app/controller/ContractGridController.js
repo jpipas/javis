@@ -64,7 +64,6 @@ Ext.define('JavisERP.controller.ContractGridController', {
                 contractForm.loadRecord(model);
                 contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
                 contractForm.getForm().findField('client_name').setValue(model.raw.client[0].company_name);
-
                 me.durfield = contractForm.getForm().findField('durations');
                 me.durfield.setValue(model.raw.durations);
             }
