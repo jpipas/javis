@@ -5,8 +5,6 @@ dev.json
 .htaccess
 # Bootstrap
 
-
-
 # Symfony directories
 vendor/*
 */logs/*

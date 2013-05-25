@@ -1,9 +1,7 @@
 Ext.define('JavisERP.view.ClientGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientgrid',
-    requires: [
-        'Ext.ux.grid.FiltersFeature'
-    ],
+
     height: 250,
     itemId: 'clientgrid',
     width: 868,
@@ -13,7 +11,7 @@ Ext.define('JavisERP.view.ClientGrid', {
     forceFit: true,
     scroll: 'none',
     store: 'ClientStore',
-    features: [{ftype: 'filters'}],
+
     initComponent: function() {
         var me = this;
 
@@ -61,8 +59,7 @@ Ext.define('JavisERP.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'company_name',
                     flex: 3,
-                    text: 'Business Name',
-                    filterable: true
+                    text: 'Business Name'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -109,15 +106,13 @@ Ext.define('JavisERP.view.ClientGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'postal_code_iso',
                     flex: 1,
-                    text: 'Zip',
-                    filterable: true
+                    text: 'Zip'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'territory_name',
                     flex: 1,
-                    text: 'Territory',
-                    filterable: true
+                    text: 'Territory'
                 }
             ],
             viewConfig: {

@@ -16,9 +16,6 @@
 Ext.define('JavisERP.view.ClientPortlet', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.clientportlet',
-    requires: [
-        'Ext.ux.grid.FiltersFeature'
-    ],
 
     height: 250,
     itemId: 'clientportlet',
@@ -78,8 +75,7 @@ Ext.define('JavisERP.view.ClientPortlet', {
                     xtype: 'gridcolumn',
                     dataIndex: 'company_name',
                     flex: 3,
-                    text: 'Business Name',
-                    filterable: true
+                    text: 'Business Name'
                 },
                 {
                     xtype: 'gridcolumn',

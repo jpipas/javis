@@ -34,11 +34,6 @@ Ext.define('JavisERP.view.PortletPanel', {
                     overflow:false,
                     autoScroll: true,
                     html: JavisERP.util.Constants.bogusMarkup
-                },{
-                  id: 'portlet-4',
-                  title: 'Misc. Portlet',
-                  tools: this.getTools(),
-                  html: JavisERP.util.Constants.shortBogusMarkup
                 }]
             },{
                 id: 'col-2',

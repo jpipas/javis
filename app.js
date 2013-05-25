@@ -81,7 +81,8 @@ Ext.application({
         'Duration',
         'PostalCode',
         'User',
-        'AdList'
+        'AdList',
+        'UserNoteStore'
     ],
     views: [
         'Viewport',
@@ -100,7 +101,12 @@ Ext.application({
         'PublicationWindow',
         'UserGrid',
         'UserWindow',
-        'AdListGrid'
+        'AdListGrid',
+        'PortalPanel',
+        'PortalColumn',
+        'PortalDropZone',
+        'Portlet',
+        'PortletPanel'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',

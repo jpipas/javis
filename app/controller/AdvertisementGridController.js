@@ -11,7 +11,9 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
     ],
 
     stores: [
-        'PublicationStore'
+        'PublicationStore',
+        'AdTypeStore',
+        'AdSizeStore'
     ],
 
     refs: [
@@ -107,12 +109,15 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
         this.getPublicationStoreStore().clearFilter(true);
         this.getPublicationStoreStore().filter("territory_id",this.getContractForm().getForm().findField('territory_id').getValue());
-
+        this.getAdTypeStoreStore().reload();
+        this.getAdSizeStoreStore().reload();
         this.getAdvertisementModel().load(record.data.id,{
             success: function(model){
                 advertisementForm.loadRecord(model);
                 me.publicationfield = advertisementForm.getForm().findField('publications');
                 me.publicationfield.setValue(model.raw.publications);
+                advertisementForm.getForm().findField('adType').setValue(model.raw.ad_type_id);
+                advertisementForm.getForm().findField('adSize').setValue(model.raw.ad_size_id);
             }
         });
         me.adWindow.show();

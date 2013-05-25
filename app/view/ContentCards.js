@@ -11,7 +11,8 @@ Ext.define('JavisERP.view.ContentCards', {
         'JavisERP.view.AdvertisementGrid',
         'JavisERP.view.ContractGrid',
         'JavisERP.view.UserGrid',
-        'JavisERP.view.AdListGrid'
+        'JavisERP.view.AdListGrid',
+        'JavisERP.view.PortletPanel'
     ],
 
     layout: {

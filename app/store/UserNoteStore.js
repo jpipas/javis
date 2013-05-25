@@ -24,7 +24,7 @@ Ext.define('JavisERP.store.UserNoteStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            storeId: 'MyJsonStore5',
+            storeId: 'UserNoteStore',
             model: 'JavisERP.model.UserNote'
         }, cfg)]);
     }

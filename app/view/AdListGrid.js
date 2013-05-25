@@ -2,10 +2,8 @@ Ext.define('JavisERP.view.AdListGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.adlistgrid',
     require: [
-        'Ext.ux.grid.Printer',
-        'Ext.ux.grid.FiltersFeature'
+        'Ext.ux.grid.Printer'
     ],
-    features: [{ftype:'filters',local: false, filters:[{type:'string',dataIndex:'cl.territory_id'},{type:'string',dataIndex:'p.id'},{type:'string',dataIndex:'d.id'}]}],
     height: 200,
     itemId: 'AdListGrid',
     minHeight: 200,

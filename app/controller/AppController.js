@@ -22,6 +22,20 @@ Ext.define('JavisERP.controller.AppController', {
         'TerritoryStore'
     ],
 
+    views: [
+        'Viewport',
+        'NavBar',
+        'ContentCards',
+        'Activities',
+        'RecordNavigation',
+        'ClientPortlet',
+        'PortalPanel',
+        'PortalColumn',
+        'PortalDropZone',
+        'Portlet',
+        'PortletPanel'
+    ],
+
     refs: [
         {
             ref: 'activitiesPanel',

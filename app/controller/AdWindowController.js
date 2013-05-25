@@ -124,7 +124,7 @@ Ext.define('JavisERP.controller.AdWindowController', {
     onAdTypeChange: function(field, newValue, oldValue, options) {
         this.getAdSizeCombo().clearValue();
         this.getAdSizeCombo().getStore().clearFilter(true);
-        this.getAdSizeCombo().getStore().filter("type_id",newValue);
+        this.getAdSizeCombo().getStore().filter("type_id",field.getValue());
     },
 
     init: function(application) {
