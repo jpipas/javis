@@ -109,15 +109,15 @@ Ext.define('JavisERP.controller.AdvertisementGridController', {
         this.getAdvertisementToolbar().child('button[cls=savebutton]').hide();
         this.getPublicationStoreStore().clearFilter(true);
         this.getPublicationStoreStore().filter("territory_id",this.getContractForm().getForm().findField('territory_id').getValue());
-        this.getAdTypeStoreStore().reload();
-        this.getAdSizeStoreStore().reload();
+        this.getAdTypeStoreStore().load();
+        this.getAdSizeStoreStore().load();
         this.getAdvertisementModel().load(record.data.id,{
             success: function(model){
                 advertisementForm.loadRecord(model);
                 me.publicationfield = advertisementForm.getForm().findField('publications');
                 me.publicationfield.setValue(model.raw.publications);
-                advertisementForm.getForm().findField('adType').setValue(model.raw.ad_type_id);
-                advertisementForm.getForm().findField('adSize').setValue(model.raw.ad_size_id);
+                advertisementForm.getForm().findField('ad_type_id').setValue(new JavisERP.model.AdvertisementType(model.raw.ad_type));
+                advertisementForm.getForm().findField('ad_size_id').setValue(new JavisERP.model.AdvertisementSize(model.raw.ad_size));
             }
         });
         me.adWindow.show();

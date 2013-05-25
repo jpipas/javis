@@ -29,7 +29,8 @@ Ext.define('JavisERP.model.AdvertisementSize', {
             name: 'description'
         },
         {
-            name: 'type_id'
+            name: 'type_id',
+            type: 'int'
         }
     ],
 
