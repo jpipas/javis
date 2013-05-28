@@ -74,7 +74,7 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                             fieldLabel: 'Name/Description'
                                         },
                                         {
-                                            xtype: 'comboboxselect',
+                                            xtype: 'combobox',
                                             fieldLabel: 'Postal Code(s)',
                                             displayField: 'iso_code',
                                             emptyText: 'select a postal code...',
@@ -83,9 +83,8 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                             store: 'PostalCode',
                                             queryMode: 'local',
                                             typeAdead:true,
-                                            growMax:100,
                                             delimiter: ',',
-                                            filterPickList:true,
+                                            multiSelect:true,
                                             name: 'postal_codes',
                                             cls:'postalCodeList'
                                         }
@@ -117,7 +116,7 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                         {
                                             xtype: 'textfield',
                                             name: 'contact_email',
-                                            fieldLabel: 'Contact Email'
+                                            fieldLabel: 'Publisher Email'
                                         },
                                         {
                                             xtype: 'hiddenfield',

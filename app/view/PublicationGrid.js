@@ -92,7 +92,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'publisher_email',
+                    dataIndex: 'contact_email',
                     text: 'Publisher Email'
                 },
                 {
