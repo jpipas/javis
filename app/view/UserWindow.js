@@ -52,6 +52,10 @@ Ext.define('JavisERP.view.UserWindow', {
                         }
                     ],
                     items: [
+                    		{
+                    			xtype: 'hiddenfield',
+                    			name: 'id'
+                    		},
                         {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',

@@ -47,11 +47,7 @@ Ext.define('JavisERP.model.User', {
             name: 'territory'
         },
         {
-            name: 'territory_name',
-            mapping: 'territory.name'
-        },
-        {
-            name: 'territory'
+            name: 'territory_name'
         },
         {
             name: 'last_login'
@@ -60,8 +56,7 @@ Ext.define('JavisERP.model.User', {
             name: 'manager'
         },
         {
-            name: 'manager_username',
-            mapping: 'manager.username'
+            name: 'manager_name'
         }
     ],
 

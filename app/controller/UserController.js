@@ -76,6 +76,9 @@ Ext.define('JavisERP.controller.UserController', {
             },
             "button[cls=usersavebutton]": {
                 click: this.onUserSaveButtonClick
+            },
+            "button[cls=cancelbutton]": {
+                click: function(){ Ext.WindowMgr.getActive().close(); }
             }
         });
 
@@ -98,6 +101,7 @@ Ext.define('JavisERP.controller.UserController', {
         var uForm = this.getUserForm();
         this.getUserModel().load(record.data.id, {
             success: function(record,operation){
+            		//console.log(record.data.territory.name);
                 uForm.getForm().loadRecord(record);
                 uForm.getForm().findField('password').reset();
                 uForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
