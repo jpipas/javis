@@ -177,8 +177,6 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     },
 
     getClientName: function() {
-        console.log(this.getClientForm().getForm().findField('company_name').getValue());
-        console.log(me.client_name);
         return this.getClientForm().getForm().findField('company_name').getValue();
     },
 

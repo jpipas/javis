@@ -74,7 +74,6 @@ Ext.define('JavisERP.controller.ContractGridController', {
                 if(operation.success){
                     contract_id = record.data.id;
                     client = record.data.client_id;
-                    console.log(record);
 
                     this.getContractWindow().show();
                     this.getContractForm().getForm().reset(true);

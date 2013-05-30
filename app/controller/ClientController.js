@@ -208,12 +208,30 @@ Ext.define('JavisERP.controller.ClientController', {
         var cWindow = this.getClientWindow();
         var cRecordForm = this.getClientRecord();
         me.client.save({
+            scope: this,
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     var refreshedClient = new JavisERP.model.Client(record.data);
                     cRecordForm.getForm().loadRecord(refreshedClient);
                     me.client_id = record.data.id;
                     me.client_name = record.data.company_name;
+                    clientId = record.data.id;
+
+                    this.getContactGrid().getStore().clearFilter(true);
+                    this.getContactGrid().getStore().filter("client_id", clientId);
+
+                    this.getPublicationGrid().getStore().clearFilter(true);
+                    this.getPublicationGrid().getStore().filter("client_id",clientId);
+
+                    this.getPaymentGrid().getStore().clearFilter(true);
+                    this.getPaymentGrid().getStore().filter("client_id",clientId);
+
+                    this.getContractGrid().getStore().clearFilter(true);
+                    this.getContractGrid().getStore().filter("client_id",clientId);
+
+                    this.getAdvertisementGrid().getStore().clearFilter(true);
+                    this.getAdvertisementGrid().getStore().filter("client_id", clientId);
+
                     cWindow.close();
                     Ext.Msg.alert('Success','Client saved successfully!');
                 } else {
