@@ -35,7 +35,8 @@ Ext.define('JavisERP.controller.ClientController', {
 
     models: [
         'Client',
-        'Contact'
+        'Contact',
+        'Contract'
     ],
 
     refs: [
@@ -349,11 +350,6 @@ Ext.define('JavisERP.controller.ClientController', {
         });
 
         me.application.on({
-            addContract: me.addContract,
-            scope:me
-        });
-
-        me.application.on({
             createClientRecord: me.onNewButtonClick,
             scope: me
         });
@@ -361,9 +357,6 @@ Ext.define('JavisERP.controller.ClientController', {
         this.control({
             "clientgrid #actions, clientportlet #actions": {
                 click: this.onActionColumnClick
-            },
-            "clientrecord toolbar button[itemId=newcontract]": {
-                click: this.onNewContractClick
             },
             "button[cls=newPaymentButton]": {
                 click: this.onNewPaymentButtonClick
@@ -423,27 +416,6 @@ Ext.define('JavisERP.controller.ClientController', {
         this.getAdvertisementGrid().getStore().clearFilter(true);
         this.getAdvertisementGrid().getStore().filter("client_id", clientId);
 
-    },
-
-    addContract: function() {
-        me.contractWindow = new JavisERP.view.ContractWindow();
-
-        me.contract_id = null;
-        me.contract = new JavisERP.model.Contract({
-            client_id: me.client_id,
-            is_new: "1"
-        });
-
-        me.contract.save({
-            callback: function(record){
-                me.contract_id = record.data.id;
-                me.contractWindow.getComponent('contractform').getForm().setValues({id: record.data.id});
-            }
-        });
-
-        this.getAdvertisementGrid().getStore().clearFilter(true);
-        this.getAdvertisementGrid().getStore().filter("contract_id",me.contract_id);
-        me.contractWindow.show();
     }
 
 });

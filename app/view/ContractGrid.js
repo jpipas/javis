@@ -113,6 +113,7 @@ Ext.define('JavisERP.view.ContractGrid', {
                             xtype: 'button',
                             itemId: 'newcontract',
                             icon: '',
+                            cls: 'newcontract',
                             iconCls: 'ui-silk ui-silk-table-add',
                             text: 'New Contract'
                         }

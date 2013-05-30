@@ -45,18 +45,16 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         {
             ref: 'clientForm',
             selector: 'form[cls=clientform]'
+        },
+        {
+            ref: 'clientNameField',
+            selector: 'displayfield[cls=clientnamefield]',
+            xtype: 'displayfield'
         }
     ],
 
     onWindowAfterRender: function(abstractcomponent, options) {
-        this.getContractForm().getForm().setValues({
-            client_name: this.getClientName(),
-            client_id: this.getClientId()
-        });
-    },
 
-    onWindowBeforeShow: function(abstractcomponent, options) {
-        this.getDurationStore().clearFilter(true);
     },
 
     runCalcs: function(target) {
@@ -89,6 +87,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 if(operation.wasSuccessful){
                     cGrid.getStore().reload();
                     cWindow.close();
+                    //cWindow.destroy(true);
                     Ext.Msg.alert('Success','Contract saved successfully!');
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');
@@ -101,33 +100,32 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         button.up('window').close();
     },
 
-    onWindowClose: function(panel,opts) {
-        //this.getAdvertisementGrid().destroy();
+    onWindowClose: function(button,opts) {
+        me.contractWindow = null;
         if(this.getContractForm().getForm().isDirty()){
             Ext.Msg.show({
                  title:'Save Changes?',
                  msg: 'You are closing a window that has unsaved changes. Would you like to save your changes?',
                  buttons: Ext.Msg.YESNO,
                  icon: Ext.Msg.QUESTION,
-                 fn: this.windowClosedDecision,
-                 form: this.getContractForm(),
-                 grid: this.getContractGrid()
+                 scope: this,
+                 fn: function(button,text,opts) {
+                    if(button == "yes"){
+                        this.onSaveButtonClick();
+                    } else {
+                        //console.log(this.obj.getContractForm().getForm().findField('is_new').originalValue);
+                        if(this.getContractForm().getForm().findField('is_new').originalValue == "1" || this.getContractForm().getForm().findField('is_new').getValue() == "1"){
+                            //console.log(me.contract);
+                            me.contract.destroy();
+                        }
+                        this.getContractGrid().getStore().reload();
+                    }
+                 }
             });
+            button.up('window').hide();
         } else {
-            //this.getAdvertisementGrid().destroy();
-            this.getContractWindow().hide();
-        }
-    },
-
-    windowClosedDecision: function(button,text,opts){
-        if(button == "yes"){
-            this.onSaveButtonClick();
-        } else {
-            if(opts.form.getForm().findField('is_new').getValue() == "1"){
-                console.log("you're new - you should be deleted!");
-            }
-            opts.grid.getStore().reload();
-            return true;
+            //this.getAdvertisementGrid().hide();
+            button.up('window').hide();
         }
     },
 
@@ -142,9 +140,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
         me.client_name = null;
         this.control({
             "window[cls=contractWindow]": {
-                afterrender: this.onWindowAfterRender,
-                beforeshow: this.onWindowBeforeShow,
-                beforeclose: this.onWindowClose
+                //beforehide: this.onWindowClose
             },
             "combobox[cls=durationlist]": {
                 change: this.runCalcs
@@ -165,7 +161,7 @@ Ext.define('JavisERP.controller.ContractWindowController', {
                 change: this.paymentCalculations
             },
             "button[cls=cancelContract]": {
-                click: this.onCancelButtonClick
+                click: this.onWindowClose
             }
 
         });
@@ -181,6 +177,8 @@ Ext.define('JavisERP.controller.ContractWindowController', {
     },
 
     getClientName: function() {
+        console.log(this.getClientForm().getForm().findField('company_name').getValue());
+        console.log(me.client_name);
         return this.getClientForm().getForm().findField('company_name').getValue();
     },
 
