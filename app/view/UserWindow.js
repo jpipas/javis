@@ -31,10 +31,14 @@ Ext.define('JavisERP.view.UserWindow', {
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'userWindowToolBar',
                             itemId: 'userwindowtoolbar',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     cls: 'usersavebutton',
@@ -78,6 +82,18 @@ Ext.define('JavisERP.view.UserWindow', {
                                     },
                                     labelAlign: 'right',
                                     items: [
+                                    		{
+                                            xtype: 'textfield',
+                                            cls: 'firstname',
+                                            name: 'first_name',
+                                            fieldLabel: 'First Name'
+                                        },
+                                        {
+                                            xtype: 'textfield',
+                                            cls: 'lastname',
+                                            name: 'last_name',
+                                            fieldLabel: 'Last Name'
+                                        },
                                         {
                                             xtype: 'textfield',
                                             cls: 'username',
@@ -89,7 +105,22 @@ Ext.define('JavisERP.view.UserWindow', {
                                             cls: 'email',
                                             name: 'email',
                                             fieldLabel: 'Email'
-                                        },
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype: 'fieldcontainer',
+                                    flex: 1,
+                                    defaults: {
+                                        padding: '5px 0px',
+                                        anchor: '95%'
+                                    },
+                                    layout: {
+                                        type: 'anchor'
+                                    },
+                                    combineLabels: false,
+                                    labelAlign: 'right',
+                                    items: [
                                         {
                                             xtype: 'textfield',
                                             cls: 'password',
@@ -114,33 +145,6 @@ Ext.define('JavisERP.view.UserWindow', {
                                             inputType: 'password',
                                             vtype: 'password',
                                             initialPassField: 'password'
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'fieldcontainer',
-                                    flex: 1,
-                                    defaults: {
-                                        padding: '5px 0px',
-                                        anchor: '95%'
-                                    },
-                                    layout: {
-                                        type: 'anchor'
-                                    },
-                                    combineLabels: false,
-                                    labelAlign: 'right',
-                                    items: [
-                                        {
-                                            xtype: 'textfield',
-                                            cls: 'firstname',
-                                            name: 'first_name',
-                                            fieldLabel: 'First Name'
-                                        },
-                                        {
-                                            xtype: 'textfield',
-                                            cls: 'lastname',
-                                            name: 'last_name',
-                                            fieldLabel: 'Last Name'
                                         },
                                         {
                                             xtype: 'combobox',
@@ -150,6 +154,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             fieldLabel: 'Territory',
                                             displayField: 'name',
                                             store: 'TerritoryStore',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            allowOnlyWhitespace: false,
+                                            allowBlank: false,
+                                            minChars: 3,
                                             valueField: 'id'
                                         },
                                         {
@@ -159,8 +169,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             itemId: 'manager_user_id',
                                             name: 'manager_user_id',
                                             fieldLabel: 'Manager',
-                                            displayField: 'username',
-                                            store: 'User',
+                                            displayField: 'fullname',
+                                            store: 'UserDropDown',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
                                             valueField: 'id'
                                         }
                                     ]

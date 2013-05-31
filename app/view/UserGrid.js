@@ -99,7 +99,21 @@ Ext.define('JavisERP.view.UserGrid', {
                             itemId: 'newuser',
                             iconCls: 'ui-silk ui-silk-user-add',
                             text: 'New Employee'
-                        }
+                        },
+                        {
+                    				xtype: 'tbspacer',
+                    				flex: 1
+                    		},
+				                {
+				                    xtype: 'gridsearchingbar',
+				                    inputWidth: 200,
+				                    grid: this,
+				                    showSelectAll: true,
+				                    menuIconCls: 'ui-silk ui-silk-magnifier',
+				                    disableIndexes: ['id'],
+				                    checkIndexes: ['first_name','last_name'],
+                    				items: ['->']
+				                }
                     ]
                 },
                 {

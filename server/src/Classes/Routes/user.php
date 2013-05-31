@@ -21,15 +21,23 @@ class User implements ControllerProviderInterface
         		if ($request->get('sort')){
         			$sort = json_decode($request->get('sort'), true);
         		}
-            $user_array = $app['business.user']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort);
-            $totalCount = $app['business.user']->getTotalCount($request->get('filter'));
+        		$filter = array();
+        		if ($request->get('filter')){
+        			$filter = json_decode($request->get('filter'), true);
+        		}
+        		$search = array();
+        		if ($request->get('search')){
+        			$search = json_decode($request->get('search'), true);
+        		}
+            list($totalCount, $user_array) = $app['business.user']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            //$totalCount = $app['business.user']->getTotalCount($request->get('filter'));
 
             array_walk($user_array,function($user,$key) use (&$user_array, &$app){
                 //$user_array[$key]['territory'] = $app['business.territory']->getById($user['territory_id']);
                 $user_array[$key]['fullname'] = $user['first_name']." ".$user['last_name'];
                 //$user_array[$key]['manager'] = $app['business.user']->getById($user['manager_user_id']);
             });
-            return $app->json(array("totalCount"=>$totalCount['totalCount'], "user"=>$user_array));
+            return $app->json(array("totalCount"=>$totalCount, "user"=>$user_array));
         });
 
 				/* get */
@@ -45,13 +53,13 @@ class User implements ControllerProviderInterface
 				/* update */
 				$controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
-            $nonEncodedPassword = $params['password'];
-            $user = new sfUser($params['username'],$params['password']);
-            $encoder = $app['security.encoder_factory']->getEncoder($user);
-            $encodedPassword = $encoder->encodePassword($nonEncodedPassword,$user->getSalt());
-            $params['password'] = $encodedPassword;
-            $user_array = $app['business.user']->updateUser($id, $params);
-            return $app->json(array("success"=>true,"user"=>$user_array));
+            $error = $app['business.user']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$user_array = $app['business.user']->updateUser($id, $params);
+            	return $app->json(array("success"=>true,"user"=>$user_array));
+            }
         });
         
         /* delete */
@@ -62,15 +70,14 @@ class User implements ControllerProviderInterface
 
 				/* create */
         $controllers->post('/new', function(Application $app, Request $request) {
-        		unset($params['manager']);
             $params = json_decode($request->getContent(),true);
-            $nonEncodedPassword = $params['password'];
-            $user = new sfUser($params['username'],$params['password']);
-            $encoder = $app['security.encoder_factory']->getEncoder($user);
-            $encodedPassword = $encoder->encodePassword($nonEncodedPassword,$user->getSalt());
-            $params['password'] = $encodedPassword;
-            $user_array = $app['business.user']->createUser($params);
-            return $app->json(array("success"=>true,"user"=>$user_array));
+            $error = $app['business.user']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$user_array = $app['business.user']->createUser($params);
+            	return $app->json(array("success"=>true,"user"=>$user_array));
+            }
         });
 
         return $controllers;

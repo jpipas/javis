@@ -1,4 +1,4 @@
-Ext.define('JavisERP.store.User', {
+Ext.define('JavisERP.store.UserDropDown', {
     extend: 'Ext.data.Store',
 
     requires: [
@@ -13,7 +13,7 @@ Ext.define('JavisERP.store.User', {
             remoteSort: true,
             pageSize: 50,
             autoLoad: false,
-            storeId: 'UserStore',
+            storeId: 'UserDropDownStore',
             model: 'JavisERP.model.User'
         }, cfg)]);
     }

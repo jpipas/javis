@@ -12,6 +12,7 @@ Ext.define('JavisERP.controller.UserController', {
 
     stores: [
         'User',
+        'UserDropDown',
         'TerritoryStore'
     ],
 
@@ -52,15 +53,29 @@ Ext.define('JavisERP.controller.UserController', {
         var uWindow = this.getUserWindow();
         var uStore = this.getUserStore();
         me.user.save({
+            /*
             callback: function(record,operation){
-//                console.log(operation);
+                console.log(operation);
                 if(operation.wasSuccessful){
                     uWindow.close();
                     uStore.reload();
                     Ext.Msg.alert('Success','Employee saved successfully!');
                 } else {
-                    Ext.Msg.alert('Failure','Something went wrong!');
+                    Ext.Msg.alert('Failure',"The following errors were encountered:\n\n  - "+record.error.join("\n  - "));
                 }
+            }*/
+            success: function(record, operation){
+            	uWindow.close();
+              uStore.reload();
+              Ext.Msg.alert('Success','Employee saved successfully!');
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
             }
         });
     },
@@ -78,7 +93,9 @@ Ext.define('JavisERP.controller.UserController', {
                 click: this.onUserSaveButtonClick
             },
             "button[cls=cancelbutton]": {
-                click: function(){ Ext.WindowMgr.getActive().close(); }
+                click: function(){ 
+                		Ext.WindowMgr.getActive().close();
+                	}
             }
         });
 
@@ -92,7 +109,6 @@ Ext.define('JavisERP.controller.UserController', {
             },
             passwordText: 'Passwords do not match'
         });
-
     },
 
     editUser: function(record){

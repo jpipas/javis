@@ -20,6 +20,9 @@ Ext.define('JavisERP.model.User', {
             name: 'password'
         },
         {
+            name: 'retype-password'
+        },
+        {
             name: 'first_name'
         },
         {
