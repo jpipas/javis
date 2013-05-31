@@ -85,6 +85,8 @@ Ext.define('JavisERP.controller.AdWindowController', {
             client_id: me.client_id,
             contract_id: contractId
         });
+        this.getAdForm().getForm().findField('publications').getStore().clearFilter(true);
+        this.getAdForm().getForm().findField('publications').getStore().filter('territory_id',contractTerritoryId);
     },
 
     onSaveClick: function(button, e, options) {
@@ -112,6 +114,9 @@ Ext.define('JavisERP.controller.AdWindowController', {
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     aGrid.getStore().reload();
+                    aGrid.getStore().clearFilter(true);
+                    //console.log(record);
+                    aGrid.getStore().filter("contract_id",record.data.contract_id);
                     aWindow.close();
                     Ext.Msg.alert('Success','Advertisement saved successfully!');
                 } else {

@@ -10,6 +10,10 @@ Ext.define('JavisERP.controller.ContractGridController', {
         'Contract'
     ],
 
+    stores: [
+        'Duration'
+    ],
+
     refs: [
         {
             ref: 'advertisementGrid',
@@ -21,11 +25,15 @@ Ext.define('JavisERP.controller.ContractGridController', {
         },
         {
             ref: 'contractWindow',
-            selector: 'contractwindow'
+            selector: 'window[cls=contractWindow]'
         },
         {
             ref: 'clientRecord',
             selector: 'clientrecord'
+        },
+        {
+            ref: 'durationCombo',
+            selector: 'contractform combobox[cls=durationlist]'
         }
     ],
     onContractActionClick: function(grid,record,action,idx,col,e,target) {
@@ -45,9 +53,38 @@ Ext.define('JavisERP.controller.ContractGridController', {
         me.control({
             "contractgrid rowactions": {
                 action: me.onContractActionClick
+            },
+            "contractgrid toolbar button[cls=newcontract]": {
+                click: me.onNewContractClick
             }
         });
 
+    },
+
+    onNewContractClick: function() {
+        me.contractWindow = new JavisERP.view.ContractWindow();
+        var contract_id = null;
+        me.contract = new JavisERP.model.Contract({
+            client_id: me.client_id
+        });
+        me.durationStore = this.getDurationStore();
+        me.contract.save({
+            scope: this,
+            callback: function(record,operation){
+                if(operation.success){
+                    contract_id = record.data.id;
+                    client = record.data.client_id;
+
+                    this.getContractWindow().show();
+                    this.getContractForm().getForm().reset(true);
+                    this.getContractForm().loadRecord(record);
+                    this.getContractForm().getForm().setValues({client_name: operation.resultSet.records[0].raw.client[0].company_name, is_new:1});
+                    me.durationStore.clearFilter(true);
+                    this.getAdvertisementGrid().getStore().clearFilter(true);
+                    this.getAdvertisementGrid().getStore().filter("contract_id",contract_id);
+                }
+            }
+        });
     },
 
     editContract: function(record){
@@ -60,11 +97,13 @@ Ext.define('JavisERP.controller.ContractGridController', {
             contractForm = me.contractWindow.getComponent('contractform');
         }
         this.getContractModel().load(record.data.id,{
+            scope: this,
             success: function(model){
                 contractForm.loadRecord(model);
                 contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm(model.raw.payment_term));
                 contractForm.getForm().findField('client_name').setValue(model.raw.client[0].company_name);
                 me.durfield = contractForm.getForm().findField('durations');
+                this.getDurationStore().clearFilter(true);
                 me.durfield.setValue(model.raw.durations);
             }
         });
