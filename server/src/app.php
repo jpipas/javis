@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Silex\Provider\HttpCacheServiceProvider;
 
-
 define('ROOT_PATH',    __DIR__ . '/..');
 define('APP_PATH',   ROOT_PATH . '/src');
 
@@ -51,8 +50,11 @@ if ($app->offsetExists("database.connection")) {
 }
 
 $app['security.firewalls'] = array(
+		'login' => array(
+        'pattern' => '^/login$',
+    ),
     'secured' => array(
-        'pattern' => '^/backoffice',
+        'pattern' => '^.*$',
         'form' => array('login_path' => '/login', 'check_path' => '/backoffice/login_check'),
         'logout' => array('logout_path' => '/backoffice/logout'),
         'users' => $app->share(function () use ($app) {
@@ -119,6 +121,8 @@ $app->get("/login", function(Request $request) use ($app) {
 $app->error(function (\Exception $e, $code) use ($app) {
     $app['monolog']->addInfo($e->getMessage());
     $app['monolog']->addInfo($e->getTraceAsString());
+    //echo $e->getMessage()."\n\n";
+    //echo $e->getTraceAsString();
     switch ($code) {
         case 404:
             $message = "Resource not found.";

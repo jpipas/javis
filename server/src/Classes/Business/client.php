@@ -43,7 +43,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         WHERE c.id = ?
         GROUP BY c.id";
-        return $this->db->fetchAll($sql,array((int) $id));
+        return $this->db->fetchAssoc($sql,array((int) $id));
     }
 
     public function getRemainingMonths($id){

@@ -74,6 +74,7 @@ Ext.application({
         'UserNoteStore',
         'ContactRoleStore',
         'ActivityTypeStore',
+        'ActivityStatusStore',
         'PublicationStore',
         'ContractStore',
         'PaymentTypeStore',
@@ -112,6 +113,7 @@ Ext.application({
     name: 'JavisERP',
     controllers: [
         'AppController',
+        'ActivityController',
         'MainNavController',
         'ClientController',
         'Portal',

@@ -94,7 +94,9 @@ Ext.define('JavisERP.controller.UserController', {
             },
             "button[cls=cancelbutton]": {
                 click: function(){ 
-                		Ext.WindowMgr.getActive().close();
+                		if (Ext.WindowMgr.getActive()){
+                			Ext.WindowMgr.getActive().close();
+                		}
                 	}
             }
         });
@@ -113,11 +115,9 @@ Ext.define('JavisERP.controller.UserController', {
 
     editUser: function(record){
         var uWindow = new JavisERP.view.UserWindow();
-        //console.log(this.getUserModel());
         var uForm = this.getUserForm();
         this.getUserModel().load(record.data.id, {
             success: function(record,operation){
-            		//console.log(record.data.territory.name);
                 uForm.getForm().loadRecord(record);
                 uForm.getForm().findField('password').reset();
                 uForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));

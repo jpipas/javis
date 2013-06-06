@@ -3,6 +3,7 @@
 namespace Classes\Business;
 
 use JavisERP\System\Database\AbstractBusinessService;
+use Symfony\Component\Security\Core\User\User as sfUser;
 
 class User extends AbstractBusinessService
 {
@@ -44,19 +45,20 @@ class User extends AbstractBusinessService
     		// handle additional filters
     		} elseif (@count($filter) > 0){
     			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !$where[$f['property']] && !empty($f['value'])){
+    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
     					switch ($f['property']){
     						case 'fullname':
                 	$parts = explode(" ", $f['value']);
 				    			if (@count($parts) == 2){
-				    				$where[$f['property']] = "employee.first_name LIKE '".addslashes($parts[0])."%' AND employee.last_name LIKE '".addslashes($parts[1])."%'";
+				    				$where[$f['property']] = "employee.first_name LIKE ".$this->db->quote($parts[0].'%')." AND employee.last_name LIKE ".$this->db->quote($parts[1].'%');
 				    			} else {
-				    				$where[$f['property']] = "(employee.first_name LIKE '".addslashes($f['value'])."%' OR employee.last_name LIKE '".addslashes($f['value'])."%')";
+				    				$where[$f['property']] = "(employee.first_name LIKE ".$this->db->quote($f['value'].'%')." OR employee.last_name LIKE ".$this->db->quote($f['value'].'%').")";
 				    			}
 				    			break;
                   
                 default:
-                	$where[$f['property']] = $f['property']." = ".$f['value'];
+    							$qq = $this->db->quote($f['value']);
+                	$where[$f['property']] = $f['property']." = ".$qq;
                 	break;
               }
             }
@@ -99,6 +101,7 @@ class User extends AbstractBusinessService
     		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	employee.*,
+        	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname,
         	CONCAT(m.first_name, ' ',m.last_name) AS manager_name,
         	territory.name AS territory_name
         FROM
@@ -117,7 +120,14 @@ class User extends AbstractBusinessService
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM employee WHERE id = ? AND deleted_at IS NULL";
+        $sql = "SELECT 
+        	employee.*,
+        	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname
+        FROM
+        	employee
+        WHERE
+        	id = ? AND
+        	deleted_at IS NULL";
         return $this->db->fetchAssoc($sql,array((int) $id));
     }
     
@@ -207,5 +217,11 @@ class User extends AbstractBusinessService
         $rows = $this->db->update('employee',$params, array('id' => $id));
         $user = $this->getById($id);
         return $user;
+    }
+    
+    public function encodePassword($username, $nonEncodedPassword, $app) {
+        $user = new sfUser($username, $nonEncodedPassword);
+
+        return $encodePassword;
     }
 }
