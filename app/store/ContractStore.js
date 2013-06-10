@@ -10,6 +10,7 @@ Ext.define('JavisERP.store.ContractStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             remoteFilter: true,
+            remoteSort: true,
             storeId: 'contractStore',
             model: 'JavisERP.model.Contract',
             pageSize: 45

@@ -60,19 +60,21 @@ class Client extends AbstractBusinessService
     public function updateClient($id, $params) {
         // search for new postal code
         $postal_code = $params['postal_code_iso'];
-        $sql = "SELECT * FROM postal_code WHERE iso_code = $postal_code";
-        $rs = $this->db->fetchAll($sql);
         $postal_code_id = null;
-        if(count($rs) == 0){
-            // add the new postal code
-            $array = array();
-            $array['iso_code'] = $postal_code;
-            $this->db->insert('postal_code',$array);
-            $postal_code_id = $this->db->lastInsertId();
-        } else {
-            $postal_code_id = $rs[0]['id'];
-        }
+        if($postal_code != "") {
+            $sql = "SELECT * FROM postal_code WHERE iso_code = $postal_code";
+            $rs = $this->db->fetchAll($sql);
 
+            if(count($rs) == 0){
+                // add the new postal code
+                $array = array();
+                $array['iso_code'] = $postal_code;
+                $this->db->insert('postal_code',$array);
+                $postal_code_id = $this->db->lastInsertId();
+            } else {
+                $postal_code_id = $rs[0]['id'];
+            }
+        }
         unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
         unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
         unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name'],$params['state_name']);

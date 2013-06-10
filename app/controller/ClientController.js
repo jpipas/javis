@@ -164,14 +164,16 @@ Ext.define('JavisERP.controller.ClientController', {
         me.client = new JavisERP.model.Client({stage: 'CUSTOMER'});
         var conGrid = this.getContactGrid();
         me.client.save({
-            callback: function(record,operation,success){
-                me.client_id = record.data.id;
-                me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
-                me.clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
-                me.clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));
-                //conGrid.getStore().clearFilter(true);
-                //conGrid.getStore().filter("client_id",me.client_id);
-                me.clientWindow.show();
+            scope: this,
+            callback: function(record,operation){
+                if(operation.success){
+                    me.client_id = record.data.id;
+                    // choke
+                    me.clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
+                    me.clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
+                    me.clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));
+                    me.clientWindow.show();
+                }
             }
         });
     },

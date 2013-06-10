@@ -9,12 +9,7 @@ Ext.define('JavisERP.util.Constants', {
     'we can spice this welcome screen up a bit to show statistics, or whatever else is needed for a moments glance.<br /><br /></p>'+
     '</div>'+
     '<div style="padding-left:10px;"><h2>What\'s New!?</h2>'+
-    '<p>Here\'s what you\'re able to do:<br /><br /></p>'+
-    '<ul><li><h3>Portlet Drag and Drop</h3></li><li><h3>Menu Navigation:</h3><ul style="margin-left:10px;"><li>Navigation Menu (Administrators View)</li><li>List->Clients (view/edit icons bring up client record)</li><li>List->Publications</li><li>List->Contracts</li><li>List->Territories</li>'+
-    '<li>Client Portlet -> View/Edit icons take you to Client Record</li></ul></li>'+
-    '<li><h3>Client Record:</h3><ul style="margin-left:10px;"><li>General Tab, Sales Tab</li><li>General Tab->Contact Tab->New Contact (shows new contact window)</li>'+
-    '<li>Sales Tab->Contract->New Contract (initiates the new contract workflow)</li><li>Sales Tab -> Payments -> New Payment (Record a payment against a contract)</li>'+
-    '<li>Sales Tab->Balance (Lists the client\'s outstanding balance based on contracts and payments recieved)</li></ul></li>'+
+    '<iframe src="http://player.vimeo.com/video/67298836" width="500" height="313" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> <p><a href="http://vimeo.com/67298836">JavisERP - Best Version Media</a> from <a href="http://vimeo.com/user5720016">Jeff Pipas</a> on <a href="http://vimeo.com">Vimeo</a>.</p>'+
     '</div><div class="clear">&nbsp;</div></div>',
 
 

@@ -15,20 +15,20 @@ class User implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-				/* search */
+		/* search */
         $controllers->get('/', function (Application $app, Request $request) {
-    				$sort = '';
-        		if ($request->get('sort')){
-        			$sort = json_decode($request->get('sort'), true);
-        		}
-        		$filter = array();
-        		if ($request->get('filter')){
-        			$filter = json_decode($request->get('filter'), true);
-        		}
-        		$search = array();
-        		if ($request->get('search')){
-        			$search = json_decode($request->get('search'), true);
-        		}
+    	    $sort = '';
+    		if ($request->get('sort')){
+    			$sort = json_decode($request->get('sort'), true);
+    		}
+    		$filter = array();
+    		if ($request->get('filter')){
+    			$filter = json_decode($request->get('filter'), true);
+    		}
+    		$search = array();
+    		if ($request->get('search')){
+    			$search = json_decode($request->get('search'), true);
+    		}
             list($totalCount, $user_array) = $app['business.user']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
             //$totalCount = $app['business.user']->getTotalCount($request->get('filter'));
 
@@ -40,7 +40,7 @@ class User implements ControllerProviderInterface
             return $app->json(array("totalCount"=>$totalCount, "user"=>$user_array));
         });
 
-				/* get */
+		/* get */
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
             $user_array = $app['business.user']->getById($id);
             $totalCount = $app['business.user']->getTotalCount($request->get('filter'));
@@ -50,8 +50,8 @@ class User implements ControllerProviderInterface
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"user"=>$user_array));
         });
 
-				/* update */
-				$controllers->put('/{id}', function(Application $app, $id, Request $request) {
+		/* update */
+		$controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $error = $app['business.user']->validate($app, $params);
             if (@count($error) > 0){
@@ -61,14 +61,14 @@ class User implements ControllerProviderInterface
             	return $app->json(array("success"=>true,"user"=>$user_array));
             }
         });
-        
+
         /* delete */
-				$controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+		$controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
             $user_array = $app['business.user']->deleteUser($id);
             return $app->json(array("success"=>true,"user"=>$user_array));
         });
 
-				/* create */
+		/* create */
         $controllers->post('/new', function(Application $app, Request $request) {
             $params = json_decode($request->getContent(),true);
             $error = $app['business.user']->validate($app, $params);

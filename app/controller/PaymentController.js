@@ -80,7 +80,6 @@ Ext.define('JavisERP.controller.PaymentController', {
         var fields = this.getPaymentForm().getForm().getValues(false,false,false,true);
         me.payment = new JavisERP.model.Payment();
         for(var key in fields){
-            //console.log(key+":"+fields[key]);
             me.payment.set(key,fields[key]);
         }
         me.payment.set('type',"Customer Payment");
@@ -96,7 +95,6 @@ Ext.define('JavisERP.controller.PaymentController', {
                     cStore.reload();
                     var refreshedClient = new JavisERP.model.Client(record.data.client);
                     cRecordForm.getForm().loadRecord(refreshedClient);
-//                    console.log(refreshedClient);
                     cRecordForm.getForm().findField('remaining_months').setValue(refreshedClient.data.remaining_months.cnt);
                     cRecordForm.getForm().findField('territory').setValue(refreshedClient.data.territory.name);
                     Ext.Msg.alert('Success','Payment saved successfully!');
