@@ -2,13 +2,12 @@ Ext.define('JavisERP.view.ActivityGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.activitygrid',
 
-    border: 0,
-    itemId: 'ActivitiesGrid',
-    preventHeader: true,
-    title: 'My Grid Panel',
+    title: 'Activities',
     forceFit: true,
     store: 'ActivityStore',
-
+		itemId: 'ActivityGrid',
+    forceFit: true,
+    scroll: 'vertical',
     initComponent: function() {
         var me = this;
 
@@ -18,12 +17,18 @@ Ext.define('JavisERP.view.ActivityGrid', {
             },
             columns: [
                 {
-                    xtype: 'actioncolumn',
-                    maxWidth: 50,
-                    defaultWidth: 50,
-                    items: [
+                    xtype: 'rowactions',
+                    flex: 1,
+                    actions: [
                         {
-
+                        		iconIndex: 'type_cls_edit',
+                            tooltip: 'Edit Activity',
+                            callback: Ext.emptyFn
+                        },
+                        {
+                        		iconIndex: 'type_cls_delete',
+                            tooltip: 'Delete Activity',
+                            callback: Ext.emptyFn
                         }
                     ]
                 },
@@ -35,38 +40,48 @@ Ext.define('JavisERP.view.ActivityGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    flex: 3,
                     dataIndex: 'title',
                     text: 'Title'
                 },
                 {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'date',
+                    xtype: 'datecolumn',
+                    flex: 1,
+                    format: 'm/d/Y',
+                    dataIndex: 'post_date',
                     text: 'Date'
                 },
                 {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'time',
+                    xtype: 'datecolumn',
+                    flex: 1,
+                    format: 'g:ia',
+                    emptyCellText: 'All Day',
+                    dataIndex: 'post_time',
                     text: 'Time'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'owner',
+                    flex: 2,
+                    dataIndex: 'owner_name',
                     text: 'Owner'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'status',
+                    flex: 1,
+                    dataIndex: 'status_id',
                     text: 'Status'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'assigned_to',
-                    text: 'Assigned To'
+                    flex: 3,
+                    dataIndex: 'client_name',
+                    text: 'Client'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'type',
-                    text: 'Type'
+                    flex: 2,
+                    dataIndex: 'assigned_to_name',
+                    text: 'Assigned To'
                 }
             ],
             dockedItems: [
@@ -75,6 +90,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
                     dock: 'top',
                     items: [
                         {
+                        		itemId: 'newactivitytask',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-clock-add',
                             text: 'New Task'
@@ -83,6 +99,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
                             xtype: 'tbseparator'
                         },
                         {
+                        		itemId: 'newactivityphone',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-telephone-add',
                             text: 'New Phone Call'
@@ -91,6 +108,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
                             xtype: 'tbseparator'
                         },
                         {
+                        		itemId: 'newactivityevent',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-date-add',
                             text: 'New Event'
@@ -99,15 +117,43 @@ Ext.define('JavisERP.view.ActivityGrid', {
                             xtype: 'tbseparator'
                         },
                         {
-                            xtype: 'combobox',
+                            xtype: 'filtercombo',
                             itemId: 'typeFilter',
                             hideLabel: true,
                             emptyText: 'Filter Activity Type...',
                             displayField: 'description',
-                            queryMode: 'local',
-                            store: 'ActivityTypeStore'
+                            store: 'ActivityTypeStore',
+                            recordField: 'id',
+                            searchField: 'type_id',
+                            clearable: true,
+                            onClear: function(){
+                            	var store = Ext.StoreMgr.lookup('ActivityStore');
+                            	store.clearFilter(false);
+                            },
+                            onSearch: function(filtervalue, filterfield){
+                            	var store = Ext.StoreMgr.lookup('ActivityStore');
+                            	if (filtervalue){
+	                            	store.clearFilter(true);
+	                            	var myfilter = Ext.create('Ext.util.Filter', {
+	                            			property: filterfield,
+	                            			value: filtervalue
+														    });
+														    // Apply filter to store
+														    store.filter(myfilter);
+														  } else {
+														  	store.clearFilter(false);
+														  }
+                            }
+                            
                         }
                     ]
+                },
+                {
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    itemId: 'activityPageToolBar',
+                    displayInfo: true,
+                    store: 'ActivityStore'
                 }
             ]
         });

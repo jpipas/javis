@@ -1,4 +1,4 @@
-Ext.define('JavisERP.store.ActivityTypeStore', {
+Ext.define('JavisERP.store.ActivityStatusStore', {
     extend: 'Ext.data.Store',
 
     constructor: function(cfg) {
@@ -6,14 +6,14 @@ Ext.define('JavisERP.store.ActivityTypeStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             autoLoad: true,
-            storeId: 'activityTypeStore',
+            storeId: 'activityStatusStore',
             proxy: {
                 type: 'ajax',
-                url: '/server/web/index.php/activitytype/',
+                url: '/server/web/index.php/activitystatus/',
                 reader: {
                     type: 'json',
                     idProperty: 'id',
-                    root: 'activitytype',
+                    root: 'activitystatus',
                     totalProperty: 'totalCount'
                 }
             },

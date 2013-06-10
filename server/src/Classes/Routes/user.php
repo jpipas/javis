@@ -6,7 +6,6 @@ use Silex\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\User\User as sfUser;
 
 class User implements ControllerProviderInterface
 {
@@ -46,7 +45,6 @@ class User implements ControllerProviderInterface
             $totalCount = $app['business.user']->getTotalCount($request->get('filter'));
             $user_array['territory'] = $app['business.territory']->getById($user_array['territory_id']);
             $user_array['manager'] = $app['business.user']->getById($user_array['manager_user_id']);
-            $user_array['fullname'] = $user_array['first_name']." ".$user_array['last_name'];
             return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"user"=>$user_array));
         });
 
@@ -81,11 +79,5 @@ class User implements ControllerProviderInterface
         });
 
         return $controllers;
-    }
-
-    public function encodePassword($username, $nonEncodedPassword, $app) {
-        $user = new sfUser($username, $nonEncodedPassword);
-
-        return $encodePassword;
     }
 }

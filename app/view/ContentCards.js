@@ -4,6 +4,7 @@ Ext.define('JavisERP.view.ContentCards', {
 
     requires: [
         'JavisERP.view.Activities',
+        'JavisERP.view.ActivityGrid',
         'JavisERP.view.ClientGrid',
         'JavisERP.view.TerritoryGrid',
         'JavisERP.view.ClientRecord',
@@ -31,6 +32,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'activities',
                     title: 'ActivityPanel'
+                },
+                {
+                    xtype: 'activitygrid',
+                    itemId: 'ActivityGrid'
                 },
                 {
                     xtype: 'clientgrid',
