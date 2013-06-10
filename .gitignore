@@ -1,3 +1,4 @@
+app/util/Constants.js
 app/config/deploy.rb
 server/cache/
 server/composer.lock
