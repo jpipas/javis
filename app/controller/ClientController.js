@@ -102,8 +102,20 @@ Ext.define('JavisERP.controller.ClientController', {
         }
     ],
 
-    onActionColumnClick: function(grid, col, row) {
-        this.application.fireEvent('clientRecordChange',grid,col,row);
+    onActionColumnClick: function(grid,record,action,idx,col,e,target) {
+        var doAction = action.split(" ",1);
+        switch(doAction[0]){
+            case 'edit_action':
+                this.editClient(record);
+                break;
+            case 'delete_action':
+                this.deleteClient(record,grid);
+                break;
+            case 'view_action':
+                this.changeClientRecord(grid,col,idx,record);
+                break;
+        }
+        //this.application.fireEvent('clientRecordChange',grid,col,row);
     },
 
     onNewContractClick: function(target) {
@@ -359,6 +371,32 @@ Ext.define('JavisERP.controller.ClientController', {
         me.contactWindow.show();
     },
 
+    deleteClient: function(record,grid){
+        Ext.Msg.show({
+            title: 'Delete Client?',
+            msg: 'You are about to delete this client.  Are you sure?',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.QUESTION,
+            fn: function(button, text, opts){
+                switch(button){
+                    case 'yes':
+                        record.destroy({
+                            success: function(){
+                                grid.getStore().reload();
+                            },
+                            failure: function(){
+                                alert("Could not delete contact!");
+                            }
+                        });
+                        break;
+                    case 'no':
+                        //this.close();
+                        break;
+                }
+            }
+        });
+    },
+
     init: function(application) {
         me = this;
         me.contactWindow = null;
@@ -376,8 +414,8 @@ Ext.define('JavisERP.controller.ClientController', {
         });
 
         this.control({
-            "clientgrid #actions, clientportlet #actions": {
-                click: this.onActionColumnClick
+            "clientgrid rowactions, clientportlet rowactions": {
+                action: this.onActionColumnClick
             },
             "button[cls=newPaymentButton]": {
                 click: this.onNewPaymentButtonClick

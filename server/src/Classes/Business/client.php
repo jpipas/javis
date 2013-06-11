@@ -139,6 +139,14 @@ class Client extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
+    public function deleteClient($id) {
+            $now = new \DateTime('NOW');
+                $params['deleted_at'] = $now->format('Y-m-d H:i:s');
+        $rows = $this->db->update('client',$params, array('id' => $id));
+        $client = $this->getById($id);
+        return $client;
+    }
+
     public function getSortString($sort){
         $sort_string = json_decode($sort,TRUE);
         $property = $sort_string[0]['property'];

@@ -64,11 +64,11 @@ Ext.define('JavisERP.controller.AppController', {
 
     navigationClick: function(itemId) {
 	    	if (itemId){
-	    		console.log(itemId);
+	    	//console.log(itemId);
 	        this.getContentCards().getLayout().setActiveItem(itemId);
-	
+
 	        var xtype = this.getContentCards().getLayout().getActiveItem().getXType();
-	
+
 	        if(xtype.indexOf("grid") != -1){
 	            // if its a grid clear the filter and reload the store
 	            this.getContentCards().getLayout().getActiveItem().getStore().clearFilter(true);

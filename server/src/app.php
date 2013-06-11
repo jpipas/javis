@@ -18,6 +18,8 @@ use Silex\Provider\HttpCacheServiceProvider;
 define('ROOT_PATH',    __DIR__ . '/..');
 define('APP_PATH',   ROOT_PATH . '/src');
 
+date_default_timezone_set("America/Chicago");
+
 $app = new Application();
 
 $app->register(new UrlGeneratorServiceProvider());

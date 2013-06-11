@@ -35,7 +35,10 @@ class Client implements ControllerProviderInterface
                 $client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
                 $client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
                 $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
-
+                // actions
+                $client_array[$key]['view_action'] = false;
+                $client_array[$key]['edit_action'] = false;
+                $client_array[$key]['delete_action'] = false;
             });
             return $app->json(array("totalCount"=>$totalCount['totalCount'], "client"=>$client_array));
         });
@@ -74,6 +77,12 @@ class Client implements ControllerProviderInterface
             $subReq = Request::create('/client/'.$client_id,'GET');
             $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
             return $app->json($client_return);
+        });
+
+        /* delete */
+        $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+            $client_array = $app['business.client']->deleteClient($id);
+            return $app->json(array("success"=>true,"client"=>$client_array));
         });
 
         return $controllers;

@@ -21,12 +21,12 @@ Ext.define('JavisERP.view.ActivityGrid', {
                     flex: 1,
                     actions: [
                         {
-                        		iconIndex: 'type_cls_edit',
+                        	iconIndex: 'type_cls_edit',
                             tooltip: 'Edit Activity',
                             callback: Ext.emptyFn
                         },
                         {
-                        		iconIndex: 'type_cls_delete',
+                        	iconIndex: 'type_cls_delete',
                             tooltip: 'Delete Activity',
                             callback: Ext.emptyFn
                         }
@@ -144,7 +144,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
 														  	store.clearFilter(false);
 														  }
                             }
-                            
+
                         }
                     ]
                 },

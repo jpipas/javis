@@ -34,33 +34,23 @@ Ext.define('JavisERP.view.ClientPortlet', {
         Ext.applyIf(me, {
             columns: [
                 {
-                    xtype: 'actioncolumn',
-                    draggable: false,
-                    frame: false,
-                    itemId: 'actions',
+                    xtype: 'rowactions',
                     maxWidth: 50,
-                    layout: {
-                        type: 'fit'
-                    },
                     defaultWidth: 50,
-                    sortable: false,
-                    align: 'center',
-                    flex: 1,
-                    hideable: false,
-                    menuDisabled: true,
-                    altText: 'Actions',
-                    items: [
-                        {
-                            altText: 'Edit',
-                            disabled: false,
-                            icon: '/resources/icons/user_edit.png',
-                            tooltip: 'Edit'
-                        },
+                    actions: [
                         {
                             altText: 'View',
-                            icon: '/resources/icons/user.png',
+                            iconCls: 'view_action ui-silk ui-silk-user',
+                            hideIndex: 'view_action',
                             tooltip: 'View'
+                        },
+                        {
+                            altText: 'Delete',
+                            iconCls: 'delete_action ui-silk ui-silk-user-delete',
+                            hideIndex: 'delete_action',
+                            tooltip: 'Delete'
                         }
+
                     ]
                 },
                 {
