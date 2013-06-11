@@ -159,6 +159,7 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onNewButtonClick: function(button, e, options){
+        console.log("new Client cliked!");
         me.clientWindow = new JavisERP.view.ClientWindow();
         me.client_id = null;
         me.client = new JavisERP.model.Client({stage: 'CUSTOMER'});

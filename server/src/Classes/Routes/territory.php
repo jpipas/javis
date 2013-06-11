@@ -30,7 +30,7 @@ class Territory implements ControllerProviderInterface
 
         $controllers->post('/new', function(Application $app, Request $request) {
             $params = json_decode($request->getContent(),true);
-            $territory_array = $app['business.territory']->createUser($params);
+            $territory_array = $app['business.territory']->createTerritory($params);
             return $app->json(array("success"=>true,"territory"=>$territory_array));
         });
 

@@ -37,6 +37,7 @@ Ext.define('JavisERP.view.NavBar', {
                                 xtype: 'menu',
                                 width: 120,
                                 //title: 'HomeMenu',
+                                hideMode: 'display',
                                 items: [
                                     {
                                         xtype: 'menuitem',
@@ -68,6 +69,7 @@ Ext.define('JavisERP.view.NavBar', {
                                 xtype: 'menu',
                                 width: 220,
                                 //title: 'ListMenu',
+                                hideMode: 'display',
                                 items: [
                                     {
                                         xtype: 'menuitem',
@@ -83,6 +85,7 @@ Ext.define('JavisERP.view.NavBar', {
                                         menu: {
                                             xtype: 'menu',
                                             width: 120,
+                                            hideMode: 'display',
                                             items: [
                                                 {
                                                     xtype: 'menuitem',
@@ -128,6 +131,7 @@ Ext.define('JavisERP.view.NavBar', {
                             menu: {
                                 xtype: 'menu',
                                 width: 120,
+                                hideMode: 'display',
                                 //title: 'ReportsMenu',
                                 items: [
                                     {

@@ -59,7 +59,8 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                             name: 'state_id',
                             fieldLabel: 'State',
                             valueField: 'id',
-                            editable: false,
+                            typeAhead: true,
+                            queryMode: 'remote',
                             displayField: 'name',
                             store: 'State',
                             labelAlign: 'right'
@@ -71,7 +72,8 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                             labelAlign: 'right',
                             valueField: 'id',
                             store: 'User',
-                            editable:false,
+                            queryMode: 'remote',
+                            typeAhead:true,
                             name: 'manager_id'
                         }
                     ]

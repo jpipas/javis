@@ -26,8 +26,8 @@ class Territory extends AbstractBusinessService
         return $this->db->fetchAll($sql,array((int) $id));
     }
 
-    public function createUser($params) {
-        unset($params['state_name'],$params['manager_fullname'], $params['state']);
+    public function createTerritory($params) {
+        unset($params['state_name'],$params['manager_username'], $params['state']);
         $this->db->insert('territory',$params);
         $territory = $this->getById($this->db->lastInsertId());
         return $territory;

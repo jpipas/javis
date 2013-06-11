@@ -30,7 +30,7 @@ Ext.define('JavisERP.controller.ActivityController', {
     ],
     onActivityActionClick: function(grid,record,action,idx,col,e,target) {
         var doAction = action.split(" ",1);
-        console.log(doAction[0]);
+        //console.log(doAction[0]);
         switch(doAction[0]){
             case 'edit_action':
                 this.editActivity(record);
@@ -49,7 +49,7 @@ Ext.define('JavisERP.controller.ActivityController', {
         	this.getActivityForm().getForm().findField('type_id').setValue(act_type);
         }
         this.getActivityForm().getForm().findField('post_date').setValue(new Date());
-        console.log(act_type);        
+        //console.log(act_type);
     },
 
     onActivitySaveButtonClick: function(button, options, e){
@@ -63,9 +63,9 @@ Ext.define('JavisERP.controller.ActivityController', {
         var uStore = this.getActivityStoreStore();
         me.activity.save({
             success: function(record, operation){
-            	uWindow.close();
-              uStore.reload();
-              Ext.Msg.alert('Success','Activity saved successfully!');
+                uWindow.close();
+                uStore.reload();
+                Ext.Msg.alert('Success','Activity saved successfully!');
             },
             failure: function(record, operation){
             	Ext.MessageBox.show({
@@ -103,7 +103,7 @@ Ext.define('JavisERP.controller.ActivityController', {
                 click: this.onActivitySaveButtonClick
             },
             "button[cls=cancelbutton]": {
-                click: function(){ 
+                click: function(){
                 		Ext.WindowMgr.getActive().close();
                 	}
             }
@@ -125,7 +125,7 @@ Ext.define('JavisERP.controller.ActivityController', {
                 this.getActivityForm().getForm().findField('post_date').setValue(new Date(date_parts[0], date_parts[1] - 1, date_parts[2]));
                 if (record.data.post_time){
                 	var time_parts = record.data.post_time.split(' ');
-                	
+
                 }
                 */
                 //uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));

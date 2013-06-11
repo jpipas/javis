@@ -29,6 +29,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
 
     onNewTerritoryClick: function(button, options, e) {
         me.terWindow = new JavisERP.view.TerritoryWindow();
+        this.getUserStore().clearFilter(true);
         me.terWindow.show();
     },
 
