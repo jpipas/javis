@@ -27,6 +27,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         WHERE $wherestr
+        AND c.deleted_at IS NULL
         GROUP BY c.id
         $sortstr
         $limit_clause";
@@ -42,6 +43,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN contract con ON c.id = con.client_id
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         WHERE c.id = ?
+        AND c.deleted_at IS NULL
         GROUP BY c.id";
         return $this->db->fetchAll($sql,array((int) $id));
     }
@@ -58,6 +60,7 @@ class Client extends AbstractBusinessService
     }
 
     public function updateClient($id, $params) {
+        //print_r($params);
         // search for new postal code
         $postal_code = $params['postal_code_iso'];
         $postal_code_id = null;
@@ -78,11 +81,10 @@ class Client extends AbstractBusinessService
         unset($params['id'],$params['state'],$params['postal_code'],$params['territory'],$params['balance']);
         unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
         unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name'],$params['state_name']);
-        unset($params['postal_code_iso'],$params['remaining_months_cnt']);
+        unset($params['postal_code_iso'],$params['remaining_months_cnt'],$params['updated_at'],$params['deleted_at']);
         $params['postal_code_id'] = $postal_code_id;
         $this->db->update('client',$params, array('id'=>$id));
-        $client_id = $id;
-        return $client_id;
+        return $id;
     }
 
     public function searchForClient($search,$page = null,$start = 0,$limit = 0,$isCount = false,$sort) {
@@ -133,6 +135,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         $js
         WHERE $wherestr
+        AND deleted_at IS NULL
         GROUP BY c.id
         $sortstr
         $limit_clause";

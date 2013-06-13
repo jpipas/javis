@@ -49,6 +49,7 @@ class Client implements ControllerProviderInterface
             $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
+                //print_r($client_array);
                 $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
                 $client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
                 $client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);

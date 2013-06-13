@@ -171,7 +171,7 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onNewButtonClick: function(button, e, options){
-        console.log("new Client cliked!");
+        //console.log("new Client cliked!");
         me.clientWindow = new JavisERP.view.ClientWindow();
         me.client_id = null;
         me.client = new JavisERP.model.Client({stage: 'CUSTOMER'});
@@ -385,7 +385,7 @@ Ext.define('JavisERP.controller.ClientController', {
                                 grid.getStore().reload();
                             },
                             failure: function(){
-                                alert("Could not delete contact!");
+                                alert("Could not delete client!");
                             }
                         });
                         break;
