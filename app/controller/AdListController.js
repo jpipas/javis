@@ -30,23 +30,16 @@ Ext.define('JavisERP.controller.AdListController', {
 
     onGenerateAdListClick: function(button, e){
         var grid = this.getAdListGrid();
-        //deactivate autoreloading
-        grid.filters.autoReload = false;
-        //initiate the filters
-        grid.filters.createFilters() ;
-        //clear previous filters
-        grid.filters.clearFilters();
-        //Activate any number of filters
-        grid.filters.getFilter('cl.territory_id').setActive(true) ;
-        grid.filters.getFilter('cl.territory_id').setValue(parseInt(this.getTerritoryBox().getValue(),10));
-        grid.filters.getFilter('p.id').setActive(true) ;
-        grid.filters.getFilter('p.id').setValue(parseInt(this.getPublicationBox().getValue(),10));
-        grid.filters.getFilter('d.id').setActive(true) ;
-        grid.filters.getFilter('d.id').setValue(parseInt(this.getDurationBox().getValue(),10));
-        //activate realod so as the internal filtering goes back on working
-        grid.filters.autoReload = true;
-        //reaload grid
-        grid.filters.reload();
+        grid.getStore().clearFilter(true);
+        grid.getStore().filter([{id:'territory',property:'c.territory_id', value: parseInt(this.getTerritoryBox().getValue(),10)},{id:'publication',property:'p.id',value:parseInt(this.getPublicationBox().getValue(),10)},{id:'duration',property:'d.id', value: parseInt(this.getDurationBox().getValue(),10)}]);
+        //grid.getStore().filter('c.territory_id', parseInt(this.getTerritoryBox().getValue(),10));
+        //grid.getStore().filter('p.id', parseInt(this.getPublicationBox().getValue(),10));
+        //grid.getStore().filter('d.id', parseInt(this.getDurationBox().getValue(),10));
+        //grid.getStore().filters.add('territory',new Ext.util.Filter({property:'c.territory_id', value: parseInt(this.getTerritoryBox().getValue(),10)}));
+        //grid.getStore().filters.add('publication',new Ext.util.Filter({property:'p.id',value:parseInt(this.getPublicationBox().getValue(),10)}));
+        //grid.getStore().filters.add('duration',new Ext.util.Filter({property:'d.id', value: parseInt(this.getDurationBox().getValue(),10)}));
+        //grid.getStore().reload();
+        //console.log(grid.getStore());
     },
 
     init: function(application) {

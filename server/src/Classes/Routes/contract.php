@@ -24,6 +24,7 @@ class Contract implements ControllerProviderInterface
                 $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 //$contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
+                $contract_array[$key]['territory'] = $app['business.territory']->getById($contract['territory_id']);
                 $contract_array[$key]['durations'] = $app['business.duration']->getByContractId($contract['id']);
             });
 
@@ -44,6 +45,7 @@ class Contract implements ControllerProviderInterface
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
                 $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
+                $contract_array[$key]['territory'] = $app['business.territory']->getById($contract['territory_id']);
                 $durArray = array();
                 foreach($app['business.duration']->getByContractId($contract['id']) as $duration){
                     settype($duration['id'], "integer");
@@ -77,6 +79,7 @@ class Contract implements ControllerProviderInterface
                 $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
                 $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
                 $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
+                $contract_array[$key]['territory'] = $app['business.territory']->getById($contract['territory_id']);
             });
             return $app->json(array("success"=>true,"contract"=>$contract_array));
 

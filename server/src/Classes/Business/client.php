@@ -135,7 +135,7 @@ class Client extends AbstractBusinessService
         LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
         $js
         WHERE $wherestr
-        AND deleted_at IS NULL
+        AND c.deleted_at IS NULL
         GROUP BY c.id
         $sortstr
         $limit_clause";
@@ -143,8 +143,8 @@ class Client extends AbstractBusinessService
     }
 
     public function deleteClient($id) {
-            $now = new \DateTime('NOW');
-                $params['deleted_at'] = $now->format('Y-m-d H:i:s');
+        $now = new \DateTime('NOW');
+        $params['deleted_at'] = $now->format('Y-m-d H:i:s');
         $rows = $this->db->update('client',$params, array('id' => $id));
         $client = $this->getById($id);
         return $client;

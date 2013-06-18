@@ -22,37 +22,44 @@ Ext.define('JavisERP.model.AdList', {
 
     fields: [
         {
-            name: 'id'
+            name: 'client',
+            type: 'string'
         },
         {
-            name: 'client'
+            name: 'marketing_dir',
+            type: 'string'
         },
         {
-            name: 'marketing_dir'
+            name: 'designer',
+            type: 'string'
         },
         {
-            name: 'designer'
+            name: 'ad_type',
+            type: 'string'
         },
         {
-            name: 'ad_type'
+            name: 'ad_size',
+            type: 'string'
         },
         {
-            name: 'ad_size'
+            name: 'salesrep',
+            type: 'string'
         },
         {
-            name: 'salesrep'
+            name: 'seasonal',
+            type: 'string'
         },
         {
-            name: 'seasonal'
+            name: 'publication_id',
+            type: 'int'
         },
         {
-            name: 'publication_id'
+            name: 'duration_id',
+            type: 'int'
         },
         {
-            name: 'duration_id'
-        },
-        {
-            name: 'territory_id'
+            name: 'territory_id',
+            type: 'int'
         }
     ],
 
@@ -61,9 +68,9 @@ Ext.define('JavisERP.model.AdList', {
         url: '/server/web/index.php/advertisement/list/',
         reader: {
             type: 'json',
-            idProperty: 'id',
-            root: 'ad_list',
-            totalProperty: 'totalCount'
+            //idProperty: 'id',
+            root: 'ad_list'
+            //totalProperty: 'totalCount'
         }
     }
 });

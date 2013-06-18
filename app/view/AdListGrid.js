@@ -3,7 +3,9 @@ Ext.define('JavisERP.view.AdListGrid', {
     alias: 'widget.adlistgrid',
     require: [
         'Ext.ux.grid.Printer'
+        //'Ext.ux.grid.FiltersFeature'
     ],
+    //features: [{ftype:'filters',local: false, filters:[{type:'string',dataIndex:'cl.territory_id'},{type:'string',dataIndex:'p.id'},{type:'string',dataIndex:'d.id'}]}],
     height: 200,
     itemId: 'AdListGrid',
     minHeight: 200,
@@ -62,19 +64,19 @@ Ext.define('JavisERP.view.AdListGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'p.id',
+                    dataIndex: 'pubilication_id',
                     hidden: true,
                     text: 'Publication ID'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'd.id',
+                    dataIndex: 'duration_id',
                     hidden: true,
                     text: 'Duration ID'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'cl.territory_id',
+                    dataIndex: 'territory_id',
                     hidden: true,
                     text: 'Territory ID'
                 }

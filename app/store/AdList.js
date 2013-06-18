@@ -27,7 +27,8 @@ Ext.define('JavisERP.store.AdList', {
             autoLoad: false,
             pageSize: 100,
             storeId: 'AdSize',
-            model: 'JavisERP.model.AdList'
+            model: 'JavisERP.model.AdList',
+            remoteFilter:true
         }, cfg)]);
     }
 });

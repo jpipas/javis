@@ -68,6 +68,10 @@ Ext.define('JavisERP.model.Contract', {
             type: 'int'
         },
         {
+            name: 'territory_name',
+            mapping: 'territory.name'
+        },
+        {
             name: 'durations'
         },
         {
