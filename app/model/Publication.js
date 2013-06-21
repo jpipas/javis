@@ -34,6 +34,9 @@ Ext.define('JavisERP.model.Publication', {
             name: 'contact_email'
         },
         {
+            name: 'content_email'
+        },
+        {
             name: 'territory_name',
             mapping: 'territory.name'
         },
@@ -65,12 +68,7 @@ Ext.define('JavisERP.model.Publication', {
 
     proxy: {
         type: 'srest',
-        api: {
-            create: '/server/web/index.php/publication/new',
-            read: '/server/web/index.php/publication/',
-            update: '/server/web/index.php/publication/update',
-            destroy: '/server/web/index.php/publication/destroy'
-        },
+        url: '/server/web/index.php/publication/',
         reader: {
             type: 'json',
             idProperty: 'id',

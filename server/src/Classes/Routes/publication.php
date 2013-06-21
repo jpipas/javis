@@ -43,7 +43,7 @@ class Publication implements ControllerProviderInterface
             return $app->json(array("publication"=>$publication_array));
         });
 
-        $controllers->put('/update/{id}', function(Application $app, $id, Request $request) {
+        $controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $publication = $app['business.publication']->updatePublication($id, $params);
             return $app->json(array("success"=>true,"publication"=>$publication));
@@ -60,7 +60,7 @@ class Publication implements ControllerProviderInterface
             return $app->json(array("success"=>true,"publication"=>$publication_array));
         });
 
-        $controllers->delete('/destroy/{id}', function(Application $app, $id, Request $request) {
+        $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
             $app['business.publication']->deleteById($id);
             //$app['business.advertisement']->deleteByContractId($id);
             return $app->json(array("success"=>true));

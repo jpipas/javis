@@ -16,7 +16,8 @@ class AdList extends AbstractBusinessService
         if($filter) {
             $wherestr = $this->getWhereString($filter);
         }
-        $sql = "select distinct cl.company_name as 'client', con.full_name as 'marketing_dir', adt.description as 'ad_type', ads.description as 'ad_size', ds.username as 'designer', ep.username as 'salesrep', CASE WHEN a.seasonal_promo = 1 THEN 'Yes' ELSE 'No' END as 'seasonal' from advertisement a
+        $sql = "select distinct cl.company_name as 'client', con.full_name as 'marketing_dir', adt.description as 'ad_type', ads.description as 'ad_size', ds.username as 'designer', ep.username as 'salesrep', CASE WHEN a.seasonal_promo = 1 THEN 'Yes' ELSE 'No' END as 'seasonal'
+            from advertisement a
             left join client cl on a.client_id = cl.id
             left join contact con on cl.id = con.client_id
             left join employee ep on cl.salesrep_id = ep.id
@@ -30,6 +31,7 @@ class AdList extends AbstractBusinessService
             left join contract_duration cd on c.id = cd.contract_id
             left join duration d on cd.duration_id = d.id
             WHERE $wherestr
+            and a.deleted_at IS NULL
             and con.role_id = 2";
         //echo $sql;
         return $this->db->fetchAll($sql);

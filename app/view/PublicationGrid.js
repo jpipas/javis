@@ -87,7 +87,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'contact_email',
+                    dataIndex: 'content_email',
                     text: 'Content Coordinator Email'
                 },
                 {

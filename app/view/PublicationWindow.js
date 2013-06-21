@@ -115,6 +115,11 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                         },
                                         {
                                             xtype: 'textfield',
+                                            name: 'content_email',
+                                            fieldLabel: 'Content Coordinator Email'
+                                        },
+                                        {
+                                            xtype: 'textfield',
                                             name: 'contact_email',
                                             fieldLabel: 'Publisher Email'
                                         },

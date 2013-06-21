@@ -18,7 +18,7 @@ Ext.define('JavisERP.controller.PublicationController',{
     refs: [
         {
             ref: 'postalCodeList',
-            selector: 'comboboxselect[cls=postalCodeList]'
+            selector: 'combobox[cls=postalCodeList]'
         },
         {
             ref: 'publicationForm',
@@ -59,11 +59,11 @@ Ext.define('JavisERP.controller.PublicationController',{
         }
 
         var postalcodes = [];
-        var recs = this.getPostalCodeList().getValueRecords();
+        var recs = this.getPostalCodeList().getValue();
         for(var key1 in recs){
             var postalcode = new JavisERP.model.PostalCode();
-            postalcode.set("id",recs[key1].data.id);
-            postalcode.set("iso_code",recs[key1].data.iso_code);
+            postalcode.set("id",recs[key1]);
+            //postalcode.set("iso_code",recs[key1].data.iso_code);
             postalcodes.push(postalcode);
         }
 

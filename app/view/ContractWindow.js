@@ -133,6 +133,11 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             typeAdead:true,
                                             name: 'durations',
                                             cls:'durationlist'
+                                        },
+                                        {
+                                            xtype:'datefield',
+                                            name: 'sale_date',
+                                            fieldLabel: 'Sales Date'
                                         }
                                     ]
                                 },
