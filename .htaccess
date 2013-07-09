@@ -1,12 +1,7 @@
 RewriteEngine On
 
-RewriteRule ^(/all-classes.js|/app.js)$ $1 [L]
-RewriteRule ^(/(resources|app)/.*/?)$ $1 [L]
-
-RewriteCond %{REQUEST_FILENAME} -s [OR]
-RewriteCond %{REQUEST_FILENAME} -l [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
-RewriteRule ^(.*)$ /server/web/index.php/$1 [NC,L]
-
-ErrorDocument 403 /server/web/index.php
+RewriteBase /
+RewriteRule ^index.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
