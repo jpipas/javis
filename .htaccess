@@ -8,3 +8,5 @@ RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^(.*)$ /server/web/index.php/$1 [NC,L]
+
+ErrorDocument 403 /server/web/index.php

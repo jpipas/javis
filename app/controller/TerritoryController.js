@@ -49,7 +49,6 @@ Ext.define('JavisERP.controller.TerritoryController', {
         var fields = this.getTerritoryForm().getForm().getValues(false,false,false,true);
         me.ter = new JavisERP.model.Territory();
         for(var key in fields){
-            //console.log(key+":"+fields[key]);
             me.ter.set(key,fields[key]);
         }
         var tWindow = this.getTerritoryWindow();

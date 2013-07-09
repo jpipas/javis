@@ -155,9 +155,6 @@ Ext.define('JavisERP.controller.ClientController', {
     onGeneralTabChange: function(panel,newCard,oldCard,e){
         switch(newCard.cls){
             case 'clientactivities':
-            		console.log(this);
-            		console.log(this.getActivityGrid());
-            		console.log(this.getAdvertisementGrid());
                 this.getActivityGrid().getStore().clearFilter(true);
                 this.getActivityGrid().getStore().filter("client_id", me.client_id);
                 break;
@@ -191,7 +188,6 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onNewButtonClick: function(button, e, options){
-        //console.log("new Client cliked!");
         me.clientWindow = new JavisERP.view.ClientWindow();
         me.client_id = null;
         me.client = new JavisERP.model.Client({stage: 'CUSTOMER'});
@@ -216,8 +212,6 @@ Ext.define('JavisERP.controller.ClientController', {
         var clientForm = this.getClientForm();
         this.getClientModel().load(me.client_id,{
             success: function(model){
-            		console.log('Editing client: '+me.client_id);
-            		console.log(model);
                 clientForm.loadRecord(model);
                 clientForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
                 clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));

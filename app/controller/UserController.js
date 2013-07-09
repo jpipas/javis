@@ -47,23 +47,11 @@ Ext.define('JavisERP.controller.UserController', {
         var fields = this.getUserForm().getForm().getValues(false,false,false,true);
         me.user = new JavisERP.model.User();
         for(var key in fields){
-            //console.log(key+":"+fields[key]);
             me.user.set(key,fields[key]);
         }
         var uWindow = this.getUserWindow();
         var uStore = this.getUserStore();
         me.user.save({
-            /*
-            callback: function(record,operation){
-                console.log(operation);
-                if(operation.wasSuccessful){
-                    uWindow.close();
-                    uStore.reload();
-                    Ext.Msg.alert('Success','Employee saved successfully!');
-                } else {
-                    Ext.Msg.alert('Failure',"The following errors were encountered:\n\n  - "+record.error.join("\n  - "));
-                }
-            }*/
             success: function(record, operation){
             	uWindow.close();
               uStore.reload();

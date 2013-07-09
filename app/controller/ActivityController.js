@@ -42,7 +42,6 @@ Ext.define('JavisERP.controller.ActivityController', {
     ],
     onActivityActionClick: function(grid,record,action,idx,col,e,target) {
         var doAction = action.split(" ",1);
-        //console.log(doAction[0]);
         switch(doAction[0]){
             case 'edit_action':
                 this.editActivity(record);
@@ -65,14 +64,12 @@ Ext.define('JavisERP.controller.ActivityController', {
         	uForm.findField('type_id').setValue(act_type);
         }
         uForm.findField('post_date').setValue(new Date());
-        //console.log(act_type);
     },
 
     onActivitySaveButtonClick: function(button, options, e){
         var fields = this.getActivityForm().getForm().getValues(false,false,false,true);
         me.activity = new JavisERP.model.Activity();
         for(var key in fields){
-            //console.log(key+":"+fields[key]);
             me.activity.set(key,fields[key]);
         }
         var uWindow = this.getActivityWindow();
@@ -144,7 +141,6 @@ Ext.define('JavisERP.controller.ActivityController', {
 								  } else {
 							  		store.clearFilter(true);
 								  }
-								  console.log('store filter applied from activity controller');
             		},
                 clear: function(itm){
                 	var store = this.getActivityGrid().getStore();
@@ -168,11 +164,9 @@ Ext.define('JavisERP.controller.ActivityController', {
     },
     
     activityFilterClear: function(store) {
-    	console.log('activity filter clear');
     },
     
     setClientFields: function(clientId, clientName) {
-    		console.log('activity setClientFields');
         me.client_id = clientId;
         me.client_name = clientName;
     },
@@ -187,7 +181,6 @@ Ext.define('JavisERP.controller.ActivityController', {
 
     editActivity: function(record){
         var uWindow = new JavisERP.view.ActivityWindow();
-        //console.log(this.getUserModel());
         var uForm = this.getActivityForm();
         this.getActivityModel().load(record.data.id, {
             success: function(record,operation){
