@@ -189,6 +189,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 {
                                     xtype: 'tabpanel',
                                     itemId: 'General-Sublists',
+                                    cls : 'generaltab',
                                     activeTab: 0,
                                     items: [
                                         {
@@ -207,10 +208,16 @@ Ext.define('JavisERP.view.ClientRecord', {
                                         {
                                             xtype: 'panel',
                                             title: 'Activities',
+                                            cls:'clientactivities',
+                                            layout: 'fit',
                                             items: [
                                                 {
                                                     xtype: 'activitygrid',
-                                                    header: false
+                                                    header: false,
+                                                    id: 'clientactivitygrid',
+                                                    itemId: 'clientactivitygrid',
+                                                    border: 0,
+                                                    cls: 'clientactivitygrid'
                                                 }
                                             ]
                                         },

@@ -2,17 +2,21 @@ Ext.define('JavisERP.view.TerritoryWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.territorywindow',
 
-    hidden: false,
+		requires: [
+        'JavisERP.view.ComboView',
+        'JavisERP.view.ComboFieldBox'
+    ],
+		
+		id: 'territoryWindow',
+		cls: 'territoryWindow',
+		itemId: 'territoryWindow',
+		width: 400,
+		autoDestroy: true,
     layout: {
         type: 'fit'
     },
-    closeAction: 'hide',
-    title: 'New Territory',
+    title: 'Territory',
     modal: true,
-    autoDestroy: true,
-    cls: 'territoryWindow',
-    width: 400,
-
     initComponent: function() {
         var me = this;
 
@@ -20,15 +24,18 @@ Ext.define('JavisERP.view.TerritoryWindow', {
             items: [
                 {
                     xtype: 'form',
-                    cls: 'territoryform',
-                    itemId: 'territoryform',
+                    cls: 'territoryForm',
+                    itemId: 'territoryForm',
                     bodyPadding: 10,
-                    title: '',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     iconCls: 'ui-silk ui-silk-disk',
@@ -37,12 +44,17 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                                 },
                                 {
                                     xtype: 'button',
+                                    cls: 'cancelbutton',
                                     text: 'Cancel'
                                 }
                             ]
                         }
                     ],
                     items: [
+                    		{
+                    			xtype: 'hiddenfield',
+                    			name: 'id'
+                    		},
                         {
                             xtype: 'textfield',
                             anchor: '95%',
@@ -67,14 +79,16 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                         },
                         {
                             xtype: 'combobox',
+                            name: 'manager_id',
                             fieldLabel: 'Publisher',
                             displayField: 'fullname',
-                            labelAlign: 'right',
+                            store: 'UserDropDown',
+                            hideTrigger: true,
+                            triggerAction: 'query',
+                            pageSize: true,
+                            minChars: 3,
                             valueField: 'id',
-                            store: 'User',
-                            queryMode: 'remote',
-                            typeAhead:true,
-                            name: 'manager_id'
+                            labelAlign: 'right',
                         }
                     ]
                 }

@@ -9,7 +9,6 @@ Ext.define('JavisERP.view.ClientGrid', {
     title: 'List: Client',
     columnLines: true,
     forceFit: true,
-    scroll: 'none',
     store: 'ClientStore',
 
     initComponent: function() {

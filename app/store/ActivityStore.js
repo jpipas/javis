@@ -13,7 +13,7 @@ Ext.define('JavisERP.store.ActivityStore', {
             remoteFilter: true,
             remoteSort: true,
             pageSize: 50,
-            autoLoad: false,
+            autoLoad: true,
             storeId: 'ActivityStore',
             model: 'JavisERP.model.Activity'
         }, cfg)]);

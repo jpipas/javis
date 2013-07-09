@@ -157,8 +157,6 @@ Ext.define('JavisERP.view.UserWindow', {
                                             hideTrigger: true,
                                             triggerAction: 'query',
                                             pageSize: true,
-                                            allowOnlyWhitespace: false,
-                                            allowBlank: false,
                                             minChars: 3,
                                             valueField: 'id'
                                         },

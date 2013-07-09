@@ -57,8 +57,8 @@ $app['security.firewalls'] = array(
     ),
     'secured' => array(
         'pattern' => '^.*$',
-        'form' => array('login_path' => '/login', 'check_path' => '/backoffice/login_check'),
-        'logout' => array('logout_path' => '/backoffice/logout'),
+        'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
+        'logout' => array('logout_path' => '/logout', 'target_url' => '/'),
         'users' => $app->share(function () use ($app) {
             return new UserProvider($app['db']);
         })
@@ -106,7 +106,7 @@ foreach ($business as $file){
 $app->register(new BusinessServiceProvider(),array("business.container" =>  $arryToLoad));
 
 //handling calls to the root to a default route manager
-$app->get("/backoffice", function () use ($app) {
+$app->get("/", function () use ($app) {
     $token = $app['security']->getToken();
     $app['session']->set('user_token',array('user'=>$token->getUser()));
     return $app['twig']->render('index.html');

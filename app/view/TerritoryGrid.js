@@ -63,6 +63,21 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                 }
             ],
             columns: [
+            		{
+                    xtype: 'rowactions',
+                    actions: [
+                        {
+                            iconCls: 'edit_action ui-silk ui-silk-map-edit',
+                            tooltip: 'Edit Territory',
+                            callback: Ext.emptyFn
+                        },
+                        {
+                            iconCls: 'delete_action ui-silk ui-silk-map-delete',
+                            tooltip: 'Delete Territory',
+                            callback: Ext.emptyFn
+                        }
+                    ]
+                },
                 {
                     xtype: 'numbercolumn',
                     dataIndex: 'id',
@@ -72,17 +87,20 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    flex: 3,
                     dataIndex: 'name',
                     text: 'Name'
                 },
                 {
                     xtype: 'gridcolumn',
+                    flex: 3,
                     dataIndex: 'state_name',
                     text: 'State'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'manager_username',
+                    flex: 3,
+                    dataIndex: 'manager_name',
                     text: 'Publisher'
                 }
             ]

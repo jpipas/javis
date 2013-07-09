@@ -53,7 +53,9 @@ Ext.define('JavisERP.model.User', {
             name: 'territory_name'
         },
         {
-            name: 'last_login'
+            name: 'last_login',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
         },
         {
             name: 'manager'

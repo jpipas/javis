@@ -26,6 +26,18 @@ Ext.define('JavisERP.controller.ActivityController', {
         {
             ref: 'activityWindow',
             selector: 'window[cls=activityWindow]'
+        },
+        {
+            ref: 'activityGrid',
+            selector: '#clientactivitygrid'
+        },
+        {
+            ref: 'contentCards',
+            selector: 'contentCards'
+        },
+        {
+            ref: 'clientForm',
+            selector: 'form[cls=clientform]'
         }
     ],
     onActivityActionClick: function(grid,record,action,idx,col,e,target) {
@@ -44,11 +56,15 @@ Ext.define('JavisERP.controller.ActivityController', {
     onNewActivityClick: function(act_type) {
         me.activityWindow = new JavisERP.view.ActivityWindow();
         me.activityWindow.show();
-        this.getActivityForm().getForm().findField('status_id').setValue('new');
-        if (act_type){
-        	this.getActivityForm().getForm().findField('type_id').setValue(act_type);
+        var uForm = this.getActivityForm().getForm();
+        if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
+        	uForm.findField('client_id').setValue(this.getClientId()).setReadOnly(true);
         }
-        this.getActivityForm().getForm().findField('post_date').setValue(new Date());
+        uForm.findField('status_id').setValue('new');
+        if (act_type){
+        	uForm.findField('type_id').setValue(act_type);
+        }
+        uForm.findField('post_date').setValue(new Date());
         //console.log(act_type);
     },
 
@@ -80,6 +96,13 @@ Ext.define('JavisERP.controller.ActivityController', {
 
     init: function(application) {
         me = this;
+        me.application.on({
+            setClientFields: me.setClientFields,
+            scope: me
+        });
+
+        me.client_id = null;
+        me.client_name = null;
         me.control({
         		"activitygrid rowactions": {
                 action: me.onActivityActionClick
@@ -99,6 +122,40 @@ Ext.define('JavisERP.controller.ActivityController', {
                 		this.onNewActivityClick('event');
                 	}
             },
+            "activitygrid toolbar filtercombo[itemId=activtyTypeFilter]": {
+            		beforefilter: function(itm, filtervalue, filterfield){
+            			var store = this.getActivityGrid().getStore();
+                	if (filtervalue){
+                  	store.clearFilter(true);
+                  	if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
+                  		store.filter([
+                  		{
+	                  			property: filterfield,
+	                  			value: filtervalue
+									    },
+									    {
+	                  			property: 'client_id',
+	                  			value: this.getClientId()
+									    }
+									    ]);
+                  	} else {
+	                  	store.filter(filterfield, filtervalue);
+									  }
+								  } else {
+							  		store.clearFilter(true);
+								  }
+								  console.log('store filter applied from activity controller');
+            		},
+                clear: function(itm){
+                	var store = this.getActivityGrid().getStore();
+                  if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
+                  	store.clearFilter(true);
+        						store.filter("client_id", this.getClientId());
+					        } else {
+					        	store.clearFilter(false);
+					        }
+                }
+            },
             "button[cls=activitysavebutton]": {
                 click: this.onActivitySaveButtonClick
             },
@@ -109,6 +166,24 @@ Ext.define('JavisERP.controller.ActivityController', {
             }
         });
     },
+    
+    activityFilterClear: function(store) {
+    	console.log('activity filter clear');
+    },
+    
+    setClientFields: function(clientId, clientName) {
+    		console.log('activity setClientFields');
+        me.client_id = clientId;
+        me.client_name = clientName;
+    },
+
+    getClientId: function() {
+        return this.getClientForm().getForm().findField('id').getValue();
+    },
+
+    getClientName: function() {
+        return this.getClientForm().getForm().findField('company_name').getValue();
+    },
 
     editActivity: function(record){
         var uWindow = new JavisERP.view.ActivityWindow();
@@ -116,22 +191,17 @@ Ext.define('JavisERP.controller.ActivityController', {
         var uForm = this.getActivityForm();
         this.getActivityModel().load(record.data.id, {
             success: function(record,operation){
-            		console.log(record.data.assigned_to);
                 uForm.getForm().loadRecord(record);
-                //uForm.getForm().findField('client_id').setValue(new JavisERP.model.Client(record.data.client));
+                uForm.getForm().findField('client_id').setValue(new JavisERP.model.Client(record.data.client));
                 uForm.getForm().findField('assigned_to_id').setValue(new JavisERP.model.User(record.data.assigned_to));
-                /*
-                var date_parts = record.data.post_date.split('-');
-                this.getActivityForm().getForm().findField('post_date').setValue(new Date(date_parts[0], date_parts[1] - 1, date_parts[2]));
-                if (record.data.post_time){
-                	var time_parts = record.data.post_time.split(' ');
-
-                }
-                */
-                //uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
             }
         });
-        uWindow.show();
+        var myMask = new Ext.LoadMask(this.getActivityWindow(),{msg:"Loading..."});
+        myMask.show();
+        Ext.defer(function() {
+            myMask.hide();
+            uWindow.show();
+        },500);
     },
 
     deleteActivity: function(record,grid){

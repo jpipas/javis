@@ -44,8 +44,12 @@ Ext.define('JavisERP.view.ContactWindow', {
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     iconCls: 'ui-silk ui-silk-disk',
@@ -87,7 +91,10 @@ Ext.define('JavisERP.view.ContactWindow', {
                             itemId: 'name',
                             name: 'full_name',
                             fieldLabel: 'Contact Name',
-                            labelAlign: 'right'
+                            labelAlign: 'right',
+                            allowBlank : false,
+                            maxLength : 255,
+                            enforceMaxLength : true
                         },
                         {
                             xtype: 'textfield',
@@ -96,7 +103,9 @@ Ext.define('JavisERP.view.ContactWindow', {
                             name: 'email_address',
                             vtype: 'email',
                             fieldLabel: 'Email Address',
-                            labelAlign: 'right'
+                            labelAlign: 'right',
+                            maxLength : 255,
+                            enforceMaxLength : true
                         },
                         {
                             xtype: 'textfield',
@@ -105,7 +114,9 @@ Ext.define('JavisERP.view.ContactWindow', {
                             name: 'phone',
                             vtype: 'phone',
                             fieldLabel: 'Phone Number',
-                            labelAlign: 'right'
+                            labelAlign: 'right',
+                            maxLength : 30,
+                            enforceMaxLength : true
                         },
                         {
                             xtype: 'combobox',
@@ -114,10 +125,13 @@ Ext.define('JavisERP.view.ContactWindow', {
                             name: 'role_id',
                             fieldLabel: 'Role',
                             valueField: 'id',
-                            editable: false,
+                            editable: true,
                             displayField: 'description',
                             store: 'ContactRoleStore',
-                            labelAlign: 'right'
+                            labelAlign: 'right',
+                            allowBlank : false,
+                            maxLength : 255,
+                            enforceMaxLength : true
                         }
                     ]
                 }

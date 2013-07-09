@@ -27,10 +27,14 @@ Ext.define('JavisERP.view.ClientWindow', {
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'clientWindowToolBar',
                             itemId: 'clientWindowToolBar',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     cls: 'clientsavebutton',
@@ -165,20 +169,25 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             xtype: 'combobox',
                                             fieldLabel: 'Zip',
                                             displayField: 'iso_code',
-                                            valueField: 'iso_code',
+                                            valueField: 'id',
                                             store: 'PostalCode',
-                                            queryMode: 'local',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 2,
                                             name: 'postal_code_iso'
                                         },
                                         {
-                                            xtype: 'combobox',
+                                        		xtype: 'combobox',
+                                            name: 'salesrep_id',
                                             fieldLabel: 'Assigned Sales Rep',
                                             displayField: 'fullname',
-                                            valueField: 'id',
-                                            store: 'User',
-                                            queryMode: 'local',
-                                            typeAdead:true,
-                                            name: 'salesrep_id'
+                                            store: 'UserDropDown',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
+                                            valueField: 'id'
                                         },
                                         {
                                             xtype: 'hiddenfield',

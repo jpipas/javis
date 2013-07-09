@@ -179,9 +179,7 @@ class User extends AbstractBusinessService
 		    }
 		    
 		    // make sure we have a valid territory
-		    if (empty($params['territory_id'])){
-		    	$error[] = "Territory is a required field";
-		    } else {
+		    if (!empty($params['territory_id'])){
 		    	$territory = $app['business.territory']->getById($params['territory_id']);
 		    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
 		    }

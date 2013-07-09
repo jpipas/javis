@@ -16,4 +16,15 @@ class ContactRole extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
+		public function getById($id)
+		{
+			$sql = "SELECT
+				*
+			FROM
+				contact_role
+			WHERE
+				deleted_at IS NULL AND
+				id = ?";
+			return $this->db->fetchAssoc($sql,array((int) $id));
+		}
 }

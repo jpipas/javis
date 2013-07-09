@@ -32,8 +32,7 @@ Ext.define('JavisERP.model.Contact', {
             name: 'role'
         },
         {
-            name: 'role_name',
-            mapping: 'role.description'
+            name: 'role_name'
         },
         {
             name: 'revoke_view'

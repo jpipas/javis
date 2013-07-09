@@ -159,6 +159,15 @@ Ext.define('JavisERP.view.NavBar', {
                         {
                             xtype: 'button',
                             text: 'Support'
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'button',
+                            text: 'Log Out',
+                            href: '/logout',
+                            hrefTarget: '_self'
                         }
                     ]
                 }

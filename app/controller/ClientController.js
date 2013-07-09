@@ -89,6 +89,10 @@ Ext.define('JavisERP.controller.ClientController', {
             selector: '#clientadgrid'
         },
         {
+            ref: 'activityGrid',
+            selector: '#clientactivitygrid'
+        },
+        {
             ref: 'paymentGrid',
             selector: '#paymentgrid'
         },
@@ -147,6 +151,18 @@ Ext.define('JavisERP.controller.ClientController', {
                 break;
         }
     },
+    
+    onGeneralTabChange: function(panel,newCard,oldCard,e){
+        switch(newCard.cls){
+            case 'clientactivities':
+            		console.log(this);
+            		console.log(this.getActivityGrid());
+            		console.log(this.getAdvertisementGrid());
+                this.getActivityGrid().getStore().clearFilter(true);
+                this.getActivityGrid().getStore().filter("client_id", me.client_id);
+                break;
+        }
+    },
 
     onSaveContactClick: function(button, e, option){
         var fields = this.getContactForm().getForm().getValues(false,false,false,true);
@@ -158,14 +174,18 @@ Ext.define('JavisERP.controller.ClientController', {
         var cWindow = this.getContactWindow();
         var cGrid = this.getContactGrid();
         me.contact.save({
-            callback: function(record,operation){
-                if(operation.wasSuccessful){
-                    cWindow.close();
-                    cGrid.getStore().reload();
-                    Ext.Msg.alert('Success','Contact saved successfully!');
-                } else {
-                    Ext.Msg.alert('Failure','Something went wrong!');
-                }
+            success: function(record, operation){
+            	cGrid.getStore().reload();
+              cWindow.close();
+              Ext.Msg.alert('Success','Contact saved successfully!');
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
             }
         });
     },
@@ -196,6 +216,8 @@ Ext.define('JavisERP.controller.ClientController', {
         var clientForm = this.getClientForm();
         this.getClientModel().load(me.client_id,{
             success: function(model){
+            		console.log('Editing client: '+me.client_id);
+            		console.log(model);
                 clientForm.loadRecord(model);
                 clientForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
                 clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));
@@ -224,6 +246,7 @@ Ext.define('JavisERP.controller.ClientController', {
         var cRecordForm = this.getClientRecord();
         me.client.save({
             scope: this,
+            /*
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     var refreshedClient = new JavisERP.model.Client(record.data);
@@ -252,6 +275,43 @@ Ext.define('JavisERP.controller.ClientController', {
                 } else {
                     Ext.Msg.alert('Failure','Something went wrong!');
                 }
+            }
+            */
+            success: function(record, operation){
+            	var refreshedClient = new JavisERP.model.Client(record.data);
+              cRecordForm.getForm().loadRecord(refreshedClient);
+              me.client_id = record.data.id;
+              me.client_name = record.data.company_name;
+              clientId = record.data.id;
+
+              this.getContactGrid().getStore().clearFilter(true);
+              this.getContactGrid().getStore().filter("client_id", clientId);
+              
+              this.getActivityGrid().getStore().clearFilter(true);
+        			this.getActivityGrid().getStore().filter("client_id", clientId);
+
+              this.getPublicationGrid().getStore().clearFilter(true);
+              this.getPublicationGrid().getStore().filter("client_id",clientId);
+
+              this.getPaymentGrid().getStore().clearFilter(true);
+              this.getPaymentGrid().getStore().filter("client_id",clientId);
+
+              this.getContractGrid().getStore().clearFilter(true);
+              this.getContractGrid().getStore().filter("client_id",clientId);
+
+              this.getAdvertisementGrid().getStore().clearFilter(true);
+              this.getAdvertisementGrid().getStore().filter("client_id", clientId);
+
+              cWindow.close();
+              Ext.Msg.alert('Success','Client saved successfully!');
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
             }
         });
 
@@ -374,7 +434,7 @@ Ext.define('JavisERP.controller.ClientController', {
     deleteClient: function(record,grid){
         Ext.Msg.show({
             title: 'Delete Client?',
-            msg: 'You are about to delete this client.  Are you sure?',
+            msg: 'You are about to delete this client. Are you sure?',
             buttons: Ext.Msg.YESNO,
             icon: Ext.Msg.QUESTION,
             fn: function(button, text, opts){
@@ -429,6 +489,9 @@ Ext.define('JavisERP.controller.ClientController', {
             "recordnav[cls=clientrecordnav] button[cls=new_button]": {
                 click: this.onNewButtonClick
             },
+            "tabpanel[cls=generaltab]": {
+                tabchange: this.onGeneralTabChange
+            },
             "tabpanel[cls=salestab]": {
                 tabchange: this.onSalesTabChange
             },
@@ -462,6 +525,9 @@ Ext.define('JavisERP.controller.ClientController', {
 
         this.getContactGrid().getStore().clearFilter(true);
         this.getContactGrid().getStore().filter("client_id", clientId);
+        
+        this.getActivityGrid().getStore().clearFilter(true);
+        this.getActivityGrid().getStore().filter("client_id", clientId);
 
         this.getPublicationGrid().getStore().clearFilter(true);
         this.getPublicationGrid().getStore().filter("client_id",clientId);

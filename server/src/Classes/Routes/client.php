@@ -17,6 +17,7 @@ class Client implements ControllerProviderInterface
 
         $controllers->get('/', function (Application $app, Request $request) {
             //print_r($request->get('limit'));
+            /*
             $client_array = array();
             if($request->get('search')){
                 $client_array = $app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),FALSE,$request->get('sort'));
@@ -25,42 +26,54 @@ class Client implements ControllerProviderInterface
                 $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('sort'));
                 $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
             }
+            */
+            $client_array = array();
+            $sort = '';
+		    		if ($request->get('sort')){
+		    			$sort = json_decode($request->get('sort'), true);
+		    		}
+		    		$filter = array();
+		    		if ($request->get('filter')){
+		    			$filter = json_decode($request->get('filter'), true);
+		    		}
+		    		$search = array();
+		    		if ($request->get('search')){
+		    			$search = json_decode($request->get('search'), true);
+		    		}
+            list($totalCount, $client_array) = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search, $app);
 
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
-                $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
-                $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] = $usr_array['user'];
-                $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
-                $client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
-                $client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
-                $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
+            		/*
+            			2013-06-22 DHS
+            			We don't want to do 6 additional queries for each client that is returned (ie: 50 * 6 = 301 queries instead of 1). 
+            			Just pull the basics for the search grid and do these for getById()
+            		*/
+                //$subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
+                //$usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
+                //$client_array[$key]['salesrep'] = $usr_array['user'];
+                //$client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
+                //$client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
+                //$client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
+                //$client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
                 // actions
                 $client_array[$key]['view_action'] = false;
                 $client_array[$key]['edit_action'] = false;
                 $client_array[$key]['delete_action'] = false;
             });
-            return $app->json(array("totalCount"=>$totalCount['totalCount'], "client"=>$client_array));
+            return $app->json(array("totalCount"=>$totalCount, "client"=>$client_array));
         });
 
 
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
-            $client_array = $app['business.client']->getById($id);
-            $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
-
-            array_walk($client_array,function($client,$key) use (&$client_array, &$app){
-                //print_r($client_array);
-                $client_array[$key]['territory'] = $app['business.territory']->getById($client['territory_id']);
-                $client_array[$key]['state'] = $app['business.state']->getById($client['state_id']);
-                $client_array[$key]['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
-                $client_array[$key]['remaining_months'] = $app['business.client']->getRemainingMonths($client['id']);
-                $subReq = Request::create('/user/'.$client['salesrep_id'],'GET');
-                $usr_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $client_array[$key]['salesrep'] =  $usr_array['user'];
-
-            });
-
-            return $app->json(array("success"=>true,"totalCount"=>$totalCount['totalCount'],"client"=>$client_array));
+            $client = $app['business.client']->getById($id);
+            if ($client['id']){
+	            $client['territory'] = $app['business.territory']->getById($client['territory_id']);
+	            $client['state'] = $app['business.state']->getById($client['state_id']);
+	            $client['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
+	            $client['salesrep'] =  $app['business.user']->getById($client['salesrep_id']);
+	          }
+            return $app->json(array("success"=>true,"totalCount"=>($client['id']?1:1),"client"=>$client));
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
@@ -74,10 +87,20 @@ class Client implements ControllerProviderInterface
 
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
+            $error = $app['business.client']->validate($app, $params);
+            if (@count($error) > 0){
+            	$app['monolog']->addInfo(print_r($error, true));
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$client_return = $app['business.client']->updateClient($id, $params);
+            	return $app->json(array("success"=>true,"client"=>$client_return));
+            }
+            /*
             $client_id = $app['business.client']->updateClient($id, $params);
             $subReq = Request::create('/client/'.$client_id,'GET');
             $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
             return $app->json($client_return);
+            */
         });
 
         /* delete */

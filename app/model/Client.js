@@ -36,13 +36,15 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'state_name',
-            type: 'string',
-            mapping: 'state.name'
+            type: 'string'
         },
         {
             name: 'postal_code_iso',
-            type: 'string',
-            mapping: 'postal_code.iso_code'
+            type: 'string'
+        },
+        {
+        		name: 'zipcode',
+        		type: 'string'
         },
         {
             name: 'postal_code'
@@ -67,8 +69,7 @@ Ext.define('JavisERP.model.Client', {
             name: 'fax'
         },
         {
-            name: 'territory_name',
-            mapping: 'territory.name'
+            name: 'territory_name'
         },
         {
             name: 'territory'
@@ -81,6 +82,9 @@ Ext.define('JavisERP.model.Client', {
         },
         {
             name: 'balance'
+        },
+        {
+            name: 'remaining'
         },
         {
             name: 'remaining_months'
@@ -102,8 +106,7 @@ Ext.define('JavisERP.model.Client', {
             name: 'salesrep'
         },
         {
-            name: 'salesrep_name',
-            mapping: 'salesrep.fullname'
+            name: 'salesrep_name'
         },
         {
             name: 'insert_user_id'

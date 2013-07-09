@@ -118,33 +118,14 @@ Ext.define('JavisERP.view.ActivityGrid', {
                         },
                         {
                             xtype: 'filtercombo',
-                            itemId: 'typeFilter',
+                            itemId: 'activtyTypeFilter',
                             hideLabel: true,
                             emptyText: 'Filter Activity Type...',
                             displayField: 'description',
                             store: 'ActivityTypeStore',
                             recordField: 'id',
                             searchField: 'type_id',
-                            clearable: true,
-                            onClear: function(){
-                            	var store = Ext.StoreMgr.lookup('ActivityStore');
-                            	store.clearFilter(false);
-                            },
-                            onSearch: function(filtervalue, filterfield){
-                            	var store = Ext.StoreMgr.lookup('ActivityStore');
-                            	if (filtervalue){
-	                            	store.clearFilter(true);
-	                            	var myfilter = Ext.create('Ext.util.Filter', {
-	                            			property: filterfield,
-	                            			value: filtervalue
-														    });
-														    // Apply filter to store
-														    store.filter(myfilter);
-														  } else {
-														  	store.clearFilter(false);
-														  }
-                            }
-
+                            clearable: true
                         }
                     ]
                 },
