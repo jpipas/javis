@@ -53,31 +53,26 @@ Ext.define('JavisERP.controller.PublicationController',{
 
     onSavePublicationClick: function(button, e, options) {
         var fields = this.getPublicationForm().getForm().getValues(false,false,false,true);
-        me.publication = new JavisERP.model.Publication({id: fields['id']});
+        me.publication = new JavisERP.model.Publication();
         for(var key in fields){
             me.publication.set(key,fields[key]);
         }
-
-        var postalcodes = [];
-        var recs = this.getPostalCodeList().getValue();
-        for(var key1 in recs){
-            var postalcode = new JavisERP.model.PostalCode();
-            postalcode.set("id",recs[key1]);
-            //postalcode.set("iso_code",recs[key1].data.iso_code);
-            postalcodes.push(postalcode);
-        }
-
-        me.publication.setAssociatedData("postalcodes",postalcodes);
-        me.publication.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
         var pWindow = this.getPublicationWindow();
+        var pStore = this.getPublicationStoreStore();
         me.publication.save({
-            callback: function(record,operation){
-                if(operation.wasSuccessful){
-                    pWindow.close();
-                    Ext.Msg.alert('Success','Publication saved successfully!');
-                } else {
-                    Ext.Msg.alert('Failure','Something went wrong!');
-                }
+            success: function(record, operation){
+            	pWindow.close();
+              pStore.reload();
+              Ext.Msg.alert('Success','Publication saved successfully!');
+            },
+            failure: function(record, operation){
+            	console.log(record);
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
             }
         });
     },
@@ -89,9 +84,6 @@ Ext.define('JavisERP.controller.PublicationController',{
     init: function(application) {
         me = this;
         this.control({
-            "publicationwindow": {
-                close: this.onWindowClose
-            },
             "publicationgrid rowactions": {
                 action: this.onPublicationActionClick
             },
@@ -100,6 +92,13 @@ Ext.define('JavisERP.controller.PublicationController',{
             },
             "publicationwindow toolbar button[cls=publicationsavebutton]": {
                 click: this.onSavePublicationClick
+            },
+            "publicationwindow toolbar button[cls=cancelbutton]": {
+                click: function(){ 
+                		if (Ext.WindowMgr.getActive()){
+                			Ext.WindowMgr.getActive().close();
+                		}
+                	}
             }
         });
     },
@@ -112,10 +111,11 @@ Ext.define('JavisERP.controller.PublicationController',{
             success: function(model){
                 publicationForm.loadRecord(model);
                 publicationForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
+                publicationForm.getForm().findField('contentcoord_id').setValue(new JavisERP.model.User(model.raw.contentcoord) );
                 me.postalcodes = publicationForm.getForm().findField('postal_codes');
                 var valArray = [];
-                Ext.each(model.raw.postal_code, function(arr,index,postalcodeItself){
-                    valArray.push(arr.id);
+                Ext.each(model.raw.postal_codes, function(arr,index,postalcodeItself){
+                    valArray.push(arr.iso_code);
                 });
                 me.postalcodes.setValue(valArray);
             }

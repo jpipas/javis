@@ -34,6 +34,10 @@ Ext.define('JavisERP.model.AdList', {
             type: 'string'
         },
         {
+            name: 'designer_name',
+            type: 'string'
+        },
+        {
             name: 'ad_type',
             type: 'string'
         },
@@ -43,6 +47,10 @@ Ext.define('JavisERP.model.AdList', {
         },
         {
             name: 'salesrep',
+            type: 'string'
+        },
+        {
+            name: 'salesrep_name',
             type: 'string'
         },
         {
@@ -69,8 +77,8 @@ Ext.define('JavisERP.model.AdList', {
         reader: {
             type: 'json',
             //idProperty: 'id',
-            root: 'ad_list'
-            //totalProperty: 'totalCount'
+            root: 'ad_list',
+            totalProperty: 'totalCount'
         }
     }
 });

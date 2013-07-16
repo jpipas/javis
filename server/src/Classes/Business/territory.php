@@ -52,7 +52,7 @@ class Territory extends AbstractBusinessService
     				$or = array();
     				$qq = $this->db->quote($search['query'].'%');
     				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-    					$or[] = 'contact.'.$field.' LIKE '.$qq;
+    					$or[] = 'territory.'.$field.' LIKE '.$qq;
     				});
     				if (@count($or) > 0){
     					$where[] = "(".implode(' OR ', $or).")";

@@ -75,9 +75,24 @@ class Advertisement implements ControllerProviderInterface
         });
 
         $controllers->get('/list/', function(Application $app, Request $request) {
-            //$params = $request->request->all();
-            $adlist = $app['business.adlist']->getList($request->get('filter'));
-            return $app->json(array("ad_list"=>$adlist));
+            $sort = '';
+        		if ($request->get('sort')){
+        			$sort = json_decode($request->get('sort'), true);
+        		}
+        		$filter = array();
+        		if ($request->get('filter')){
+        			$filter = json_decode($request->get('filter'), true);
+        		}
+        		$search = array();
+        		if ($request->get('search')){
+        			$search = json_decode($request->get('search'), true);
+        		}
+        		
+        		list($totalCount, $result) = $app['business.adlist']->getList($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+        		return $app->json(array("totalCount"=>$totalCount,"ad_list"=>$result));
+            
+            //$adlist = $app['business.adlist']->getList($request->get('filter'));
+            
         });
 
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {

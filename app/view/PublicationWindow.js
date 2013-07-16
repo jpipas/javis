@@ -4,7 +4,7 @@ Ext.define('JavisERP.view.PublicationWindow', {
 
     cls: 'publicationwindow',
     itemId: 'publicationwindow',
-    width: 750,
+    width: 400,
     autoDestroy: false,
     layout: {
         type: 'fit'
@@ -22,13 +22,21 @@ Ext.define('JavisERP.view.PublicationWindow', {
                     cls: 'publicationform',
                     itemId: 'publicationform',
                     bodyPadding: 10,
+                    defaults : {
+                    	labelAlign : 'right',
+                    	labelWidth : 125
+                    },
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'pubWindowToolBar',
                             itemId: 'pubwindowtoolbar',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     cls: 'publicationsavebutton',
@@ -45,91 +53,57 @@ Ext.define('JavisERP.view.PublicationWindow', {
                         }
                     ],
                     items: [
+                    		{
+                            xtype: 'hiddenfield',
+                            name: 'id'
+                        },
                         {
-                            xtype: 'fieldcontainer',
-                            padding: '0px 0px 10px 0px',
-                            defaults: {
-                                anchor: '95%'
-                            },
-                            layout: {
-                                align: 'stretch',
-                                type: 'hbox'
-                            },
-                            items: [
-                                {
-                                    xtype: 'fieldcontainer',
-                                    flex: 1,
-                                    defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%'
-                                    },
-                                    layout: {
-                                        type: 'anchor'
-                                    },
-                                    labelAlign: 'right',
-                                    items: [
-                                        {
-                                            xtype: 'textfield',
-                                            name: 'description',
-                                            fieldLabel: 'Name/Description'
-                                        },
-                                        {
-                                            xtype: 'combobox',
-                                            fieldLabel: 'Postal Code(s)',
-                                            displayField: 'iso_code',
-                                            emptyText: 'select a postal code...',
-                                            descField: 'id',
-                                            valueField: 'id',
-                                            store: 'PostalCode',
-                                            queryMode: 'local',
-                                            typeAdead:true,
-                                            delimiter: ',',
-                                            multiSelect:true,
-                                            name: 'postal_codes',
-                                            cls:'postalCodeList'
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'fieldcontainer',
-                                    flex: 1,
-                                    defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%'
-                                    },
-                                    layout: {
-                                        type: 'anchor'
-                                    },
-                                    combineLabels: false,
-                                    labelAlign: 'right',
-                                    items: [
-                                        {
-                                            xtype: 'combobox',
-                                            cls: 'territory',
-                                            itemId: 'territory_id',
-                                            name: 'territory_id',
-                                            fieldLabel: 'Territory',
-                                            displayField: 'name',
-                                            store: 'TerritoryStore',
-                                            valueField: 'id'
-                                        },
-                                        {
-                                            xtype: 'textfield',
-                                            name: 'content_email',
-                                            fieldLabel: 'Content Coordinator Email'
-                                        },
-                                        {
-                                            xtype: 'textfield',
-                                            name: 'contact_email',
-                                            fieldLabel: 'Publisher Email'
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            name: 'id'
-                                        }
-                                    ]
-                                }
-                            ]
+                            xtype: 'textfield',
+                            name: 'description',
+                            fieldLabel: 'Name/Description',
+                            anchor: '100%',
+                        },
+                        {
+                            xtype: 'combobox',
+                            cls: 'territory',
+                            itemId: 'territory_id',
+                            name: 'territory_id',
+                            fieldLabel: 'Territory',
+                            displayField: 'name',
+                            store: 'TerritoryStore',
+                            valueField: 'id',
+                            anchor: '100%',
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Postal Code(s)',
+                            displayField: 'iso_code',
+                            emptyText: 'select a postal code...',
+                            valueField: 'iso_code',
+                            store: 'PostalCode',
+                            queryMode: 'local',
+                            typeAdead:true,
+                            delimiter: ',',
+                            multiSelect:true,
+                            name: 'postal_codes',
+                            cls:'postalCodeList',
+                            anchor: '100%',
+                        },
+                        {
+                            xtype: 'combobox',
+                            cls: 'contentcoord',
+                            id: 'contentcoord_id',
+                            itemId: 'contentcoord_id',
+                            name: 'contentcoord_id',
+                            fieldLabel: 'Content Coordinator',
+                            displayField: 'fullname',
+                            store: 'UserDropDown',
+                            hideTrigger: true,
+                            triggerAction: 'query',
+                            pageSize: true,
+                            minChars: 3,
+                            valueField: 'id',
+                            anchor: '100%',
                         }
                     ]
                 }

@@ -19,7 +19,6 @@ Ext.define('JavisERP.view.UserGrid', {
             columns: [
                 {
                     xtype: 'rowactions',
-                    flex: 1,
                     actions: [
                         {
                             iconCls: 'edit_action ui-silk ui-silk-user-edit',
@@ -108,6 +107,7 @@ Ext.define('JavisERP.view.UserGrid', {
 				                    xtype: 'gridsearchingbar',
 				                    inputWidth: 200,
 				                    grid: this,
+				                    border: 0,
 				                    showSelectAll: true,
 				                    menuIconCls: 'ui-silk ui-silk-magnifier',
 				                    disableIndexes: ['id'],
