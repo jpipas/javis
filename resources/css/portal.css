@@ -51,6 +51,11 @@
     padding: 5px;
     font-size: 12px;
 }
+.x-trigger-add {
+	background: url(../icons/add.png) no-repeat center;
+	width: 20px;
+	border: 0px;
+}
 .settings {
     background-image:url(images/folder_wrench.png);
 }

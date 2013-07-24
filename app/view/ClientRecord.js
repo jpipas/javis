@@ -20,28 +20,28 @@ Ext.define('JavisERP.view.ClientRecord', {
     },
     bodyPadding: 5,
     title: 'Client Record',
+    autoScroll: true,
 
     initComponent: function() {
         var me = this;
 
         Ext.applyIf(me, {
+        		autoScroll: true,
             defaults: {
                 anchor: '100%',
-                labelAlign: 'right'
+                labelAlign: 'right',
             },
             dockedItems: [
                 {
                     xtype: 'recordnav',
                     itemId: 'ClientRecordNavigation',
                     cls: 'clientrecordnav',
-                    flex: 1,
                     dock: 'top'
                 }
             ],
             items: [
                 {
                     xtype: 'fieldcontainer',
-                    flex: 1,
                     itemId: 'RecordHeader',
                     minHeight: 200,
                     defaults: {
@@ -170,10 +170,13 @@ Ext.define('JavisERP.view.ClientRecord', {
                 {
                     xtype: 'tabpanel',
                     flex: 3,
-                    height: 350,
+                    minHeight: 350,
                     itemId: 'ClientSublists',
                     defaults: {
                         labelAlign: 'right'
+                    },
+                    layout: {
+                        type: 'fit'
                     },
                     activeTab: 0,
                     plain: false,
@@ -191,45 +194,29 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     itemId: 'General-Sublists',
                                     cls : 'generaltab',
                                     activeTab: 0,
+                                    plain: true,
                                     items: [
                                         {
-                                            xtype: 'panel',
                                             title: 'Contacts',
-                                            items: [
-                                                {
-                                                    xtype: 'contactgrid',
-                                                    itemId: 'ContactGrid',
-                                                    header: false,
-                                                    hideHeaders: false,
-                                                    border: 0
-                                                }
-                                            ]
+                                            xtype: 'contactgrid',
+                                            itemId: 'ContactGrid',
+                                            header: false,
+                                            hideHeaders: false,
+                                            border: 0
                                         },
                                         {
-                                            xtype: 'panel',
                                             title: 'Activities',
-                                            cls:'clientactivities',
-                                            layout: 'fit',
-                                            items: [
-                                                {
-                                                    xtype: 'activitygrid',
-                                                    header: false,
-                                                    id: 'clientactivitygrid',
-                                                    itemId: 'clientactivitygrid',
-                                                    border: 0,
-                                                    cls: 'clientactivitygrid'
-                                                }
-                                            ]
+                                            xtype: 'activitygrid',
+                                            header: false,
+                                            id: 'clientactivitygrid',
+                                            itemId: 'clientactivitygrid',
+                                            border: 0,
+                                            cls: 'clientactivitygrid'
                                         },
                                         {
-                                            xtype: 'panel',
                                             title: 'User Notes',
-                                            items: [
-                                                {
-                                                    xtype: 'usernotegrid',
-                                                    header: false
-                                                }
-                                            ]
+	                                          xtype: 'usernotegrid',
+	                                          header: false
                                         },
                                         {
                                             xtype: 'panel',
@@ -241,29 +228,27 @@ Ext.define('JavisERP.view.ClientRecord', {
                         },
                         {
                             xtype: 'panel',
-                            autoScroll: false,
                             defaults: {
                                 labelAlign: 'right'
                             },
                             layout: {
                                 type: 'fit'
                             },
+                            minHeight: 350,
                             bodyPadding: 5,
                             title: 'Sales',
                             items: [
                                 {
                                     xtype: 'container',
-                                    height: 50,
+                                    height: 60,
+                                    maxHeight: 60,
                                     itemId: 'SalesSublistHeader',
-                                    maxHeight: 80,
                                     layout: {
-                                        align: 'stretch',
                                         type: 'hbox'
                                     },
                                     items: [
                                         {
                                             xtype: 'fieldcontainer',
-                                            flex: 1,
                                             itemId: 'Column1',
                                             defaults: {
                                                 labelAlign: 'right',
@@ -291,7 +276,6 @@ Ext.define('JavisERP.view.ClientRecord', {
                                         },
                                         {
                                             xtype: 'fieldcontainer',
-                                            flex: 1,
                                             itemId: 'Column2',
                                             defaults: {
                                                 labelAlign: 'right',
@@ -318,99 +302,62 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 },
                                 {
                                     xtype: 'tabpanel',
-                                    height: 200,
                                     itemId: 'SalesSublistTabs',
                                     cls: 'salestab',
-                                    maxHeight: 250,
                                     activeTab: 0,
-                                    plain: false,
+                                    plain: true,
+                                    minHeight: 280,
+                                    flex: 1,
+                                    layout: {
+                                        type: 'fit'
+                                    },
                                     items: [
                                         {
-                                            xtype: 'panel',
-                                            border: 0,
-                                            layout: {
-                                                type: 'fit'
-                                            },
                                             title: 'Contracts',
-                                            cls:'clientcontracts',
-                                            items: [
-                                                {
-                                                    xtype: 'contractgrid',
-                                                    border: 0,
-                                                    itemId: 'clientcontractgrid',
-                                                    header: false,
-                                                    listeners: {
-                                                        beforerender: {
-                                                            fn: me.onGridpanelBeforeRender,
-                                                            scope: me
-                                                        }
-                                                    }
+                                            xtype: 'contractgrid',
+                                            border: 0,
+                                            itemId: 'clientcontractgrid',
+                                            header: false,
+                                            listeners: {
+                                                beforerender: {
+                                                    fn: me.onGridpanelBeforeRender,
+                                                    scope: me
                                                 }
-                                            ]
+                                            }
                                         },
                                         {
-                                            xtype: 'panel',
-                                            border: 0,
-                                            layout: {
-                                                type: 'fit'
-                                            },
-                                            cls: 'clientadvertisements',
                                             title: 'Advertisements',
-                                            items: [
-                                                {
-                                                    xtype: 'advertisementgrid',
-                                                    border: 0,
-                                                    cls: 'clientadgrid',
-                                                    id: 'clientadgrid',
-                                                    header: false,
-                                                    listeners: {
-                                                        beforerender: {
-                                                            fn: me.onAdvertisementGridBeforeRender,
-                                                            scope: me
-                                                        }
-                                                    }
+                                            xtype: 'advertisementgrid',
+                                            border: 0,
+                                            cls: 'clientadgrid',
+                                            itemId: 'clientadgrid',
+                                            header: false,
+                                            listeners: {
+                                                beforerender: {
+                                                    fn: me.onAdvertisementGridBeforeRender,
+                                                    scope: me
                                                 }
-                                            ]
+                                            }
                                         },
                                         {
-                                            xtype: 'panel',
-                                            border: 0,
-                                            layout: {
-                                                type: 'fit'
-                                            },
                                             title: 'Publications',
-                                            cls: 'clientpublications',
-                                            items: [
-                                                {
-                                                    xtype: 'publicationgrid',
-                                                    border: 0,
-                                                    itemId: 'PublicationGrid',
-                                                    header: false,
-                                                    listeners: {
-                                                        beforerender: {
-                                                            fn: me.onPublicationGridBeforeRender,
-                                                            scope: me
-                                                        }
-                                                    }
+                                            xtype: 'publicationgrid',
+                                            border: 0,
+                                            itemId: 'PublicationGrid',
+                                            header: false,
+                                            listeners: {
+                                                beforerender: {
+                                                    fn: me.onPublicationGridBeforeRender,
+                                                    scope: me
                                                 }
-                                            ]
+                                            }
                                         },
                                         {
-                                            xtype: 'panel',
-                                            border: 0,
-                                            layout: {
-                                                type: 'fit'
-                                            },
                                             title: 'Payments',
-                                            cls: 'clientpayments',
-                                            items: [
-                                                {
-                                                    xtype: 'paymentgrid',
-                                                    border: 0,
-                                                    itemId: 'paymentgrid',
-                                                    header: false
-                                                }
-                                            ]
+                                            xtype: 'paymentgrid',
+                                            border: 0,
+                                            itemId: 'paymentgrid',
+                                            header: false
                                         }
                                     ]
                                 }
@@ -429,7 +376,7 @@ Ext.define('JavisERP.view.ClientRecord', {
     },
 
     onAdvertisementGridBeforeRender: function(abstractcomponent, options) {
-        abstractcomponent.getDockedItems('toolbar[dock="top"]')[0].hide();
+        //abstractcomponent.getDockedItems('toolbar[dock="top"]')[0].hide();
     },
 
     onPublicationGridBeforeRender: function(abstractcomponent, options) {

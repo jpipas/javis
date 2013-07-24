@@ -52,7 +52,7 @@ Ext.define('JavisERP.controller.AppController', {
     ],
 
     init: function(application) {
-        me = this;
+        var me = this;
         //Listen for application wide event(s)
         this.application.on({
             navigationChange: me.navigationClick,

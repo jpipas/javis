@@ -173,7 +173,36 @@ class Publication extends AbstractBusinessService
     }
 
     public function getByAdvertisementId($id) {
-        $sql = "SELECT p.* FROM publication p LEFT JOIN advertisement_publication ap ON p.id = ap.publication_id LEFT JOIN advertisement a ON ap.advertisement_id = a.id WHERE a.id = ? ORDER BY p.description";
+    		$sql = "SELECT 
+        	p.*,
+        	territory.name AS territory_name,
+        	state.name AS state_name,
+        	state.id AS state_id,
+        	CONCAT(employee.first_name, ' ', employee.last_name) AS publisher_name,
+        	territory.manager_id AS publisher_id,
+        	employee.email AS publisher_email,
+        	CONCAT(cc.first_name, ' ', cc.last_name) AS contentcoord_name,
+        	cc.email AS contentcoord_email
+        FROM
+        	(publication AS p,
+        	territory,
+        	state)
+          LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
+          LEFT JOIN employee AS cc ON cc.id = p.contentcoord_id AND cc.deleted_at IS NULL
+        	LEFT JOIN advertisement_publication AS ap ON p.id = ap.publication_id
+          LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
+          LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
+          LEFT JOIN contract AS c ON ca.contract_id = c.id
+          LEFT JOIN client AS cl ON c.client_id = cl.id          
+        WHERE
+        	p.deleted_at IS NULL AND
+        	territory.id = p.territory_id AND 
+        	territory.deleted_at IS NULL AND
+        	state.id = territory.state_id AND
+        	state.deleted_at IS NULL AND
+        	ap.advertisement_id = ? 
+       	GROUP BY
+       		p.id";
         return $this->db->fetchAll($sql,array((int)$id));
     }
     

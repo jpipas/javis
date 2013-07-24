@@ -51,7 +51,7 @@ Ext.define('JavisERP.controller.AdListController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         me.control({
             "adlistgrid toolbar button[itemId=generate_ad_list]": {
                 click: me.onGenerateAdListClick

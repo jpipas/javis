@@ -31,6 +31,7 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                         {
                             xtype: 'toolbar',
                             dock: 'bottom',
+                            itemId: 'territorywindowtoolbar',
                             items: [
                             		{
                             				xtype: 'tbspacer',
@@ -45,6 +46,7 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                                 {
                                     xtype: 'button',
                                     cls: 'cancelbutton',
+                                    itemId: 'cancelbutton',
                                     text: 'Cancel'
                                 }
                             ]
@@ -73,6 +75,7 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                             valueField: 'id',
                             typeAhead: true,
                             queryMode: 'remote',
+                            minChars: 3,
                             displayField: 'name',
                             store: 'State',
                             labelAlign: 'right'

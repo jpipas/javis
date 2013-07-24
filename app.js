@@ -39,6 +39,7 @@ Ext.application({
         'State',
         'PaymentType',
         'Contact',
+        'Contract',
         'Activity',
         'UserNote',
         'Role',
@@ -82,6 +83,7 @@ Ext.application({
         'ContactWindow',
         'PublicationGrid',
         'ContractGrid',
+        'ContractWindow',
         'PaymentGrid',
         'ContractPaymentWindow',
         'PublicationWindow',
@@ -102,15 +104,13 @@ Ext.application({
         'MainNavController',
         'ClientController',
         'Portal',
-        'AdWindowController',
-        'ContractWindowController',
+        'ContractController',
         'PaymentController',
-        'ContractGridController',
         'PublicationController',
         'UserController',
         'AdListController',
         'TerritoryController',
-        'AdvertisementGridController'
+        'AdvertisementController'
     ],
     appFolder: '/app',
     launch: function() {

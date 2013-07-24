@@ -39,19 +39,19 @@ Ext.define('JavisERP.controller.UserController', {
     },
 
     onNewUserClick: function(button, options, e) {
-        me.userWindow = new JavisERP.view.UserWindow();
-        me.userWindow.show();
+        var userWindow = new JavisERP.view.UserWindow();
+        userWindow.show();
     },
 
     onUserSaveButtonClick: function(button, options, e){
         var fields = this.getUserForm().getForm().getValues(false,false,false,true);
-        me.user = new JavisERP.model.User();
+        var user = new JavisERP.model.User();
         for(var key in fields){
-            me.user.set(key,fields[key]);
+            user.set(key,fields[key]);
         }
         var uWindow = this.getUserWindow();
         var uStore = this.getUserStore();
-        me.user.save({
+        user.save({
             success: function(record, operation){
             	uWindow.close();
               uStore.reload();
@@ -69,7 +69,7 @@ Ext.define('JavisERP.controller.UserController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         me.control({
             "usergrid rowactions": {
                 action: me.onUserActionClick
@@ -80,12 +80,10 @@ Ext.define('JavisERP.controller.UserController', {
             "button[cls=usersavebutton]": {
                 click: this.onUserSaveButtonClick
             },
-            "button[cls=cancelbutton]": {
+            "#userwindowtoolbar > #cancelbutton": {
                 click: function(){ 
-                		if (Ext.WindowMgr.getActive()){
-                			Ext.WindowMgr.getActive().close();
-                		}
-                	}
+                	me.getUserWindow().close();
+                }
             }
         });
 

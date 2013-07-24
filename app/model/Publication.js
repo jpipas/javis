@@ -6,11 +6,12 @@ Ext.define('JavisERP.model.Publication', {
         'JavisERP.model.Territory',
         'JavisERP.model.Advertisement'
     ],
+    
+    idProperty: 'id',
 
     fields: [
         {
-            name: 'id',
-            type: 'int'
+            name: 'id'
         },
         {
             name: 'description'

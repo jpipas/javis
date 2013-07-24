@@ -6,7 +6,6 @@ Ext.define('JavisERP.view.ActivityGrid', {
     forceFit: true,
     store: 'ActivityStore',
 		itemId: 'ActivityGrid',
-    forceFit: true,
     scroll: 'vertical',
     initComponent: function() {
         var me = this;

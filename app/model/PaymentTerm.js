@@ -16,12 +16,7 @@ Ext.define('JavisERP.model.PaymentTerm', {
 
     proxy: {
         type: 'srest',
-        api: {
-            create: '/server/web/index.php/paymentterm/new',
-            read: '/server/web/index.php/paymentterm/',
-            update: '/server/web/index.php/paymentterm/update',
-            destroy: '/server/web/index.php/paymentterm/delete'
-        },
+        url: '/server/web/index.php/paymentterm/',
         reader: {
             type: 'json',
             idProperty: 'id',

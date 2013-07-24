@@ -2,15 +2,6 @@ Ext.define('JavisERP.model.Contract', {
     extend: 'Ext.data.Model',
     alias: 'model.contract',
 
-    uses: [
-        'JavisERP.model.Client',
-        'JavisERP.model.PaymentTerm',
-        'JavisERP.model.Duration',
-        'JavisERP.util.SilexRest'
-    ],
-
-    idProperty: 'id',
-
     fields: [
         {
             name: 'id',
@@ -41,19 +32,22 @@ Ext.define('JavisERP.model.Contract', {
             type: 'float'
         },
         {
-            name: 'payment_term_description',
-            mapping: 'payment_term.description'
+            name: 'payment_term_description'
         },
         {
             name: 'payment_term_id'
         },
         {
             name: 'sale_date',
-            type: 'date'
+            type: 'date',
+            dateFormat: 'Y-m-d'
         },
         {
             name: 'client_id',
             type: 'int'
+        },
+        {
+        		name: 'client_company_name'
         },
         {
             name: 'design_fee',
@@ -67,15 +61,14 @@ Ext.define('JavisERP.model.Contract', {
             name: 'territory_id',
             type: 'int'
         },
-        {
-            name: 'territory_name',
-            mapping: 'territory.name'
+				{
+        		name: 'territory_name'
         },
         {
             name: 'durations'
         },
         {
-            name: 'is_new'
+        		name: 'advertisements'
         }
     ],
 

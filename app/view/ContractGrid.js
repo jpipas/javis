@@ -2,15 +2,11 @@ Ext.define('JavisERP.view.ContractGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.contractgrid',
 
-
-    height: 200,
-    itemId: 'ContractGrid',
-    minHeight: 200,
-    autoScroll: false,
-    title: 'ContractsGrid',
-    forceFit: false,
-    scroll: 'vertical',
+    title: 'Contracts',
+    forceFit: true,
     store: 'ContractStore',
+    itemId: 'ContractGrid',
+    scroll: 'vertical',    
     initComponent: function() {
         var me = this;
 
@@ -18,11 +14,9 @@ Ext.define('JavisERP.view.ContractGrid', {
             viewConfig: {
 
             },
-            //selModel: Ext.create('Ext.selection.CheckboxModel',{mode: 'SIMPLE'}),
             columns: [
                 {
                     xtype: 'rowactions',
-                    flex: 1,
                     actions: [
                         {
                             iconCls: 'edit_action ui-silk ui-silk-folder-edit',
@@ -39,14 +33,13 @@ Ext.define('JavisERP.view.ContractGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'contract_number',
-                    flex: 2,
+                    flex: 1,
                     text: 'Contract No.'
                 },
                 {
                     xtype: 'gridcolumn',
-                    hidden: true,
-                    defaultWidth: 160,
-                    dataIndex: 'client_name',
+                    itemId: 'clientcolumn',
+                    dataIndex: 'client_company_name',
                     flex: 3,
                     text: 'Client Name'
                 },
@@ -60,8 +53,8 @@ Ext.define('JavisERP.view.ContractGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'total_sales',
                     renderer: 'usMoney',
-                    flex: 2,
-                    text: 'Total Sales Amt.'
+                    flex: 1,
+                    text: 'Total Amt.'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -73,41 +66,42 @@ Ext.define('JavisERP.view.ContractGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'subtotal',
                     renderer: 'usMoney',
-                    flex: 2,
+                    flex: 1,
                     text: 'Subtotal'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'total_amount',
                     renderer: 'usMoney',
-                    flex: 2,
+                    flex: 1,
                     text: 'Total'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'first_months_payment',
                     renderer: 'usMoney',
-                    flex: 2,
-                    text: 'First Payment'
+                    flex: 1,
+                    text: 'First'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'monthly_payment',
                     renderer: 'usMoney',
-                    flex: 2,
-                    text: 'Monthly Payment'
+                    flex: 1,
+                    text: 'Monthly'
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'payment_term_description',
-                    flex: 2,
-                    text: 'Payment Terms'
+                    flex: 1,
+                    text: 'Terms'
                 },
                 {
-                    xtype: 'gridcolumn',
+                    xtype: 'datecolumn',
                     dataIndex: 'sale_date',
                     flex: 1,
-                    text: 'Sale Date'
+                    text: 'Sale Date',
+                    format: 'm/d/Y'
                 }
             ],
             dockedItems: [
@@ -122,17 +116,18 @@ Ext.define('JavisERP.view.ContractGrid', {
                             cls: 'newcontract',
                             iconCls: 'ui-silk ui-silk-table-add',
                             text: 'New Contract'
-                        }
+                        },
+                        {
+				                    xtype: 'gridsearchingbar',
+				                    inputWidth: 200,
+				                    grid: this,
+				                    border: 0,
+				                    showSelectAll: true,
+				                    menuIconCls: 'ui-silk ui-silk-magnifier',
+				                    disableIndexes: ['id'],
+				                    items: ['->']
+				                }
                     ]
-                },
-                {
-                    xtype: 'gridsearchingbar',
-                    inputWidth: 200,
-                    grid: this,
-                    showSelectAll: true,
-                    menuIconCls: 'ui-silk ui-silk-magnifier',
-                    disableIndexes: ['id'],
-                    items: ['->']
                 },
                 {
                     xtype: 'pagingtoolbar',

@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.ContractStore', {
     extend: 'Ext.data.Store',
+		alias: 'store.contractstore',
 
     requires: [
         'JavisERP.model.Contract'
@@ -9,11 +10,12 @@ Ext.define('JavisERP.store.ContractStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            remoteFilter: true,
+        		remoteFilter: true,
             remoteSort: true,
-            storeId: 'contractStore',
-            model: 'JavisERP.model.Contract',
-            pageSize: 45
+            pageSize: 50,
+            autoLoad: false,
+            storeId: 'ContractStore',
+            model: 'JavisERP.model.Contract'
         }, cfg)]);
     }
 });

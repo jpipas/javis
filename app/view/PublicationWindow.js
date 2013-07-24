@@ -47,6 +47,7 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                 {
                                     xtype: 'button',
                                     cls: 'cancelbutton',
+                                    itemId: 'cancelbutton',
                                     text: 'Cancel'
                                 }
                             ]

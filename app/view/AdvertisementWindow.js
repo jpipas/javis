@@ -3,13 +3,13 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
     alias: 'widget.adwindow',
 
     requires: [
-        'JavisERP.view.ComboFieldBox'
+        'JavisERP.view.ComboFieldBox',
+        'Ext.ux.form.field.BoxSelect'
     ],
 
     id: 'adWindow',
     itemId: 'adwindow',
     width: 750,
-    autoDestroy: false,
     layout: {
         type: 'fit'
     },
@@ -24,21 +24,22 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                 {
                     xtype: 'form',
                     cls: 'adForm',
-                    id: 'adform',
                     itemId: 'adform',
                     bodyPadding: 10,
-                    url: '/server/web/index.php/advertisement/new',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'adWindowToolBar',
                             itemId: 'adwindowtoolbar',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     cls: 'savebutton',
-                                    id: 'savebutton',
                                     itemId: 'savebutton',
                                     iconCls: 'ui-silk ui-silk-disk',
                                     text: 'Save'
@@ -46,6 +47,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                 {
                                     xtype: 'button',
                                     cls: 'cancelbutton',
+                                    itemId: 'cancelbutton',
                                     text: 'Cancel'
                                 }
                             ]
@@ -63,35 +65,77 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                 {
                                     xtype: 'fieldcontainer',
                                     flex: 1,
-                                    id: 'adform_column1',
                                     itemId: 'adwindow_col1',
                                     defaults: {
-                                        padding: '5px 0px 0px 0px'
+                                        padding: '5px 0px 0px 0px',
+                                        labelAlign: 'right',
+                                        anchor: '95%'
                                     },
                                     layout: {
                                         type: 'anchor'
                                     },
-                                    labelAlign: 'right',
                                     items: [
                                         {
-                                            xtype: 'displayfield',
-                                            cls: 'clientnamefield',
-                                            name: 'client',
-                                            fieldLabel: 'Client'
+                                            xtype: 'combobox',
+                                            cls: 'client',
+                                            itemId: 'client_id',
+                                            name: 'client_id',
+                                            fieldLabel: 'Client',
+                                            displayField: 'company_name',
+                                            store: 'ClientStore',
+                                            hideTrigger: true,
+                                            forceSelection: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            allowOnlyWhitespace: false,
+                                            allowBlank: false,
+                                            minChars: 3,
+                                            valueField: 'id'
                                         },
                                         {
-                                            xtype: 'combobox',
+                                            xtype: 'comboboxselect',
                                             multiSelect:true,
                                             fieldLabel: 'Publications(s)',
                                             displayField: 'description',
-                                            emptyText: 'select a publicatoin...',
                                             descField: 'id',
                                             valueField: 'id',
+                                            forceSelection: false,
                                             store: 'PublicationStore',
                                             queryMode: 'remote',
-                                            typeAdead:true,
+                                            listConfig: {
+                                            	itemTpl : '{description} ({territory_name})'
+																				   	},
+																						labelTpl: "{description} ({territory_name})",
+                                            grow: true,
+                                            stacked: true,
                                             name: 'publications',
                                             cls:'publicationlist'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            itemId: 'designer_id',
+                                            name: 'designer_id',
+                                            fieldLabel: 'Designer',
+                                            displayField: 'fullname',
+                                            store: 'UserDropDown',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
+                                            valueField: 'id'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            itemId: 'salesrep_id',
+                                            name: 'salesrep_id',
+                                            fieldLabel: 'Sales Rep',
+                                            displayField: 'fullname',
+                                            store: 'User',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
+                                            valueField: 'id'
                                         }
                                     ]
                                 },
@@ -99,13 +143,14 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                     xtype: 'fieldcontainer',
                                     flex: 1,
                                     defaults: {
-                                        padding: '5px 0px'
+                                        padding: '5px 0px',
+                                        labelAlign: 'right',
+                                        anchor: '95%'
                                     },
                                     layout: {
                                         type: 'anchor'
                                     },
                                     combineLabels: false,
-                                    labelAlign: 'right',
                                     items: [
                                         {
                                             xtype: 'combobox',
@@ -114,6 +159,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                             name: 'ad_type_id',
                                             fieldLabel: 'Ad Type',
                                             displayField: 'description',
+                                            forceSelection: true,
                                             store: 'AdTypeStore',
                                             valueField: 'id'
                                         },
@@ -125,6 +171,7 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                             name: 'ad_size_id',
                                             fieldLabel: 'Ad Size',
                                             displayField: 'description',
+                                            forceSelection: true,
                                             store: 'AdSizeStore',
                                             valueField: 'id'
                                         },
@@ -157,12 +204,9 @@ Ext.define('JavisERP.view.AdvertisementWindow', {
                                         },
                                         {
                                             xtype: 'hiddenfield',
-                                            itemId: 'ad_client_id',
-                                            name: 'client_id'
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            name: 'contract_id'
+                                            cls: 'id',
+                                            itemId: 'id',
+                                            name: 'id'
                                         }
                                     ]
                                 }
