@@ -1,11 +1,6 @@
-Ext.define('JavisERP.model.AdvertisementSize', {
+Ext.define('JavisERP.model.PaymentTerm', {
     extend: 'Ext.data.Model',
-
-    uses: [
-        'JavisERP.model.AdvertisementType'
-    ],
-
-		idProperty: 'id',
+    alias: 'model.paymentTerm',
 
     fields: [
         {
@@ -15,17 +10,21 @@ Ext.define('JavisERP.model.AdvertisementSize', {
             name: 'description'
         },
         {
-            name: 'type_id'
+            name: 'type'
         }
     ],
 
     proxy: {
         type: 'srest',
-        url: '/advertisement/size/',
+<<<<<<< HEAD
+        url: '/paymentterm/',
+=======
+        url: '/server/web/index.php/paymentterm/',
+>>>>>>> bf2639322ec818770b02a640207942ffe8f3621e
         reader: {
             type: 'json',
             idProperty: 'id',
-            root: 'adSize',
+            root: 'payment_term',
             totalProperty: 'totalCount'
         }
     }

@@ -40,20 +40,19 @@ Ext.define('JavisERP.controller.TerritoryController', {
     },
 
     onNewTerritoryClick: function(button, options, e) {
-        me.terWindow = new JavisERP.view.TerritoryWindow();
-        //this.getUserStore().clearFilter(true);
-        me.terWindow.show();
+        var terWindow = new JavisERP.view.TerritoryWindow();
+        terWindow.show();
     },
 
     onTerritorySaveButtonClick: function(button, options, e){
         var fields = this.getTerritoryForm().getForm().getValues(false,false,false,true);
-        me.ter = new JavisERP.model.Territory();
+        var ter = new JavisERP.model.Territory();
         for(var key in fields){
-            me.ter.set(key,fields[key]);
+            ter.set(key,fields[key]);
         }
         var tWindow = this.getTerritoryWindow();
         var tStore = this.getTerritoryStoreStore();
-        me.ter.save({
+        ter.save({
             /*
             callback: function(record,operation){
                 if(operation.wasSuccessful){
@@ -81,7 +80,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         me.control({
         		"territorygrid rowactions": {
                 action: me.onTerritoryActionClick
@@ -92,12 +91,10 @@ Ext.define('JavisERP.controller.TerritoryController', {
             "button[cls=saveTerritoryButton]": {
                 click: this.onTerritorySaveButtonClick
             },
-            "button[cls=cancelbutton]": {
+            "#territorywindowtoolbar > #cancelbutton": {
                 click: function(){ 
-                		if (Ext.WindowMgr.getActive()){
-                			Ext.WindowMgr.getActive().close();
-                		}
-                	}
+                	me.getTerritoryWindow().close();
+                }
             }
         });
     },

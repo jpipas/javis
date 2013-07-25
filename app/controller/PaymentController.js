@@ -60,8 +60,8 @@ Ext.define('JavisERP.controller.PaymentController', {
                 cls:'contractdurationlist'
             });
 
-        abstractcomponent.down().getForm().findField('client_name').setValue(me.client_name);
-        abstractcomponent.down().getForm().findField('client_id').setValue(me.client_id);
+        abstractcomponent.down().getForm().findField('client_name').setValue(this.client_name);
+        abstractcomponent.down().getForm().findField('client_id').setValue(this.client_id);
         var container = abstractcomponent.query('fieldcontainer > #column1');
 
         container[0].add(comboFieldBox);
@@ -78,16 +78,16 @@ Ext.define('JavisERP.controller.PaymentController', {
 
     onPaymentSaveButtonClick: function(button, e, options) {
         var fields = this.getPaymentForm().getForm().getValues(false,false,false,true);
-        me.payment = new JavisERP.model.Payment();
+        var payment = new JavisERP.model.Payment();
         for(var key in fields){
-            me.payment.set(key,fields[key]);
+            payment.set(key,fields[key]);
         }
-        me.payment.set('type',"Customer Payment");
+        payment.set('type',"Customer Payment");
         var pWindow = this.getPaymentWindow();
         var pStore = this.getPaymentStoreStore();
         var cStore = this.getClientStoreStore();
         var cRecordForm = this.getClientRecordForm();
-        me.payment.save({
+        payment.save({
             callback: function(record,operation){
                 if(operation.wasSuccessful){
                     pWindow.close();
@@ -106,7 +106,7 @@ Ext.define('JavisERP.controller.PaymentController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         this.control({
             "#paymentWindow": {
                 beforeshow: this.onPaymentWindowBeforeShow

@@ -19,6 +19,8 @@ Ext.define('JavisERP.view.ContentCards', {
     layout: {
         type: 'card'
     },
+    
+    deferredRender: true,
 
     initComponent: function() {
         var me = this;
@@ -47,7 +49,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 },
                 {
                     xtype: 'clientrecord',
-                    itemId: 'ClientRecord'
+                    itemId: 'ClientRecord',
+                    layout: {
+                    	type: 'anchor'
+                    }
                 },
                 {
                     xtype: 'publicationgrid',

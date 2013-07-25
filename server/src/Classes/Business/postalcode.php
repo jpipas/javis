@@ -17,7 +17,15 @@ class Postalcode extends AbstractBusinessService
     }
 
     public function getByPublicationId($id){
-        $sql = "SELECT pc.* FROM postal_code pc LEFT JOIN publication_zip pz ON pc.id = pz.postal_code_id WHERE pz.publication_id = ?";
+        $sql = "SELECT 
+        	pc.*
+        FROM
+        	(postal_code AS pc)
+        	LEFT JOIN publication_zip AS pz ON pc.id = pz.postal_code_id 
+        WHERE 
+        	pz.publication_id = ?
+        GROUP BY
+        	pc.id";
         return $this->db->fetchAll($sql,array((int) $id));
     }
 }

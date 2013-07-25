@@ -1,17 +1,21 @@
 Ext.define('JavisERP.view.ContractWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.contractwindow',
-
+    
+    requires: [
+        'JavisERP.view.ComboFieldBox',
+        'Ext.ux.form.field.BoxSelect'
+    ],
+    
     cls: 'contractWindow',
+    itemId: 'contractWindow',
     width: 750,
     layout: {
         type: 'fit'
     },
     title: 'Contract',
-    //closable: true,
-    //modal: true,
-    autoDestroy: true,
-    closeAction: 'hide',
+    modal: true,
+    scroll: 'vertical',
 
     initComponent: function() {
         var me = this;
@@ -20,17 +24,20 @@ Ext.define('JavisERP.view.ContractWindow', {
             items: [
                 {
                     xtype: 'form',
-                    cls: 'contractform',
-                    itemId: 'contractform',
-                    //trackResetOnLoad: true,
-                    minHeight: 300,
-                    bodyPadding: 5,
-                    dockedItems: [
+                    cls: 'contractForm',
+                    itemId: 'contractForm',
+                    bodyPadding: 10,
+                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'contracttoolbar',
+                            itemId: 'contractwindowtoolbar',
                             items: [
+                            		{
+                            				xtype: 'tbspacer',
+                            				flex: 1
+                            		},
                                 {
                                     xtype: 'button',
                                     cls: 'contractsave',
@@ -40,12 +47,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                                 {
                                     xtype: 'button',
                                     text: 'Cancel',
-                                    cls: 'cancelContract'
+                                    scope: this,
+                                    handler: function(){ this.close(); }
                                 }
                             ]
                         }
                     ],
                     items: [
+                    		{
+                    			xtype: 'hiddenfield',
+                    			name: 'id'
+                    		},
                         {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',
@@ -57,23 +69,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                                 {
                                     xtype: 'fieldcontainer',
                                     flex: 1,
-                                    cls: 'column1',
-                                    itemId: 'column1',
+                                    id: 'contract_column1',
+                                    itemId: 'contractwindow_col1',
                                     defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%'
+                                        padding: '5px 0px',
+                                        anchor: '95%',
+                                        labelAlign: 'right'
                                     },
                                     layout: {
                                         type: 'anchor'
                                     },
-                                    labelAlign: 'right',
                                     items: [
-                                        {
-                                            xtype: 'hidden',
-                                            name: 'id',
-                                            fieldLabel: 'Contract ID',
-                                            labelAlign: 'right'
-                                        },
                                         {
                                             xtype: 'textfield',
                                             anchor: '95%',
@@ -83,12 +89,19 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             labelAlign: 'right'
                                         },
                                         {
-                                            xtype: 'displayfield',
-                                            anchor: '95%',
-                                            cls: 'clientnamefield',
-                                            name: 'client_name',
+                                            xtype: 'combobox',
+                                            name: 'client_id',
                                             fieldLabel: 'Client',
-                                            labelAlign: 'right'
+                                            displayField: 'company_name',
+                                            store: 'ClientStore',
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            readOnlyCls: 'read_only',
+                                            allowOnlyWhitespace: false,
+                                            allowBlank: false,
+                                            minChars: 3,
+                                            valueField: 'id'
                                         },
                                         {
                                             xtype: 'combobox',
@@ -121,39 +134,46 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             step: 0.001
                                         },
                                         {
-                                            xtype: 'combobox',
-                                            multiSelect:true,
-                                            fieldLabel: 'Duration(s)',
-                                            displayField: 'description',
-                                            emptyText: 'select a duration...',
-                                            descField: 'id',
-                                            valueField: 'id',
-                                            store: 'Duration',
-                                            queryMode: 'remote',
-                                            typeAdead:true,
-                                            name: 'durations',
-                                            cls:'durationlist'
-                                        },
-                                        {
                                             xtype:'datefield',
                                             name: 'sale_date',
-                                            fieldLabel: 'Sales Date'
+                                            fieldLabel: 'Sales Date',
+                                            format: 'm/d/Y',
+                                            submitFormat: 'Y-m-d'
                                         }
                                     ]
                                 },
                                 {
                                     xtype: 'fieldcontainer',
                                     flex: 1,
-                                    border: 1,
+                                    id: 'contract_column2',
+                                    itemId: 'contractwindow_col2',
                                     defaults: {
-                                        padding: '5px 0px'
+                                        padding: '5px 0px',
+                                        labelAlign: 'right',
+                                        labelWidth: '125',
+                                        anchor: '95%'
                                     },
                                     layout: {
                                         type: 'anchor'
                                     },
                                     combineLabels: false,
-                                    labelAlign: 'right',
                                     items: [
+                                    		{
+                                            xtype: 'comboboxselect',
+                                            multiSelect:true,
+                                            fieldLabel: 'Duration(s)',
+                                            displayField: 'description',
+                                            emptyText: 'Select a duration...',
+                                            descField: 'id',
+                                            valueField: 'id',
+                                            store: 'Duration',
+                                            grow: true,
+                                            forceSelection: false,
+                                            queryMode: 'remote',
+                                            typeAdead:true,
+                                            name: 'durations',
+                                            cls:'durationlist'
+                                        },
                                         {
                                             xtype: 'numberfield',
                                             name: 'total_sales',
@@ -204,33 +224,42 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             decimalPrecision: 2,
                                             forcePrecision: true,
                                             labelAlign: 'right'
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            id: 'client_id',
-                                            itemId: 'client_id',
-                                            inputId: 'client_id',
-                                            name: 'client_id'
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            id: 'is_new',
-                                            itemId: 'is_new',
-                                            inputId: 'is_new',
-                                            name: 'is_new'
                                         }
                                     ]
                                 }
                             ]
                         },
                         {
-                            xtype: 'advertisementgrid',
-                            cls: 'contractadgrid',
-                            autoDestroy: true,
-                            height: 150,
-                            //id: 'contractadgrid',
-                            itemId: 'contractadgrid',
-                            padding: '10px 0px'
+                        		flex: 3,
+                        		padding: '5px 5px',
+                            xtype: 'comboboxselect',
+                            multiSelect:true,
+                            labelAlign: 'top',
+                            anchor: '100%',
+                            fieldLabel: 'Advertisement(s)',
+                            displayField: 'client_company_name',
+                            descField: 'id',
+                            valueField: 'id',
+                            forceSelection: false,
+                            store: 'AdvertisementStore',
+                            pageSize: 50,
+                            queryMode: 'remote',
+                            listConfig: {
+                            	itemTpl : '{client_company_name} - {publication_names} - {ad_type_description} - {ad_size_description}'
+												   	},
+														labelTpl: "{client_company_name} - {publication_names} - {ad_type_description} - {ad_size_description}",
+                            grow: true,
+                            stacked: true,
+                            name: 'advertisements',
+                            itemId: 'contractads',
+                            trigger2Cls: 'x-trigger-add',
+                            onTrigger2Click: function(e) {
+							              	this.fireEvent("ontrigger2click", this, event);
+										        },
+										        beforeQuery: function(e) {
+										        	console.log('before query');
+										        	this.fireEvent('contractadscomboquery', this, event);
+										        }
                         }
                     ]
                 }

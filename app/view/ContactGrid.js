@@ -7,8 +7,7 @@ Ext.define('JavisERP.view.ContactGrid', {
     store: 'ContactStore',
     columnLines: false,
     scroll: 'vertical',
-    autoScroll: true,
-    height:350,
+
     initComponent: function() {
         var me = this;
 

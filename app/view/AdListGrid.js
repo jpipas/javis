@@ -14,6 +14,7 @@ Ext.define('JavisERP.view.AdListGrid', {
     forceFit: false,
     scroll: 'vertical',
     store: 'AdList',
+    emptyText : 'Please select a territory, publication, and month/year',
     initComponent: function() {
         var me = this;
 
@@ -46,13 +47,13 @@ Ext.define('JavisERP.view.AdListGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'designer',
+                    dataIndex: 'designer_name',
                     flex: 2,
                     text: 'Designer'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'salesrep',
+                    dataIndex: 'salesrep_name',
                     flex: 2,
                     text: 'Sales Rep'
                 },
@@ -120,8 +121,9 @@ Ext.define('JavisERP.view.AdListGrid', {
                                 change: {
                                     fn: function() {
                                         //console.log(this.getValue());
-                                        Ext.getCmp('publication_adlist').getStore().clearFilter();
-                                        Ext.getCmp('publication_adlist').getStore().filter('territory_id',this.getValue());
+                                        Ext.getCmp('publication_adlist').setValue();
+                                        Ext.getCmp('publication_adlist').store.clearFilter(true);
+                                        Ext.getCmp('publication_adlist').store.filter('territory_id',this.getValue());
                                     }
                                 }
                             }

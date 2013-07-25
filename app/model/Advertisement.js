@@ -13,21 +13,34 @@ Ext.define('JavisERP.model.Advertisement', {
             name: 'id'
         },
         {
-            name: 'ad_type_id',
-            mapping: 'ad_type.description'
+        		name: 'ad_type'
         },
         {
-            name: 'ad_size_id',
-            mapping: 'ad_size.description'
+        		name: 'ad_type_description'
         },
         {
-            name: 'created_at'
+            name: 'ad_type_id'
         },
         {
-            name: 'updated_at'
+        		name: 'ad_size'
         },
         {
-            name: 'deleted_at'
+        		name: 'ad_size_id'
+        },
+        {
+        		name: 'ad_size_description'
+        },
+        {
+            name: 'created_at',
+            dateFormat: 'Y-m-d H:i:s'
+        },
+        {
+            name: 'updated_at',
+            dateFormat: 'Y-m-d H:i:s'
+        },
+        {
+            name: 'deleted_at',
+            dateFormat: 'Y-m-d H:i:s'
         },
         {
             name: 'insert_user_id'
@@ -39,28 +52,41 @@ Ext.define('JavisERP.model.Advertisement', {
             name: 'email_designer'
         },
         {
-            name: 'exp_date'
+            name: 'exp_date',
+            dateFormat: 'Y-m-d'
+        },
+        {
+        		name: 'client'
         },
         {
             name: 'client_id'
         },
         {
-            name: 'contract_id'
+        		name: 'client_company_name'
         },
         {
             name: 'publications'
         },
         {
-            name: 'edit_action'
+            name: 'publication_names'
         },
         {
-            name: 'view_action'
+        		name: 'salesrep'
         },
         {
-            name: 'delete_action'
+        		name: 'salesrep_id'
         },
         {
-            name: 'publications'
+        		name: 'salesrep_name'
+        },
+        {
+        		name: 'designer'
+        },
+        {
+        		name: 'designer_id'
+        },
+        {
+        		name: 'designer_name'
         }
     ],
 

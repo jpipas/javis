@@ -12,7 +12,14 @@ class AdType extends AbstractBusinessService
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM ad_type";
+        $sql = "SELECT
+        	*
+        FROM
+        	ad_type 
+        WHERE
+        	deleted_at IS NULL
+        ORDER BY
+        	description";
         return $this->db->fetchAll($sql);
     }
 

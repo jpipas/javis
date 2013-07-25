@@ -8,6 +8,10 @@ Ext.define('JavisERP.controller.AdListController', {
     models: [
         'AdList'
     ],
+    
+    stores: [
+        'AdList'
+    ],
 
     refs: [
         {
@@ -30,8 +34,12 @@ Ext.define('JavisERP.controller.AdListController', {
 
     onGenerateAdListClick: function(button, e){
         var grid = this.getAdListGrid();
-        grid.getStore().clearFilter(true);
-        grid.getStore().filter([{id:'territory',property:'c.territory_id', value: parseInt(this.getTerritoryBox().getValue(),10)},{id:'publication',property:'p.id',value:parseInt(this.getPublicationBox().getValue(),10)},{id:'duration',property:'d.id', value: parseInt(this.getDurationBox().getValue(),10)}]);
+        if (this.getTerritoryBox().getValue() && this.getPublicationBox().getValue() && this.getDurationBox().getValue()){
+        	grid.getStore().clearFilter(true);
+        	grid.getStore().filter([{id:'territory',property:'c.territory_id', value: parseInt(this.getTerritoryBox().getValue(),10)},{id:'publication',property:'p.id',value:parseInt(this.getPublicationBox().getValue(),10)},{id:'duration',property:'d.id', value: parseInt(this.getDurationBox().getValue(),10)}]);
+        } else {
+        	grid.getStore().clearFilter(false);
+        }
         //grid.getStore().filter('c.territory_id', parseInt(this.getTerritoryBox().getValue(),10));
         //grid.getStore().filter('p.id', parseInt(this.getPublicationBox().getValue(),10));
         //grid.getStore().filter('d.id', parseInt(this.getDurationBox().getValue(),10));
@@ -43,7 +51,7 @@ Ext.define('JavisERP.controller.AdListController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         me.control({
             "adlistgrid toolbar button[itemId=generate_ad_list]": {
                 click: me.onGenerateAdListClick
@@ -51,5 +59,4 @@ Ext.define('JavisERP.controller.AdListController', {
         });
 
     }
-
 });

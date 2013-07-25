@@ -1,6 +1,11 @@
 Ext.define('JavisERP.controller.ActivityController', {
     extend: 'Ext.app.Controller',
 
+		client: {
+			id: '',
+			name: ''
+		},
+		
     views: [
         'ActivityGrid',
         'ActivityWindow'
@@ -53,8 +58,8 @@ Ext.define('JavisERP.controller.ActivityController', {
     },
 
     onNewActivityClick: function(act_type) {
-        me.activityWindow = new JavisERP.view.ActivityWindow();
-        me.activityWindow.show();
+        var activityWindow = new JavisERP.view.ActivityWindow();
+        activityWindow.show();
         var uForm = this.getActivityForm().getForm();
         if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
         	uForm.findField('client_id').setValue(this.getClientId()).setReadOnly(true);
@@ -68,13 +73,13 @@ Ext.define('JavisERP.controller.ActivityController', {
 
     onActivitySaveButtonClick: function(button, options, e){
         var fields = this.getActivityForm().getForm().getValues(false,false,false,true);
-        me.activity = new JavisERP.model.Activity();
+        var activity = new JavisERP.model.Activity();
         for(var key in fields){
-            me.activity.set(key,fields[key]);
+            activity.set(key,fields[key]);
         }
         var uWindow = this.getActivityWindow();
         var uStore = this.getActivityStoreStore();
-        me.activity.save({
+        activity.save({
             success: function(record, operation){
                 uWindow.close();
                 uStore.reload();
@@ -92,14 +97,14 @@ Ext.define('JavisERP.controller.ActivityController', {
     },
 
     init: function(application) {
-        me = this;
+        var me = this;
         me.application.on({
             setClientFields: me.setClientFields,
             scope: me
         });
 
-        me.client_id = null;
-        me.client_name = null;
+        this.client.id = null;
+        this.client.name = null;
         me.control({
         		"activitygrid rowactions": {
                 action: me.onActivityActionClick
@@ -167,8 +172,8 @@ Ext.define('JavisERP.controller.ActivityController', {
     },
     
     setClientFields: function(clientId, clientName) {
-        me.client_id = clientId;
-        me.client_name = clientName;
+        this.client.id = clientId;
+        this.client.name = clientName;
     },
 
     getClientId: function() {

@@ -5,6 +5,8 @@ Ext.define('JavisERP.model.User', {
     uses: [
         'JavisERP.model.Territory'
     ],
+    
+    idProperty: 'id',
 
     fields: [
         {

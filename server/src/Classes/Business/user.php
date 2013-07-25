@@ -137,8 +137,10 @@ class User extends AbstractBusinessService
     		unset($params['territory_name'], $params['territory'], $params['fullname'], $params['manager'], $params['manager_name'], $params['created_at'], $params['last_login'], $params['deleted_at']);
     		
     		// verify password, clear if not entered to keep existing
-    		if ($params['password']){
-    			if ($params['password'] != $params['retype-password']){
+    		if ($params['password'] || !$params['id']){
+    			if (!$params['id'] && empty($params['password'])){
+    				$error[] = "Password is a required field for new users";
+    			} elseif ($params['password'] != $params['retype-password']){
     				$error[] = "Password and retyped password don't match";
     			} else {
 		    		$nonEncodedPassword = $params['password'];
@@ -179,7 +181,9 @@ class User extends AbstractBusinessService
 		    }
 		    
 		    // make sure we have a valid territory
-		    if (!empty($params['territory_id'])){
+		    if (empty($params['territory_id'])){
+		    	$error[] = "Territory is a required field";
+		    } else {
 		    	$territory = $app['business.territory']->getById($params['territory_id']);
 		    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
 		    }

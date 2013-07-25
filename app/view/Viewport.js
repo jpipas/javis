@@ -41,9 +41,8 @@ Ext.define('JavisERP.view.Viewport', {
             items: [
                 {
                     xtype: 'panel',
-                    flex: 1,
                     border: 0,
-                    maxHeight: 50,
+                    height: 50,
                     autoScroll: false,
                     layout: {
                         align: 'stretch',
@@ -52,14 +51,14 @@ Ext.define('JavisERP.view.Viewport', {
                     frameHeader: false,
                     header: false,
                     title: 'Header',
-                    titleCollapse: false,
+                    titleCollapse: true,
                     dockedItems: [
                         {
                             xtype: 'image',
                             margins: '0px 0px 5px 0px',
                             dock: 'left',
                             border: 0,
-                            height: 84,
+                            height: 50,
                             id: 'logo',
                             width: 209,
                             shadow: false,
@@ -69,8 +68,8 @@ Ext.define('JavisERP.view.Viewport', {
                     items: [
                         {
                             xtype: 'container',
-                            flex: 1,
-                            itemId: 'HeaderMenu'
+                            itemId: 'HeaderMenu',
+                            border: 0
                         }
                     ]
                 },
@@ -78,13 +77,18 @@ Ext.define('JavisERP.view.Viewport', {
                     xtype: 'navbar',
                     header: false,
                     title: 'Navigation',
-                    flex: 1
+                    border: 0
                 },
                 {
                     xtype: 'contentCards',
                     itemId: 'AppBody',
-                    flex: 1
-                },
+                    autoScroll: true,
+                    flex: 1,
+                    border: 0
+                }
+                /*
+                Maximize viewport - 7/15/2013 - DHS
+                ,
                 {
                     xtype: 'panel',
                     flex: 1,
@@ -100,6 +104,7 @@ Ext.define('JavisERP.view.Viewport', {
                     header: false,
                     title: 'Footer'
                 }
+                */
             ]
         });
 

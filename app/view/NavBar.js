@@ -2,7 +2,6 @@ Ext.define('JavisERP.view.NavBar', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.navbar',
 
-    maxHeight: 28,
     layout: {
         align: 'stretch',
         type: 'vbox'
@@ -15,9 +14,11 @@ Ext.define('JavisERP.view.NavBar', {
             dockedItems: [
                 {
                     xtype: 'toolbar',
-                    flex: 1,
                     dock: 'top',
                     id: 'nav-toolbar',
+                    defaults : {
+                    	framed: false
+                    },
                     items: [
                         {
                             xtype: 'splitbutton',

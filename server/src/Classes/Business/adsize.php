@@ -12,7 +12,14 @@ class AdSize extends AbstractBusinessService
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM ad_size";
+        $sql = "SELECT
+        	*
+        FROM
+        	ad_size
+        WHERE
+        	deleted_at IS NULL
+        ORDER BY
+        	description";
         return $this->db->fetchAll($sql);
     }
 
