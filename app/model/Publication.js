@@ -68,7 +68,7 @@ Ext.define('JavisERP.model.Publication', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/publication/',
+        url: '/publication/',
         reader: {
             type: 'json',
             idProperty: 'id',

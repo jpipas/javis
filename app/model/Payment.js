@@ -71,7 +71,7 @@ Ext.define('JavisERP.model.Payment', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/payment/',
+        url: '/payment/',
         reader: {
             type: 'json',
             idProperty: 'id',

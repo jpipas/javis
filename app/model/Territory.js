@@ -39,7 +39,7 @@ Ext.define('JavisERP.model.Territory', {
             name: 'state_name'
         },
         {
-        		name: 'manager'
+        	name: 'manager'
         },
         {
             name: 'manager_username',
@@ -57,7 +57,7 @@ Ext.define('JavisERP.model.Territory', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/territory/',
+        url: '/territory/',
         reader: {
             type: 'json',
             idProperty: 'id',

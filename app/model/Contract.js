@@ -81,7 +81,7 @@ Ext.define('JavisERP.model.Contract', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/contract/',
+        url: '/contract/',
         reader: {
             type: 'json',
             idProperty: 'id',

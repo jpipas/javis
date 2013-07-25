@@ -65,7 +65,7 @@ Ext.define('JavisERP.model.AdList', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/advertisement/list/',
+        url: '/advertisement/list/',
         reader: {
             type: 'json',
             //idProperty: 'id',
