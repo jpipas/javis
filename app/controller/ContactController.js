@@ -2,9 +2,9 @@ Ext.define('JavisERP.controller.ContactController', {
     extend: 'Ext.app.Controller',
     
     client: {
-			id: '',
-			name: ''
-		},
+		id: '',
+		name: ''
+	},
 
     views: [
         'ContactGrid',

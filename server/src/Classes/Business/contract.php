@@ -14,79 +14,79 @@ class Contract extends AbstractBusinessService {
     public function getAll($app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         // limit our search results
-    		$lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
-    		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'contract.sale_date DESC';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){   		
-    			$where['query'] = 'contract.contract_number LIKE '.$this->db->quote($query.'%');
-    		} 
-    		
-    		// handle additional filters
-    		if (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					switch ($f['property']){
-                  
-                default:
-    							$qq = $this->db->quote($f['value']);
-                	$where[$f['property']] = $f['property']." = ".$qq;
-                	break;
-              }
-            }
-    			}
-    		}
-    		
-    		// search criteria was passed in
-    		if (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-    					switch ($field){
-    						case 'client_company_name':
-    							$or[] = 'client.company_name LIKE '.$qq;
-    							break;
-    						
-    						case 'payment_term_description':
-    							$or[] = 'payment_term.description LIKE '.$qq;
-    							break;
-    						
-    						case 'territory_name':
-    							$or[] = 'territory.name LIKE '.$qq;
-    							break;
-    						
-    						default:
-    							$or[] = 'contract.'.$field.' LIKE '.$qq;
-    							break;
-    					}
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			} else {
-    				
-    			}
-    		}
-    		if (@count($where) > 0){
-    			$wsql = " AND ".implode(" AND ", $where);
-    		}
+		$lsql = '';
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'contract.sale_date DESC';
+		}
+		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){   		
+			$where['query'] = 'contract.contract_number LIKE '.$this->db->quote($query.'%');
+		} 
+		
+		// handle additional filters
+		if (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					switch ($f['property']){
+              
+            default:
+							$qq = $this->db->quote($f['value']);
+            	$where[$f['property']] = $f['property']." = ".$qq;
+            	break;
+          }
+        }
+			}
+		}
+		
+		// search criteria was passed in
+		if (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
+					switch ($field){
+						case 'client_company_name':
+							$or[] = 'client.company_name LIKE '.$qq;
+							break;
+						
+						case 'payment_term_description':
+							$or[] = 'payment_term.description LIKE '.$qq;
+							break;
+						
+						case 'territory_name':
+							$or[] = 'territory.name LIKE '.$qq;
+							break;
+						
+						default:
+							$or[] = 'contract.'.$field.' LIKE '.$qq;
+							break;
+					}
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			} else {
+				
+			}
+		}
+		if (@count($where) > 0){
+			$wsql = " AND ".implode(" AND ", $where);
+		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	contract.*,
         	territory.name AS territory_name,
@@ -148,97 +148,97 @@ class Contract extends AbstractBusinessService {
         return $this->db->fetchAssoc($sql,array((int)$id));
     }
 
-		public function validate(&$app, &$params)
-		{
-				$error = array();
-				unset($params['territory_name'], $params['client_company_name'], $params['payment_term_description'], $params['client_company_name']);
-				unset($params['payment_type_id'], $params['payment_type_description']);
-				//$app['monolog']->addInfo(print_r($params, true));
-				// contract number
-				if (empty($params['contract_number'])){
-					$error[] = "Contract number is a required field";
-				}
-				
-				// check valid client
-				if (empty($params['client_id'])){
-					$error[] = 'Client is a required field';
-				} else {
-					$client = $app['business.client']->getById($params['client_id']);
-					if (empty($client['id'])){
-						$error[] = 'Invalid client specified';
-					}
-				}
-				
-				// check valid territory
-				if (empty($params['territory_id'])){
-					$error[] = 'Territory is a required field';
-				} else {
-					$territory = $app['business.territory']->getById($params['territory_id']);
-					if (empty($territory['id'])){
-						$error[] = 'Invalid territory specified';
-					}
-				}
-				
-				// check valid payment term
-				if (empty($params['payment_term_id'])){
-					$error[] = 'Payment term is a required field';
-				} else {
-					$paymentterm = $app['business.paymentterm']->getById($params['payment_term_id']);
-					if (empty($paymentterm['id'])){
-						$error[] = 'Invalid payment term specified';
-					}
-				}
-				
-				// sales date
-				if (empty($params['sale_date'])){
-					$error[] = "Sales date is a required field";
-				} else {
-					list($yr,$mon,$day) = explode("-",$params['sale_date']);
-					if (!checkdate($mon,$day,$yr)){
-						$error[] = "Sales date appears to be an invalid date";
-					}
-				}
-				
-				// durations
-				if (@count($params['durations']) < 1){
-					$error[] = "Contract duration is requried";
-				}
-				
-				// total sales
-				if (empty($params['total_sales'])){
-					$error[] = "Total sales is a required field";
-				} elseif (!is_numeric($params['total_sales'])){
-					$error[] = "Total sales doesn't appear to be a valid number";
-				}
-				
-				// discount, if entered, is numeric
-				if (!empty($params['discount']) && !is_numeric($params['discount'])){
-					$error[] = "Discount doesn't appear to be a numeric value";
-				}
-				
-				// total amount
-				if (empty($params['total_amount'])){
-					$error[] = "Total amount is a required field";
-				} elseif (!is_numeric($params['total_amount'])){
-					$error[] = "Total amount doesn't appear to be a valid number";
-				}
-				
-				// first months payment
-				if (empty($params['first_months_payment'])){
-					$error[] = "First month's payment is a required field";
-				} elseif (!is_numeric($params['first_months_payment'])) {
-					$error[] = "First month's payment doesn't appear to be a numeric value";
-				}
-				
-				// monthly payment
-				if (empty($params['monthly_payment'])){
-					$error[] = "Monthly payment is a required amount";
-				} elseif (!is_numeric($params['monthly_payment'])){
-					$error[] = "Monthly payment doesn't appear to be a numeric value";
-				}
-				
-				return $error;
+	public function validate(&$app, &$params)
+	{
+		$error = array();
+		unset($params['territory_name'], $params['client_company_name'], $params['payment_term_description'], $params['client_company_name']);
+		unset($params['payment_type_id'], $params['payment_type_description']);
+		//$app['monolog']->addInfo(print_r($params, true));
+		// contract number
+		if (empty($params['contract_number'])){
+			$error[] = "Contract number is a required field";
 		}
+		
+		// check valid client
+		if (empty($params['client_id'])){
+			$error[] = 'Client is a required field';
+		} else {
+			$client = $app['business.client']->getById($params['client_id']);
+			if (empty($client['id'])){
+				$error[] = 'Invalid client specified';
+			}
+		}
+		
+		// check valid territory
+		if (empty($params['territory_id'])){
+			$error[] = 'Territory is a required field';
+		} else {
+			$territory = $app['business.territory']->getById($params['territory_id']);
+			if (empty($territory['id'])){
+				$error[] = 'Invalid territory specified';
+			}
+		}
+		
+		// check valid payment term
+		if (empty($params['payment_term_id'])){
+			$error[] = 'Payment term is a required field';
+		} else {
+			$paymentterm = $app['business.paymentterm']->getById($params['payment_term_id']);
+			if (empty($paymentterm['id'])){
+				$error[] = 'Invalid payment term specified';
+			}
+		}
+		
+		// sales date
+		if (empty($params['sale_date'])){
+			$error[] = "Sales date is a required field";
+		} else {
+			list($yr,$mon,$day) = explode("-",$params['sale_date']);
+			if (!checkdate($mon,$day,$yr)){
+				$error[] = "Sales date appears to be an invalid date";
+			}
+		}
+		
+		// durations
+		if (@count($params['durations']) < 1){
+			$error[] = "Contract duration is requried";
+		}
+		
+		// total sales
+		if (empty($params['total_sales'])){
+			$error[] = "Total sales is a required field";
+		} elseif (!is_numeric($params['total_sales'])){
+			$error[] = "Total sales doesn't appear to be a valid number";
+		}
+		
+		// discount, if entered, is numeric
+		if (!empty($params['discount']) && !is_numeric($params['discount'])){
+			$error[] = "Discount doesn't appear to be a numeric value";
+		}
+		
+		// total amount
+		if (empty($params['total_amount'])){
+			$error[] = "Total amount is a required field";
+		} elseif (!is_numeric($params['total_amount'])){
+			$error[] = "Total amount doesn't appear to be a valid number";
+		}
+		
+		// first months payment
+		if (empty($params['first_months_payment'])){
+			$error[] = "First month's payment is a required field";
+		} elseif (!is_numeric($params['first_months_payment'])) {
+			$error[] = "First month's payment doesn't appear to be a numeric value";
+		}
+		
+		// monthly payment
+		if (empty($params['monthly_payment'])){
+			$error[] = "Monthly payment is a required amount";
+		} elseif (!is_numeric($params['monthly_payment'])){
+			$error[] = "Monthly payment doesn't appear to be a numeric value";
+		}
+		
+		return $error;
+	}
 				
     public function createContract($params) {
     		$durations = $params['durations'];

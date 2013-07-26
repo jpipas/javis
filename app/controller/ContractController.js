@@ -276,7 +276,7 @@ Ext.define('JavisERP.controller.ContractController', {
               contractForm.getForm().loadRecord(record);
               var durations = [];
               for (i in record.data.durations){
-              	durations.push(new JavisERP.model.Publication(record.data.durations[i]));
+              	durations.push(new JavisERP.model.Duration(record.data.durations[i]));
               }
               contractForm.getForm().findField('durations').setValue(durations);
               

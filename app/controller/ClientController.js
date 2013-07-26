@@ -124,11 +124,6 @@ Ext.define('JavisERP.controller.ClientController', {
         //this.application.fireEvent('clientRecordChange',grid,col,row);
     },
 
-    onNewPaymentButtonClick: function(button, e, options) {
-        var payment = new JavisERP.view.ContractPaymentWindow();
-        payment.show();
-    },
-
     onSubTabChange: function(panel,newCard,oldCard,e){
         switch(newCard.itemId){
             case 'clientadgrid':
@@ -218,6 +213,7 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onSaveClientButtonClick: function(button, e, options){
+    	console.log('here');
         var fields = this.getClientForm().getForm().getValues(false,false,false,true);
         var client = new JavisERP.model.Client({id: fields['id']});
         for(var key in fields){
@@ -318,9 +314,6 @@ Ext.define('JavisERP.controller.ClientController', {
             "clientgrid rowactions, clientportlet rowactions": {
                 action: this.onActionColumnClick
             },
-            "button[cls=newPaymentButton]": {
-                click: this.onNewPaymentButtonClick
-            },
             "recordnav[cls=clientrecordnav] button[cls=edit_button]": {
                 click: this.onEditButtonClick
             },
@@ -329,6 +322,9 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "recordnav[cls=clientrecordnav] button[cls=new_button]": {
                 click: this.onNewButtonClick
+            },
+            "button[cls=clientsavebutton]": {
+                click: this.onSaveClientButtonClick
             },
             "tabpanel[itemId=clienttabs]": {
                 tabchange: this.onTabsChange

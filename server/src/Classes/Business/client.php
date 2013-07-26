@@ -251,23 +251,23 @@ class Client extends AbstractBusinessService
 		    // get postal code
 		    if (@count($error) < 1){
 		    	$postal_code = $params['postal_code_iso'];
-	        $postal_code_id = null;
-	        if($postal_code != "") {
-	            $sql = "SELECT * FROM postal_code WHERE iso_code = ".$this->db->quote($postal_code);
-	            $rs = $this->db->fetchAll($sql);
-	
-	            if(count($rs) == 0){
-	                // add the new postal code
-	                $array = array();
-	                $array['iso_code'] = $postal_code;
-	                $this->db->insert('postal_code',$array);
-	                $postal_code_id = $this->db->lastInsertId();
-	            } else {
-	                $postal_code_id = $rs[0]['id'];
-	            }
-	        }
-	        unset($params['postal_code_iso']);
-	        $params['postal_code_id'] = $postal_code_id;
+		        $postal_code_id = null;
+		        if($postal_code != "") {
+		            $sql = "SELECT * FROM postal_code WHERE iso_code = ".$this->db->quote($postal_code);
+		            $rs = $this->db->fetchAll($sql);
+		
+		            if(count($rs) == 0){
+		                // add the new postal code
+		                $array = array();
+		                $array['iso_code'] = $postal_code;
+		                $this->db->insert('postal_code',$array);
+		                $postal_code_id = $this->db->lastInsertId();
+		            } else {
+		                $postal_code_id = $rs[0]['id'];
+		            }
+		        }
+		        unset($params['postal_code_iso']);
+		        $params['postal_code_id'] = $postal_code_id;
 		    }
 		    return $error;
     }

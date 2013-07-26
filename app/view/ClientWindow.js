@@ -134,7 +134,8 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     defaults: {
                                         padding: '5px 0px 0px 0px',
                                         anchor: '95%',
-                                        labelAlign: 'right'
+                                        labelAlign: 'right',
+                                        labelWidth: '125'
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -169,7 +170,7 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             xtype: 'combobox',
                                             fieldLabel: 'Zip',
                                             displayField: 'iso_code',
-                                            valueField: 'id',
+                                            valueField: 'iso_code',
                                             store: 'PostalCode',
                                             hideTrigger: true,
                                             triggerAction: 'query',

@@ -143,5 +143,24 @@ class Duration extends AbstractBusinessService
         $sql = "SELECT d.* FROM duration as d LEFT JOIN contract_duration as cd on d.id = cd.duration_id WHERE cd.contract_id = $id ORDER BY d.date_string";
         return $this->db->fetchAll($sql);
     }
+    
+    public function getByPaymentId($id)
+    {
+        $sql = "SELECT
+        	d.*
+        FROM
+        	(duration AS d,
+        	contract_duration AS cd,
+        	payment_duration AS pd)
+        WHERE
+        	d.id = cd.duration_id AND
+        	pd.contract_duration_id = cd.id AND
+        	pd.payment_id = $id
+        GROUP BY
+        	d.id
+        ORDER BY 
+        	d.date_string";
+        return $this->db->fetchAll($sql);
+    }
 
 }
