@@ -29,16 +29,13 @@ Ext.define('JavisERP.model.Contact', {
             name: 'client_id'
         },
         {
+        	name: 'client_company_name'
+        },
+        {
             name: 'role'
         },
         {
             name: 'role_name'
-        },
-        {
-            name: 'revoke_view'
-        },
-        {
-            name: 'revoke_delete'
         }
     ],
 

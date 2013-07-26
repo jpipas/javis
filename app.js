@@ -103,6 +103,7 @@ Ext.application({
         'ActivityController',
         'MainNavController',
         'ClientController',
+        'ContactController',
         'Portal',
         'ContractController',
         'PaymentController',

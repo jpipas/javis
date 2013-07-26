@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.PublicationStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.publicationstore',
 
     requires: [
         'JavisERP.model.Publication'

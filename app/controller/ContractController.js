@@ -157,7 +157,7 @@ Ext.define('JavisERP.controller.ContractController', {
             "contractgrid toolbar button[cls=newcontract]": {
                 click: me.onNewContractClick
             },
-            "combobox[cls=durationlist]": {
+            "#contractdurations": {
                 change: this.runCalcs
             },
             "button[cls=contractsave]": {
@@ -189,13 +189,19 @@ Ext.define('JavisERP.controller.ContractController', {
     
     onNewAdvertisementClick: function(){
     	var cForm = this.getContractForm().getForm();
-    	if (!cForm.findField('client_id').getValue()){
-    		Ext.Msg.alert('Alert','Please select a client before creating a new advertisement for this contract.');
+    	var client = cForm.findField('client_id');
+    	var terr = cForm.findField('territory_id');
+    	if (!client.getValue() || !terr.getValue()){
+    		Ext.Msg.alert('Alert','Please select a client and territory before creating a new advertisement for this contract.');
     	} else {
     		var adWin = new JavisERP.view.AdvertisementWindow();
     		adWin.show();
-      	var adForm = this.getAdForm().getForm();
-      	adForm.findField('client_id').setValue(cForm.findField('client_id').getValue()).setReadOnly(true);
+      		var adForm = this.getAdForm().getForm();
+      		adForm.findField('client_id').setValue(new JavisERP.model.Client({ id: client.getValue(), company_name: client.getRawValue() })).setReadOnly(true);
+      		
+      		// filter publications based on the territory for the contract
+      		adForm.findField('publications').getStore().clearFilter(true);
+      		adForm.findField('publications').getStore().filter('territory_id', terr.getValue());
       }
     },
     
@@ -232,7 +238,7 @@ Ext.define('JavisERP.controller.ContractController', {
         cForm.reset(true);
         // if we are on a client record, pre-fill the client and set the field as read-only
         if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
-        	cForm.findField('client_id').setValue(this.getClientId()).setReadOnly(true);
+        	cForm.findField('client_id').setValue(new JavisERP.model.Client({ id: this.getClientId(), company_name: this.getClientName() })).setReadOnly(true);
         }
         
         /*
@@ -316,7 +322,7 @@ Ext.define('JavisERP.controller.ContractController', {
     },
     
     runCalculations: function() {
-        var form = Ext.ComponentQuery.query('#contractForm')[0].getForm();
+        var form = this.getContractForm().getForm();
 
         var total_sales_amt = form.findField("total_sales").getValue();
         var discount = form.findField("discount").getValue();
@@ -333,7 +339,7 @@ Ext.define('JavisERP.controller.ContractController', {
     },
 
     paymentCalculations: function() {
-        var form = Ext.ComponentQuery.query('#contractForm')[0].getForm();
+        var form = this.getContractForm().getForm();
 
         var subtotal = form.findField("subtotal").getValue();
         var design_fee = form.findField("design_fee").getValue();

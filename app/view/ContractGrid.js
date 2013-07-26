@@ -118,15 +118,15 @@ Ext.define('JavisERP.view.ContractGrid', {
                             text: 'New Contract'
                         },
                         {
-				                    xtype: 'gridsearchingbar',
-				                    inputWidth: 200,
-				                    grid: this,
-				                    border: 0,
-				                    showSelectAll: true,
-				                    menuIconCls: 'ui-silk ui-silk-magnifier',
-				                    disableIndexes: ['id'],
-				                    items: ['->']
-				                }
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['id'],
+		                    items: ['->']
+		                }
                     ]
                 },
                 {

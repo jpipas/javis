@@ -11,7 +11,7 @@ class Contract extends AbstractBusinessService {
         return 'contract';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    public function getAll($app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         // limit our search results
     		$lsql = '';
@@ -34,11 +34,12 @@ class Contract extends AbstractBusinessService {
     		$where = array();
     		$wsql = '';
     		// handle query filter
-    		if ($query){
-    			
+    		if ($query){   		
+    			$where['query'] = 'contract.contract_number LIKE '.$this->db->quote($query.'%');
+    		} 
     		
     		// handle additional filters
-    		} elseif (@count($filter) > 0){
+    		if (@count($filter) > 0){
     			foreach ($filter as $f){
     				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
     					switch ($f['property']){
@@ -50,7 +51,6 @@ class Contract extends AbstractBusinessService {
               }
             }
     			}
-    		
     		}
     		
     		// search criteria was passed in
@@ -91,25 +91,30 @@ class Contract extends AbstractBusinessService {
         	contract.*,
         	territory.name AS territory_name,
         	client.company_name AS client_company_name,
-        	payment_term.description AS payment_term_description
+        	payment_term.description AS payment_term_description,
+        	payment_type.id AS payment_type_id,
+        	payment_type.description AS payment_type_description
         FROM
         	(contract,
         	client,
         	territory,
-        	payment_term)
+        	payment_term,
+        	payment_type)
         WHERE
         	 contract.deleted_at IS NULL AND
         	 client.deleted_at IS NULL AND
         	 territory.deleted_at IS NULL AND
         	 contract.client_id = client.id AND
         	 contract.territory_id = territory.id AND
-        	 contract.payment_term_id = payment_term.id
+        	 contract.payment_term_id = payment_term.id AND
+        	 payment_term.payment_type_id = payment_type.id
        	$wsql
        	GROUP BY
        		contract.id
         ORDER BY
         	$osql
         $lsql";
+        $app['monolog']->addInfo($sql);
         $rows = $this->db->fetchAll($sql);
         $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
         return array($totalCount, $rows);
@@ -120,19 +125,23 @@ class Contract extends AbstractBusinessService {
         	contract.*,
         	territory.name AS territory_name,
         	client.company_name AS client_company_name,
-        	payment_term.description AS payment_term_description
+        	payment_term.description AS payment_term_description,
+        	payment_type.id AS payment_type_id,
+        	payment_type.description AS payment_type_description
         FROM
         	(contract,
         	client,
         	territory,
-        	payment_term)
+        	payment_term,
+        	payment_type)
         WHERE
         	 contract.deleted_at IS NULL AND
         	 client.deleted_at IS NULL AND
         	 territory.deleted_at IS NULL AND
         	 contract.client_id = client.id AND
         	 contract.territory_id = territory.id AND
-        	 contract.payment_term_id = payment_term.id AND
+        	 contract.payment_term_id = payment_term.id AND 
+        	 payment_term.payment_type_id = payment_type.id AND
         	 contract.id = ?
         GROUP BY
         	contract.id";
@@ -143,7 +152,8 @@ class Contract extends AbstractBusinessService {
 		{
 				$error = array();
 				unset($params['territory_name'], $params['client_company_name'], $params['payment_term_description'], $params['client_company_name']);
-				$app['monolog']->addInfo(print_r($params, true));
+				unset($params['payment_type_id'], $params['payment_type_description']);
+				//$app['monolog']->addInfo(print_r($params, true));
 				// contract number
 				if (empty($params['contract_number'])){
 					$error[] = "Contract number is a required field";

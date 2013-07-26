@@ -14,64 +14,69 @@ class Contact extends AbstractBusinessService
     public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array()) 
     {
         // limit our search results
-    		$lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
-    		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'full_name';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){
-    			$where[] = "contact.full_name LIKE '".addslashes($query)."%'";
-    		
-    		// handle additional filters
-    		} elseif (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					$qq = $this->db->quote($f['value']);
-    					$where[$f['property']] = $f['property']." = ".$qq;
-            }
-    			}
-    		
-    		// search criteria was passed in
-    		} elseif (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-    					$or[] = 'contact.'.$field.' LIKE '.$qq;
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			} else {
-    				$parts = explode(" ", $search['query']);
-	    			$where[] = "contact.full_name LIKE '".addslashes($search['query'])."%'";
-    			}
-    		}
-    		if (@count($where) > 0){
-    			$wsql = " AND ".implode(" AND ", $where);
-    		}
+		$lsql = '';
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'full_name';
+		}
+		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){
+			$where['query'] = "contact.full_name LIKE '".addslashes($query)."%'";
+		} 
+		
+		// handle additional filters
+		if (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					$qq = $this->db->quote($f['value']);
+					$where[$f['property']] = $f['property']." = ".$qq;
+        		}
+			}
+		} 
+		
+		// search criteria was passed in
+		if (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
+					$or[] = 'contact.'.$field.' LIKE '.$qq;
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			} else {
+				$parts = explode(" ", $search['query']);
+    			$where[] = "contact.full_name LIKE '".addslashes($search['query'])."%'";
+			}
+		}
+		if (@count($where) > 0){
+			$wsql = " AND ".implode(" AND ", $where);
+		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	contact.*,
+        	client.company_name AS client_company_name,
         	contact_role.description AS role_name
         FROM
-        	(contact)
+        	(contact,
+        	client)
         	LEFT JOIN contact_role ON contact_role.id = contact.role_id AND contact_role.deleted_at IS NULL
         WHERE
+        	contact.client_id = client.id AND
         	contact.deleted_at IS NULL
         	$wsql
         ORDER BY
@@ -83,40 +88,62 @@ class Contact extends AbstractBusinessService
     }
 
     public function getByClientId($client_id) {
-        $sql = "SELECT * FROM contact where client_id = ? and deleted_at is null";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        	contact.*,
+        	client.company_name AS client_company_name,
+        	contact_role.description AS role_name
+        FROM
+        	(contact,
+        	client)
+        	LEFT JOIN contact_role ON contact_role.id = contact.role_id AND contact_role.deleted_at IS NULL
+        WHERE
+        	contact.client_id = client.id AND
+        	contact.deleted_at IS NULL AND
+        	client_id = ?";
         return $this->db->fetchAll($sql, array((int) $client_id));
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM contact WHERE id = ? and deleted_at is null";
-        return $this->db->fetchAll($sql,array((int)$id));
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        	contact.*,
+        	client.company_name AS client_company_name,
+        	contact_role.description AS role_name
+        FROM
+        	(contact,
+        	client)
+        	LEFT JOIN contact_role ON contact_role.id = contact.role_id AND contact_role.deleted_at IS NULL
+        WHERE
+        	contact.client_id = client.id AND
+        	contact.deleted_at IS NULL AND
+        	contact.id = ?";
+        return $this->db->fetchAssoc($sql,array((int)$id));
     }
 
-		public function validate(&$app, &$params)
-		{
-			$error = array();
-			unset($params['id'],$params['role'],$params['revoke_view'],$params['revoke_edit'],$params['revoke_delete']);
-			
-			// name is required
-			if (empty($params['full_name'])){ $error[] = "Contact name is required"; }
-			
-			// make sure we have a valid client
-			if (empty($params['client_id'])){
-				$error[] = "Client is a required field";
-			} else {
-				$client = $app['business.client']->getById($params['client_id']);
-				if (!isset($client['id'])){
-					$error[] = "Invalid client specified";
-				}				
-			}
-			
-			// if e-mail is specified, make sure it is validly formatted
-			if (isset($params['email_address']) && !empty($params['email_address']) && !filter_var($params['email_address'], FILTER_VALIDATE_EMAIL)){
-	    	$error[] = "E-mail address appears to be incorrectly formatted";
-	    }
-	    
-	    // validate or create a new contact role
-	    if (!empty($params['role_id'])){
+	public function validate(&$app, &$params)
+	{
+		$error = array();
+		unset($params['id'],$params['role'],$params['client_company_name']);
+		
+		// name is required
+		if (empty($params['full_name'])){ $error[] = "Contact name is required"; }
+		
+		// make sure we have a valid client
+		if (empty($params['client_id'])){
+			$error[] = "Client is a required field";
+		} else {
+			$client = $app['business.client']->getById($params['client_id']);
+			if (!isset($client['id'])){
+				$error[] = "Invalid client specified";
+			}				
+		}
+		
+		// if e-mail is specified, make sure it is validly formatted
+		if (isset($params['email_address']) && !empty($params['email_address']) && !filter_var($params['email_address'], FILTER_VALIDATE_EMAIL)){
+    		$error[] = "E-mail address appears to be incorrectly formatted";
+    	}
+    
+    	// validate or create a new contact role
+    	if (!empty($params['role_id'])){
 	    	// if numeric, they picked a role from the drop down
 	    	if (is_numeric($params['role_id'])){
 		    	$role = $app['business.contactrole']->getById($params['role_id']);
@@ -145,8 +172,8 @@ class Contact extends AbstractBusinessService
 	    } else {
 	    	$error[] = "Role is a required field";
 	    }
-			return $error;
-		}
+		return $error;
+	}
 
     public function createContact($params) 
     {

@@ -25,6 +25,7 @@ Ext.define('JavisERP.view.ContactWindow', {
     },
     closable: false,
     title: 'New Contact',
+    itemId: 'contactwindow',
     modal: true,
     autoDestroy: true,
     cls: 'contactWindow',
@@ -36,7 +37,7 @@ Ext.define('JavisERP.view.ContactWindow', {
             items: [
                 {
                     xtype: 'form',
-                    cls: 'contactform',
+                    cls: 'contactForm',
                     itemId: 'contactform',
                     bodyPadding: 10,
                     trackResetOnLoad: true,
@@ -45,6 +46,7 @@ Ext.define('JavisERP.view.ContactWindow', {
                         {
                             xtype: 'toolbar',
                             dock: 'bottom',
+                            itemId: 'contactwindowtoolbar',
                             items: [
                             		{
                             				xtype: 'tbspacer',
@@ -53,41 +55,46 @@ Ext.define('JavisERP.view.ContactWindow', {
                                 {
                                     xtype: 'button',
                                     iconCls: 'ui-silk ui-silk-disk',
+                                    itemId: 'savebutton',
                                     cls: 'saveContactButton',
                                     text: 'Save'
                                 },
                                 {
                                     xtype: 'button',
-                                    cls: 'cancelContactButton',
-                                    text: 'Cancel'
+                                    text: 'Cancel',
+                                    scope: this,
+                                    handler: function(){ this.close(); }
                                 }
                             ]
                         }
                     ],
+                    defaults: {
+                        padding: '5px 0px',
+                        anchor: '95%',
+                        labelAlign: 'right'
+                    },
                     items: [
+						{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
-                            xtype: 'hiddenfield',
-                            fieldLabel: 'Customer',
-                            name: 'client_id'
-                        },
-                        {
-                            xtype: 'displayfield',
-                            name: 'id',
-                            fieldLabel: 'Contact ID',
-                            labelAlign: 'right'
-                        },
-                        {
-                            xtype: 'displayfield',
-                            anchor: '95%',
-                            cls: 'clientnamefield',
-                            name: 'client_name',
-                            itemId: 'client_name',
-                            fieldLabel: 'Customer',
-                            labelAlign: 'right'
-                        },
+	                        xtype: 'combobox',
+	                        name: 'client_id',
+	                        fieldLabel: 'Client',
+	                        displayField: 'company_name',
+	                        store: {type: 'clientstore'},
+	                        hideTrigger: true,
+	                        triggerAction: 'query',
+	                        pageSize: true,
+	                        readOnlyCls: 'read_only',
+	                        allowOnlyWhitespace: false,
+	                        allowBlank: false,
+	                        minChars: 3,
+	                        valueField: 'id'
+	                    },
                         {
                             xtype: 'textfield',
-                            anchor: '100%',
                             itemId: 'name',
                             name: 'full_name',
                             fieldLabel: 'Contact Name',
@@ -98,7 +105,6 @@ Ext.define('JavisERP.view.ContactWindow', {
                         },
                         {
                             xtype: 'textfield',
-                            anchor: '100%',
                             itemId: 'email_address',
                             name: 'email_address',
                             vtype: 'email',
@@ -109,7 +115,6 @@ Ext.define('JavisERP.view.ContactWindow', {
                         },
                         {
                             xtype: 'textfield',
-                            anchor: '100%',
                             itemId: 'cell_phone',
                             name: 'phone',
                             vtype: 'phone',
@@ -120,7 +125,6 @@ Ext.define('JavisERP.view.ContactWindow', {
                         },
                         {
                             xtype: 'combobox',
-                            anchor: '100%',
                             itemId: 'role',
                             name: 'role_id',
                             fieldLabel: 'Role',

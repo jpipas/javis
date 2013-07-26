@@ -11,7 +11,105 @@ class Duration extends AbstractBusinessService
         return 'duration';
     }
 
-    public function getAll($page = null,$start = 0,$limit = 0,$filter,$query) {
+    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    {
+        // limit our search results
+        $lsql = '';
+        /*
+        7/25/2013 - DHS - don't limit these right now
+    		if (is_numeric($start) && is_numeric($limit)){
+	    			$lsql = " LIMIT $start, $limit";
+    		}
+    		*/
+    		
+    		// sort our results
+    		if (is_array($sort)){
+    			$order = array();
+    			array_walk($sort, function($sort, $key) use (&$order){
+    				$order[] = $sort['property'].' '.$sort['direction'];
+    			});
+    			$osql = implode(', ', $order);
+    		} else {
+    			$osql = 'duration.date_string ASC';
+    		}
+    		
+    		// build our search criteria
+    		$where = array();
+    		$wsql = '';
+    		// handle query filter
+    		if ($query){
+    			
+    		
+    		// handle additional filters
+    		} elseif (@count($filter) > 0){
+    			foreach ($filter as $f){
+    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+    					$qq = $this->db->quote($f['value']);
+    					switch ($f['property']){
+    						case '':
+    							break;
+    							
+                case 'payment_window':
+                	$where[$f['property']] = "duration.id NOT IN (SELECT
+                		contract_duration.duration_id 
+                	FROM
+                		(payment_duration, 
+                		contract_duration)
+                	WHERE 
+                		payment_duration.contract_duration_id = contract_duration.id AND
+                		contract_duration.contract_id = ".$qq.")";
+                	break;
+                	
+                default:
+                	$where[$f['property']] = $f['property']." = ".$qq;
+                	break;
+              }
+            }
+    			}
+    		
+    		}
+    		
+    		// search criteria was passed in
+    		if (isset($search['query']) && !empty($search['query'])){
+    			if (@count($search['fields']) >= 1){
+    				$or = array();
+    				$qq = $this->db->quote($search['query'].'%');
+    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
+    					switch ($field){
+    						
+    						default:
+    							$or[] = 'duration.'.$field.' LIKE '.$qq;
+    							break;
+    					}
+    				});
+    				if (@count($or) > 0){
+    					$where[] = "(".implode(' OR ', $or).")";
+    				}
+    			} else {
+    				
+    			}
+    		}
+    		if (@count($where) > 0){
+    			$wsql = " AND ".implode(" AND ", $where);
+    		}
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        	duration.*
+        FROM
+        	(duration)
+        	LEFT JOIN contract_duration ON contract_duration.duration_id = duration.id
+        WHERE
+        	duration.deleted_at IS NULL
+        $wsql
+       	GROUP BY
+       		duration.id
+        ORDER BY
+        	$osql
+        $lsql";
+        $rows = $this->db->fetchAll($sql);
+        $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
+        return array($totalCount, $rows);
+        
+        /*
         ($start === null)?$start = "":$start;
         ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
         $where_clause = "";
@@ -38,6 +136,7 @@ class Duration extends AbstractBusinessService
         }
         $sql = "SELECT d.* FROM duration as d $where_clause ORDER BY d.date_string";
         return $this->db->fetchAll($sql);
+        */
     }
 
     public function getByContractId($id){

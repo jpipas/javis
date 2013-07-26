@@ -29,24 +29,31 @@ class Contract implements ControllerProviderInterface
 		    		if ($request->get('search')){
 		    			$search = json_decode($request->get('search'), true);
 		    		}
-            list($totalCount, $result) = $app['business.contract']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
-
-            array_walk($result,function($contract,$key) use (&$result, &$app){
-                //$contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
-                //$result[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
-                //$contract_array[$key]['payment_type'] = $app['business.paymenttype']->getById($contract['payment_type_id']);
-                //$result[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
-                //$contract_array[$key]['territory'] = $app['business.territory']->getById($contract['territory_id']);
-                //$result[$key]['durations'] = $app['business.duration']->getByContractId($contract['id']);
-            });
+            list($totalCount, $result) = $app['business.contract']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
 
             return $app->json(array("totalCount"=>$totalCount, "contract"=>$result));
         });
 
 
         $controllers->get('/duration/', function(Application $app, Request $request) {
+        		$sort = '';
+		    		if ($request->get('sort')){
+		    			$sort = json_decode($request->get('sort'), true);
+		    		}
+		    		$filter = array();
+		    		if ($request->get('filter')){
+		    			$filter = json_decode($request->get('filter'), true);
+		    		}
+		    		$search = array();
+		    		if ($request->get('search')){
+		    			$search = json_decode($request->get('search'), true);
+		    		}
+            list($totalCount, $result) = $app['business.duration']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            return $app->json(array("totalCount"=>$totalCount, "duration"=>$result));
+            /*
             $duration_array = $app['business.duration']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('query'));
             return $app->json(array("totalCount"=>count($duration_array), "duration"=>$duration_array));
+            */
         });
 
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {

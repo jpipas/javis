@@ -2,12 +2,11 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.advertisementgrid',
 
-		title: 'Advertisements',
+	title: 'Advertisements',
     forceFit: true,
     store: 'AdvertisementStore',
-		itemId: 'AdvertisementGrid',
+	itemId: 'AdvertisementGrid',
     scroll: 'vertical',
-    autoDestroy: false,
 
     initComponent: function() {
         var me = this;
@@ -29,15 +28,15 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                             itemId: 'newadvertisement'
                         },
                         {
-				                    xtype: 'gridsearchingbar',
-				                    inputWidth: 200,
-				                    grid: this,
-				                    border: 0,
-				                    showSelectAll: true,
-				                    menuIconCls: 'ui-silk ui-silk-magnifier',
-				                    disableIndexes: ['id'],
-				                    items: ['->']
-				                }
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['id'],
+		                    items: ['->']
+		                }
                     ]
                 },
                 {
@@ -65,12 +64,6 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                             callback: Ext.emptyFn
                         }
                     ]
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'id',
-                    text: 'ID',
-                    hidden: true
                 },
                 {
                 		xtype: 'gridcolumn',

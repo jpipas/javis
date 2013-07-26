@@ -38,6 +38,12 @@ Ext.define('JavisERP.model.Contract', {
             name: 'payment_term_id'
         },
         {
+            name: 'payment_type_description'
+        },
+        {
+            name: 'payment_type_id'
+        },
+        {
             name: 'sale_date',
             type: 'date',
             dateFormat: 'Y-m-d'
