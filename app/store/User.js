@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.User', {
     extend: 'Ext.data.Store',
+    alias: 'store.userstore',
 
     requires: [
         'JavisERP.model.User'

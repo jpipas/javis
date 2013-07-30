@@ -42,7 +42,11 @@ class Territory extends AbstractBusinessService
     			foreach ($filter as $f){
     				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
     					$qq = $this->db->quote($f['value']);
-    					$where[$f['property']] = $f['property']." = ".$qq;
+    					switch ($f['property']){
+    						default:
+    							$where[$f['property']] = 'territory.'.$f['property']." = ".$qq;
+    							break;
+    					}
             }
     			}
     		

@@ -245,7 +245,7 @@ class Client extends AbstractBusinessService
 	    }
 	    
 	    // check valid e-mail address
-	    if (!empty($params['email']) && !filter_var($params['email'], FILTER_VALIDATE_EMAIL)){
+	    if (!empty($params['email_address']) && !filter_var($params['email_address'], FILTER_VALIDATE_EMAIL)){
 	    	$error[] = "E-mail address appears to be incorrectly formatted";
 	    }
 	    
@@ -262,6 +262,14 @@ class Client extends AbstractBusinessService
 	    	$emp = $app['business.user']->getById($params['salesrep_id']);
 	    	if (!$emp['id']){
 	    		$error[] = "Invalid sales rep selected";
+	    	}
+	    }
+	    
+	    // validate state
+	    if (!empty($params['state_id'])){
+	    	$state = $app['business.state']->getById($params['state_id']);
+	    	if (!$state['id']){
+	    		$error[] = 'Invalid state selected';
 	    	}
 	    }
 	    
@@ -286,21 +294,34 @@ class Client extends AbstractBusinessService
 	        unset($params['postal_code_iso']);
 	        $params['postal_code_id'] = $postal_code_id;
 	    }
+	    
+	    // set the creator, updator, owner
+		$ownerid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$ownerid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+		$params['insert_user_id'] = $params['update_user_id'] = $ownerid;
 	    return $error;
     }
 
     public function createClient($params) 
     {
-		unset($params['id']);
+		unset($params['id'], $params['update_user_id']);
 		$now = new \DateTime('NOW');
         $params['created_at'] = $now->format('Y-m-d H:i:s');
         $this->db->insert('client',$params);
-        $client_id = $this->db->lastInsertId();
-        return $client_id;
+        $id = $this->db->lastInsertId();
+        $res = $this->getById($id);
+        return $res;
     }
 
     public function updateClient($id, $params) 
     {
+    	unset($params['id'], $params['insert_user_id']);
         $this->db->update('client',$params, array('id'=>$id));
         return $this->getById($id);
     }
@@ -360,12 +381,22 @@ class Client extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
-    public function deleteClient($id) {
-        $now = new \DateTime('NOW');
-        $params['deleted_at'] = $now->format('Y-m-d H:i:s');
-        $rows = $this->db->update('client',$params, array('id' => $id));
-        $client = $this->getById($id);
-        return $client;
+    public function deleteClient($app, $id) 
+    {
+    	$userid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+    	$now = new \DateTime('NOW');
+    	$params = array(
+        	'deleted_at' => $now->format('Y-m-d H:i:s'),
+    		'update_user_id'	=> $userid        	
+        );
+        return $this->db->update('client',$params, array('id' => $id));
     }
 
     public function getSortString($sort){

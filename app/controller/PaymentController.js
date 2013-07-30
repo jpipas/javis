@@ -113,6 +113,9 @@ Ext.define('JavisERP.controller.PaymentController', {
         if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
         	payForm.findField('client_id').setValue(new JavisERP.model.Client({ id: this.getClientId(), company_name: this.getClientName() })).setReadOnly(true);
         	this.onClientComboSelect();
+        	payForm.findField('contract_id').focus('', 10);
+        } else {
+        	payForm.findField('client_id').focus('', 10);
         }
     },
 
@@ -284,6 +287,9 @@ Ext.define('JavisERP.controller.PaymentController', {
                 pForm.getForm().findField('payment_category_id').setValue(new JavisERP.model.PaymentCategory({ id: record.data.payment_category_id, description: record.data.payment_category_description }));
                 if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
 		        	pForm.getForm().findField('client_id').setReadOnly(true);
+			        pForm.findField('contract_id').focus('', 10);
+		        } else {
+		        	pForm.findField('client_id').focus('', 10);
 		        }
             }
         });

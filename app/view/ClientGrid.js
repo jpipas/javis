@@ -6,7 +6,7 @@ Ext.define('JavisERP.view.ClientGrid', {
     itemId: 'clientgrid',
     width: 868,
     autoScroll: true,
-    title: 'List: Client',
+    title: 'Clients',
     columnLines: true,
     forceFit: true,
     store: 'ClientStore',
@@ -114,21 +114,34 @@ Ext.define('JavisERP.view.ClientGrid', {
                 }
             },
             dockedItems: [
+            	{
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                         {
+		                    xtype: 'button',
+		                    itemId: 'newClientButton',
+		                    iconCls: 'ui-silk ui-silk-user-add',
+		                    text: 'New Client'
+		                },
+                        {
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['id'],
+		                    items: ['->']
+		                }
+                    ]
+                },
                 {
                     xtype: 'pagingtoolbar',
                     dock: 'bottom',
                     itemId: 'ClientPagingToolbar',
                     displayInfo: true,
                     store: 'ClientStore'
-                },
-                {
-                    xtype: 'gridsearchingbar',
-                    inputWidth: 200,
-                    grid: this,
-                    showSelectAll: true,
-                    menuIconCls: 'ui-silk ui-silk-magnifier',
-                    disableIndexes: ['id'],
-                    items: ['->']
                 }
             ],
             tools: [

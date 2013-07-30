@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.PostalCode', {
     extend: 'Ext.data.Store',
+    alias: 'store.postalcodestore',
 
     requires: [
         'JavisERP.model.PostalCode'
@@ -9,7 +10,7 @@ Ext.define('JavisERP.store.PostalCode', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: false,
+            autoLoad: true,
             storeId: 'PostalCode',
             model: 'JavisERP.model.PostalCode'
         }, cfg)]);

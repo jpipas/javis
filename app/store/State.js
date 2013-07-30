@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.State', {
     extend: 'Ext.data.Store',
+    alias: 'store.statestore',
 
     requires: [
         'JavisERP.model.State'
@@ -9,7 +10,9 @@ Ext.define('JavisERP.store.State', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: false,
+        	remoteFilter: false,
+            remoteSort: false,
+            autoLoad: true,
             storeId: 'State',
             model: 'JavisERP.model.State'
         }, cfg)]);

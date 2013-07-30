@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.TerritoryStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.territorystore',
 
     requires: [
         'JavisERP.model.Territory'

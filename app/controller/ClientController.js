@@ -174,20 +174,10 @@ Ext.define('JavisERP.controller.ClientController', {
 
     onNewButtonClick: function(button, e, options){
         var clientWindow = new JavisERP.view.ClientWindow();
-        var client = new JavisERP.model.Client({stage: 'CUSTOMER'});
-        var conGrid = this.getContactGrid();
-        client.save({
-            scope: this,
-            callback: function(record,operation){
-                if(operation.success){
-                    // choke
-                    clientWindow.getComponent('clientForm').getForm().setValues({id: record.data.id, stage: record.data.stage});
-                    clientWindow.getComponent('clientForm').getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
-                    clientWindow.getComponent('clientForm').getForm().findField('salesrep_id').setValue(new JavisERP.model.User(record.data.salesrep));
-                    clientWindow.show();
-                }
-            }
-        });
+        clientWindow.show();
+        var clientForm = this.getClientForm().getForm();
+        clientForm.findField('stage').setValue('CUSTOMER');
+        clientForm.findField('company_name').focus('', 10);
     },
 
     onEditButtonClick: function(button, e, options){
@@ -200,6 +190,7 @@ Ext.define('JavisERP.controller.ClientController', {
                 clientForm.getForm().findField('state_id').setValue(new JavisERP.model.State(model.raw.state));
                 clientForm.getForm().findField('postal_code_iso').setValue(new JavisERP.model.PostalCode(model.raw.postal_code));
                 clientForm.getForm().findField('salesrep_id').setValue(new JavisERP.model.User(model.raw.salesrep) );
+                clientForm.getForm().findField('company_name').focus('', 10);
             }
         });
         var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
@@ -213,7 +204,6 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     onSaveClientButtonClick: function(button, e, options){
-    	console.log('here');
         var fields = this.getClientForm().getForm().getValues(false,false,false,true);
         var client = new JavisERP.model.Client({id: fields['id']});
         for(var key in fields){
@@ -222,34 +212,15 @@ Ext.define('JavisERP.controller.ClientController', {
 
         var cWindow = this.getClientWindow();
         var cRecordForm = this.getClientRecord();
+        var me = this;
         client.save({
             scope: this,
             success: function(record, operation){
-            	var refreshedClient = new JavisERP.model.Client(record.data);
-				cRecordForm.getForm().loadRecord(refreshedClient);
 				this.client.id = record.data.id;
 				this.client.name = record.data.company_name;
 				clientId = record.data.id;
-				
-				this.getContactGrid().getStore().clearFilter(true);
-				this.getContactGrid().getStore().filter("client_id", clientId);
-				
-				this.getActivityGrid().getStore().clearFilter(true);
-				this.getActivityGrid().getStore().filter("client_id", clientId);
-				
-				this.getPublicationGrid().getStore().clearFilter(true);
-				this.getPublicationGrid().getStore().filter("client_id",clientId);
-				
-				this.getPaymentGrid().getStore().clearFilter(true);
-				this.getPaymentGrid().getStore().filter("client_id",clientId);
-				
-				this.getContractGrid().getStore().clearFilter(true);
-				this.getContractGrid().getStore().filter("client_id",clientId);
-				
-				this.getAdvertisementGrid().getStore().clearFilter(true);
-				this.getAdvertisementGrid().getStore().filter("client_id", clientId);
-				
 				cWindow.close();
+				me.viewClientRecord(clientId);
 				Ext.Msg.alert('Success','Client saved successfully!');
             },
             failure: function(record, operation){
@@ -268,10 +239,11 @@ Ext.define('JavisERP.controller.ClientController', {
     	this.client.id = null;
     	this.client.name = null;
     	this.application.fireEvent("setClientFields",null,null);
-        this.application.fireEvent('navigationChange',button.itemId);
+        this.application.fireEvent('navigationChange','ClientGrid');
     },
 
     deleteClient: function(record,grid){
+    	var me = this;
         Ext.Msg.show({
             title: 'Delete Client?',
             msg: 'You are about to delete this client. Are you sure?',
@@ -283,6 +255,7 @@ Ext.define('JavisERP.controller.ClientController', {
                         record.destroy({
                             success: function(){
                                 grid.getStore().reload();
+                                me.onListViewClick();
                             },
                             failure: function(){
                                 alert("Could not delete client!");
@@ -323,6 +296,9 @@ Ext.define('JavisERP.controller.ClientController', {
             "recordnav[cls=clientrecordnav] button[cls=new_button]": {
                 click: this.onNewButtonClick
             },
+            "clientgrid #newClientButton": {
+            	click: this.onNewButtonClick
+            },
             "button[cls=clientsavebutton]": {
                 click: this.onSaveClientButtonClick
             },
@@ -339,17 +315,31 @@ Ext.define('JavisERP.controller.ClientController', {
     },
 
     changeClientRecord: function(grid, col, row, record) {
-        this.getContentCards().getLayout().setActiveItem('ClientRecord');
-        var form = this.getClientRecord().getForm();
-        var crec = this.getClientGrid().getStore().getAt(row);
-        form.loadRecord(this.getClientGrid().getStore().getAt(row));
-
-        this.client.id = this.getClientGrid().getStore().getAt(row).data.id;
-        this.client.name = this.getClientGrid().getStore().getAt(row).data.company_name;
-        this.application.fireEvent("setClientFields",this.client.id,this.client.name);
-        
-        // only "refresh" the grid for the tab we are on instead of all of them
-        this.onTabsChange();
+        this.viewClientRecord(this.getClientGrid().getStore().getAt(row).data.id);
+    },
+    
+    viewClientRecord: function(client_id){
+    	var cc = this.getContentCards();
+    	var me = this;
+    	this.getClientModel().load(client_id,{
+            success: function(model){
+            	var form = me.getClientRecord().getForm();
+            	var crec = model;
+            	form.loadRecord(crec);
+		        me.client.id = crec.data.id;
+		        me.client.name = crec.data.company_name;
+		        me.application.fireEvent("setClientFields",me.client.id,me.client.name);
+		        
+		        // only "refresh" the grid for the tab we are on instead of all of them
+		        me.onTabsChange();
+            }
+        });
+        var myMask = new Ext.LoadMask(this.getClientRecord(),{msg:"Loading..."});
+        myMask.show();
+        Ext.defer(function() {
+            myMask.hide();
+            cc.getLayout().setActiveItem('ClientRecord');
+        },500);
     }
 
 });
