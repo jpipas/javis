@@ -81,7 +81,6 @@ Ext.define('JavisERP.controller.PaymentController', {
     },
 
 	onClientComboSelect: function(field, newValue, oldValue, options) {
-		console.log('client select');
 		var pForm = this.getPaymentForm().getForm();
     	var contract = pForm.findField('contract_id');
     	contract.getStore().clearFilter(true);
@@ -92,7 +91,6 @@ Ext.define('JavisERP.controller.PaymentController', {
     },
 
     onContractComboSelect: function(field, newValue, oldValue, options) {
-		console.log('duration select');
 		var pForm = this.getPaymentForm().getForm();
 		var duration = pForm.findField('durations');
         duration.getStore().clearFilter(true);
@@ -243,7 +241,6 @@ Ext.define('JavisERP.controller.PaymentController', {
     	
     	// if no client, don't do the query
     	if (!client){
-    		console.log('cancel contract filter');
     		return false;
     	} else {
     		combo.getStore().clearFilter(true);
@@ -259,7 +256,6 @@ Ext.define('JavisERP.controller.PaymentController', {
     	
     	// if no contract, don't do the query
     	if (!contract){
-    		console.log('cancel duration filter');
     		return false;
     	} else {
     		combo.getStore().clearFilter(true);
@@ -281,7 +277,6 @@ Ext.define('JavisERP.controller.PaymentController', {
 					durations.push(new JavisERP.model.Duration(record.data.durations[i]));
 				}
 				pForm.getForm().findField('durations').setValue(durations);
-				console.log(durations);
                 
                 pForm.getForm().findField('client_id').setValue(new JavisERP.model.Client({ id : record.data.client_id, company_name: record.data.client_company_name }));
                 pForm.getForm().findField('contract_id').setValue(new JavisERP.model.Contract(record.data.contract));
