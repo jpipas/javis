@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.PublicationStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.publicationstore',
 
     requires: [
         'JavisERP.model.Publication'
@@ -12,7 +13,7 @@ Ext.define('JavisERP.store.PublicationStore', {
             remoteFilter: true,
             remoteSort: true,
             pageSize: 50,
-            autoLoad: true,
+            autoLoad: false,
             storeId: 'PublicationStoreStore',
             model: 'JavisERP.model.Publication'
         }, cfg)]);

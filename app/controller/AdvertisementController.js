@@ -16,7 +16,7 @@ Ext.define('JavisERP.controller.AdvertisementController', {
     ],
 
     stores: [
-    		'AdvertisementStore',
+    	'AdvertisementStore',
         'PublicationStore',
         'AdTypeStore',
         'AdSizeStore'
@@ -83,7 +83,7 @@ Ext.define('JavisERP.controller.AdvertisementController', {
         advertisementWindow.show();
         var adForm = this.getAdForm().getForm();
         if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
-        	adForm.findField('client_id').setValue(this.getClientId()).setReadOnly(true);
+        	adForm.findField('client_id').setValue(new JavisERP.model.Client({ id: this.getClientId(), company_name: this.getClientName() })).setReadOnly(true);
         }
     },
     

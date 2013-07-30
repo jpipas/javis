@@ -13,14 +13,17 @@ Ext.define('JavisERP.view.ContentCards', {
         'JavisERP.view.ContractGrid',
         'JavisERP.view.UserGrid',
         'JavisERP.view.AdListGrid',
-        'JavisERP.view.PortletPanel'
+        'JavisERP.view.PortletPanel',
+        'JavisERP.view.PaymentGrid'
     ],
 
     layout: {
         type: 'card'
     },
     
-    deferredRender: true,
+    layoutConfig: {
+    	deferredRender: true
+    },
 
     initComponent: function() {
         var me = this;
@@ -61,6 +64,11 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'contractgrid',
                     itemId: 'ContractGrid'
+                },
+                {
+                    xtype: 'paymentgrid',
+                    itemId: 'PaymentGrid',
+                    deferredRender: true,
                 },
                 {
                     xtype: 'advertisementgrid',

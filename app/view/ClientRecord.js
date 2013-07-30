@@ -171,7 +171,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                     xtype: 'tabpanel',
                     flex: 3,
                     minHeight: 350,
-                    itemId: 'ClientSublists',
+                    itemId: 'clienttabs',
                     defaults: {
                         labelAlign: 'right'
                     },
@@ -191,7 +191,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                             items: [
                                 {
                                     xtype: 'tabpanel',
-                                    itemId: 'General-Sublists',
+                                    itemId: 'clientgeneraltab',
                                     cls : 'generaltab',
                                     activeTab: 0,
                                     plain: true,
@@ -302,7 +302,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                 },
                                 {
                                     xtype: 'tabpanel',
-                                    itemId: 'SalesSublistTabs',
+                                    itemId: 'clientsalestab',
                                     cls: 'salestab',
                                     activeTab: 0,
                                     plain: true,

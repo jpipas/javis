@@ -5,7 +5,7 @@ Ext.define('JavisERP.view.ContactGrid', {
     title: 'Contact List',
     forceFit: true,
     store: 'ContactStore',
-    columnLines: false,
+    itemId: 'contactgrid',
     scroll: 'vertical',
 
     initComponent: function() {
@@ -28,51 +28,53 @@ Ext.define('JavisERP.view.ContactGrid', {
                             text: 'New Contact'
                         }
                     ]
+                },
+                {
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    itemId: 'contactPageToolBar',
+                    displayInfo: true,
+                    store: 'ContactStore'
                 }
             ],
             columns: [
                 {
                     xtype: 'rowactions',
-                    maxWidth: 80,
-                    defaultWidth: 80,
                     actions: [
                         {
                             iconCls: 'edit_action ui-silk ui-silk-vcard-edit',
                             tooltip: 'View/Edit Contact',
-                            hideIndex: 'revoke_edit',
+                            hideIndex: 'edit_action',
                             callback: Ext.emptyFn
                         },
                         {
                             iconCls: 'delete_action ui-silk ui-silk-vcard-delete',
                             tooltip: 'Delete Contact',
-                            hideIndex: 'revoke_delete',
+                            hideIndex: 'delete_action',
                             callback: Ext.emptyFn
                         }
                     ]
                 },
                 {
-                    xtype: 'gridcolumn',
-                    hidden: true,
-                    dataIndex: 'id',
-                    hideable: false,
-                    text: 'ID'
-                },
-                {
+                	flex: 2,
                     xtype: 'gridcolumn',
                     dataIndex: 'full_name',
                     text: 'Name'
                 },
                 {
+                	flex: 2,
                     xtype: 'gridcolumn',
                     dataIndex: 'email_address',
                     text: 'Email Address'
                 },
                 {
+                	flex: 1,
                     xtype: 'gridcolumn',
                     dataIndex: 'phone',
                     text: 'Phone'
                 },
                 {
+                	flex: 1,
                     xtype: 'gridcolumn',
                     dataIndex: 'role_name',
                     text: 'Role'

@@ -10,10 +10,10 @@ Ext.define('JavisERP.store.AdvertisementStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-        		remoteFilter: true,
+        	remoteFilter: true,
             remoteSort: true,
             pageSize: 50,
-            autoLoad: true,
+            autoLoad: false,
             storeId: 'AdvertisementStore',
             model: 'JavisERP.model.Advertisement'
         }, cfg)]);

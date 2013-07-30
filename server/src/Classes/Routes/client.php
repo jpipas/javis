@@ -16,30 +16,19 @@ class Client implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
-            //print_r($request->get('limit'));
-            /*
-            $client_array = array();
-            if($request->get('search')){
-                $client_array = $app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),FALSE,$request->get('sort'));
-                $totalCount['totalCount'] = count($app['business.client']->searchForClient($request->get('search'),$request->get('page'),$request->get('start'),$request->get('limit'),TRUE,$request->get('sort')));
-            } else {
-                $client_array = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$request->get('filter'),$request->get('sort'));
-                $totalCount = $app['business.client']->getTotalCount($request->get('filter'));
-            }
-            */
             $client_array = array();
             $sort = '';
-		    		if ($request->get('sort')){
-		    			$sort = json_decode($request->get('sort'), true);
-		    		}
-		    		$filter = array();
-		    		if ($request->get('filter')){
-		    			$filter = json_decode($request->get('filter'), true);
-		    		}
-		    		$search = array();
-		    		if ($request->get('search')){
-		    			$search = json_decode($request->get('search'), true);
-		    		}
+    		if ($request->get('sort')){
+    			$sort = json_decode($request->get('sort'), true);
+    		}
+    		$filter = array();
+    		if ($request->get('filter')){
+    			$filter = json_decode($request->get('filter'), true);
+    		}
+    		$search = array();
+    		if ($request->get('search')){
+    			$search = json_decode($request->get('search'), true);
+    		}
             list($totalCount, $client_array) = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search, $app);
 
 
@@ -72,41 +61,44 @@ class Client implements ControllerProviderInterface
 	            $client['state'] = $app['business.state']->getById($client['state_id']);
 	            $client['postal_code'] = $app['business.postalcode']->getById($client['postal_code_id']);
 	            $client['salesrep'] =  $app['business.user']->getById($client['salesrep_id']);
-	          }
+			}
             return $app->json(array("success"=>true,"totalCount"=>($client['id']?1:1),"client"=>$client));
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
+        	$params = json_decode($request->getContent(),true);
+            $error = $app['business.client']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$client_return = $app['business.client']->createClient($params);
+            	return $app->json(array("success"=>true,"client"=>$client_return));
+            }
+            /*
             $user = $app['session']->get("user_token");
             $params = array("insert_user_id"=>$user['user']->getId(),"salesrep_id"=>$user['user']->getId(),"stage"=>"CUSTOMER","territory_id"=>$user['user']->getTerritoryId());
             $client_id = $app['business.client']->createClient($params);
             $subReq = Request::create('/client/'.$client_id,'GET');
             $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
             return $app->json($client_return);
+            */
         });
 
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
             $params = json_decode($request->getContent(),true);
             $error = $app['business.client']->validate($app, $params);
             if (@count($error) > 0){
-            	$app['monolog']->addInfo(print_r($error, true));
             	return $app->json(array("success"=>false,"error"=>$error));
             } else {
             	$client_return = $app['business.client']->updateClient($id, $params);
             	return $app->json(array("success"=>true,"client"=>$client_return));
             }
-            /*
-            $client_id = $app['business.client']->updateClient($id, $params);
-            $subReq = Request::create('/client/'.$client_id,'GET');
-            $client_return = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-            return $app->json($client_return);
-            */
         });
 
         /* delete */
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
-            $client_array = $app['business.client']->deleteClient($id);
-            return $app->json(array("success"=>true,"client"=>$client_array));
+            $client_array = $app['business.client']->deleteClient($app, $id);
+            return $app->json(array("success"=>true));
         });
 
         return $controllers;

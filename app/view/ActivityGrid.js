@@ -17,7 +17,6 @@ Ext.define('JavisERP.view.ActivityGrid', {
             columns: [
                 {
                     xtype: 'rowactions',
-                    flex: 1,
                     actions: [
                         {
                         	iconIndex: 'type_cls_edit',
@@ -30,12 +29,6 @@ Ext.define('JavisERP.view.ActivityGrid', {
                             callback: Ext.emptyFn
                         }
                     ]
-                },
-                {
-                    xtype: 'gridcolumn',
-                    hidden: true,
-                    dataIndex: 'id',
-                    text: 'Id'
                 },
                 {
                     xtype: 'gridcolumn',

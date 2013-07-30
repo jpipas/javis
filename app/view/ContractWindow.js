@@ -54,10 +54,10 @@ Ext.define('JavisERP.view.ContractWindow', {
                         }
                     ],
                     items: [
-                    		{
-                    			xtype: 'hiddenfield',
-                    			name: 'id'
-                    		},
+                		{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',
@@ -82,7 +82,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     items: [
                                         {
                                             xtype: 'textfield',
-                                            anchor: '95%',
                                             cls: 'contract_number',
                                             name: 'contract_number',
                                             fieldLabel: 'Contract Number',
@@ -93,7 +92,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             name: 'client_id',
                                             fieldLabel: 'Client',
                                             displayField: 'company_name',
-                                            store: 'ClientStore',
+                                            store: {type: 'clientstore'},
                                             hideTrigger: true,
                                             triggerAction: 'query',
                                             pageSize: true,
@@ -105,7 +104,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         },
                                         {
                                             xtype: 'combobox',
-                                            anchor: '95%',
                                             name: 'territory_id',
                                             fieldLabel: 'Territory',
                                             labelAlign: 'right',
@@ -115,7 +113,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         },
                                         {
                                             xtype: 'combobox',
-                                            anchor: '95%',
                                             name: 'payment_term_id',
                                             fieldLabel: 'Payment Term',
                                             labelAlign: 'right',
@@ -150,7 +147,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     defaults: {
                                         padding: '5px 0px',
                                         labelAlign: 'right',
-                                        labelWidth: '125',
+                                        labelWidth: 125,
                                         anchor: '95%'
                                     },
                                     layout: {
@@ -158,22 +155,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     },
                                     combineLabels: false,
                                     items: [
-                                    		{
-                                            xtype: 'comboboxselect',
-                                            multiSelect:true,
-                                            fieldLabel: 'Duration(s)',
-                                            displayField: 'description',
-                                            emptyText: 'Select a duration...',
-                                            descField: 'id',
-                                            valueField: 'id',
-                                            store: 'Duration',
-                                            grow: true,
-                                            forceSelection: false,
-                                            queryMode: 'remote',
-                                            typeAdead:true,
-                                            name: 'durations',
-                                            cls:'durationlist'
-                                        },
                                         {
                                             xtype: 'numberfield',
                                             name: 'total_sales',
@@ -230,7 +211,25 @@ Ext.define('JavisERP.view.ContractWindow', {
                             ]
                         },
                         {
-                        		flex: 3,
+                            xtype: 'comboboxselect',
+                            multiSelect:true,
+                            fieldLabel: 'Duration(s)',
+                            displayField: 'description',
+                            emptyText: 'Select a duration...',
+                            labelAlign: 'right',
+                            itemId: 'contractdurations',
+                            anchor: '100%',
+                            descField: 'id',
+                            valueField: 'id',
+                            store: 'Duration',
+                            grow: true,
+                            forceSelection: false,
+                            queryMode: 'remote',
+                            typeAdead:true,
+                            name: 'durations',
+                            cls:'durationlist'
+                        },
+                        {
                         		padding: '5px 5px',
                             xtype: 'comboboxselect',
                             multiSelect:true,
@@ -241,25 +240,25 @@ Ext.define('JavisERP.view.ContractWindow', {
                             descField: 'id',
                             valueField: 'id',
                             forceSelection: false,
-                            store: 'AdvertisementStore',
+                            store: {type : 'advertisementstore' },
                             pageSize: 50,
                             queryMode: 'remote',
                             listConfig: {
                             	itemTpl : '{client_company_name} - {publication_names} - {ad_type_description} - {ad_size_description}'
-												   	},
-														labelTpl: "{client_company_name} - {publication_names} - {ad_type_description} - {ad_size_description}",
+							},
+							labelTpl: "{client_company_name} - {publication_names} - {ad_type_description} - {ad_size_description}",
                             grow: true,
                             stacked: true,
                             name: 'advertisements',
                             itemId: 'contractads',
                             trigger2Cls: 'x-trigger-add',
                             onTrigger2Click: function(e) {
-							              	this.fireEvent("ontrigger2click", this, event);
-										        },
-										        beforeQuery: function(e) {
-										        	console.log('before query');
-										        	this.fireEvent('contractadscomboquery', this, event);
-										        }
+				              	this.fireEvent("ontrigger2click", this, e);
+					        },
+					        beforeQuery: function(e) {
+					        	console.log('before query');
+					        	this.fireEvent('contractadscomboquery', this, e);
+					        }
                         }
                     ]
                 }

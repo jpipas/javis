@@ -96,10 +96,14 @@ Ext.define('JavisERP.view.ClientWindow', {
                                         {
                                             xtype: 'combobox',
                                             fieldLabel: 'Territory',
+                                            tpl: '<tpl for="."><div class="x-boundlist-item">{name} ({state_name})</div></tpl>',
+                            				displayTpl: '<tpl for=".">{name} ({state_name})</tpl>',
                                             displayField: 'name',
                                             valueField: 'id',
-                                            store: 'TerritoryStore',
-                                            queryMode: 'local',
+                                            store: {type: 'territorystore'},
+                                            queryMode: 'remote',
+                                            triggerAction: 'query',
+                                            minChars: 3,
                                             typeAdead:true,
                                             name: 'territory_id'
                                         },
@@ -134,7 +138,8 @@ Ext.define('JavisERP.view.ClientWindow', {
                                     defaults: {
                                         padding: '5px 0px 0px 0px',
                                         anchor: '95%',
-                                        labelAlign: 'right'
+                                        labelAlign: 'right',
+                                        labelWidth: 125
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -161,28 +166,26 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             fieldLabel: 'State',
                                             displayField: 'name',
                                             valueField: 'id',
-                                            store: 'State',
+                                            store: {type: 'statestore'},
                                             queryMode: 'local',
+                                            forceSelection: true,
                                             name: 'state_id'
                                         },
                                         {
                                             xtype: 'combobox',
                                             fieldLabel: 'Zip',
                                             displayField: 'iso_code',
-                                            valueField: 'id',
-                                            store: 'PostalCode',
-                                            hideTrigger: true,
-                                            triggerAction: 'query',
-                                            pageSize: true,
-                                            minChars: 2,
+                                            valueField: 'iso_code',
+                                            store: {type: 'postalcodestore'},
+                                            queryMode: 'local',
                                             name: 'postal_code_iso'
                                         },
                                         {
-                                        		xtype: 'combobox',
+                                        	xtype: 'combobox',
                                             name: 'salesrep_id',
                                             fieldLabel: 'Assigned Sales Rep',
                                             displayField: 'fullname',
-                                            store: 'UserDropDown',
+                                            store: {type: 'userstore'},
                                             hideTrigger: true,
                                             triggerAction: 'query',
                                             pageSize: true,

@@ -83,19 +83,6 @@ Ext.define('JavisERP.view.NavBar', {
                                         itemId: 'ClientGrid',
                                         iconCls: 'ui-silk ui-silk-group',
                                         text: 'Clients',
-                                        menu: {
-                                            xtype: 'menu',
-                                            width: 120,
-                                            hideMode: 'display',
-                                            items: [
-                                                {
-                                                    xtype: 'menuitem',
-                                                    iconCls: 'ui-silk ui-silk-group-add',
-                                                    itemId: 'new_customer',
-                                                    text: 'New Customer'
-                                                }
-                                            ]
-                                        }
                                     },
                                     {
                                         xtype: 'menuitem',
@@ -114,6 +101,12 @@ Ext.define('JavisERP.view.NavBar', {
                                         itemId: 'ContractGrid',
                                         iconCls: 'ui-silk ui-silk-folder-table',
                                         text: 'Contracts'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        itemId: 'PaymentGrid',
+                                        iconCls: 'ui-silk ui-silk-money',
+                                        text: 'Payments'
                                     },
                                     {
                                         xtype: 'menuitem',

@@ -19,6 +19,7 @@
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
+        "phpoffice/phpexcel": "dev-develop_2.0.0",
         "igorw/config-service-provider": "1.0",
         "knplabs/migration-service-provider": "dev-master"
     },

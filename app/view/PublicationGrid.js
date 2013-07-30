@@ -51,12 +51,6 @@ Ext.define('JavisERP.view.PublicationGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    hidden: true,
-                    dataIndex: 'id',
-                    text: 'Id'
-                },
-                {
-                    xtype: 'gridcolumn',
                     dataIndex: 'description',
                     flex: 1,
                     text: 'Name'

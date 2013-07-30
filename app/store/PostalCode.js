@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.PostalCode', {
     extend: 'Ext.data.Store',
+    alias: 'store.postalcodestore',
 
     requires: [
         'JavisERP.model.PostalCode'

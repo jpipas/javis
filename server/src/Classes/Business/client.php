@@ -148,14 +148,22 @@ class Client extends AbstractBusinessService
         	pc.iso_code AS postal_code_iso,
         	TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) AS balance 
         FROM 
-        	client AS c
-	        LEFT JOIN state s ON c.state_id = s.id
-  	      LEFT JOIN payment p ON c.id = p.client_id
-    	    LEFT JOIN contract con ON c.id = con.client_id
-      	  LEFT JOIN territory t ON c.territory_id = t.id
-        	LEFT JOIN employee e ON c.salesrep_id = e.id
-        	LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
-        	LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
+			(client AS c)
+			LEFT JOIN state s ON c.state_id = s.id
+			LEFT JOIN payment p ON c.id = p.client_id
+			LEFT JOIN contract con ON c.id = con.client_id
+			LEFT JOIN territory t ON c.territory_id = t.id
+			LEFT JOIN employee e ON c.salesrep_id = e.id
+			LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
+			LEFT JOIN (SELECT 
+        				COUNT(cd.id)-COUNT(p.id) as 'cnt', 
+        				cd.contract_id 
+        			FROM
+        				contract_duration AS cd
+        				LEFT JOIN payment AS p ON p.contract_id = cd.contract_id AND p.deleted_at IS NULL
+        				LEFT JOIN payment_duration as pd ON pd.payment_id = p.id AND cd.duration_id = pd.duration_id
+        			GROUP BY
+        				cd.contract_id) AS rm ON rm.contract_id = con.id
         WHERE 
         	c.deleted_at IS NULL
         	$wsql
@@ -179,14 +187,22 @@ class Client extends AbstractBusinessService
         	pc.iso_code AS postal_code_iso,
         	TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) AS balance 
         FROM 
-        	client AS c
-        	LEFT JOIN state s ON c.state_id = s.id
-  	      LEFT JOIN payment p ON c.id = p.client_id
-    	    LEFT JOIN contract con ON c.id = con.client_id
-      	  LEFT JOIN territory t ON c.territory_id = t.id
-        	LEFT JOIN employee e ON c.salesrep_id = e.id
-        	LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
-        	LEFT JOIN (SELECT COUNT(cd.id)-COUNT(p.id) as 'cnt', cd.contract_id from contract_duration as cd LEFT JOIN payment as p on cd.duration_id = p.duration_id GROUP BY cd.contract_id) as rm on rm.contract_id = con.id
+			(client AS c)
+			LEFT JOIN state s ON c.state_id = s.id
+			LEFT JOIN payment p ON c.id = p.client_id
+			LEFT JOIN contract con ON c.id = con.client_id
+			LEFT JOIN territory t ON c.territory_id = t.id
+			LEFT JOIN employee e ON c.salesrep_id = e.id
+			LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
+			LEFT JOIN (SELECT 
+						COUNT(cd.id)-COUNT(p.id) as 'cnt', 
+						cd.contract_id 
+					FROM
+						contract_duration AS cd
+						LEFT JOIN payment AS p ON p.contract_id = cd.contract_id AND p.deleted_at IS NULL
+						LEFT JOIN payment_duration as pd ON pd.payment_id = p.id AND cd.duration_id = pd.duration_id
+					GROUP BY
+						cd.contract_id) AS rm ON rm.contract_id = con.id
         WHERE 
         	c.id = ?
         	AND c.deleted_at IS NULL
@@ -203,6 +219,7 @@ class Client extends AbstractBusinessService
 	        	FROM 
 	        		payment p 
 	        	WHERE 
+	        		p.deleted_at IS NULL AND
 	        		p.contract_id IN (select id from contract where client_id = ? and deleted_at is null)) AS payments,
         	(SELECT
         			count(cd.id) AS 'dr'
@@ -213,44 +230,52 @@ class Client extends AbstractBusinessService
         return $this->db->fetchAssoc($sql,array((int) $id,(int) $id));
     }
 
-		public function validate(&$app, &$params){
-    		$error = array();
-    		// clear params we don't need
-    		unset($params['state'],$params['postal_code'],$params['territory'],$params['territory_name'],$params['balance']);
+	public function validate(&$app, &$params){
+		$error = array();
+		// clear params we don't need
+		unset($params['state'],$params['postal_code'],$params['territory'],$params['territory_name'],$params['balance']);
         unset($params['remaining_months'],$params['overdue_balance'],$params['salesrep'],$params['territory_name']);
         unset($params['insert_user_id'], $params['created_at'],$params['salesrep_name'],$params['state_name']);
         unset($params['zipcode'],$params['remaining_months_cnt'],$params['updated_at'],$params['deleted_at'],$params['created_at']);
         unset($params['remaining']);
-    			    
-		    // check username
-		    if (empty($params['company_name'])){
-		    	$error[] = "Company name is a required field";
-		    }
-		    
-		    // check valid e-mail address
-		    if (!empty($params['email']) && !filter_var($params['email'], FILTER_VALIDATE_EMAIL)){
-		    	$error[] = "E-mail address appears to be incorrectly formatted";
-		    }
-		    
-		    // make sure we have a valid territory
-		    if (empty($params['territory_id'])){
-		    	$error[] = "Territory is a required field";
-		    } else {
-		    	$territory = $app['business.territory']->getById($params['territory_id']);
-		    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
-		    }
-		    
-		    // check that we have a valid manager
-		    if (!empty($params['salesrep_id'])){
-		    	$emp = $app['business.user']->getById($params['salesrep_id']);
-		    	if (!$emp['id']){
-		    		$error[] = "Invalid sales rep selected";
-		    	}
-		    }
-		    
-		    // get postal code
-		    if (@count($error) < 1){
-		    	$postal_code = $params['postal_code_iso'];
+			    
+	    // check username
+	    if (empty($params['company_name'])){
+	    	$error[] = "Company name is a required field";
+	    }
+	    
+	    // check valid e-mail address
+	    if (!empty($params['email_address']) && !filter_var($params['email_address'], FILTER_VALIDATE_EMAIL)){
+	    	$error[] = "E-mail address appears to be incorrectly formatted";
+	    }
+	    
+	    // make sure we have a valid territory
+	    if (empty($params['territory_id'])){
+	    	$error[] = "Territory is a required field";
+	    } else {
+	    	$territory = $app['business.territory']->getById($params['territory_id']);
+	    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
+	    }
+	    
+	    // check that we have a valid manager
+	    if (!empty($params['salesrep_id'])){
+	    	$emp = $app['business.user']->getById($params['salesrep_id']);
+	    	if (!$emp['id']){
+	    		$error[] = "Invalid sales rep selected";
+	    	}
+	    }
+	    
+	    // validate state
+	    if (!empty($params['state_id'])){
+	    	$state = $app['business.state']->getById($params['state_id']);
+	    	if (!$state['id']){
+	    		$error[] = 'Invalid state selected';
+	    	}
+	    }
+	    
+	    // get postal code
+	    if (@count($error) < 1){
+	    	$postal_code = $params['postal_code_iso'];
 	        $postal_code_id = null;
 	        if($postal_code != "") {
 	            $sql = "SELECT * FROM postal_code WHERE iso_code = ".$this->db->quote($postal_code);
@@ -268,20 +293,35 @@ class Client extends AbstractBusinessService
 	        }
 	        unset($params['postal_code_iso']);
 	        $params['postal_code_id'] = $postal_code_id;
-		    }
-		    return $error;
+	    }
+	    
+	    // set the creator, updator, owner
+		$ownerid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$ownerid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+		$params['insert_user_id'] = $params['update_user_id'] = $ownerid;
+	    return $error;
     }
 
-    public function createClient($params) {
-    		unset($params['id']);
-    		$now = new \DateTime('NOW');
+    public function createClient($params) 
+    {
+		unset($params['id'], $params['update_user_id']);
+		$now = new \DateTime('NOW');
         $params['created_at'] = $now->format('Y-m-d H:i:s');
         $this->db->insert('client',$params);
-        $client_id = $this->db->lastInsertId();
-        return $client_id;
+        $id = $this->db->lastInsertId();
+        $res = $this->getById($id);
+        return $res;
     }
 
-    public function updateClient($id, $params) {
+    public function updateClient($id, $params) 
+    {
+    	unset($params['id'], $params['insert_user_id']);
         $this->db->update('client',$params, array('id'=>$id));
         return $this->getById($id);
     }
@@ -326,7 +366,7 @@ class Client extends AbstractBusinessService
         $sql = "SELECT c.*,s.name as 'state',
         TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) as 'balance' FROM client AS c
         LEFT JOIN state s ON c.state_id = s.id
-        LEFT JOIN payment p ON c.id = p.client_id
+        LEFT JOIN payment p ON c.id = p.client_id AND p.deleted_at IS NULL
         LEFT JOIN contract con ON c.id = con.client_id
         LEFT JOIN territory t ON c.territory_id = t.id
         LEFT JOIN employee e ON c.salesrep_id = e.id
@@ -341,12 +381,22 @@ class Client extends AbstractBusinessService
         return $this->db->fetchAll($sql);
     }
 
-    public function deleteClient($id) {
-        $now = new \DateTime('NOW');
-        $params['deleted_at'] = $now->format('Y-m-d H:i:s');
-        $rows = $this->db->update('client',$params, array('id' => $id));
-        $client = $this->getById($id);
-        return $client;
+    public function deleteClient($app, $id) 
+    {
+    	$userid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+    	$now = new \DateTime('NOW');
+    	$params = array(
+        	'deleted_at' => $now->format('Y-m-d H:i:s'),
+    		'update_user_id'	=> $userid        	
+        );
+        return $this->db->update('client',$params, array('id' => $id));
     }
 
     public function getSortString($sort){
