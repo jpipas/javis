@@ -9,7 +9,7 @@ Ext.define('JavisERP.store.State', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: true,
+            autoLoad: false,
             storeId: 'State',
             model: 'JavisERP.model.State'
         }, cfg)]);

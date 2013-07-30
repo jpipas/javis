@@ -11,7 +11,7 @@ class Contract extends AbstractBusinessService {
         return 'contract';
     }
 
-    public function getAll($app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         // limit our search results
 		$lsql = '';
@@ -114,7 +114,6 @@ class Contract extends AbstractBusinessService {
         ORDER BY
         	$osql
         $lsql";
-        $app['monolog']->addInfo($sql);
         $rows = $this->db->fetchAll($sql);
         $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
         return array($totalCount, $rows);
@@ -237,13 +236,26 @@ class Contract extends AbstractBusinessService {
 			$error[] = "Monthly payment doesn't appear to be a numeric value";
 		}
 		
+		// set the creator, updator, owner
+		$ownerid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$ownerid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+		$params['insert_user_id'] = $params['update_user_id'] = $ownerid;
 		return $error;
 	}
 				
-    public function createContract($params) {
-    		$durations = $params['durations'];
-    		$ads = $params['advertisements'];
-    		unset($params['id'], $params['durations'], $params['advertisements']);
+    public function createContract($params) 
+    {
+		$durations = $params['durations'];
+		$ads = $params['advertisements'];
+		unset($params['id'], $params['durations'], $params['advertisements'], $params['update_user_id']);
+		$now = new \DateTime('NOW');
+        $params['created_at'] = $now->format('Y-m-d H:i:s');
         $this->db->insert('contract',$params);
         $id = $this->db->lastInsertId();
         
@@ -261,10 +273,11 @@ class Contract extends AbstractBusinessService {
         return $contract;
     }
 
-    public function updateContract($id, $params) {
+    public function updateContract($id, $params)
+    {
         $durations = $params['durations'];
-    		$ads = $params['advertisements'];
-    		unset($params['id'], $params['durations'], $params['advertisements']);
+		$ads = $params['advertisements'];
+		unset($params['id'], $params['durations'], $params['advertisements'], $params['insert_user_id']);
     		
         $this->db->update('contract',$params, array('id' => $id));
         $this->db->delete('contract_duration',array("contract_id" => $id));
@@ -281,7 +294,21 @@ class Contract extends AbstractBusinessService {
         return $contract;
     }
 
-    public function deleteById($id) {
-        return $this->db->update('contract',array("deleted_at" => "NOW()"), array("id" => $id));
+    public function deleteContract($app, $id) 
+    {
+    	$userid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+    	$now = new \DateTime('NOW');
+    	$params = array(
+    		'deleted_at' 		=> $now->format('Y-m-d H:i:s'),
+    		'update_user_id'	=> $userid
+    	);
+        return $this->db->update('contract',$params, array("id" => $id));
     }
 }

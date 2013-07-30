@@ -1,10 +1,12 @@
 Ext.define('JavisERP.controller.ContractController', {
     extend: 'Ext.app.Controller',
     
-		client: {
-			id: '',
-			name: ''
-		},
+	client: {
+		id: '',
+		name: ''
+	},
+	
+	isLoadingEdit: false,
 
     views: [
         'ContractGrid',
@@ -103,9 +105,9 @@ Ext.define('JavisERP.controller.ContractController', {
         //console.log(me.contract);
         contract.save({
            	success: function(record, operation){
-           		cGrid.getStore().reload();
-              cWindow.close();
-              Ext.Msg.alert('Success','Contract saved successfully!');
+				cGrid.getStore().reload();
+				cWindow.close();
+				Ext.Msg.alert('Success','Contract saved successfully!');
             },
             failure: function(record, operation){
             	Ext.MessageBox.show({
@@ -268,28 +270,31 @@ Ext.define('JavisERP.controller.ContractController', {
     },
 
     editContract: function(record){
-    		var contractWindow = new JavisERP.view.ContractWindow();
+		var contractWindow = new JavisERP.view.ContractWindow();
         var contractForm = this.getContractForm();
         var cc = this.getContentCards();
+        var me = this;
         this.getContractModel().load(record.data.id,{
         	success: function(record,operation){
-              contractForm.getForm().loadRecord(record);
-              var durations = [];
-              for (i in record.data.durations){
-              	durations.push(new JavisERP.model.Duration(record.data.durations[i]));
-              }
-              contractForm.getForm().findField('durations').setValue(durations);
-              
-              var ads = [];
-              for (i in record.data.advertisements){
-              	ads.push(new JavisERP.model.Advertisement(record.data.advertisements[i]));
-              }
-              contractForm.getForm().findField('advertisements').setValue(ads);
-              contractForm.getForm().findField('client_id').setValue(new JavisERP.model.Client({id : record.data.client_id, company_name : record.data.client_company_name}));
-              contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm({id : record.data.payment_term_id, description: record.data.payment_term_description}));
-              if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
-			        	contractForm.getForm().findField('client_id').setReadOnly(true);
-			        }
+        		me.isLoadingEdit = true;
+				contractForm.getForm().loadRecord(record);
+				var durations = [];
+				for (i in record.data.durations){
+					durations.push(new JavisERP.model.Publication(record.data.durations[i]));
+				}
+				contractForm.getForm().findField('durations').setValue(durations);
+				
+				var ads = [];
+				for (i in record.data.advertisements){
+					ads.push(new JavisERP.model.Advertisement(record.data.advertisements[i]));
+				}
+				contractForm.getForm().findField('advertisements').setValue(ads);
+				contractForm.getForm().findField('client_id').setValue(new JavisERP.model.Client({id : record.data.client_id, company_name : record.data.client_company_name}));
+				contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm({id : record.data.payment_term_id, description: record.data.payment_term_description}));
+				if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
+					contractForm.getForm().findField('client_id').setReadOnly(true);
+				}
+				me.isLoadingEdit = false;
           }
         });
 
@@ -322,38 +327,42 @@ Ext.define('JavisERP.controller.ContractController', {
     },
     
     runCalculations: function() {
-        var form = this.getContractForm().getForm();
-
-        var total_sales_amt = form.findField("total_sales").getValue();
-        var discount = form.findField("discount").getValue();
-        var subtotal = form.findField("subtotal").getValue();
-        var design_fee = form.findField("design_fee").getValue();
-
-        var sub_total_calc = (total_sales_amt*(1-discount)).toFixed(2);
-        form.findField("subtotal").setValue(sub_total_calc);
-
-        var total_calc = parseFloat(sub_total_calc) + design_fee;
-        form.findField("total_amount").setValue(total_calc.toFixed(2));
-
-        this.paymentCalculations();
+    	if (!this.isLoadingEdit){
+	        var form = this.getContractForm().getForm();
+	
+	        var total_sales_amt = form.findField("total_sales").getValue();
+	        var discount = form.findField("discount").getValue();
+	        var subtotal = form.findField("subtotal").getValue();
+	        var design_fee = form.findField("design_fee").getValue();
+	
+	        var sub_total_calc = (total_sales_amt*(1-discount)).toFixed(2);
+	        form.findField("subtotal").setValue(sub_total_calc);
+	
+	        var total_calc = parseFloat(sub_total_calc) + design_fee;
+	        form.findField("total_amount").setValue(total_calc.toFixed(2));
+	
+	        this.paymentCalculations();
+		}
     },
 
     paymentCalculations: function() {
-        var form = this.getContractForm().getForm();
-
-        var subtotal = form.findField("subtotal").getValue();
-        var design_fee = form.findField("design_fee").getValue();
-        var durations = form.findField("durations").getRawValue();
-
-        var duration = durations.split(",").length;
-        if(duration===0){
-            duration=1;
-        }
-        //console.log(duration);
-        var first_month_calc = (subtotal/duration)+design_fee;
-        var month_payment = (subtotal/duration);
-        form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));
-        form.findField("monthly_payment").setValue(month_payment.toFixed(2));
+    	if (!this.isLoadingEdit){
+	        var form = this.getContractForm().getForm();
+	
+	        var subtotal = form.findField("subtotal").getValue();
+	        var design_fee = form.findField("design_fee").getValue();
+	        var durations = form.findField("durations").getRawValue();
+	
+	        var duration = durations.split(",").length;
+	        if(duration===0){
+	            duration=1;
+	        }
+	        //console.log(duration);
+	        var first_month_calc = (subtotal/duration)+design_fee;
+	        var month_payment = (subtotal/duration);
+	        form.findField("first_months_payment").setValue(first_month_calc.toFixed(2));
+	        form.findField("monthly_payment").setValue(month_payment.toFixed(2));
+		}
     }
 
 });

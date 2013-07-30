@@ -53,11 +53,15 @@ class Duration extends AbstractBusinessService
                 	$where[$f['property']] = "duration.id NOT IN (SELECT
                 		contract_duration.duration_id 
                 	FROM
-                		(payment_duration, 
+                		(payment,
+                		payment_duration, 
                 		contract_duration)
                 	WHERE 
-                		payment_duration.contract_duration_id = contract_duration.id AND
-                		contract_duration.contract_id = ".$qq.")";
+                		payment.id = payment_duration.payment_id AND
+                		payment.contract_id = contract_duration.contract_id AND
+                		payment_duration.duration_id = contract_duration.duration_id AND
+                		payment.deleted_at IS NULL AND
+                		payment.contract_id = ".$qq.")";
                 	break;
                 	
                 default:
@@ -140,8 +144,16 @@ class Duration extends AbstractBusinessService
     }
 
     public function getByContractId($id){
-        $sql = "SELECT d.* FROM duration as d LEFT JOIN contract_duration as cd on d.id = cd.duration_id WHERE cd.contract_id = $id ORDER BY d.date_string";
-        return $this->db->fetchAll($sql);
+        $sql = "SELECT 
+        	d.*
+        FROM
+        	(duration AS d)
+        	LEFT JOIN contract_duration AS cd ON d.id = cd.duration_id
+        WHERE
+        	cd.contract_id = :id
+        ORDER BY
+        	d.date_string";
+        return $this->db->fetchAll($sql, array('id' => $id));
     }
     
     public function getByPaymentId($id)
@@ -150,17 +162,18 @@ class Duration extends AbstractBusinessService
         	d.*
         FROM
         	(duration AS d,
-        	contract_duration AS cd,
-        	payment_duration AS pd)
+        	payment_duration AS pd,
+        	payment AS p)
         WHERE
-        	d.id = cd.duration_id AND
-        	pd.contract_duration_id = cd.id AND
-        	pd.payment_id = $id
+        	pd.duration_id = d.id AND
+        	p.id = pd.payment_id AND
+        	p.deleted_AT IS NULL AND
+        	pd.payment_id = :id
         GROUP BY
         	d.id
         ORDER BY 
         	d.date_string";
-        return $this->db->fetchAll($sql);
+        return $this->db->fetchAll($sql, array('id' => $id));
     }
 
 }

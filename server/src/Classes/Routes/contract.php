@@ -29,7 +29,7 @@ class Contract implements ControllerProviderInterface
 		    		if ($request->get('search')){
 		    			$search = json_decode($request->get('search'), true);
 		    		}
-            list($totalCount, $result) = $app['business.contract']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            list($totalCount, $result) = $app['business.contract']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
 
             return $app->json(array("totalCount"=>$totalCount, "contract"=>$result));
         });
@@ -59,17 +59,17 @@ class Contract implements ControllerProviderInterface
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
             $contract = $app['business.contract']->getById($id);
 
-						$contract['client'] = $app['business.client']->getById($contract['client_id']);
-						$contract['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
-						$contract['advertisements'] = $app['business.advertisement']->getByContractId($contract['id']);
-						$contract['territory'] = $app['business.territory']->getById($contract['territory_id']);
-						$contract['durations'] = $app['business.duration']->getByContractId($contract['id']);
+			$contract['client'] = $app['business.client']->getById($contract['client_id']);
+			$contract['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
+			$contract['advertisements'] = $app['business.advertisement']->getByContractId($contract['id']);
+			$contract['territory'] = $app['business.territory']->getById($contract['territory_id']);
+			$contract['durations'] = $app['business.duration']->getByContractId($contract['id']);
 
             return $app->json(array("success"=>true,"totalCount"=>($contract['id']?1:0), "contract"=>$contract));
         });
 
-				// create
-				$controllers->post('/new', function(Application $app, Request $request) {
+		// create
+		$controllers->post('/new', function(Application $app, Request $request) {
             $params = json_decode($request->getContent(),true);
             $error = $app['business.contract']->validate($app, $params);
             if (@count($error) > 0){
@@ -80,9 +80,9 @@ class Contract implements ControllerProviderInterface
             }
         });
 
-				// update
+		// update
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
-        		$params = json_decode($request->getContent(),true);
+        	$params = json_decode($request->getContent(),true);
             $error = $app['business.contract']->validate($app, $params);
             if (@count($error) > 0){
             	return $app->json(array("success"=>false,"error"=>$error));
@@ -92,25 +92,9 @@ class Contract implements ControllerProviderInterface
             }
         });
 
-				/*
-        $controllers->post('/new', function(Application $app, Request $request) {
-            $params = json_decode($request->getContent(),true);
-            $contract_array = $app['business.contract']->createContract($params);
-
-            array_walk($contract_array,function($contract,$key) use (&$contract_array, &$app){
-                $contract_array[$key]['client'] = $app['business.client']->getById($contract['client_id']);
-                $contract_array[$key]['payment_term'] = $app['business.paymentterm']->getById($contract['payment_term_id']);
-                $contract_array[$key]['advertisement'] = $app['business.advertisement']->getByContractId($contract['id']);
-                $contract_array[$key]['territory'] = $app['business.territory']->getById($contract['territory_id']);
-            });
-            return $app->json(array("success"=>true,"contract"=>$contract_array));
-
-        });
-       	*/
-
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
             //$params = json_decode($request->getContent(),true);
-            $app['business.contract']->deleteById($id);
+            $app['business.contract']->deleteContract($app, $id);
             $app['business.advertisement']->deleteByContractId($id);
             return $app->json(array("success"=>true));
         });

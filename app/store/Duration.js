@@ -10,7 +10,7 @@ Ext.define('JavisERP.store.Duration', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: true,
+            autoLoad: false,
             remoteFilter: true,
             storeId: 'DurationStore',
             model: 'JavisERP.model.Duration'

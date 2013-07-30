@@ -135,7 +135,7 @@ Ext.define('JavisERP.view.ClientWindow', {
                                         padding: '5px 0px 0px 0px',
                                         anchor: '95%',
                                         labelAlign: 'right',
-                                        labelWidth: '125'
+                                        labelWidth: 125
                                     },
                                     layout: {
                                         type: 'anchor'

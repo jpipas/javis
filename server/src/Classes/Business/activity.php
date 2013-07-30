@@ -187,75 +187,77 @@ class Activity extends AbstractBusinessService
         return $this->db->fetchAssoc($sql,array((int) $id));
     }
     
-    public function validate(&$app, &$params){
-    		$error = array();
-    		// clear params we don't need
-    		unset($params['owner_id'], $params['owner_name'], $params['assigned_to_name'], $params['client_name'], $params['created_at'], 
-    			$params['deleted_at'], $params['type_cls'], $params['type_cls_edit'], $params['type_cls_add'], $params['type_cls_delete'], 
-    			$params['status_cls'], $params['status_cls_edit'], $params['status_cls_add'], $params['status_cls_delete'], $params['owner'],
-    			$params['assigned_to'], $params['client']);
-		    
-		    // title is required
-		    if (empty($params['title'])){
-		    	$error[] = "Title is a required field";
-		    }
-		    
-		    // verify client selection
-		    if (empty($params['client_id'])){
-		    	$error[] = "Client is a required field";
-		    } else {
-		    	$client = $app['business.client']->getById($params['client_id']);
-		    	if (empty($client['id'])){ $error[] = "Unable to locate specified client"; }
-		    }
-				
-				// verify type
-				if (empty($params['type_id'])){
-					$error[] = "Type is a required field";
-				} else {
-					$type = $this->getByIdType($params['type_id']);
-					if (!$type['id']){ $error[] = "Invalid type selected"; }
-				}
-				
-				// verify status
-				if (empty($params['status_id'])){
-					$error[] = "Status is a required field";
-				} else {
-					$status = $this->getByIdStatus($params['status_id']);
-					if (!$status['id']){ $error[] = "Invalid status selected"; }
-				}
-				
-				// verify date
-				if (empty($params['post_date'])){
-					$error[] = "Date is a required field";
-				} else {
-					// verify date format here.
+    public function validate(&$app, &$params)
+    {
+		$error = array();
+		// clear params we don't need
+		unset($params['owner_id'], $params['owner_name'], $params['assigned_to_name'], $params['client_name'], $params['created_at'], 
+			$params['deleted_at'], $params['type_cls'], $params['type_cls_edit'], $params['type_cls_add'], $params['type_cls_delete'], 
+			$params['status_cls'], $params['status_cls_edit'], $params['status_cls_add'], $params['status_cls_delete'], $params['owner'],
+			$params['assigned_to'], $params['client']);
+	    
+	    // title is required
+	    if (empty($params['title'])){
+	    	$error[] = "Title is a required field";
+	    }
+	    
+	    // verify client selection
+	    if (empty($params['client_id'])){
+	    	$error[] = "Client is a required field";
+	    } else {
+	    	$client = $app['business.client']->getById($params['client_id']);
+	    	if (empty($client['id'])){ $error[] = "Unable to locate specified client"; }
+	    }
+			
+		// verify type
+		if (empty($params['type_id'])){
+			$error[] = "Type is a required field";
+		} else {
+			$type = $this->getByIdType($params['type_id']);
+			if (!$type['id']){ $error[] = "Invalid type selected"; }
+		}
+		
+		// verify status
+		if (empty($params['status_id'])){
+			$error[] = "Status is a required field";
+		} else {
+			$status = $this->getByIdStatus($params['status_id']);
+			if (!$status['id']){ $error[] = "Invalid status selected"; }
+		}
+		
+		// verify date
+		if (empty($params['post_date'])){
+			$error[] = "Date is a required field";
+		} else {
+			// verify date format here.
 
-					$params['post_date'] = date('Y-m-d', strtotime($params['post_date']));
-				}
-				
-				// verify time
-				if (!empty($params['post_time'])){
-					// verify time format here
-					
-					$params['post_time'] = date('H:i:s', strtotime($params['post_time']));
-				} else {
-					$params['post_time'] = null;
-				}
-				
-				// set the creator, updator, owner
-				$ownerid = null;
-				$token = $app['security']->getToken();
-				if (null !== $token) {
-    			$user = $token->getUser();
-    			$ownerid = $user->getId();
-				} else {
-					$app['monolog']->addInfo('unable to get security token');
-				}
-				$params['owner_id'] = $params['insert_user_id'] = $params['update_user_id'] = $ownerid;
-		    return $error;
+			$params['post_date'] = date('Y-m-d', strtotime($params['post_date']));
+		}
+		
+		// verify time
+		if (!empty($params['post_time'])){
+			// verify time format here
+			
+			$params['post_time'] = date('H:i:s', strtotime($params['post_time']));
+		} else {
+			$params['post_time'] = null;
+		}
+		
+		// set the creator, updator, owner
+		$ownerid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+		$user = $token->getUser();
+		$ownerid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+		$params['owner_id'] = $params['insert_user_id'] = $params['update_user_id'] = $ownerid;
+	    return $error;
     }
 
-    public function createActivity($params) {
+    public function createActivity($params) 
+    {
         unset($params['id'], $params['update_user_id']);
         $now = new \DateTime('NOW');
         $params['created_at'] = $now->format('Y-m-d H:i:s');
@@ -264,18 +266,20 @@ class Activity extends AbstractBusinessService
         return $res;
     }
 
-		public function updateActivity($id, $params) {
-				unset($params['owner_id'], $params['insert_user_id']);
-				$now = new \DateTime('NOW');
+	public function updateActivity($id, $params) 
+	{
+		unset($params['owner_id'], $params['insert_user_id']);
+		$now = new \DateTime('NOW');
         $params['updated_at'] = $now->format('Y-m-d H:i:s');
         $rows = $this->db->update('activity',$params, array('id' => $id));
         $res = $this->getById($id);
         return $res;
     }
     
-    public function deleteActivity($id) {
-    		$now = new \DateTime('NOW');
-				$params['deleted_at'] = $now->format('Y-m-d H:i:s');
+    public function deleteActivity($id) 
+    {
+		$now = new \DateTime('NOW');
+		$params['deleted_at'] = $now->format('Y-m-d H:i:s');
         $rows = $this->db->update('activity',$params, array('id' => $id));
         $res = $this->getById($id);
         return $res;

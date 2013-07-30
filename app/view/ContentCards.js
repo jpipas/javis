@@ -21,7 +21,9 @@ Ext.define('JavisERP.view.ContentCards', {
         type: 'card'
     },
     
-    deferredRender: true,
+    layoutConfig: {
+    	deferredRender: true
+    },
 
     initComponent: function() {
         var me = this;

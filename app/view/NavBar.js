@@ -117,6 +117,12 @@ Ext.define('JavisERP.view.NavBar', {
                                     },
                                     {
                                         xtype: 'menuitem',
+                                        itemId: 'PaymentGrid',
+                                        iconCls: 'ui-silk ui-silk-money',
+                                        text: 'Payments'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
                                         itemId: 'TerritoryGrid',
                                         iconCls: 'ui-silk ui-silk-map',
                                         text: 'Territories'

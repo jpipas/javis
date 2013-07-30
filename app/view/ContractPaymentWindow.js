@@ -5,8 +5,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
     cls: 'paymentWindow',
     id: 'paymentWindow',
     itemId: 'paymentWindow',
-    width: 750,
-    autoDestroy: false,
+    width: 500,
     layout: {
         type: 'fit'
     },
@@ -27,10 +26,14 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                     dockedItems: [
                         {
                             xtype: 'toolbar',
-                            dock: 'top',
+                            dock: 'bottom',
                             cls: 'adWindowToolBar',
                             itemId: 'adwindowtoolbar',
                             items: [
+                        		{
+                        				xtype: 'tbspacer',
+                        				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'paymentsavebutton',
@@ -41,130 +44,111 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                                 },
                                 {
                                     xtype: 'button',
-                                    cls: 'cancelbutton',
-                                    text: 'Cancel'
+                                    text: 'Cancel',
+                                    scope: this,
+                                    handler: function(){ this.close(); }
                                 }
                             ]
                         }
                     ],
+                    defaults: {
+                        padding: '5px 0px 0px 0px',
+                        anchor: '100%',
+                        labelAlign: 'right',
+                        labelWidth: 125
+                    },
                     items: [
+                		{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
-                            xtype: 'fieldcontainer',
-                            padding: '0px 0px 10px 0px',
-                            defaults: {
-                                anchor: '95%'
-                            },
-                            layout: {
-                                align: 'stretch',
-                                type: 'hbox'
-                            },
-                            items: [
-                                {
-                                    xtype: 'fieldcontainer',
-                                    flex: 1,
-                                    id: 'paymentform_column1',
-                                    itemId: 'column1',
-                                    defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%',
-                                        labelAlign: 'right'
-                                    },
-                                    layout: {
-                                        type: 'anchor'
-                                    },
-                                    items: [
-                                        {
-                                            xtype: 'displayfield',
-                                            name: 'client_name',
-                                            fieldLabel: 'Client'
-                                        },
-                                        {
-                                            xtype: 'combobox',
-                                            tpl: '<tpl for="."><div class="x-boundlist-item">Contract #: <b>{id}</b> - ({total_amount})</div></tpl>',
-                                            displayTpl: '<tpl for=".">Contract #: {id} - ({total_amount})</tpl>',
-                                            cls: 'contractCombo',
-                                            fieldLabel: 'Contract',
-                                            name: 'contract_id',
-                                            displayField: 'id',
-                                            store: 'ContractStore',
-                                            valueField: 'id'
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'fieldcontainer',
-                                    flex: 1,
-                                    defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%',
-                                        labelAlign: 'right'
-                                    },
-                                    layout: {
-                                        type: 'anchor'
-                                    },
-                                    combineLabels: false,
-                                    items: [
-                                        {
-                                            xtype: 'combobox',
-                                            cls: 'paymentType',
-                                            itemId: 'payment_type_id',
-                                            name: 'payment_type_id',
-                                            fieldLabel: 'Payment Type',
-                                            displayField: 'description',
-                                            store: 'PaymentTypeStore',
-                                            valueField: 'id'
-                                        },
-                                        {
-                                            xtype: 'numberfield',
-                                            cls: 'paymentAmount',
-                                            id: 'payment_amount',
-                                            itemId: 'payment_amount',
-                                            name: 'payment_amount',
-                                            fieldLabel: 'Payment Amount'
-                                        },
-                                        {
-                                            xtype: 'combobox',
-                                            cls: 'paymentCategory',
-                                            id: 'payment_category',
-                                            itemId: 'payment_category',
-                                            name: 'payment_category',
-                                            fieldLabel: 'Category',
-                                            displayField: 'description',
-                                            store: [
-                                                'Paid in Advance',
-                                                'Partial Payment Recieved',
-                                                'Paid on Time',
-                                                'Uncollected',
-                                                'Paid on Overdue',
-                                                'Commission Paid On',
-                                                '1st Month Bonus Paid on Time',
-                                                'Bonus Commission Paid On'
-                                            ],
-                                            valueField: 'id'
-                                        },
-                                        {
-                                            xtype: 'checkboxgroup',
-                                            items: [
-                                                {
-                                                    xtype: 'checkboxfield',
-                                                    margin: '0 10',
-                                                    name: 'email_client',
-                                                    fieldLabel: 'Label',
-                                                    hideLabel: true,
-                                                    boxLabel: 'Notify Client of Payment Entry',
-                                                    inputValue: '1'
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'hiddenfield',
-                                            cls: 'payment_client_id',
-                                            itemId: 'client_id',
-                                            name: 'client_id'
-                                        }
-                                    ]
-                                }
-                            ]
+                            xtype: 'combobox',
+                            name: 'client_id',
+                            fieldLabel: 'Client',
+                            displayField: 'company_name',
+                            itemId: 'paymentclient',
+                            store: {type: 'clientstore'},
+                            hideTrigger: true,
+                            triggerAction: 'query',
+                            pageSize: true,
+                            readOnlyCls: 'read_only',
+                            allowOnlyWhitespace: false,
+                            allowBlank: false,
+                            minChars: 3,
+                            valueField: 'id'
+                        },
+                        {
+                            xtype: 'combobox',
+                            tpl: '<tpl for="."><div class="x-boundlist-item">Contract #: <b>{contract_number}</b> - (${total_amount})</div></tpl>',
+                            displayTpl: '<tpl for=".">Contract #: {contract_number} - (${total_amount})</tpl>',
+                            cls: 'contractCombo',
+                            fieldLabel: 'Contract',
+                            name: 'contract_id',
+                            displayField: 'id',
+                            queryMode: 'remote',
+                            pageSize: true,
+                            minChars: 3,
+                            store: {type: 'contractstore'},
+                            valueField: 'id',
+                            itemId: 'paymentcontract',
+					        beforeQuery: function(e) {
+					        	this.fireEvent('contractcomboquery', this, event);
+					        }
+                        },
+                        {
+                            xtype: 'combobox',
+                            cls: 'paymentType',
+                            itemId: 'payment_type_id',
+                            name: 'payment_type_id',
+                            fieldLabel: 'Payment Type',
+                            displayField: 'description',
+                            store: {type: 'paymenttypestore'},
+                            valueField: 'id'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            cls: 'paymentAmount',
+                            id: 'payment_amount',
+                            itemId: 'payment_amount',
+                            name: 'payment_amount',
+                            fieldLabel: 'Payment Amount',
+                            forcePrecision: true,
+                            decimalPrecision: 2,
+                            minValue: 0
+                        },
+                        {
+                            xtype: 'combobox',
+                            cls: 'paymentCategory',
+                            id: 'payment_category',
+                            itemId: 'payment_category',
+                            name: 'payment_category_id',
+                            fieldLabel: 'Category',
+                            displayField: 'description',
+                            store: {type: 'paymentcategorystore'},
+                            valueField: 'id'
+                        },
+                        {
+                            xtype: 'comboboxselect',
+                            multiSelect:true,
+                            fieldLabel: 'Apply to Duration(s)',
+                            displayField: 'description',
+                            emptyText: 'Select a duration...',
+                            labelAlign: 'right',
+                            anchor: '100%',
+                            descField: 'id',
+                            valueField: 'id',
+                            store: {type: 'durationstore'},
+                            grow: true,
+                            forceSelection: false,
+                            filterPickList: true,
+                            queryMode: 'remote',
+                            typeAdead:true,
+                            name: 'durations',
+                            itemId: 'paymentdurations',
+					        beforeQuery: function(e) {
+					        	this.fireEvent('paymentdurationcomboquery', this, event);
+					        }
                         }
                     ]
                 }

@@ -12,7 +12,7 @@ Ext.define('JavisERP.store.TerritoryStore', {
             remoteFilter: true,
             remoteSort: true,
             pageSize: 50,
-            autoLoad: true,
+            autoLoad: false,
             storeId: 'TerritoryStore',
             model: 'JavisERP.model.Territory'
         }, cfg)]);

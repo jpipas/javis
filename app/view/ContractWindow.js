@@ -147,7 +147,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     defaults: {
                                         padding: '5px 0px',
                                         labelAlign: 'right',
-                                        labelWidth: '125',
+                                        labelWidth: 125,
                                         anchor: '95%'
                                     },
                                     layout: {
