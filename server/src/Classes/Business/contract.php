@@ -89,6 +89,7 @@ class Contract extends AbstractBusinessService {
 		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	contract.*,
+        	CONCAT(employee.first_name, ' ',employee.last_name) AS soldby_name,
         	territory.name AS territory_name,
         	client.company_name AS client_company_name,
         	payment_term.description AS payment_term_description,
@@ -100,6 +101,7 @@ class Contract extends AbstractBusinessService {
         	territory,
         	payment_term,
         	payment_type)
+        	LEFT JOIN employee ON employee.id = contract.soldby_id
         WHERE
         	 contract.deleted_at IS NULL AND
         	 client.deleted_at IS NULL AND
@@ -122,6 +124,7 @@ class Contract extends AbstractBusinessService {
     public function getById($id) {
         $sql = "SELECT
         	contract.*,
+        	CONCAT(employee.first_name, ' ',employee.last_name) AS soldby_name,
         	territory.name AS territory_name,
         	client.company_name AS client_company_name,
         	payment_term.description AS payment_term_description,
@@ -133,6 +136,7 @@ class Contract extends AbstractBusinessService {
         	territory,
         	payment_term,
         	payment_type)
+        	LEFT JOIN employee ON employee.id = contract.soldby_id
         WHERE
         	 contract.deleted_at IS NULL AND
         	 client.deleted_at IS NULL AND
@@ -151,7 +155,7 @@ class Contract extends AbstractBusinessService {
 	{
 		$error = array();
 		unset($params['territory_name'], $params['client_company_name'], $params['payment_term_description'], $params['client_company_name']);
-		unset($params['payment_type_id'], $params['payment_type_description']);
+		unset($params['payment_type_id'], $params['payment_type_description'], $params['soldby_name']);
 		//$app['monolog']->addInfo(print_r($params, true));
 		// contract number
 		if (empty($params['contract_number'])){
@@ -195,6 +199,16 @@ class Contract extends AbstractBusinessService {
 			list($yr,$mon,$day) = explode("-",$params['sale_date']);
 			if (!checkdate($mon,$day,$yr)){
 				$error[] = "Sales date appears to be an invalid date";
+			}
+		}
+		
+		// sold by
+		if (empty($params['soldby_id'])){
+			$error[] = "Sold by is required";
+		} else {
+			$user = $app['business.user']->getById($params['soldby_id']);
+			if (!$user['id']){
+				$error[] = "Invalid user specified for Sold By";
 			}
 		}
 		

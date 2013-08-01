@@ -291,6 +291,7 @@ Ext.define('JavisERP.controller.ContractController', {
 				contractForm.getForm().findField('advertisements').setValue(ads);
 				contractForm.getForm().findField('client_id').setValue(new JavisERP.model.Client({id : record.data.client_id, company_name : record.data.client_company_name}));
 				contractForm.getForm().findField('payment_term_id').setValue(new JavisERP.model.PaymentTerm({id : record.data.payment_term_id, description: record.data.payment_term_description}));
+				contractForm.getForm().findField('soldby_id').setValue(new JavisERP.model.User({id : record.data.soldby_id, fullname : record.data.soldby_name}));
 				if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
 					contractForm.getForm().findField('client_id').setReadOnly(true);
 				}

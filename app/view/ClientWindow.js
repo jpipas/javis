@@ -31,10 +31,10 @@ Ext.define('JavisERP.view.ClientWindow', {
                             cls: 'clientWindowToolBar',
                             itemId: 'clientWindowToolBar',
                             items: [
-                            		{
-                            				xtype: 'tbspacer',
-                            				flex: 1
-                            		},
+                        		{
+                    				xtype: 'tbspacer',
+                    				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'clientsavebutton',
@@ -102,7 +102,6 @@ Ext.define('JavisERP.view.ClientWindow', {
                                             valueField: 'id',
                                             store: {type: 'territorystore'},
                                             queryMode: 'remote',
-                                            triggerAction: 'query',
                                             minChars: 3,
                                             typeAdead:true,
                                             name: 'territory_id'

@@ -51,6 +51,12 @@ Ext.define('JavisERP.view.ContractGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    flex: 2,
+                    dataIndex: 'soldby_name',
+                    text: 'Sold By'
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'total_sales',
                     renderer: 'usMoney',
                     flex: 1,

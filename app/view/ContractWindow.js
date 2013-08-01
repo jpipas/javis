@@ -34,10 +34,10 @@ Ext.define('JavisERP.view.ContractWindow', {
                             cls: 'contracttoolbar',
                             itemId: 'contractwindowtoolbar',
                             items: [
-                            		{
-                            				xtype: 'tbspacer',
-                            				flex: 1
-                            		},
+                        		{
+                        				xtype: 'tbspacer',
+                        				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'contractsave',
@@ -129,6 +129,18 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             minValue: 0,
                                             decimalPrecision: 3,
                                             step: 0.001
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            name: 'soldby_id',
+                                            fieldLabel: 'Sold By',
+                                            displayField: 'fullname',
+                                            store: {type: 'userstore'},
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
+                                            valueField: 'id'
                                         },
                                         {
                                             xtype:'datefield',
