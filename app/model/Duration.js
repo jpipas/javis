@@ -15,12 +15,7 @@ Ext.define('JavisERP.model.Duration', {
     ],
     proxy: {
         type: 'srest',
-        api: {
-            create: '/server/web/index.php/duration/new',
-            read: '/server/web/index.php/contract/duration/',
-            update: '/server/web/index.php/duration/update',
-            destroy: '/server/web/index.php/duration/delete'
-        },
+        url: '/duration/',
         reader: {
             type: 'json',
             root: 'duration',

@@ -16,7 +16,11 @@ Ext.define('JavisERP.model.PaymentTerm', {
 
     proxy: {
         type: 'srest',
+<<<<<<< HEAD
         url: '/paymentterm/',
+=======
+        url: '/server/web/index.php/paymentterm/',
+>>>>>>> bf2639322ec818770b02a640207942ffe8f3621e
         reader: {
             type: 'json',
             idProperty: 'id',

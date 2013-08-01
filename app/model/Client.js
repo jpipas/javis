@@ -43,8 +43,8 @@ Ext.define('JavisERP.model.Client', {
             type: 'string'
         },
         {
-        		name: 'zipcode',
-        		type: 'string'
+       		name: 'zipcode',
+       		type: 'string'
         },
         {
             name: 'postal_code'
@@ -126,7 +126,7 @@ Ext.define('JavisERP.model.Client', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/client/',
+        url: '/client/',
         reader: {
             type: 'json',
             idProperty: 'id',

@@ -87,7 +87,7 @@ Ext.define('JavisERP.model.Activity', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/activity/',
+        url: '/activity/',
         reader: {
             type: 'json',
             idProperty: 'id',

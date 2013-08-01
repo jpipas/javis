@@ -13,7 +13,7 @@ Ext.define('JavisERP.model.PostalCode', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/postalcode/',
+        url: '/postalcode/',
         reader: {
             type: 'json',
             idProperty: 'id',

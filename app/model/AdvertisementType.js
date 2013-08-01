@@ -18,7 +18,7 @@ Ext.define('JavisERP.model.AdvertisementType', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/advertisement/type/',
+        url: '/advertisement/type/',
         reader: {
             type: 'json',
             root: 'adType',

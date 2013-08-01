@@ -69,7 +69,7 @@ Ext.define('JavisERP.model.User', {
 
     proxy: {
         type: 'srest',
-        url: '/server/web/index.php/user/',
+        url: '/user/',
         reader: {
             type: 'json',
             idProperty: 'id',
