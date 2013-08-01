@@ -14,63 +14,64 @@ class AdList extends AbstractBusinessService
     public function getList($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         $lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+    		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'd.date_string';
+		}
+    		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){
+			//$where[] = "p.description LIKE '".addslashes($query)."%'";
+		
+		// handle additional filters
+		} elseif (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					$qq = $this->db->quote($f['value']);
+					if ($f['property'] == 'client_id'){
+						$where[$f['property']] = 'cl.id = '.$qq;
+					} else {
+						$where[$f['property']] = $f['property']." = ".$qq;
+					}
+        		}
+			}
+		
+		// search criteria was passed in
+		} elseif (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
+					$or[] = $field.' LIKE '.$qq;
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			}
+		}
+    		
+		// make sure we have a territory, publication, and duration
+		if (isset($where['c.territory_id']) && isset($where['p.id']) && isset($where['d.id'])){
+    		if (@count($where) > 0){
+    			$wsql = " AND ".implode(" AND ", $where);
     		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'd.date_string';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){
-    			//$where[] = "p.description LIKE '".addslashes($query)."%'";
-    		
-    		// handle additional filters
-    		} elseif (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					$qq = $this->db->quote($f['value']);
-    					if ($f['property'] == 'client_id'){
-    						$where[$f['property']] = 'cl.id = '.$qq;
-    					} else {
-    						$where[$f['property']] = $f['property']." = ".$qq;
-    					}
-            }
-    			}
-    		
-    		// search criteria was passed in
-    		} elseif (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-    					$or[] = $field.' LIKE '.$qq;
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			}
-    		}
-    		
-    		// make sure we have a territory, publication, and duration
-    		if (isset($where['c.territory_id']) && isset($where['p.id']) && isset($where['d.id'])){
-	    		if (@count($where) > 0){
-	    			$wsql = " AND ".implode(" AND ", $where);
-	    		}
 	        $sql = "SELECT SQL_CALC_FOUND_ROWS
 	        	DISTINCT(cl.company_name) AS 'client',
 	        	con.full_name 						AS 'marketing_dir',
+	        	c.contract_number					AS contract_number,
 	        	adt.description 					AS 'ad_type',
 	        	ads.description 					AS 'ad_size',
 	        	ds.username 							AS 'designer',
@@ -102,10 +103,10 @@ class AdList extends AbstractBusinessService
 	        $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
 	        return array($totalCount, $rows);
 	        
-	      // if a territory, publication, and duration weren't specified, then don't search
-	      } else {
-	      	return array(0, array());
-	      }
+		// if a territory, publication, and duration weren't specified, then don't search
+		} else {
+			return array(0, array());
+		}
     }
 
 }

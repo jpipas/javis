@@ -35,6 +35,12 @@ Ext.define('JavisERP.view.AdListGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'contract_number',
+                    flex: 1,
+                    text: 'Contract #'
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'ad_type',
                     flex: 1,
                     text: 'Ad Type'

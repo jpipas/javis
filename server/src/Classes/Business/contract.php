@@ -60,6 +60,10 @@ class Contract extends AbstractBusinessService {
 				$qq = $this->db->quote($search['query'].'%');
 				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
 					switch ($field){
+						case 'soldby_name':
+							$or[] = 'CONCAT(employee.first_name, \' \',employee.last_name) LIKE '.$qq;
+							break;
+						
 						case 'client_company_name':
 							$or[] = 'client.company_name LIKE '.$qq;
 							break;

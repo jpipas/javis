@@ -26,6 +26,10 @@ Ext.define('JavisERP.model.AdList', {
             type: 'string'
         },
         {
+        	name: 'contract_number',
+        	type: 'string'
+        },
+        {
             name: 'marketing_dir',
             type: 'string'
         },
