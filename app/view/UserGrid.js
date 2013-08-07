@@ -18,20 +18,29 @@ Ext.define('JavisERP.view.UserGrid', {
             },
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-user-edit',
-                            tooltip: 'Edit Employee',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-user-delete',
-                            tooltip: 'Delete Employee',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Employee',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-user-edit',
+	                itemId: 'user_edit',
+                    resourceId: 'user_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Employee',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-user-delete',
+	                itemId: 'user_delete',
+                    resourceId: 'user_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'id',
@@ -97,23 +106,22 @@ Ext.define('JavisERP.view.UserGrid', {
                             xtype: 'button',
                             itemId: 'newuser',
                             iconCls: 'ui-silk ui-silk-user-add',
-                            text: 'New Employee'
+                            text: 'New Employee',
+		                    resourceId: 'user_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
-                        {
-                    				xtype: 'tbspacer',
-                    				flex: 1
-                    		},
-				                {
-				                    xtype: 'gridsearchingbar',
-				                    inputWidth: 200,
-				                    grid: this,
-				                    border: 0,
-				                    showSelectAll: true,
-				                    menuIconCls: 'ui-silk ui-silk-magnifier',
-				                    disableIndexes: ['id'],
-				                    checkIndexes: ['first_name','last_name'],
-                    				items: ['->']
-				                }
+		                {
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['id'],
+		                    checkIndexes: ['first_name','last_name'],
+            				items: ['->']
+		                }
                     ]
                 },
                 {

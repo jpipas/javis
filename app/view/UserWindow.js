@@ -75,8 +75,9 @@ Ext.define('JavisERP.view.UserWindow', {
                                     id: 'user_column1',
                                     itemId: 'userwindow_col1',
                                     defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%'
+                                        padding: '5px 0px',
+                                        anchor: '95%',
+                                        labelAlign: 'right'
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -114,7 +115,8 @@ Ext.define('JavisERP.view.UserWindow', {
                                     flex: 1,
                                     defaults: {
                                         padding: '5px 0px',
-                                        anchor: '95%'
+                                        anchor: '95%',
+                                        labelAlign: 'right'
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -148,19 +150,22 @@ Ext.define('JavisERP.view.UserWindow', {
                                             initialPassField: 'password'
                                         },
                                         {
-                                            xtype: 'combobox',
-                                            cls: 'territory',
-                                            itemId: 'territory_id',
-                                            name: 'territory_id',
-                                            fieldLabel: 'Territory',
-                                            displayField: 'name',
-                                            store: 'TerritoryStore',
-                                            hideTrigger: true,
-                                            triggerAction: 'query',
-                                            pageSize: true,
-                                            minChars: 3,
-                                            valueField: 'id'
-                                        },
+				                            xtype: 'comboboxselect',
+				                            multiSelect:true,
+				                            fieldLabel: 'Role(s)',
+				                            displayField: 'title',
+				                            emptyText: 'Select a role...',
+				                            labelAlign: 'right',
+				                            valueField: 'id',
+				                            store: {type: 'permissionrolestore'},
+				                            grow: true,
+				                            forceSelection: false,
+				                            queryMode: 'remote',
+				                            typeAdead:true,
+				                            name: 'roles',
+				                            filterPickList: true,
+                                            pinList: false
+				                        },
                                         {
                                             xtype: 'combobox',
                                             cls: 'manager',
@@ -169,7 +174,7 @@ Ext.define('JavisERP.view.UserWindow', {
                                             name: 'manager_user_id',
                                             fieldLabel: 'Manager',
                                             displayField: 'fullname',
-                                            store: 'UserDropDown',
+                                            store: {type: 'userstore'},
                                             hideTrigger: true,
                                             triggerAction: 'query',
                                             pageSize: true,

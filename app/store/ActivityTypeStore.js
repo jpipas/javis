@@ -1,5 +1,6 @@
 Ext.define('JavisERP.store.ActivityTypeStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.activitytypestore',
 
     constructor: function(cfg) {
         var me = this;

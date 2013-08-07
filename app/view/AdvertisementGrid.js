@@ -25,7 +25,10 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                             iconCls: 'ui-silk ui-silk-layout-add',
                             text: 'New Advertisement',
                             cls:'newAdvertisementButton',
-                            itemId: 'newadvertisement'
+                            itemId: 'newadvertisement',
+		                    resourceId: 'advertisement_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
 		                    xtype: 'gridsearchingbar',
@@ -49,45 +52,52 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
             ],
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-layout-edit',
-                            tooltip: 'Edit Advertisement',
-                            hideIndex: 'edit_action',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-layout-delete',
-                            tooltip: 'Delete Advertisement',
-                            hideIndex: 'delete_action',
-                            callback: Ext.emptyFn
-                        }
-                    ]
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Advertisement',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-layout-edit',
+	                itemId: 'advertisement_edit',
+                    resourceId: 'advertisement_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Advertisement',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-layout-delete',
+	                itemId: 'advertisement_delete',
+                    resourceId: 'advertisement_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+            		xtype: 'gridcolumn',
+            		dataIndex: 'client_company_name',
+            		text: 'Client',
+            		flex: 2
                 },
                 {
-                		xtype: 'gridcolumn',
-                		dataIndex: 'client_company_name',
-                		text: 'Client',
-                		flex: 2
+            		xtype: 'gridcolumn',
+            		dataIndex: 'publication_names',
+            		text: 'Publication(s)',
+            		flex: 3
                 },
                 {
-                		xtype: 'gridcolumn',
-                		dataIndex: 'publication_names',
-                		text: 'Publication(s)',
-                		flex: 3
+            		xtype: 'gridcolumn',
+            		dataIndex: 'designer_name',
+            		text: 'Designer',
+            		flex: 2
                 },
                 {
-                		xtype: 'gridcolumn',
-                		dataIndex: 'designer_name',
-                		text: 'Designer',
-                		flex: 2
-                },
-                {
-                		xtype: 'gridcolumn',
-                		dataIndex: 'salesrep_name',
-                		text: 'Sales Rep',
-                		flex: 2
+            		xtype: 'gridcolumn',
+            		dataIndex: 'salesrep_name',
+            		text: 'Sales Rep',
+            		flex: 2
                 },
                 {
                     xtype: 'gridcolumn',
@@ -105,7 +115,7 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                     xtype: 'datecolumn',
                     dataIndex: 'created_at',
                     text: 'Created On',
-										format: 'm/d/Y g:ia',
+					format: 'm/d/Y g:ia',
                     flex: 1
                 }
             ]

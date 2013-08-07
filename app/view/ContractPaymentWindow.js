@@ -31,8 +31,8 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             itemId: 'adwindowtoolbar',
                             items: [
                         		{
-                        				xtype: 'tbspacer',
-                        				flex: 1
+                    				xtype: 'tbspacer',
+                    				flex: 1
                         		},
                                 {
                                     xtype: 'button',

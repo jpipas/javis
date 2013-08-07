@@ -16,20 +16,29 @@ Ext.define('JavisERP.view.ContractGrid', {
             },
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-folder-edit',
-                            tooltip: 'Edit Contract',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-folder-delete',
-                            tooltip: 'Delete Contract',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Contract',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-folder-edit',
+	                itemId: 'contract_edit',
+                    resourceId: 'contract_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Contract',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-folder-delete',
+	                itemId: 'contract_delete',
+                    resourceId: 'contract_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'contract_number',
@@ -121,7 +130,10 @@ Ext.define('JavisERP.view.ContractGrid', {
                             icon: '',
                             cls: 'newcontract',
                             iconCls: 'ui-silk ui-silk-table-add',
-                            text: 'New Contract'
+                            text: 'New Contract',
+		                    resourceId: 'contract_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
 		                    xtype: 'gridsearchingbar',

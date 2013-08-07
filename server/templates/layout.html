@@ -25,6 +25,12 @@
         <script src="/resources/js/Printer.js" type="text/javascript" charset="utf-8"></script>
         <script src="/resources/js/GridSearching.js" type="text/javascript" charset="utf-8"></script>
         <script src="/resources/js/ComboFilter.js" type="text/javascript" charset="utf-8"></script>
+        <script language="javascript">
+        	var App = ({user: { resources : [] }});
+        	{% if resources is defined and resources|length > 0 %}
+        	App.user.resources = ({{ resources|json_encode|raw }});
+        	{% endif %}
+        </script>
         <script type="text/javascript" src="/app.js"></script>
 
 

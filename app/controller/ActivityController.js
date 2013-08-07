@@ -106,23 +106,26 @@ Ext.define('JavisERP.controller.ActivityController', {
         this.client.id = null;
         this.client.name = null;
         me.control({
-        		"activitygrid rowactions": {
-                action: me.onActivityActionClick
+        	"activitygrid #activity_edit": {
+                click: me.editActivity
+            },
+            "activitygrid #activity_delete": {
+                click: me.deleteActivity
             },
             "activitygrid toolbar button[itemId=newactivitytask]": {
                 click: function(button, options, e){
-                		this.onNewActivityClick('task');
-                	}
+            		this.onNewActivityClick('task');
+            	}
             },
             "activitygrid toolbar button[itemId=newactivityphone]": {
                 click: function(button, options, e){
-                		this.onNewActivityClick('phone');
-                	}
+            		this.onNewActivityClick('phone');
+            	}
             },
             "activitygrid toolbar button[itemId=newactivityevent]": {
                 click: function(button, options, e){
-                		this.onNewActivityClick('event');
-                	}
+            		this.onNewActivityClick('event');
+            	}
             },
             "activitygrid toolbar filtercombo[itemId=activtyTypeFilter]": {
             		beforefilter: function(itm, filtervalue, filterfield){
@@ -184,7 +187,7 @@ Ext.define('JavisERP.controller.ActivityController', {
         return this.getClientForm().getForm().findField('company_name').getValue();
     },
 
-    editActivity: function(record){
+    editActivity: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var uWindow = new JavisERP.view.ActivityWindow();
         var uForm = this.getActivityForm();
         this.getActivityModel().load(record.data.id, {
@@ -202,7 +205,7 @@ Ext.define('JavisERP.controller.ActivityController', {
         },500);
     },
 
-    deleteActivity: function(record,grid){
+    deleteActivity: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Activity?',
             msg: 'You are about to delete this activity.  Would you like to proceed?',

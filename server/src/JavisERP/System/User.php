@@ -26,7 +26,6 @@ final class User implements UserInterface
     private $enabled;
     private $id;
     private $managerId;
-    private $territoryId;
     private $firstName;
     private $lastName;
     private $email;
@@ -34,8 +33,9 @@ final class User implements UserInterface
     private $credentialsNonExpired;
     private $accountNonLocked;
     private $roles;
+    private $resources;
 
-    public function __construct($id, $username, $password, $email, $managerId, $territoryId, $firstName, $lastName, array $roles = array(), $enabled = true, $userNonExpired = true, $credentialsNonExpired = true, $userNonLocked = true)
+    public function __construct($id, $username, $password, $email, $managerId, $firstName, $lastName, array $resources = array(), $enabled = true, $userNonExpired = true, $credentialsNonExpired = true, $userNonLocked = true)
     {
         if (empty($username)) {
             throw new \InvalidArgumentException('The username cannot be empty.');
@@ -47,10 +47,10 @@ final class User implements UserInterface
         $this->accountNonExpired = $userNonExpired;
         $this->credentialsNonExpired = $credentialsNonExpired;
         $this->accountNonLocked = $userNonLocked;
-        $this->roles = $roles;
+        $this->roles = array(); //$roles;
+        $this->resources = $resources;
         $this->id = $id;
         $this->managerId = $managerId;
-        $this->territoryId = $territoryId;
         $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -63,6 +63,14 @@ final class User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getResources()
+    {
+        return $this->resources;
     }
 
     /**

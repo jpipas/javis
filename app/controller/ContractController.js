@@ -153,8 +153,11 @@ Ext.define('JavisERP.controller.ContractController', {
         this.client.id = null;
         this.client.name = null;
         me.control({
-            "contractgrid rowactions": {
-                action: me.onContractActionClick
+            "contractgrid #contract_edit": {
+                click: me.editContract
+            },
+            "contractgrid #contract_delete": {
+                click: me.deleteContract
             },
             "contractgrid toolbar button[cls=newcontract]": {
                 click: me.onNewContractClick
@@ -242,34 +245,9 @@ Ext.define('JavisERP.controller.ContractController', {
         if (this.getContentCards().getLayout().getActiveItem().getXType() == 'clientrecord'){
         	cForm.findField('client_id').setValue(new JavisERP.model.Client({ id: this.getClientId(), company_name: this.getClientName() })).setReadOnly(true);
         }
-        
-        /*
-        var contract_id = null;
-        me.contract = new JavisERP.model.Contract({
-            client_id: me.client_id
-        });
-        me.durationStore = this.getDurationStore();
-        me.contract.save({
-            scope: this,
-            callback: function(record,operation){
-                if(operation.success){
-                    contract_id = record.data.id;
-                    client = record.data.client_id;
-
-                    this.getContractWindow().show();
-                    this.getContractForm().getForm().reset(true);
-                    this.getContractForm().loadRecord(record);
-                    this.getContractForm().getForm().setValues({client_name: operation.resultSet.records[0].raw.client[0].company_name, is_new:1});
-                    me.durationStore.clearFilter(true);
-                    this.getAdvertisementGrid().getStore().clearFilter(true);
-                    this.getAdvertisementGrid().getStore().filter("contract_id",contract_id);
-                }
-            }
-        });
-        */
     },
 
-    editContract: function(record){
+    editContract: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
 		var contractWindow = new JavisERP.view.ContractWindow();
         var contractForm = this.getContractForm();
         var cc = this.getContentCards();
@@ -302,7 +280,7 @@ Ext.define('JavisERP.controller.ContractController', {
         contractWindow.show();
     },
     
-    deleteContract: function(record,grid){
+    deleteContract: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Contract?',
             msg: 'You are about to delete this contract.  Would you like to proceed?',

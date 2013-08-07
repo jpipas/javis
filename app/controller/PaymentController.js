@@ -194,8 +194,11 @@ Ext.define('JavisERP.controller.PaymentController', {
             "#paymentWindow": {
                 beforeshow: this.onPaymentWindowBeforeShow
             },
-            "paymentgrid rowactions": {
-                action: me.onPaymentActionClick
+            "paymentgrid #payment_edit": {
+                click: me.editPayment
+            },
+            "paymentgrid #payment_delete": {
+                click: me.deletePayment
             },
             "button[cls=paymentsavebutton]": {
                 click: this.onPaymentSaveButtonClick
@@ -268,7 +271,7 @@ Ext.define('JavisERP.controller.PaymentController', {
     	}
     },
 
-	editPayment: function(record){
+	editPayment: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var payWindow = new JavisERP.view.ContractPaymentWindow();
         var pForm = this.getPaymentForm();
         var cc = this.getContentCards();
@@ -287,9 +290,9 @@ Ext.define('JavisERP.controller.PaymentController', {
                 pForm.getForm().findField('payment_category_id').setValue(new JavisERP.model.PaymentCategory({ id: record.data.payment_category_id, description: record.data.payment_category_description }));
                 if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
 		        	pForm.getForm().findField('client_id').setReadOnly(true);
-			        pForm.findField('contract_id').focus('', 10);
+			        pForm.getForm().findField('contract_id').focus('', 10);
 		        } else {
-		        	pForm.findField('client_id').focus('', 10);
+		        	pForm.getForm().findField('client_id').focus('', 10);
 		        }
             }
         });
@@ -304,7 +307,7 @@ Ext.define('JavisERP.controller.PaymentController', {
         */
     },
 
-    deletePayment: function(record,grid){
+    deletePayment: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Payment?',
             msg: 'You are about to delete this payment. Would you like to proceed?',

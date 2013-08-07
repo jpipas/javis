@@ -37,7 +37,6 @@ Ext.define('JavisERP.controller.Portal', {
     },
 
     onPortletClose: function(portlet) {
-//        console.log(portlet.title);
         this.showMsg('"' + portlet.title + '" was removed');
     },
 

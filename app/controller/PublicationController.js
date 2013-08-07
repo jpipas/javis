@@ -83,8 +83,11 @@ Ext.define('JavisERP.controller.PublicationController',{
     init: function(application) {
         var me = this;
         this.control({
-            "publicationgrid rowactions": {
-                action: this.onPublicationActionClick
+            "publicationgrid #publication_edit": {
+            	click: this.editPublication
+            },
+            "publicationgrid #publication_delete": {
+            	click: this.deletePublication
             },
             "publicationgrid toolbar button[cls=newpublication]": {
                 click: this.onNewPublicationClick
@@ -100,7 +103,7 @@ Ext.define('JavisERP.controller.PublicationController',{
         });
     },
 
-    editPublication: function(record) {
+    editPublication: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var publicationWindow = new JavisERP.view.PublicationWindow();
         var publicationForm = this.getPublicationForm();
         publicationWindow.show();
@@ -121,7 +124,7 @@ Ext.define('JavisERP.controller.PublicationController',{
 
     },
 
-    deletePublication: function(record,grid) {
+    deletePublication: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Publication?',
             msg: 'You are about to delete this publication.  Deleting this publication will also delete all advertisements associated with this publication.  Proceed with caution.  Would you like to proceed?',

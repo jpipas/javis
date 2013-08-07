@@ -16,20 +16,29 @@ Ext.define('JavisERP.view.ActivityGrid', {
             },
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                        	iconIndex: 'type_cls_edit',
-                            tooltip: 'Edit Activity',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                        	iconIndex: 'type_cls_delete',
-                            tooltip: 'Delete Activity',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Activity',
+	                align: 'center',
+	                getClass: function(v,meta,r){ return r.data.type_cls_edit; },
+	                itemId: 'activity_edit',
+                    resourceId: 'activity_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Activity',
+	                align: 'center',
+	                getClass: function(v,meta,r){ return r.data.type_cls_delete; },
+	                itemId: 'activity_delete',
+                    resourceId: 'activity_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'gridcolumn',
                     flex: 3,
@@ -82,28 +91,38 @@ Ext.define('JavisERP.view.ActivityGrid', {
                     dock: 'top',
                     items: [
                         {
-                        		itemId: 'newactivitytask',
+                        	itemId: 'newactivitytask',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-clock-add',
-                            text: 'New Task'
+                            text: 'New Task',
+                            resourceId: 'activity_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
+                            
                         },
                         {
                             xtype: 'tbseparator'
                         },
                         {
-                        		itemId: 'newactivityphone',
+                        	itemId: 'newactivityphone',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-telephone-add',
-                            text: 'New Phone Call'
+                            text: 'New Phone Call',
+                            resourceId: 'activity_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
                             xtype: 'tbseparator'
                         },
                         {
-                        		itemId: 'newactivityevent',
+                        	itemId: 'newactivityevent',
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-date-add',
-                            text: 'New Event'
+                            text: 'New Event',
+                            resourceId: 'activity_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
                             xtype: 'tbseparator'
@@ -114,7 +133,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
                             hideLabel: true,
                             emptyText: 'Filter Activity Type...',
                             displayField: 'description',
-                            store: 'ActivityTypeStore',
+                            store: {type: 'activitytypestore'},
                             recordField: 'id',
                             searchField: 'type_id',
                             clearable: true

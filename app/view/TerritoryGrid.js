@@ -46,12 +46,25 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
-                    {
-                        xtype: 'button',
-                        iconCls: 'ui-silk ui-silk-map-add',
-                        itemId: 'newterritory',
-                        text: 'New Territory'
-                    }
+	                    {
+	                        xtype: 'button',
+	                        iconCls: 'ui-silk ui-silk-map-add',
+	                        itemId: 'newterritory',
+	                        text: 'New Territory',
+		                    resourceId: 'territory_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
+	                    },
+	                    {
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['id'],
+		                    items: ['->']
+		                }
                     ]
                 },
                 {
@@ -63,21 +76,30 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                 }
             ],
             columns: [
-            		{
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-map-edit',
-                            tooltip: 'Edit Territory',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-map-delete',
-                            tooltip: 'Delete Territory',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Territory',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-map-edit',
+	                itemId: 'territory_edit',
+                    resourceId: 'territory_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Territory',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-map-delete',
+	                itemId: 'territory_delete',
+                    resourceId: 'territory_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'numbercolumn',
                     dataIndex: 'id',

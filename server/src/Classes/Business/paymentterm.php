@@ -12,7 +12,14 @@ class PaymentTerm extends AbstractBusinessService
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM payment_term";
+        $sql = "SELECT
+        	*
+        FROM
+        	payment_term
+        WHERE
+        	deleted_at IS NULL
+        ORDER BY
+        	payment_term.description";
         return $this->db->fetchAll($sql);
     }
 

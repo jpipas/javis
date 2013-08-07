@@ -242,7 +242,7 @@ Ext.define('JavisERP.controller.ClientController', {
         this.application.fireEvent('navigationChange','ClientGrid');
     },
 
-    deleteClient: function(record,grid){
+    deleteClient: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
     	var me = this;
         Ext.Msg.show({
             title: 'Delete Client?',
@@ -284,9 +284,6 @@ Ext.define('JavisERP.controller.ClientController', {
         });
 
         this.control({
-            "clientgrid rowactions, clientportlet rowactions": {
-                action: this.onActionColumnClick
-            },
             "recordnav[cls=clientrecordnav] button[cls=edit_button]": {
                 click: this.onEditButtonClick
             },
@@ -298,6 +295,12 @@ Ext.define('JavisERP.controller.ClientController', {
             },
             "clientgrid #newClientButton": {
             	click: this.onNewButtonClick
+            },
+            "clientgrid #client_view, clientportlet #client_view": {
+            	click: this.changeClientRecord
+            },
+            "clientgrid #client_delete, clientportlet #client_delete": {
+            	click: this.deleteClient
             },
             "button[cls=clientsavebutton]": {
                 click: this.onSaveClientButtonClick
@@ -314,8 +317,8 @@ Ext.define('JavisERP.controller.ClientController', {
         });
     },
 
-    changeClientRecord: function(grid, col, row, record) {
-        this.viewClientRecord(this.getClientGrid().getStore().getAt(row).data.id);
+    changeClientRecord: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+        this.viewClientRecord(record.data.id);
     },
     
     viewClientRecord: function(client_id){

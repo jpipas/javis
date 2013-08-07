@@ -33,16 +33,17 @@ Ext.define('JavisERP.view.ActivityPortlet', {
             },
             columns: [
                 {
-                    xtype: 'rowactions',
-                    flex: 1,
-                    actions: [
-                        {
-                        		iconIndex: 'type_cls',
-                            tooltip: 'Activity',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Activity',
+	                align: 'center',
+	                getClass: function(v,meta,r){ return r.data.type_cls_edit; },
+	                itemId: 'activity_edit',
+                    resourceId: 'activity_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'gridcolumn',
                     hidden: true,

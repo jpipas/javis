@@ -25,7 +25,10 @@ Ext.define('JavisERP.view.ContactGrid', {
                             cls: 'newcontact',
                             itemId: 'newcontact',
                             iconCls: 'ui-silk ui-silk-vcard-add',
-                            text: 'New Contact'
+                            text: 'New Contact',
+		                    resourceId: 'contact_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         }
                     ]
                 },
@@ -39,22 +42,29 @@ Ext.define('JavisERP.view.ContactGrid', {
             ],
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-vcard-edit',
-                            tooltip: 'View/Edit Contact',
-                            hideIndex: 'edit_action',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-vcard-delete',
-                            tooltip: 'Delete Contact',
-                            hideIndex: 'delete_action',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Contact',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-vcard-edit',
+	                itemId: 'contact_edit',
+                    resourceId: 'contact_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Contact',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-vcard-delete',
+	                itemId: 'contact_delete',
+                    resourceId: 'contact_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                 	flex: 2,
                     xtype: 'gridcolumn',

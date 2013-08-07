@@ -69,8 +69,13 @@ class User extends AbstractBusinessService
     			if (@count($search['fields']) >= 1){
     				$or = array();
     				$qq = $this->db->quote($search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
+    				$qqq = $this->db->quote('%'.$search['query'].'%');
+    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$qqq){
     					switch ($field){
+    						case 'roles':
+    							$or[] = 'pr.roles LIKE '.$qqq;
+    							break;
+    							
     						case 'manager_name':
     							$or[] = 'm.first_name LIKE '.$qq. ' OR m.last_name LIKE '.$qq;
     							break;
@@ -103,11 +108,25 @@ class User extends AbstractBusinessService
         	employee.*,
         	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname,
         	CONCAT(m.first_name, ' ',m.last_name) AS manager_name,
-        	territory.name AS territory_name
+        	territory.name AS territory_name,
+        	pr.roles
         FROM
         	(employee)
         	LEFT JOIN employee AS m ON m.id = employee.manager_user_id
         	LEFT JOIN territory ON territory.id = employee.territory_id
+        	LEFT JOIN (SELECT 
+        			employee_id,
+        			GROUP_CONCAT(permission_role.title) AS roles
+        		FROM
+        			(employee_role,
+        			permission_role)
+        		WHERE
+        			permission_role.id = employee_role.role_id AND 
+        			permission_role.deleted_at IS NULL
+        		GROUP BY
+        			employee_role.employee_id
+        		ORDER BY
+        			permission_role.title) AS pr ON pr.employee_id = employee.id
         WHERE
         	employee.deleted_at IS NULL
         	$wsql
@@ -181,12 +200,15 @@ class User extends AbstractBusinessService
 		    }
 		    
 		    // make sure we have a valid territory
+		    /*
+		    2013-08-05 DHS User's are assigned to territories under territory.
 		    if (empty($params['territory_id'])){
 		    	$error[] = "Territory is a required field";
 		    } else {
 		    	$territory = $app['business.territory']->getById($params['territory_id']);
 		    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
 		    }
+		    */
 		    
 		    // check that we have a valid manager
 		    if (!empty($params['manager_user_id'])){
@@ -195,35 +217,60 @@ class User extends AbstractBusinessService
 		    		$error[] = "Invalid manager selected";		    		
 		    	}
 		    }
+		    
+		    if (@count($params['roles']) > 0){
+		    	foreach ($params['roles'] as $rid){
+		    		$role = $app['business.permissionrole']->getById($rid);
+		    		if (!isset($role['id'])){
+		    			$error[] = 'Invalid role specified';
+		    			break;
+		    		}
+		    	}
+		    }
 		    return $error;
     }
 
-    public function createUser($params) {
+    public function createUser($params) 
+    {
         unset($params['id']);
-        $params['roles'] = "ROLE_USER";
+        $roles = $params['roles'];
+        unset($params['roles']);
+        $now = new \DateTime('NOW');
+    	$params['created_at'] = $now->format('Y-m-d H:i:s');
         $this->db->insert('employee',$params);
-        $user = $this->getById($this->db->lastInsertId());
+        $id = $this->db->lastInsertId();
+        foreach ($roles as $rid){
+        	$this->db->insert('employee_role', array('employee_id' => $id, 'role_id' => $rid));
+        }
+        $user = $this->getById($id);
         return $user;
     }
 
-		public function updateUser($id, $params) {
-        $params['roles'] = "ROLE_USER";
+	public function updateUser($id, $params) 
+	{
+        $roles = $params['roles'];
+        unset($params['roles']);
+        $rows = $this->db->update('employee',$params, array('id' => $id));
+        $this->db->delete('employee_role', array('employee_id' => $id));
+        foreach ($roles as $rid){
+        	$this->db->insert('employee_role', array('employee_id' => $id, 'role_id' => $rid));
+        }
+        $user = $this->getById($id);
+        return $user;
+    }
+    
+    public function deleteUser($id) 
+    {
+    	$now = new \DateTime('NOW');
+		$params['deleted_at'] = $now->format('Y-m-d H:i:s');
         $rows = $this->db->update('employee',$params, array('id' => $id));
         $user = $this->getById($id);
         return $user;
     }
     
-    public function deleteUser($id) {
-    		$now = new \DateTime('NOW');
-				$params['deleted_at'] = $now->format('Y-m-d H:i:s');
-        $rows = $this->db->update('employee',$params, array('id' => $id));
-        $user = $this->getById($id);
-        return $user;
-    }
-    
-    public function encodePassword($username, $nonEncodedPassword, $app) {
+    public function encodePassword($username, $nonEncodedPassword, $app)
+    {
         $user = new sfUser($username, $nonEncodedPassword);
-
         return $encodePassword;
     }
 }

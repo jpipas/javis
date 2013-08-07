@@ -24,25 +24,21 @@ Ext.define('JavisERP.view.RecordNavigation', {
             items: [
                 {
                     xtype: 'button',
-                    cls: 'back-arrow',
-                    iconCls: 'ui-silk ui-silk-control-rewind',
-                    tooltip: 'Prev. Record'
-                },
-                {
-                    xtype: 'button',
-                    cls: 'next-arrow',
-                    iconCls: 'ui-silk ui-silk-control-fastforward',
-                    tooltip: 'Next Record'
-                },
-                {
-                    xtype: 'button',
                     cls: 'edit_button',
-                    text: 'Edit'
+                    text: 'Edit',
+                    iconCls: 'ui-silk ui-silk-user-edit',
+                    resourceId: 'client_edit',
+                    resourceType: 'disable',
+                    plugins: ['permission']
                 },
                 {
                     xtype: 'button',
                     cls: 'new_button',
-                    text: 'New'
+                    text: 'New',
+                    iconCls: 'ui-silk ui-silk-user-add',
+                    resourceId: 'client_create',
+                    resourceType: 'disable',
+                    plugins: ['permission']
                 },
                 {
                     xtype: 'tbseparator'
@@ -50,6 +46,7 @@ Ext.define('JavisERP.view.RecordNavigation', {
                 {
                     xtype: 'button',
                     itemId: 'ClientGrid',
+                    iconCls: 'ui-silk ui-silk-magnifier',
                     cls: 'listview_button',
                     text: 'List View'
                 }

@@ -268,7 +268,6 @@ Ext.define('JavisERP.view.ContractWindow', {
 				              	this.fireEvent("ontrigger2click", this, e);
 					        },
 					        beforeQuery: function(e) {
-					        	console.log('before query');
 					        	this.fireEvent('contractadscomboquery', this, e);
 					        }
                         }

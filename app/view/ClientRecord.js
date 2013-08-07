@@ -186,8 +186,12 @@ Ext.define('JavisERP.view.ClientRecord', {
                             layout: {
                                 type: 'fit'
                             },
+                            minHeight: 350,
                             bodyPadding: 5,
                             title: 'General',
+                            resourceId: 'client_tab_general',
+                            resourceType: 'disable',
+                            plugins: ['permission'],
                             items: [
                                 {
                                     xtype: 'tabpanel',
@@ -195,13 +199,17 @@ Ext.define('JavisERP.view.ClientRecord', {
                                     cls : 'generaltab',
                                     activeTab: 0,
                                     plain: true,
+                                    minHeight: 280,
+                                    flex: 1,
+                                    layout: {
+                                        type: 'fit'
+                                    },
                                     items: [
                                         {
                                             title: 'Contacts',
                                             xtype: 'contactgrid',
                                             itemId: 'ContactGrid',
                                             header: false,
-                                            hideHeaders: false,
                                             border: 0
                                         },
                                         {
@@ -237,6 +245,9 @@ Ext.define('JavisERP.view.ClientRecord', {
                             minHeight: 350,
                             bodyPadding: 5,
                             title: 'Sales',
+                            resourceId: 'client_tab_sales',
+                            resourceType: 'disable',
+                            plugins: ['permission'],
                             items: [
                                 {
                                     xtype: 'container',
