@@ -23,6 +23,7 @@ final class User implements UserInterface
 {
     private $username;
     private $password;
+    private $newpassword;
     private $enabled;
     private $id;
     private $managerId;
@@ -35,7 +36,7 @@ final class User implements UserInterface
     private $roles;
     private $resources;
 
-    public function __construct($id, $username, $password, $email, $managerId, $firstName, $lastName, array $resources = array(), $enabled = true, $userNonExpired = true, $credentialsNonExpired = true, $userNonLocked = true)
+    public function __construct($id, $username, $password, $newpassword, $email, $managerId, $firstName, $lastName, array $resources = array(), $enabled = true, $userNonExpired = true, $credentialsNonExpired = true, $userNonLocked = true)
     {
         if (empty($username)) {
             throw new \InvalidArgumentException('The username cannot be empty.');
@@ -43,6 +44,7 @@ final class User implements UserInterface
 
         $this->username = $username;
         $this->password = $password;
+        $this->newpassword = $newpassword;
         $this->enabled = $enabled;
         $this->accountNonExpired = $userNonExpired;
         $this->credentialsNonExpired = $credentialsNonExpired;
@@ -71,6 +73,14 @@ final class User implements UserInterface
     public function getResources()
     {
         return $this->resources;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewPassword()
+    {
+        return $this->newpassword;
     }
 
     /**

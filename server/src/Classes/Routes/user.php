@@ -14,7 +14,7 @@ class User implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-				/* search */
+		/* search */
         $controllers->get('/', function (Application $app, Request $request) {
     	    $sort = '';
     		if ($request->get('sort')){
@@ -55,6 +55,18 @@ class User implements ControllerProviderInterface
             	return $app->json(array("success"=>false,"error"=>$error));
             } else {
             	$user_array = $app['business.user']->updateUser($id, $params);
+            	return $app->json(array("success"=>true,"user"=>$user_array));
+            }
+        });
+        
+        /* update */
+		$controllers->post('/password/new', function(Application $app, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $error = $app['business.user']->validatePassword($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$user_array = $app['business.user']->updatePassword($params);
             	return $app->json(array("success"=>true,"user"=>$user_array));
             }
         });

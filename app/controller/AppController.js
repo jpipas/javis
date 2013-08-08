@@ -49,15 +49,20 @@ Ext.define('JavisERP.controller.AppController', {
 
     navigationClick: function(itemId) {
 		if (itemId){
-	        this.getContentCards().getLayout().setActiveItem(itemId);
-
-	        var xtype = this.getContentCards().getLayout().getActiveItem().getXType();
-
-	        if(xtype.indexOf("grid") != -1){
-	            // if its a grid clear the filter and reload the store
-	            this.getContentCards().getLayout().getActiveItem().getStore().clearFilter(true);
-	            this.getContentCards().getLayout().getActiveItem().getStore().load();
-	        }
+			if (itemId.indexOf('Window') != -1){
+				var func = 'JavisERP.view.'+itemId;
+				var win = Ext.create(func,{});
+				win.show();
+			} else {
+	        	this.getContentCards().getLayout().setActiveItem(itemId);
+	        	var xtype = this.getContentCards().getLayout().getActiveItem().getXType();
+	        	
+		        if(xtype.indexOf("grid") != -1){
+		            // if its a grid clear the filter and reload the store
+		            this.getContentCards().getLayout().getActiveItem().getStore().clearFilter(true);
+		            this.getContentCards().getLayout().getActiveItem().getStore().load();
+		        }
+		    }
 		}
     }
 

@@ -151,84 +151,134 @@ class User extends AbstractBusinessService
     }
     
     public function validate(&$app, &$params){
-    		$error = array();
-    		// clear params we don't need
-    		unset($params['territory_name'], $params['territory'], $params['fullname'], $params['manager'], $params['manager_name'], $params['created_at'], $params['last_login'], $params['deleted_at']);
-    		
-    		// verify password, clear if not entered to keep existing
-    		if ($params['password'] || !$params['id']){
-    			if (!$params['id'] && empty($params['password'])){
-    				$error[] = "Password is a required field for new users";
-    			} elseif ($params['password'] != $params['retype-password']){
-    				$error[] = "Password and retyped password don't match";
-    			} else {
-		    		$nonEncodedPassword = $params['password'];
-		        $user = new sfUser($params['username'],$params['password']);
-		        $encoder = $app['security.encoder_factory']->getEncoder($user);
-		        $encodedPassword = $encoder->encodePassword($nonEncodedPassword,$user->getSalt());
+		$error = array();
+		// clear params we don't need
+		unset($params['territory_name'], $params['territory'], $params['fullname'], $params['manager'], $params['manager_name'], $params['created_at'], $params['last_login'], $params['deleted_at']);
+		
+		// verify password, clear if not entered to keep existing
+		if ($params['password'] || !$params['id']){
+			if (!$params['id'] && empty($params['password'])){
+				$error[] = "Password is a required field for new users";
+			} elseif ($params['password'] != $params['retype-password']){
+				$error[] = "Password and retyped password don't match";
+			} else {
+	    		$nonEncodedPassword = $params['password'];
+	        $user = new sfUser($params['username'],$params['password']);
+	        $encoder = $app['security.encoder_factory']->getEncoder($user);
+	        $encodedPassword = $encoder->encodePassword($nonEncodedPassword,$user->getSalt());
+	        $params['password'] = $encodedPassword;
+	        unset($params['retype-password']);
+	      }
+	    } else {
+	    	unset($params['password'], $params['retype-password']);
+	    }
+	    
+	    // check username
+	    if (empty($params['username'])){
+	    	$error[] = "Username is a required field";
+	    } else {
+	    	$match = array('username' => $params['username']);
+	    	$sql = "SELECT id FROM employee WHERE deleted_at IS NULL AND username = :username";
+	    	if ($params['id']){ 
+	    		$sql .= " AND id != :id"; 
+	    		$match['id'] = $params['id'];
+	    	}
+	    	if ($this->db->fetchColumn($sql, $match)){
+	    		$error[] = "That username is already in use";
+	    	}
+	    }
+	    
+	    // check names fields
+	    if (empty($params['first_name'])){ $error[] = "First name is a required field"; }
+	    if (empty($params['last_name'])){ $error[] = "Last name is a required field"; }
+	    
+	    // check valid e-mail address
+	    if (empty($params['email'])){
+	    	$error[] = "E-mail address is a required field";
+	    } elseif (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)){
+	    	$error[] = "E-mail address appears to be incorrectly formatted";
+	    }
+	    
+	    // make sure we have a valid territory
+	    /*
+	    2013-08-05 DHS User's are assigned to territories under territory.
+	    if (empty($params['territory_id'])){
+	    	$error[] = "Territory is a required field";
+	    } else {
+	    	$territory = $app['business.territory']->getById($params['territory_id']);
+	    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
+	    }
+	    */
+	    
+	    // check that we have a valid manager
+	    if (!empty($params['manager_user_id'])){
+	    	$manager = $this->getById($params['manager_user_id']);
+	    	if (!$manager['id']){
+	    		$error[] = "Invalid manager selected";		    		
+	    	}
+	    }
+	    
+	    if (@count($params['roles']) > 0){
+	    	foreach ($params['roles'] as $rid){
+	    		$role = $app['business.permissionrole']->getById($rid);
+	    		if (!isset($role['id'])){
+	    			$error[] = 'Invalid role specified';
+	    			break;
+	    		}
+	    	}
+	    }
+	    
+	    // set disabled and new password to 1 or 0
+	    if ($params['disabled'] != 1){ $params['disabled'] = 0; }
+	    if ($params['newpassword'] != 1){ $params['newpassword'] = 0; }
+	    return $error;
+    }
+    
+    public function validatePassword(&$app, &$params){
+		$error = array();
+		
+		// verify currently logged in user
+		$userid = null;
+		$user = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+			if (empty($userid)){
+				$error[] = "Invalid user. Please try again.";
+			}
+		} else {
+			$error[] = "Invalid user. Please try again.";
+		}
+		$params['id'] = $userid;
+		
+		// verify password
+		if ($userid){
+			if (empty($params['password'])){
+				$error[] = "Password is a required field";
+			} elseif ($params['password'] != $params['retype-password']){
+				$error[] = "Password and retyped password don't match";
+			} else {
+				$nonEncodedPassword = $params['password'];
+		        $newuser = new sfUser($user->getUsername(),$params['password']);
+		        $encoder = $app['security.encoder_factory']->getEncoder($newuser);
+		        $encodedPassword = $encoder->encodePassword($nonEncodedPassword,$newuser->getSalt());
 		        $params['password'] = $encodedPassword;
 		        unset($params['retype-password']);
-		      }
-		    } else {
-		    	unset($params['password'], $params['retype-password']);
-		    }
-		    
-		    // check username
-		    if (empty($params['username'])){
-		    	$error[] = "Username is a required field";
-		    } else {
-		    	$match = array('username' => $params['username']);
-		    	$sql = "SELECT id FROM employee WHERE deleted_at IS NULL AND username = :username";
-		    	if ($params['id']){ 
-		    		$sql .= " AND id != :id"; 
-		    		$match['id'] = $params['id'];
-		    	}
-		    	if ($this->db->fetchColumn($sql, $match)){
-		    		$error[] = "That username is already in use";
-		    	}
-		    }
-		    
-		    // check names fields
-		    if (empty($params['first_name'])){ $error[] = "First name is a required field"; }
-		    if (empty($params['last_name'])){ $error[] = "Last name is a required field"; }
-		    
-		    // check valid e-mail address
-		    if (empty($params['email'])){
-		    	$error[] = "E-mail address is a required field";
-		    } elseif (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)){
-		    	$error[] = "E-mail address appears to be incorrectly formatted";
-		    }
-		    
-		    // make sure we have a valid territory
-		    /*
-		    2013-08-05 DHS User's are assigned to territories under territory.
-		    if (empty($params['territory_id'])){
-		    	$error[] = "Territory is a required field";
-		    } else {
-		    	$territory = $app['business.territory']->getById($params['territory_id']);
-		    	if (empty($territory['id'])){ $error[] = "Unable to locate specified territory"; }
-		    }
-		    */
-		    
-		    // check that we have a valid manager
-		    if (!empty($params['manager_user_id'])){
-		    	$manager = $this->getById($params['manager_user_id']);
-		    	if (!$manager['id']){
-		    		$error[] = "Invalid manager selected";		    		
-		    	}
-		    }
-		    
-		    if (@count($params['roles']) > 0){
-		    	foreach ($params['roles'] as $rid){
-		    		$role = $app['business.permissionrole']->getById($rid);
-		    		if (!isset($role['id'])){
-		    			$error[] = 'Invalid role specified';
-		    			break;
-		    		}
-		    	}
-		    }
-		    return $error;
-    }
+			}
+		}
+		
+		return $error;
+	}
+	
+	public function updatePassword($params)
+	{
+		$id = $params['id'];
+		unset($params['id']);
+		$rows = $this->db->update('employee',$params, array('id' => $id));
+        $user = $this->getById($id);
+        return $user;
+	}
 
     public function createUser($params) 
     {

@@ -3,11 +3,13 @@ Ext.define('JavisERP.controller.UserController', {
 
     views: [
         'UserGrid',
-        'UserWindow'
+        'UserWindow',
+        'UserPasswordWindow'
     ],
 
     models: [
-        'User'
+        'User',
+        'UserPassword'
     ],
 
     stores: [
@@ -23,6 +25,14 @@ Ext.define('JavisERP.controller.UserController', {
         {
             ref: 'userWindow',
             selector: 'window[cls=userWindow]'
+        },
+        {
+            ref: 'passwordForm',
+            selector: 'form[itemId=userPasswordForm]'
+        },
+        {
+            ref: 'passwordWindow',
+            selector: 'window[itemId=userPasswordWindow]'
         }
     ],
     
@@ -77,6 +87,30 @@ Ext.define('JavisERP.controller.UserController', {
             }
         });
     },
+    
+    onPasswordSaveButtonClick: function(button, options, e){
+        var fields = this.getPasswordForm().getForm().getValues(false,false,false,true);
+        var pwd = new JavisERP.model.UserPassword();
+        for(var key in fields){
+            pwd.set(key,fields[key]);
+        }
+        
+        var uWindow = this.getPasswordWindow();
+        pwd.save({
+            success: function(record, operation){
+				uWindow.close();
+            	Ext.Msg.alert('Success','Password successfully changed!');
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+					title: 'Failure',
+					msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
+            }
+        });
+    },
 
     init: function(application) {
         var me = this;
@@ -92,6 +126,9 @@ Ext.define('JavisERP.controller.UserController', {
             },
             "button[cls=usersavebutton]": {
                 click: this.onUserSaveButtonClick
+            },
+            "userpasswordwindow #savebutton":{
+            	click: this.onPasswordSaveButtonClick
             },
             "#userwindowtoolbar > #cancelbutton": {
                 click: function(){ 

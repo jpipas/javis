@@ -36,7 +36,7 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'Home',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
+                                width: 160,
                                 //title: 'HomeMenu',
                                 hideMode: 'display',
                                 items: [
@@ -50,6 +50,12 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-application-edit',
                                         text: 'Preferences'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        itemId: 'UserPasswordWindow',
+                                        iconCls: 'ui-silk ui-silk-key',
+                                        text: 'Change Your Password'
                                     }
                                 ]
                             }

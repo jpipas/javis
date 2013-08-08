@@ -110,7 +110,7 @@ $app->get("/", function () use ($app) {
     $token = $app['security']->getToken();
     $user = $token->getUser();
     $app['session']->set('user_token',array('user'=>$user));
-    return $app['twig']->render('index.html', array('resources' => $user->getResources()));
+    return $app['twig']->render('index.html', array('resources' => $user->getResources(), 'newpassword' => $user->getNewPassword()));
 });
 
 $app->get("/login", function(Request $request) use ($app) {

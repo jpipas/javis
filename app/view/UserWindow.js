@@ -35,10 +35,10 @@ Ext.define('JavisERP.view.UserWindow', {
                             cls: 'userWindowToolBar',
                             itemId: 'userwindowtoolbar',
                             items: [
-                            		{
-                            				xtype: 'tbspacer',
-                            				flex: 1
-                            		},
+                        		{
+                    				xtype: 'tbspacer',
+                    				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'usersavebutton',
@@ -57,10 +57,10 @@ Ext.define('JavisERP.view.UserWindow', {
                         }
                     ],
                     items: [
-                    		{
-                    			xtype: 'hiddenfield',
-                    			name: 'id'
-                    		},
+                		{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',
@@ -84,7 +84,7 @@ Ext.define('JavisERP.view.UserWindow', {
                                     },
                                     labelAlign: 'right',
                                     items: [
-                                    		{
+                                    	{
                                             xtype: 'textfield',
                                             cls: 'firstname',
                                             name: 'first_name',
@@ -107,6 +107,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             cls: 'email',
                                             name: 'email',
                                             fieldLabel: 'Email'
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            name: 'disabled',
+                                            fieldLabel: 'Disable Login',
+                                            inputValue: 1
                                         }
                                     ]
                                 },
@@ -150,6 +156,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             initialPassField: 'password'
                                         },
                                         {
+                                            xtype: 'checkbox',
+                                            name: 'newpassword',
+                                            fieldLabel: 'Require Change',
+                                            inputValue: 1
+                                        },
+                                        {
 				                            xtype: 'comboboxselect',
 				                            multiSelect:true,
 				                            fieldLabel: 'Role(s)',
@@ -181,6 +193,7 @@ Ext.define('JavisERP.view.UserWindow', {
                                             minChars: 3,
                                             valueField: 'id'
                                         }
+                                        
                                     ]
                                 }
                             ]

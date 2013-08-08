@@ -163,6 +163,19 @@ Ext.application({
     launch: function() {
         // can now be used to reference the application from anywhere!!
         _myAppGlobal = this;
+        
+        // check for requiring a password change
+        if (App){
+			if (App.user){
+				if (App.user.newpassword == 1){
+					var win = new JavisERP.view.UserPasswordWindow();
+			        win.closable = false;
+					win.show();
+					var cancelbtn = win.queryById('cancelbutton');
+					cancelbtn.hide();
+				}
+			}
+		}
     }
 
 });
