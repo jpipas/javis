@@ -41,8 +41,16 @@ Ext.define('Ext.ux.component.Permission', {
 			if (App.user){
 				if (App.user.resources){
 					//console.log(cmp.resourceId);
-        			if(App.user.resources.indexOf(cmp.resourceId) != -1){
-        				return;
+					if (Ext.isArray(cmp.resourceId)){
+						for (i in cmp.resourceId){
+							if(App.user.resources.indexOf(cmp.resourceId[i]) != -1){
+        						return;
+        					}
+						}
+					} else {
+        				if(App.user.resources.indexOf(cmp.resourceId) != -1){
+        					return;
+        				}
         			}
         		}
         	}

@@ -21,11 +21,8 @@ Ext.define('JavisERP.view.ContractGrid', {
 	                xtype: 'actioncolumn',
 	                tooltip: 'Edit Contract',
 	                align: 'center',
-	                iconCls: 'edit_action ui-silk ui-silk-folder-edit',
-	                itemId: 'contract_edit',
-                    resourceId: 'contract_edit',
-                    resourceType: 'hide',
-                    plugins: ['permission']
+	                iconCls: 'edit_action ui-silk ui-silk-folder',
+	                itemId: 'contract_edit'
 	            },
                 {
 	                width: 30,
