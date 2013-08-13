@@ -15,7 +15,7 @@ class Publication implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-				/* search */
+		/* search */
         $controllers->get('/', function (Application $app, Request $request) {
         		$sort = '';
         		if ($request->get('sort')){
@@ -33,8 +33,8 @@ class Publication implements ControllerProviderInterface
             return $app->json(array("totalCount"=>$totalCount, "publication"=>$res));
         });
 
-				/* get */
-		    $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+		/* get */
+		$controllers->get('/{id}', function(Application $app, $id, Request $request) {
 		        $result = $app['business.publication']->getById($id);
 		        $result['territory'] = $app['business.territory']->getById($result['territory_id']);
 		        $result['postal_codes'] = $app['business.postalcode']->getByPublicationId($result['id']);
@@ -69,6 +69,24 @@ class Publication implements ControllerProviderInterface
             $result = $app['business.publication']->delete($id);
             return $app->json(array("success"=>true,"publication"=>$result));
         });
+
+        /**
+        * Route for main website content submission form
+        **/
+        $controllers->get('/list/', function(Application $app, Request $request){
+            $postal_code = json_decode($request->get('zip'));
+            $result = null;
+            if($postal_code != null){
+                $result = $app['business.publication']->getByPostalCode($postal_code,$app);
+            }
+            $success = count($result)>=1?true:false;
+            $data = json_encode(array("publication"=>$result, "success"=>$success));
+            $callback = $request->get('callback');
+            $response = new Response($callback."(".$data.");");
+            $response->headers->set('Content-Type', 'text/javascript; charset=utf-8');
+            return $response;
+        });
+
         return $controllers;
     }
 }

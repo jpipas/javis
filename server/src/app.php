@@ -52,8 +52,11 @@ if ($app->offsetExists("database.connection")) {
 }
 
 $app['security.firewalls'] = array(
-	'login' => array(
-        'pattern' => '^/login$||^/publication/list$||^/state/list$',
+    'login' => array(
+        'pattern' => '^/login$'
+    ),
+    'submit_content' => array(
+        'pattern' => '/state/list||/publication/list'
     ),
     'secured' => array(
         'pattern' => '^.*$',

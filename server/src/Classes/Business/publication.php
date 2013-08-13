@@ -42,13 +42,13 @@ class Publication extends AbstractBusinessService
             $where_clause .= "AND description LIKE '%".$query."%'";
         }
         */
-        
+
         // limit our search results
     		$lsql = '';
     		if (is_numeric($start) && is_numeric($limit)){
 	    			$lsql = " LIMIT $start, $limit";
     		}
-    		
+
     		// sort our results
     		if (is_array($sort)){
     			$order = array();
@@ -59,14 +59,14 @@ class Publication extends AbstractBusinessService
     		} else {
     			$osql = 'p.description';
     		}
-    		
+
     		// build our search criteria
     		$where = array();
     		$wsql = '';
     		// handle query filter
     		if ($query){
     			$where[] = "p.description LIKE '".addslashes($query)."%'";
-    		
+
     		// handle additional filters
     		} elseif (@count($filter) > 0){
     			foreach ($filter as $f){
@@ -79,7 +79,7 @@ class Publication extends AbstractBusinessService
     					}
             }
     			}
-    		
+
     		// search criteria was passed in
     		} elseif (isset($search['query']) && !empty($search['query'])){
     			if (@count($search['fields']) >= 1){
@@ -99,7 +99,7 @@ class Publication extends AbstractBusinessService
     		if (@count($where) > 0){
     			$wsql = " AND ".implode(" AND ", $where);
     		}
-        
+
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	p.*,
         	territory.name AS territory_name,
@@ -120,10 +120,10 @@ class Publication extends AbstractBusinessService
           LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
           LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
           LEFT JOIN contract AS c ON ca.contract_id = c.id
-          LEFT JOIN client AS cl ON c.client_id = cl.id          
+          LEFT JOIN client AS cl ON c.client_id = cl.id
         WHERE
         	p.deleted_at IS NULL AND
-        	territory.id = p.territory_id AND 
+        	territory.id = p.territory_id AND
         	territory.deleted_at IS NULL AND
         	state.id = territory.state_id AND
         	state.deleted_at IS NULL
@@ -137,9 +137,9 @@ class Publication extends AbstractBusinessService
         $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
         return array($totalCount, $rows);
     }
-    
+
     public function getById($id) {
-        $sql = "SELECT 
+        $sql = "SELECT
         	p.*,
         	territory.name AS territory_name,
         	state.name AS state_name,
@@ -159,10 +159,10 @@ class Publication extends AbstractBusinessService
           LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
           LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
           LEFT JOIN contract AS c ON ca.contract_id = c.id
-          LEFT JOIN client AS cl ON c.client_id = cl.id          
+          LEFT JOIN client AS cl ON c.client_id = cl.id
         WHERE
         	p.deleted_at IS NULL AND
-        	territory.id = p.territory_id AND 
+        	territory.id = p.territory_id AND
         	territory.deleted_at IS NULL AND
         	state.id = territory.state_id AND
         	state.deleted_at IS NULL AND
@@ -173,7 +173,7 @@ class Publication extends AbstractBusinessService
     }
 
     public function getByAdvertisementId($id) {
-    		$sql = "SELECT 
+    		$sql = "SELECT
         	p.*,
         	territory.name AS territory_name,
         	state.name AS state_name,
@@ -193,19 +193,19 @@ class Publication extends AbstractBusinessService
           LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
           LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
           LEFT JOIN contract AS c ON ca.contract_id = c.id
-          LEFT JOIN client AS cl ON c.client_id = cl.id          
+          LEFT JOIN client AS cl ON c.client_id = cl.id
         WHERE
         	p.deleted_at IS NULL AND
-        	territory.id = p.territory_id AND 
+        	territory.id = p.territory_id AND
         	territory.deleted_at IS NULL AND
         	state.id = territory.state_id AND
         	state.deleted_at IS NULL AND
-        	ap.advertisement_id = ? 
+        	ap.advertisement_id = ?
        	GROUP BY
        		p.id";
         return $this->db->fetchAll($sql,array((int)$id));
     }
-    
+
     public function validate(&$app, &$params)
     {
     	$error = array();
@@ -213,12 +213,12 @@ class Publication extends AbstractBusinessService
 			unset($params['id'],$params['contact_email'], $params['content_email'], $params['territory_name'], $params['publisher_id']);
 			unset($params['publisher_name'], $params['publisher_email'],$params['contentcoord_name'], $params['contentcoord_email'], $params['created_at']);
 			unset($params['deleted_at'],$params['territory'], $params['contentcoord'], $params['publisher'], $params['postal_code']);
-			
+
 			// require description
 			if (empty($params['description'])){
 				$error[] = "Publication name/description is required";
 			}
-			
+
 			// validate territory
 			if (empty($params['territory_id'])){
 				$error[] = "Publication territory is required";
@@ -228,7 +228,7 @@ class Publication extends AbstractBusinessService
 					$error[] = "Invalid territory specified";
 				}
 			}
-			
+
 			// validate content coord
 			if (!empty($params['contentcoord_id'])){
 				$user =  $app['business.user']->getById($params['contentcoord_id']);
@@ -236,7 +236,7 @@ class Publication extends AbstractBusinessService
 	    		$error[] = "Invalid content coordinator selected";
 	    	}
 			}
-			
+
 			// get postal code
 	    if (@count($error) < 1){
 	    	$codes = $params['postal_codes'];
@@ -260,12 +260,12 @@ class Publication extends AbstractBusinessService
           }
         }
 	    }
-			
+
 			return $error;
     }
 
-		
-		public function create($params) 
+
+	public function create($params)
     {
     		$postal_code_array = $params['postal_codes'];
     		unset($params['postal_codes']);
@@ -281,7 +281,7 @@ class Publication extends AbstractBusinessService
         return $result;
     }
 
-		public function update($id, $params, $app) 
+	public function update($id, $params, $app)
     {
     		$app['monolog']->addInfo(print_r($params, true));
     		$postal_code_array = $params['postal_codes'];
@@ -297,12 +297,22 @@ class Publication extends AbstractBusinessService
         return $result;
     }
 
-		public function delete($id)
-		{
-			$now = new \DateTime('NOW');
-			$params['deleted_at'] = $now->format('Y-m-d H:i:s');
-      $rows = $this->db->update($this->getTableName(),$params, array('id' => $id));
-      $res = $this->getById($id);
-      return $res;
-		}
+	public function delete($id)
+	{
+        $now = new \DateTime('NOW');
+        $params['deleted_at'] = $now->format('Y-m-d H:i:s');
+        $rows = $this->db->update($this->getTableName(),$params, array('id' => $id));
+        $res = $this->getById($id);
+        return $res;
+	}
+
+    public function getByPostalCode($zip,$app){
+        $sql = "SELECT p.* FROM postal_code pc
+            LEFT JOIN publication_zip pz ON pc.id = pz.postal_code_id
+            LEFT JOIN publication p ON pz.publication_id = p.id
+            WHERE pc.iso_code = $zip
+            GROUP BY p.id";
+        //$app['monolog']->addInfo(print_r($sql, true));
+        return $this->db->fetchAll($sql);
+    }
 }
