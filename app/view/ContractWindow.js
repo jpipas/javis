@@ -35,14 +35,17 @@ Ext.define('JavisERP.view.ContractWindow', {
                             itemId: 'contractwindowtoolbar',
                             items: [
                         		{
-                        				xtype: 'tbspacer',
-                        				flex: 1
+                    				xtype: 'tbspacer',
+                    				flex: 1
                         		},
                                 {
                                     xtype: 'button',
                                     cls: 'contractsave',
                                     iconCls: 'ui-silk ui-silk-disk',
-                                    text: 'Save'
+                                    text: 'Save',
+				                    resourceId: ['contract_edit','contract_create'],
+				                    resourceType: 'disable',
+				                    plugins: ['permission']
                                 },
                                 {
                                     xtype: 'button',
@@ -242,7 +245,7 @@ Ext.define('JavisERP.view.ContractWindow', {
                             cls:'durationlist'
                         },
                         {
-                        		padding: '5px 5px',
+                        	padding: '5px 5px',
                             xtype: 'comboboxselect',
                             multiSelect:true,
                             labelAlign: 'top',
@@ -263,12 +266,14 @@ Ext.define('JavisERP.view.ContractWindow', {
                             stacked: true,
                             name: 'advertisements',
                             itemId: 'contractads',
+		                    resourceId: 'advertisement_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission'],                            
                             trigger2Cls: 'x-trigger-add',
                             onTrigger2Click: function(e) {
 				              	this.fireEvent("ontrigger2click", this, e);
 					        },
 					        beforeQuery: function(e) {
-					        	console.log('before query');
 					        	this.fireEvent('contractadscomboquery', this, e);
 					        }
                         }

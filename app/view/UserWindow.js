@@ -35,10 +35,10 @@ Ext.define('JavisERP.view.UserWindow', {
                             cls: 'userWindowToolBar',
                             itemId: 'userwindowtoolbar',
                             items: [
-                            		{
-                            				xtype: 'tbspacer',
-                            				flex: 1
-                            		},
+                        		{
+                    				xtype: 'tbspacer',
+                    				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'usersavebutton',
@@ -57,10 +57,10 @@ Ext.define('JavisERP.view.UserWindow', {
                         }
                     ],
                     items: [
-                    		{
-                    			xtype: 'hiddenfield',
-                    			name: 'id'
-                    		},
+                		{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
                             xtype: 'fieldcontainer',
                             padding: '0px 0px 10px 0px',
@@ -75,15 +75,16 @@ Ext.define('JavisERP.view.UserWindow', {
                                     id: 'user_column1',
                                     itemId: 'userwindow_col1',
                                     defaults: {
-                                        padding: '5px 0px 0px 0px',
-                                        anchor: '95%'
+                                        padding: '5px 0px',
+                                        anchor: '95%',
+                                        labelAlign: 'right'
                                     },
                                     layout: {
                                         type: 'anchor'
                                     },
                                     labelAlign: 'right',
                                     items: [
-                                    		{
+                                    	{
                                             xtype: 'textfield',
                                             cls: 'firstname',
                                             name: 'first_name',
@@ -106,6 +107,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             cls: 'email',
                                             name: 'email',
                                             fieldLabel: 'Email'
+                                        },
+                                        {
+                                            xtype: 'checkbox',
+                                            name: 'disabled',
+                                            fieldLabel: 'Disable Login',
+                                            inputValue: 1
                                         }
                                     ]
                                 },
@@ -114,7 +121,8 @@ Ext.define('JavisERP.view.UserWindow', {
                                     flex: 1,
                                     defaults: {
                                         padding: '5px 0px',
-                                        anchor: '95%'
+                                        anchor: '95%',
+                                        labelAlign: 'right'
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -148,19 +156,28 @@ Ext.define('JavisERP.view.UserWindow', {
                                             initialPassField: 'password'
                                         },
                                         {
-                                            xtype: 'combobox',
-                                            cls: 'territory',
-                                            itemId: 'territory_id',
-                                            name: 'territory_id',
-                                            fieldLabel: 'Territory',
-                                            displayField: 'name',
-                                            store: 'TerritoryStore',
-                                            hideTrigger: true,
-                                            triggerAction: 'query',
-                                            pageSize: true,
-                                            minChars: 3,
-                                            valueField: 'id'
+                                            xtype: 'checkbox',
+                                            name: 'newpassword',
+                                            fieldLabel: 'Require Change',
+                                            inputValue: 1
                                         },
+                                        {
+				                            xtype: 'comboboxselect',
+				                            multiSelect:true,
+				                            fieldLabel: 'Role(s)',
+				                            displayField: 'title',
+				                            emptyText: 'Select a role...',
+				                            labelAlign: 'right',
+				                            valueField: 'id',
+				                            store: {type: 'permissionrolestore'},
+				                            grow: true,
+				                            forceSelection: false,
+				                            queryMode: 'remote',
+				                            typeAdead:true,
+				                            name: 'roles',
+				                            filterPickList: true,
+                                            pinList: false
+				                        },
                                         {
                                             xtype: 'combobox',
                                             cls: 'manager',
@@ -169,13 +186,14 @@ Ext.define('JavisERP.view.UserWindow', {
                                             name: 'manager_user_id',
                                             fieldLabel: 'Manager',
                                             displayField: 'fullname',
-                                            store: 'UserDropDown',
+                                            store: {type: 'userstore'},
                                             hideTrigger: true,
                                             triggerAction: 'query',
                                             pageSize: true,
                                             minChars: 3,
                                             valueField: 'id'
                                         }
+                                        
                                     ]
                                 }
                             ]

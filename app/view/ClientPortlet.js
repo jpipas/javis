@@ -34,25 +34,29 @@ Ext.define('JavisERP.view.ClientPortlet', {
         Ext.applyIf(me, {
             columns: [
                 {
-                    xtype: 'rowactions',
-                    maxWidth: 50,
-                    defaultWidth: 50,
-                    actions: [
-                        {
-                            altText: 'View',
-                            iconCls: 'view_action ui-silk ui-silk-user',
-                            hideIndex: 'view_action',
-                            tooltip: 'View'
-                        },
-                        {
-                            altText: 'Delete',
-                            iconCls: 'delete_action ui-silk ui-silk-user-delete',
-                            hideIndex: 'delete_action',
-                            tooltip: 'Delete'
-                        }
-
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'View Client',
+	                align: 'center',
+	                iconCls: 'view_action ui-silk ui-silk-user',
+	                itemId: 'client_view',
+                    resourceId: 'client_view',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Client',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-user-delete',
+	                itemId: 'client_delete',
+                    resourceId: 'client_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'numbercolumn',
                     hidden: true,

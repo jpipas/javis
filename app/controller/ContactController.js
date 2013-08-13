@@ -113,13 +113,16 @@ Ext.define('JavisERP.controller.ContactController', {
         this.client.id = null;
         this.client.name = null;
         me.control({
-            "contactgrid rowactions": {
-                action: me.onContactActionClick
+            "contactgrid #contact_edit": {
+                click: me.editContact
+            },
+            "contactgrid #contact_delete": {
+                click: me.deleteContact
             },
             "contactgrid toolbar button[itemId=newcontact]": {
                 click: function(button, options, e){
-                		this.onNewContactClick();
-                	}
+            		this.onNewContactClick();
+            	}
             },
             "#contactwindowtoolbar > #savebutton": {
                 click: this.onContactSaveButtonClick
@@ -141,7 +144,7 @@ Ext.define('JavisERP.controller.ContactController', {
         return this.getClientForm().getForm().findField('company_name').getValue();
     },
 
-    editContact: function(record){
+    editContact: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var contactWindow = new JavisERP.view.ContactWindow();
         var cForm = this.getContactForm();
         var cc = this.getContentCards();
@@ -167,7 +170,7 @@ Ext.define('JavisERP.controller.ContactController', {
         */
     },
 
-    deleteContact: function(record,grid){
+    deleteContact: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Contact?',
             msg: 'You are about to delete this contact. Would you like to proceed?',

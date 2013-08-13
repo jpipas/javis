@@ -14,7 +14,9 @@ Ext.define('JavisERP.view.ContentCards', {
         'JavisERP.view.UserGrid',
         'JavisERP.view.AdListGrid',
         'JavisERP.view.PortletPanel',
-        'JavisERP.view.PaymentGrid'
+        'JavisERP.view.PaymentGrid',
+        'JavisERP.view.PermissionResourceTree',
+        'JavisERP.view.PermissionRoleGrid'
     ],
 
     layout: {
@@ -81,6 +83,14 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'adlistgrid',
                     itemId: 'AdListGrid'
+                },
+                {
+                    xtype: 'permissionresourcetree',
+                    itemId: 'PermissionResourceTree'
+                },
+                {
+                    xtype: 'permissionroles',
+                    itemId: 'PermissionRoleGrid'
                 }
             ]
         });

@@ -32,6 +32,42 @@ Ext.override(Ext.form.NumberField, {
     }
 });
 
+Ext.define('Ext.ux.component.Permission', {
+	extend: 'Ext.AbstractPlugin',
+	alias: 'plugin.permission',
+	init: function (cmp) {
+		// see if our permissions are set
+		if (App){
+			if (App.user){
+				if (App.user.resources){
+					//console.log(cmp.resourceId);
+					if (Ext.isArray(cmp.resourceId)){
+						for (i in cmp.resourceId){
+							if(App.user.resources.indexOf(cmp.resourceId[i]) != -1){
+        						return;
+        					}
+						}
+					} else {
+        				if(App.user.resources.indexOf(cmp.resourceId) != -1){
+        					return;
+        				}
+        			}
+        		}
+        	}
+        }
+        // switch what type of resources it is (either hide or disable)
+        switch (cmp.resourceType){
+        	case 'hide':
+        		cmp.hide();
+        		break;
+        	
+        	default:
+        		cmp.disable();
+        		break;
+        }
+	}
+});
+
 Ext.application({
     models: [
         'Client',
@@ -50,7 +86,9 @@ Ext.application({
         'Duration',
         'PostalCode',
         'User',
-        'AdList'
+        'AdList',
+        'PermissionResource',
+        'PermissionRole'
     ],
     stores: [
         'ClientStore',
@@ -71,7 +109,9 @@ Ext.application({
         'PostalCode',
         'User',
         'AdList',
-        'UserNoteStore'
+        'UserNoteStore',
+        'PermissionResourceStore',
+        'PermissionRoleStore'
     ],
     views: [
         'Viewport',
@@ -96,7 +136,9 @@ Ext.application({
         'PortalColumn',
         'PortalDropZone',
         'Portlet',
-        'PortletPanel'
+        'PortletPanel',
+        'PermissionResourceTree',
+        'PermissionRoleGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -113,12 +155,27 @@ Ext.application({
         'UserController',
         'AdListController',
         'TerritoryController',
-        'AdvertisementController'
+        'AdvertisementController',
+        'PermissionResourceController',
+        'PermissionRoleController'
     ],
     appFolder: '/app',
     launch: function() {
         // can now be used to reference the application from anywhere!!
         _myAppGlobal = this;
+        
+        // check for requiring a password change
+        if (App){
+			if (App.user){
+				if (App.user.newpassword == 1){
+					var win = new JavisERP.view.UserPasswordWindow();
+			        win.closable = false;
+					win.show();
+					var cancelbtn = win.queryById('cancelbutton');
+					cancelbtn.hide();
+				}
+			}
+		}
     }
 
 });

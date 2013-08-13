@@ -41,7 +41,13 @@ Ext.define('JavisERP.model.Payment', {
             name: 'payment_amount'
         },
         {
+            name: 'payment_total'
+        },
+        {
             name: 'client_company_name'
+        },
+        {
+        	name: 'territory_name'
         },
         {
             name: 'client_id'
@@ -53,6 +59,10 @@ Ext.define('JavisERP.model.Payment', {
         	name: 'contract'
         },
         {
+        	name: 'postdate',
+        	dateFormat: 'Y-m-d'
+        },
+        {
         	name: 'contract_number'
         },
         {
@@ -60,15 +70,6 @@ Ext.define('JavisERP.model.Payment', {
         },
         {
             name: 'durations'
-        },
-        {
-            name: 'payment_category_description'
-        },
-        {
-            name: 'payment_category_id'
-        },
-        {
-            name: 'payment_category_abbrev'
         }
     ],
 

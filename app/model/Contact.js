@@ -7,8 +7,6 @@ Ext.define('JavisERP.model.Contact', {
         'JavisERP.model.Client'
     ],
 
-    idProperty: 'id',
-
     fields: [
         {
             name: 'id'

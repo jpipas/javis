@@ -108,8 +108,9 @@ $app->register(new BusinessServiceProvider(),array("business.container" =>  $arr
 //handling calls to the root to a default route manager
 $app->get("/", function () use ($app) {
     $token = $app['security']->getToken();
-    $app['session']->set('user_token',array('user'=>$token->getUser()));
-    return $app['twig']->render('index.html');
+    $user = $token->getUser();
+    $app['session']->set('user_token',array('user'=>$user));
+    return $app['twig']->render('index.html', array('resources' => $user->getResources(), 'newpassword' => $user->getNewPassword()));
 });
 
 $app->get("/login", function(Request $request) use ($app) {

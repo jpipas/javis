@@ -155,22 +155,25 @@ Ext.define('JavisERP.controller.AdvertisementController', {
         this.client.id = null;
         this.client.name = null;
         me.control({
-            "advertisementgrid rowactions": {
-                action: me.onAdvertisementActionClick
+            "advertisementgrid #advertisement_edit": {
+                click: me.editAdvertisement
+            },
+            "advertisementgrid #advertisement_delete": {
+                click: me.deleteAdvertisement
             },
             "advertisementgrid toolbar button[itemId=newadvertisement]": {
                 click: function(button, options, e){
-                		this.onNewAdvertisementClick();
-                	}
+            		this.onNewAdvertisementClick();
+            	}
             },
             "#adwindowtoolbar > #savebutton": {
                 click: this.onAdvertisementSaveButtonClick
             },
             "#adwindowtoolbar > #cancelbutton": {
                 click: function(){
-                		me.getAdWindow.close();
-                		//Ext.WindowMgr.getActive().close();
-                	}
+            		me.getAdWindow.close();
+            		//Ext.WindowMgr.getActive().close();
+            	}
             },
             "combobox[cls=adType]": {
                 change: this.onAdTypeChange
@@ -192,7 +195,7 @@ Ext.define('JavisERP.controller.AdvertisementController', {
         return this.getClientForm().getForm().findField('company_name').getValue();
     },
 
-    editAdvertisement: function(record){
+    editAdvertisement: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var adWindow = new JavisERP.view.AdvertisementWindow();
         var adForm = this.getAdForm();
         var cc = this.getContentCards();
@@ -222,7 +225,7 @@ Ext.define('JavisERP.controller.AdvertisementController', {
         },500);
     },
 
-    deleteAdvertisement: function(record,grid){
+    deleteAdvertisement: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Advertisement?',
             msg: 'You are about to delete this advertisement.  It will be removed from all contracts that use it.  Would you like to proceed?',

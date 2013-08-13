@@ -26,6 +26,13 @@
             </p>
         </form>
     </div>
+    <script language="javascript">
+    if (document.loginform['_username'].value != ''){
+    	document.loginform['_password'].focus();
+    } else {
+    	document.loginform['_username'].focus();
+    }
+    </script>
     <div class="clear"></div>
 </body>
 </html>

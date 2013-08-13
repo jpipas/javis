@@ -36,7 +36,7 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'Home',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
+                                width: 160,
                                 //title: 'HomeMenu',
                                 hideMode: 'display',
                                 items: [
@@ -50,6 +50,12 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-application-edit',
                                         text: 'Preferences'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        itemId: 'UserPasswordWindow',
+                                        iconCls: 'ui-silk ui-silk-key',
+                                        text: 'Change Your Password'
                                     }
                                 ]
                             }
@@ -58,8 +64,20 @@ Ext.define('JavisERP.view.NavBar', {
                             xtype: 'tbseparator'
                         },
                         {
-                        		itemId: 'ActivityGrid',
-                            text: 'Activities'
+                            itemId: 'ClientGrid',
+                            text: 'Clients',
+                            resourceId: 'client_view',
+                            resourceType: 'disable',
+                            plugins: ['permission']
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                        	itemId: 'ActivityGrid',
+                            text: 'Activities',
+                            resourceId: 'activity_view',
+                            plugins: ['permission']
                         },
                         {
                             xtype: 'tbseparator'
@@ -76,43 +94,55 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         itemId: 'UserGrid',
                                         iconCls: 'ui-silk ui-silk-user-gray',
-                                        text: 'Independent Contractors'
-                                    },
-                                    {
-                                        xtype: 'menuitem',
-                                        itemId: 'ClientGrid',
-                                        iconCls: 'ui-silk ui-silk-group',
-                                        text: 'Clients',
+                                        text: 'Independent Contractors',
+                                        resourceId: 'user_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'PublicationGrid',
                                         iconCls: 'ui-silk ui-silk-newspaper',
-                                        text: 'Publications'
+                                        text: 'Publications',
+			                            resourceId: 'publication_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'AdvertisementGrid',
                                         iconCls: 'ui-silk ui-silk-layout',
-                                        text: 'Advertisements'
+                                        text: 'Advertisements',
+			                            resourceId: 'advertisement_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'ContractGrid',
                                         iconCls: 'ui-silk ui-silk-folder-table',
-                                        text: 'Contracts'
+                                        text: 'Contracts',
+			                            resourceId: 'contract_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'PaymentGrid',
                                         iconCls: 'ui-silk ui-silk-money',
-                                        text: 'Payments'
+                                        text: 'Payments',
+			                            resourceId: 'payment_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'TerritoryGrid',
                                         iconCls: 'ui-silk ui-silk-map',
-                                        text: 'Territories'
+                                        text: 'Territories',
+			                            resourceId: 'territory_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
                                     }
                                 ]
                             }
@@ -131,18 +161,27 @@ Ext.define('JavisERP.view.NavBar', {
                                     {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-money',
-                                        text: 'Sales Report'
+                                        text: 'Sales Report',
+                                        resourceId: 'report_sales',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'AdListGrid',
                                         iconCls: 'ui-silk ui-silk-application-view-list',
-                                        text: 'Ad List'
+                                        text: 'Ad List',
+                                        resourceId: 'report_adlist',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
                                     },
                                     {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-calculator',
-                                        text: 'Commissions'
+                                        text: 'Commissions',
+                                        resourceId: 'report_commissions',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
                                     }
                                 ]
                             }
@@ -151,8 +190,41 @@ Ext.define('JavisERP.view.NavBar', {
                             xtype: 'tbseparator'
                         },
                         {
-                            xtype: 'button',
-                            text: 'Support'
+                            text: 'System',
+                            menu: {
+                                xtype: 'menu',
+                                width: 120,
+                                //title: 'HomeMenu',
+                                hideMode: 'display',
+                                items: [
+                                    {
+                                        text: 'Permissions',
+                                        menu: {
+                                        	xtype: 'menu',
+                                        	width: 120,
+                                        	hideMode: 'display',
+                                        	items: [
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'PermissionRoleGrid',
+                                        			text: 'Roles',
+								                    resourceId: 'permission_role',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		},
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'PermissionResourceTree',
+                                        			text: 'Resources',
+								                    resourceId: 'permission_resource',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		}                                        		
+                                        	]	
+                                        }
+                                    }
+                                ]
+                            }
                         },
                         {
                             xtype: 'tbseparator'

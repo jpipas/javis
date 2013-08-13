@@ -19,7 +19,7 @@ Ext.define('JavisERP.model.Activity', {
             dateFormat: 'H:i:s'
         },
         {
-        		name: 'client'
+        	name: 'client'
         },
         {
             name: 'client_id'
@@ -28,7 +28,7 @@ Ext.define('JavisERP.model.Activity', {
             name: 'client_name'
         },
         {
-        		name: 'owner'
+        	name: 'owner'
         },
         {
             name: 'owner_id'
@@ -56,7 +56,7 @@ Ext.define('JavisERP.model.Activity', {
             mapping: 'status.clsDelete'
         },
         {
-        		name: 'assigned_to'
+        	name: 'assigned_to'
         },
         {
             name: 'assigned_to_id'

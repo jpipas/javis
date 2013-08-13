@@ -40,19 +40,10 @@ Ext.define('JavisERP.model.User', {
             name: 'manager_user_id'
         },
         {
-            name: 'territory_id'
-        },
-        {
             name: 'created_at'
         },
         {
             name: 'deleted_at'
-        },
-        {
-            name: 'territory'
-        },
-        {
-            name: 'territory_name'
         },
         {
             name: 'last_login',
@@ -64,6 +55,12 @@ Ext.define('JavisERP.model.User', {
         },
         {
             name: 'manager_name'
+        },
+        {
+        	name: 'disabled'
+        },
+        {
+        	name: 'newpassword'
         }
     ],
 

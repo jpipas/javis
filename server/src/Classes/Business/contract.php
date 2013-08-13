@@ -222,9 +222,7 @@ class Contract extends AbstractBusinessService {
 		}
 		
 		// total sales
-		if (empty($params['total_sales'])){
-			$error[] = "Total sales is a required field";
-		} elseif (!is_numeric($params['total_sales'])){
+		if (!is_numeric($params['total_sales'])){
 			$error[] = "Total sales doesn't appear to be a valid number";
 		}
 		
@@ -234,23 +232,17 @@ class Contract extends AbstractBusinessService {
 		}
 		
 		// total amount
-		if (empty($params['total_amount'])){
-			$error[] = "Total amount is a required field";
-		} elseif (!is_numeric($params['total_amount'])){
+		if (!is_numeric($params['total_amount'])){
 			$error[] = "Total amount doesn't appear to be a valid number";
 		}
 		
 		// first months payment
-		if (empty($params['first_months_payment'])){
-			$error[] = "First month's payment is a required field";
-		} elseif (!is_numeric($params['first_months_payment'])) {
+		if (!is_numeric($params['first_months_payment'])) {
 			$error[] = "First month's payment doesn't appear to be a numeric value";
 		}
 		
 		// monthly payment
-		if (empty($params['monthly_payment'])){
-			$error[] = "Monthly payment is a required amount";
-		} elseif (!is_numeric($params['monthly_payment'])){
+		if (!is_numeric($params['monthly_payment'])){
 			$error[] = "Monthly payment doesn't appear to be a numeric value";
 		}
 		

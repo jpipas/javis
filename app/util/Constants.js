@@ -7,10 +7,12 @@ Ext.define('JavisERP.util.Constants', {
     '<div style="padding:0px 10px;"><h2>Welcome!</h2><p>'+
     'This is your dashboard.  A dashboard is information at your fingertips!  Above you will find the navigation menu. Eventually '+
     'we can spice this welcome screen up a bit to show statistics, or whatever else is needed for a moments glance.<br /><br /></p>'+
-    '</div>'+
+    '</div>',
+    /*+ 
     '<div style="padding-left:10px;"><h2>What\'s New!?</h2>'+
     '<iframe src="http://player.vimeo.com/video/67298836" width="500" height="313" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> <p><a href="http://vimeo.com/67298836">JavisERP - Best Version Media</a> from <a href="http://vimeo.com/user5720016">Jeff Pipas</a> on <a href="http://vimeo.com">Vimeo</a>.</p>'+
-    '</div><div class="clear">&nbsp;</div></div>',
+    '</div><div class="clear">&nbsp;</div></div>'
+    ,*/
 
 
     shortBogusMarkup: '<div class="portlet-content"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, '+

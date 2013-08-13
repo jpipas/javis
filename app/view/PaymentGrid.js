@@ -24,7 +24,10 @@ Ext.define('JavisERP.view.PaymentGrid', {
                             cls: 'newPaymentButton',
                             itemId: 'newPaymentButton',
                             iconCls: 'ui-silk ui-silk-money-add',
-                            text: 'New Payment'
+                            text: 'New Payment',
+		                    resourceId: 'payment_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
 		                    xtype: 'gridsearchingbar',
@@ -48,22 +51,29 @@ Ext.define('JavisERP.view.PaymentGrid', {
             ],
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-money',
-                            tooltip: 'Edit Payment',
-                            hideIndex: 'edit_action',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-money-delete',
-                            tooltip: 'Delete Payment',
-                            hideIndex: 'delete_action',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Payment',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-money',
+	                itemId: 'payment_edit',
+                    resourceId: 'payment_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Payment',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-money-delete',
+	                itemId: 'payment_delete',
+                    resourceId: 'payment_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                 	flex: 2,
                     xtype: 'gridcolumn',
@@ -79,21 +89,35 @@ Ext.define('JavisERP.view.PaymentGrid', {
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
+                    dataIndex: 'territory_name',
+                    text: 'Territory'
+                },
+                {
+                	flex: 1,
+                    xtype: 'gridcolumn',
                     dataIndex: 'payment_type_description',
                     text: 'Payment Type'
                 },
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
-                    dataIndex: 'payment_category_description',
-                    text: 'Classification'
+                    dataIndex: 'payment_amount',
+                    renderer: 'usMoney',
+                    text: 'Period Amount'
                 },
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
-                    dataIndex: 'payment_amount',
+                    dataIndex: 'payment_total',
                     renderer: 'usMoney',
-                    text: 'Total Amount'
+                    text: 'Payment Total'
+                },
+                {
+                	flex: 1,
+                    xtype: 'datecolumn',
+                    dataIndex: 'postdate',
+                    text: 'Received',
+                    format: 'm/d/Y'
                 },
                 {
                 	flex: 1,

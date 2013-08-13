@@ -41,12 +41,19 @@ Ext.define('JavisERP.view.PortletPanel', {
                     id: 'portlet-1',
                     title: 'Client Portlet',
                     tools: this.getTools(),
-                    items: Ext.create('JavisERP.view.ClientPortlet')
+                    items: Ext.create('JavisERP.view.ClientPortlet'),
+                    resourceId: 'client_view',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+                    
                 },{
                     id: 'portlet-2',
                     title: 'Activities Portlet',
                     tools: this.getTools(),
-                    items: Ext.create('JavisERP.view.ActivityPortlet')
+                    items: Ext.create('JavisERP.view.ActivityPortlet'),
+                    resourceId: 'activity_view',
+                    resourceType: 'hide',
+                    plugins: ['permission']
                 }]
             }]
 

@@ -82,8 +82,11 @@ Ext.define('JavisERP.controller.TerritoryController', {
     init: function(application) {
         var me = this;
         me.control({
-        		"territorygrid rowactions": {
-                action: me.onTerritoryActionClick
+        	"territorygrid #territory_edit": {
+                click: me.editTerritory
+            },
+            "territorygrid #territory_delete": {
+                click: me.deleteTerritory
             },
             "territorygrid toolbar button[itemId=newterritory]": {
                 click: me.onNewTerritoryClick
@@ -99,7 +102,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
         });
     },
 
-		editTerritory: function(record){
+		editTerritory: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var tWindow = new JavisERP.view.TerritoryWindow();
         var tForm = this.getTerritoryForm();
         this.getUserDropDownStore().clearFilter(true);
@@ -112,7 +115,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
         });        
     },
 
-    deleteTerritory: function(record,grid){
+    deleteTerritory: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Territory?',
             msg: 'You are about to delete this territory. Would you like to proceed?',

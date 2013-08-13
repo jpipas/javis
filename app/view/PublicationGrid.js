@@ -19,7 +19,10 @@ Ext.define('JavisERP.view.PublicationGrid', {
                             xtype: 'button',
                             iconCls: 'ui-silk ui-silk-newspaper-add',
                             cls: 'newpublication',
-                            text: 'New Publication'
+                            text: 'New Publication',
+		                    resourceId: 'publication_create',
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         }
                     ]
                 },
@@ -33,22 +36,29 @@ Ext.define('JavisERP.view.PublicationGrid', {
             ],
             columns: [
                 {
-                    xtype: 'rowactions',
-                    actions: [
-                        {
-                            iconCls: 'edit_action ui-silk ui-silk-newspaper-go',
-                            tooltip: 'Edit Publication',
-                            hideIndex: 'edit_action',
-                            callback: Ext.emptyFn
-                        },
-                        {
-                            iconCls: 'delete_action ui-silk ui-silk-newspaper-delete',
-                            tooltip: 'Delete Publication',
-                            hideIndex: 'delete_action',
-                            callback: Ext.emptyFn
-                        }
-                    ]
-                },
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Publication',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-newspaper-go',
+	                itemId: 'publication_edit',
+                    resourceId: 'publication_edit',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
+                {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Delete Publication',
+	                align: 'center',
+	                iconCls: 'delete_action ui-silk ui-silk-newspaper-delete',
+	                itemId: 'publication_delete',
+                    resourceId: 'publication_delete',
+                    resourceType: 'hide',
+                    plugins: ['permission']
+	            },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'description',

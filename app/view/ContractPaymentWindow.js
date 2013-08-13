@@ -31,8 +31,8 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             itemId: 'adwindowtoolbar',
                             items: [
                         		{
-                        				xtype: 'tbspacer',
-                        				flex: 1
+                    				xtype: 'tbspacer',
+                    				flex: 1
                         		},
                                 {
                                     xtype: 'button',
@@ -118,15 +118,15 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             minValue: 0
                         },
                         {
-                            xtype: 'combobox',
-                            cls: 'paymentCategory',
-                            id: 'payment_category',
-                            itemId: 'payment_category',
-                            name: 'payment_category_id',
-                            fieldLabel: 'Category',
-                            displayField: 'description',
-                            store: {type: 'paymentcategorystore'},
-                            valueField: 'id'
+                            xtype: 'displayfield',
+                            name: 'payment_total',
+                            fieldLabel: 'Payment Total',
+                            decimalPrecision: 2
+                        },
+                        {
+                            xtype: 'datefield',
+                            name: 'postdate',
+                            fieldLabel: 'Received'
                         },
                         {
                             xtype: 'comboboxselect',

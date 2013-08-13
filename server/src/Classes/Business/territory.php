@@ -56,7 +56,19 @@ class Territory extends AbstractBusinessService
     				$or = array();
     				$qq = $this->db->quote($search['query'].'%');
     				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-    					$or[] = 'territory.'.$field.' LIKE '.$qq;
+    					switch ($field){
+    						case 'state_name':
+    							$or[] = 'state.name LIKE '.$qq;
+    							break;
+    						
+    						case 'manager_name':
+    							$or[] = 'CONCAT(employee.first_name, \' \', employee.last_name) LIKE '.$qq;
+    							break;
+    						
+    						default:
+    							$or[] = 'territory.'.$field.' LIKE '.$qq;
+    							break;
+    					}
     				});
     				if (@count($or) > 0){
     					$where[] = "(".implode(' OR ', $or).")";

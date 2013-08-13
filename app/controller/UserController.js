@@ -3,17 +3,18 @@ Ext.define('JavisERP.controller.UserController', {
 
     views: [
         'UserGrid',
-        'UserWindow'
+        'UserWindow',
+        'UserPasswordWindow'
     ],
 
     models: [
-        'User'
+        'User',
+        'UserPassword'
     ],
 
     stores: [
         'User',
-        'UserDropDown',
-        'TerritoryStore'
+        'PermissionRoleStore'
     ],
 
     refs: [
@@ -24,9 +25,18 @@ Ext.define('JavisERP.controller.UserController', {
         {
             ref: 'userWindow',
             selector: 'window[cls=userWindow]'
+        },
+        {
+            ref: 'passwordForm',
+            selector: 'form[itemId=userPasswordForm]'
+        },
+        {
+            ref: 'passwordWindow',
+            selector: 'window[itemId=userPasswordWindow]'
         }
     ],
-    onUserActionClick: function(grid,record,action,idx,col,e,target) {
+    
+    onUserActionClick: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var doAction = action.split(" ",1);
         switch(doAction[0]){
             case 'edit_action':
@@ -49,6 +59,16 @@ Ext.define('JavisERP.controller.UserController', {
         for(var key in fields){
             user.set(key,fields[key]);
         }
+        
+        var roles = [];
+        var recs = this.getUserForm().getForm().findField('roles').getValue();
+        for(var key1 in recs){
+            var role = new JavisERP.model.PermissionRole();
+            role.set("id",recs[key1]);
+            roles.push(role);
+        }
+        user.setAssociatedData("roles",roles);
+        
         var uWindow = this.getUserWindow();
         var uStore = this.getUserStore();
         user.save({
@@ -67,18 +87,48 @@ Ext.define('JavisERP.controller.UserController', {
             }
         });
     },
+    
+    onPasswordSaveButtonClick: function(button, options, e){
+        var fields = this.getPasswordForm().getForm().getValues(false,false,false,true);
+        var pwd = new JavisERP.model.UserPassword();
+        for(var key in fields){
+            pwd.set(key,fields[key]);
+        }
+        
+        var uWindow = this.getPasswordWindow();
+        pwd.save({
+            success: function(record, operation){
+				uWindow.close();
+            	Ext.Msg.alert('Success','Password successfully changed!');
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+					title: 'Failure',
+					msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
+            }
+        });
+    },
 
     init: function(application) {
         var me = this;
         me.control({
-            "usergrid rowactions": {
-                action: me.onUserActionClick
+            "usergrid #user_edit": {
+                click: me.editUser
+            },
+            "usergrid #user_delete": {
+                click: me.deleteUser
             },
             "usergrid toolbar button[itemId=newuser]": {
                 click: me.onNewUserClick
             },
             "button[cls=usersavebutton]": {
                 click: this.onUserSaveButtonClick
+            },
+            "userpasswordwindow #savebutton":{
+            	click: this.onPasswordSaveButtonClick
             },
             "#userwindowtoolbar > #cancelbutton": {
                 click: function(){ 
@@ -99,21 +149,25 @@ Ext.define('JavisERP.controller.UserController', {
         });
     },
 
-    editUser: function(record){
+    editUser: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var uWindow = new JavisERP.view.UserWindow();
         var uForm = this.getUserForm();
         this.getUserModel().load(record.data.id, {
             success: function(record,operation){
                 uForm.getForm().loadRecord(record);
                 uForm.getForm().findField('password').reset();
-                uForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(record.data.territory));
+                var roles = [];
+				for (i in record.data.roles){
+					roles.push(new JavisERP.model.PermissionRole(record.data.roles[i]));
+				}
+				uForm.getForm().findField('roles').setValue(roles);
                 uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
             }
         });
         uWindow.show();
     },
 
-    deleteUser: function(record,grid){
+    deleteUser: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         Ext.Msg.show({
             title: 'Delete Employee?',
             msg: 'You are about to delete this user.  Would you like to proceed?',
