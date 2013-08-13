@@ -55,8 +55,15 @@ $app['security.firewalls'] = array(
     'login' => array(
         'pattern' => '^/login$'
     ),
-    'submit_content' => array(
-        'pattern' => '/state/list||/publication/list'
+    'state' => array(
+        'pattern' => '/state/list',
+        'anonymous' => true,
+        'security' => false
+    ),
+    'publication' => array(
+        'pattern' => '/publication/list',
+        'anonymous' => true,
+        'security' => false
     ),
     'secured' => array(
         'pattern' => '^.*$',
