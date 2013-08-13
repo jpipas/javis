@@ -275,6 +275,7 @@ class User extends AbstractBusinessService
 	{
 		$id = $params['id'];
 		unset($params['id']);
+		$params['newpassword'] = 0;
 		$rows = $this->db->update('employee',$params, array('id' => $id));
         $user = $this->getById($id);
         return $user;

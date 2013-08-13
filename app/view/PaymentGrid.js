@@ -89,21 +89,35 @@ Ext.define('JavisERP.view.PaymentGrid', {
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
+                    dataIndex: 'territory_name',
+                    text: 'Territory'
+                },
+                {
+                	flex: 1,
+                    xtype: 'gridcolumn',
                     dataIndex: 'payment_type_description',
                     text: 'Payment Type'
                 },
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
-                    dataIndex: 'payment_category_description',
-                    text: 'Classification'
+                    dataIndex: 'payment_amount',
+                    renderer: 'usMoney',
+                    text: 'Period Amount'
                 },
                 {
                 	flex: 1,
                     xtype: 'gridcolumn',
-                    dataIndex: 'payment_amount',
+                    dataIndex: 'payment_total',
                     renderer: 'usMoney',
-                    text: 'Total Amount'
+                    text: 'Payment Total'
+                },
+                {
+                	flex: 1,
+                    xtype: 'datecolumn',
+                    dataIndex: 'postdate',
+                    text: 'Received',
+                    format: 'm/d/Y'
                 },
                 {
                 	flex: 1,

@@ -76,10 +76,6 @@ class Payment extends AbstractBusinessService {
     							$or[] = 'contract.contract_number LIKE '.$qq;
     							break;
     						
-    						case 'payment_category_description':
-    							$or[] = 'payment_category.description LIKE '.$qq;
-    							break;
-    						
     						case 'durations':
     							$or[] = 'pd.durations LIKE '.$qqq;
     							break;
@@ -115,16 +111,16 @@ class Payment extends AbstractBusinessService {
         	payment.*,
         	client.company_name AS client_company_name,
         	contract.contract_number,
+        	CONCAT(territory.name,' (',state.abbr,')') AS territory_name,
         	pd.durations,
-        	payment_type.description AS payment_type_description,
-        	payment_category.description AS payment_category_description,
-        	payment_category.abbrev AS payment_category_abbrev
+        	payment_type.description AS payment_type_description
         FROM
         	(payment,
         	client,
         	payment_type,
-        	payment_category,
         	contract,
+        	territory,
+        	state,
         	(SELECT
         			payment_duration.payment_id,
         			GROUP_CONCAT(duration.description ORDER BY duration.date_string SEPARATOR ', ') AS durations
@@ -146,7 +142,8 @@ class Payment extends AbstractBusinessService {
         	payment.contract_id = contract.id AND
         	payment.id = pd.payment_id AND
         	payment.payment_type_id = payment_type.id AND
-        	payment.payment_category_id = payment_category.id  	
+        	contract.territory_id = territory.id AND
+        	territory.state_id = state.id
         $wsql
        	GROUP BY
        		payment.id
@@ -164,16 +161,16 @@ class Payment extends AbstractBusinessService {
         	payment.*,
         	client.company_name AS client_company_name,
         	contract.contract_number,
+        	CONCAT(territory.name,' (',state.abbr,')') AS territory_name,
         	pd.durations,
-        	payment_type.description AS payment_type_description,
-        	payment_category.description AS payment_category_description,
-        	payment_category.abbrev AS payment_category_abbrev
+        	payment_type.description AS payment_type_description
         FROM
         	(payment,
         	client,
         	payment_type,
-        	payment_category,
         	contract,
+        	territory,
+        	state,
         	(SELECT
         			payment_duration.payment_id,
         			GROUP_CONCAT(duration.description ORDER BY duration.date_string SEPARATOR ', ') AS durations
@@ -195,7 +192,8 @@ class Payment extends AbstractBusinessService {
         	payment.contract_id = contract.id AND
         	payment.id = pd.payment_id AND
         	payment.payment_type_id = payment_type.id AND
-        	payment.payment_category_id = payment_category.id AND
+        	contract.territory_id = territory.id AND
+        	territory.state_id = state.id AND
         	payment.id = ?
         GROUP BY
         	payment.id";
@@ -205,7 +203,7 @@ class Payment extends AbstractBusinessService {
 	public function validate(&$app, &$params)
 	{
 		$error = array();
-		unset($params['payment_category_description'], $params['client_company_name'], $params['payment_category_abbrev'], $params['contract']);
+		unset($params['client_company_name'], $params['contract'], $params['territory_name']);
 		unset($params['client'], $params['update_user_id'], $params['insert_user_id'], $params['updated_at'], $params['created_at']);
 		unset($params['contract_number'], $params['payment_type_description']);
 		
@@ -239,21 +237,17 @@ class Payment extends AbstractBusinessService {
 			}
 		}
 		
-		// pay category
-		if (empty($params['payment_category_id'])){
-			$error[] = "Payment category is required";
-		} else {
-			$paycat = $app['business.paymentcategory']->getById($params['payment_category_id']);
-			if (empty($paycat['id'])){
-				$error[] = "Invalid payment category specified";
-			}
-		}
-		
 		// amount
 		if (empty($params['payment_amount'])){
 			$error[] = "Payment amount is required";
 		} elseif (!is_numeric($params['payment_amount']) || $params['payment_amount'] < 0){
 			$error[] = "Amount is an invalid amount";
+		}
+		
+		if (empty($params['postdate'])){
+			$error[] = 'Recieved is a required field';
+		} else {
+			$params['postdate'] = date('Y-m-d', strtotime($params['postdate']));
 		}
 		
 		// durations

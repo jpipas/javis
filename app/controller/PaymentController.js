@@ -5,6 +5,8 @@ Ext.define('JavisERP.controller.PaymentController', {
 		id: '',
 		name: ''
 	},
+	
+	isLoadingEdit: false,
 
     stores: [
         'AppliedPaymentStore',
@@ -20,8 +22,7 @@ Ext.define('JavisERP.controller.PaymentController', {
         'Payment',
         'Client',
         'Duration',
-        'PaymentType',
-        'PaymentCategory'
+        'PaymentType'
     ],
     
     views: [
@@ -214,7 +215,11 @@ Ext.define('JavisERP.controller.PaymentController', {
             "#paymentdurations":{
             	beforequery: function(){
             		return this.filterPaymentDurationCombo(this);
-            	}
+            	},
+            	change: this.runCalcs
+            },
+            "#paymentForm numberfield[name=payment_amount]":{
+                change: this.runCalcs
             },
             "#paymentcontract":{
             	select: function(){
@@ -275,8 +280,10 @@ Ext.define('JavisERP.controller.PaymentController', {
         var payWindow = new JavisERP.view.ContractPaymentWindow();
         var pForm = this.getPaymentForm();
         var cc = this.getContentCards();
+        var me = this;
         this.getPaymentModel().load(record.data.id, {
             success: function(record,operation){
+            	me.isLoadingEdit = true;
                 pForm.getForm().loadRecord(record);
 				var durations = [];
 				for (i in record.data.durations){
@@ -287,13 +294,13 @@ Ext.define('JavisERP.controller.PaymentController', {
                 pForm.getForm().findField('client_id').setValue(new JavisERP.model.Client({ id : record.data.client_id, company_name: record.data.client_company_name }));
                 pForm.getForm().findField('contract_id').setValue(new JavisERP.model.Contract(record.data.contract));
                 pForm.getForm().findField('payment_type_id').setValue(new JavisERP.model.PaymentType({ id: record.data.payment_type_id, description: record.data.payment_type_description }));
-                pForm.getForm().findField('payment_category_id').setValue(new JavisERP.model.PaymentCategory({ id: record.data.payment_category_id, description: record.data.payment_category_description }));
                 if (cc.getLayout().getActiveItem().getXType() == 'clientrecord'){
 		        	pForm.getForm().findField('client_id').setReadOnly(true);
 			        pForm.getForm().findField('contract_id').focus('', 10);
 		        } else {
 		        	pForm.getForm().findField('client_id').focus('', 10);
 		        }
+		        me.isLoadingEdit = false;
             }
         });
         payWindow.show();
@@ -330,5 +337,22 @@ Ext.define('JavisERP.controller.PaymentController', {
                 }
             }
         });
+    },
+    
+    runCalcs: function() {
+    	if (!this.isLoadingEdit){
+	        var frm = this.getPaymentForm().getForm();
+	
+	        var payment_amount = frm.findField("payment_amount").getValue();
+	        var durations = frm.findField("durations").getRawValue();
+	
+	        var duration = durations.split(",").length;
+	        if(duration===0){
+	            duration=1;
+	        }
+	        //console.log(duration);
+	        var payment_total = (payment_amount * duration);
+	        frm.findField("payment_total").setValue(payment_total.toFixed(2));
+		}
     }
 });
