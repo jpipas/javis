@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "803e9367432d5c8d9c8fe91e11c89249",
+    "hash": "a13aec33104fb9d5cc522f4d75ca662c",
     "packages": [
         {
             "name": "doctrine/common",
@@ -324,12 +324,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "d38ddb1c8dffb41eb6c6a2a56df65ca0da054c20"
+                "reference": "4bd9df5c81a263c3caa33878155d60d7d2610c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/d38ddb1c8dffb41eb6c6a2a56df65ca0da054c20",
-                "reference": "d38ddb1c8dffb41eb6c6a2a56df65ca0da054c20",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/4bd9df5c81a263c3caa33878155d60d7d2610c6d",
+                "reference": "4bd9df5c81a263c3caa33878155d60d7d2610c6d",
                 "shasum": ""
             },
             "require": {
@@ -372,7 +372,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2013-07-15 17:36:14"
+            "time": "2013-08-17 12:36:13"
         },
         {
             "name": "pimple/pimple",
@@ -604,12 +604,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
-                "reference": "v2.1.12"
+                "reference": "51909bf7f5d763d125a67781942d9293f65afae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/v2.1.12",
-                "reference": "v2.1.12",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/51909bf7f5d763d125a67781942d9293f65afae7",
+                "reference": "51909bf7f5d763d125a67781942d9293f65afae7",
                 "shasum": ""
             },
             "require": {
@@ -1205,12 +1205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "v2.3.3"
+                "reference": "023071a9ab677d0a8f1732dec970529cfa45fe3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/v2.3.3",
-                "reference": "v2.3.3",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/023071a9ab677d0a8f1732dec970529cfa45fe3d",
+                "reference": "023071a9ab677d0a8f1732dec970529cfa45fe3d",
                 "shasum": ""
             },
             "require": {
@@ -1254,7 +1254,7 @@
             ],
             "description": "Symfony Routing Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-02 20:53:38"
+            "time": "2013-08-13 20:18:00"
         },
         {
             "name": "symfony/security",
@@ -1478,6 +1478,63 @@
             "time": "2013-08-06 05:58:11"
         },
         {
+            "name": "tecnick.com/tcpdf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://git.code.sf.net/p/tcpdf/code",
+                "reference": "3ebcb4d8d952ffdcb0fb95db8855da46a8590a26"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "fonts",
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "homepage": "http://nicolaasuni.tecnick.com"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "time": "2013-08-05 19:34:06"
+        },
+        {
             "name": "twig/twig",
             "version": "dev-master",
             "source": {
@@ -1536,6 +1593,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "phpoffice/phpexcel": 20,
+        "tecnick.com/tcpdf": 20,
         "knplabs/migration-service-provider": 20
     },
     "platform": {
