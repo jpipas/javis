@@ -13,6 +13,12 @@ Ext.define('JavisERP.model.AdvertisementType', {
         },
         {
             name: 'description'
+        },
+        {
+        	name: 'ad_sizes'
+        },
+        {
+        	name: 'ad_size'
         }
     ],
 

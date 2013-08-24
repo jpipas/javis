@@ -138,7 +138,10 @@ Ext.application({
         'Portlet',
         'PortletPanel',
         'PermissionResourceTree',
-        'PermissionRoleGrid'
+        'PermissionRoleGrid',
+        'AdvertisementSizeType',
+        'AdSizeGrid',
+        'AdTypeGrid'
     ],
     autoCreateViewport: true,
     name: 'JavisERP',
@@ -156,6 +159,7 @@ Ext.application({
         'AdListController',
         'TerritoryController',
         'AdvertisementController',
+        'AdSizeTypeController',
         'PermissionResourceController',
         'PermissionRoleController'
     ],

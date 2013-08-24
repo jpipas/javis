@@ -10,6 +10,7 @@ Ext.define('JavisERP.view.ContentCards', {
         'JavisERP.view.ClientRecord',
         'JavisERP.view.PublicationGrid',
         'JavisERP.view.AdvertisementGrid',
+        'JavisERP.view.AdvertisementSizeType',
         'JavisERP.view.ContractGrid',
         'JavisERP.view.UserGrid',
         'JavisERP.view.AdListGrid',
@@ -91,6 +92,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'permissionroles',
                     itemId: 'PermissionRoleGrid'
+                },
+                {
+                    xtype: 'advertisementsizetype',
+                    itemId: 'AdvertisementSizeTypePanel'
                 }
             ]
         });

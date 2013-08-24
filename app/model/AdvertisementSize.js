@@ -5,7 +5,7 @@ Ext.define('JavisERP.model.AdvertisementSize', {
         'JavisERP.model.AdvertisementType'
     ],
 
-		idProperty: 'id',
+	idProperty: 'id',
 
     fields: [
         {
@@ -13,9 +13,6 @@ Ext.define('JavisERP.model.AdvertisementSize', {
         },
         {
             name: 'description'
-        },
-        {
-            name: 'type_id'
         }
     ],
 

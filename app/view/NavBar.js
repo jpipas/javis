@@ -193,7 +193,7 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'System',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
+                                width: 150,
                                 //title: 'HomeMenu',
                                 hideMode: 'display',
                                 items: [
@@ -222,6 +222,13 @@ Ext.define('JavisERP.view.NavBar', {
                                         		}                                        		
                                         	]	
                                         }
+                                    },
+                                    {
+                                    	text: 'Ad Types & Sizes',
+                                    	itemId: 'AdvertisementSizeTypePanel',
+					                    resourceId: 'advertisement_typesize',
+					                    resourceType: 'disable',
+					                    plugins: ['permission']
                                     }
                                 ]
                             }

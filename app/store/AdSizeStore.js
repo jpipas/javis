@@ -1,6 +1,7 @@
 Ext.define('JavisERP.store.AdSizeStore', {
     extend: 'Ext.data.Store',
-
+	alias: 'store.adsizestore',
+	
     requires: [
         'JavisERP.model.AdvertisementSize'
     ],
@@ -9,7 +10,9 @@ Ext.define('JavisERP.store.AdSizeStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: false,
+        	remoteFilter: true,
+            remoteSort: true,
+            autoLoad: true,
             storeId: 'AdSize',
             model: 'JavisERP.model.AdvertisementSize'
         }, cfg)]);
