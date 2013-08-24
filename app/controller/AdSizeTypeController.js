@@ -47,11 +47,15 @@ Ext.define('JavisERP.controller.AdSizeTypeController', {
     onNewAdTypeClick: function(act_type) {
         var win = new JavisERP.view.AdTypeWindow();
         win.show();
+        var frm = this.getAdTypeForm().getForm();
+        frm.findField('description').focus('', 10);
     },
     
     onNewAdSizeClick: function(act_type) {
         var win = new JavisERP.view.AdSizeWindow();
         win.show();
+        var frm = this.getAdSizeForm().getForm();
+        frm.findField('description').focus('', 10);
     },
     
     onAdTypeSaveButtonClick: function(button, options, e){
@@ -165,6 +169,7 @@ Ext.define('JavisERP.controller.AdSizeTypeController', {
                 	sizes.push(new JavisERP.model.AdvertisementSize(record.data.ad_size[i]));
                 }
                 frm.getForm().findField('ad_size').setValue(sizes);
+        		frm.getForm().findField('description').focus('', 10);
             }
         });
         var myMask = new Ext.LoadMask(this.getAdTypeWindow(),{msg:"Loading..."});
@@ -206,6 +211,7 @@ Ext.define('JavisERP.controller.AdSizeTypeController', {
         this.getAdvertisementSizeModel().load(record.data.id, {
             success: function(record,operation){
                 frm.getForm().loadRecord(record);
+        		frm.getForm().findField('description').focus('', 10);
             }
         });
         var myMask = new Ext.LoadMask(this.getAdSizeWindow(),{msg:"Loading..."});
