@@ -161,7 +161,8 @@ Ext.application({
         'AdvertisementController',
         'AdSizeTypeController',
         'PermissionResourceController',
-        'PermissionRoleController'
+        'PermissionRoleController',
+        'CommissionController'
     ],
     appFolder: '/app',
     launch: function() {

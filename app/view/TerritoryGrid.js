@@ -124,6 +124,12 @@ Ext.define('JavisERP.view.TerritoryGrid', {
                     flex: 3,
                     dataIndex: 'manager_name',
                     text: 'Publisher'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    flex: 3,
+                    dataIndex: 'cycle_title',
+                    text: 'Commission Cycle'
                 }
             ]
         });

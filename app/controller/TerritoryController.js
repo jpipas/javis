@@ -7,13 +7,16 @@ Ext.define('JavisERP.controller.TerritoryController', {
     ],
 
     models: [
-        'Territory'
+        'Territory',
+        'CommissionCycle',
+        'User'
     ],
 
     stores: [
         'TerritoryStore',
         'UserDropDown',
-        'State'
+        'State',
+        'CommissionCycleStore'
     ],
 
     refs: [
@@ -102,14 +105,15 @@ Ext.define('JavisERP.controller.TerritoryController', {
         });
     },
 
-		editTerritory: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+	editTerritory: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var tWindow = new JavisERP.view.TerritoryWindow();
         var tForm = this.getTerritoryForm();
         this.getUserDropDownStore().clearFilter(true);
         this.getTerritoryModel().load(record.data.id, {
             success: function(record,operation){
-            		tForm.getForm().loadRecord(record);
+            	tForm.getForm().loadRecord(record);
                 tForm.getForm().findField('manager_id').setValue(new JavisERP.model.User(record.data.manager));
+                tForm.getForm().findField('cycle_id').setValue(new JavisERP.model.CommissionCycle({id : record.data.cycle_id, title : record.data.cycle_title}));
                 tWindow.show();
             }
         });        

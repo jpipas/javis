@@ -61,6 +61,10 @@ class Territory extends AbstractBusinessService
     							$or[] = 'state.name LIKE '.$qq;
     							break;
     						
+    						case 'cycle_title':
+    							$or[] = 'commission_cycle.title LIKE '.$qq;
+    							break;
+    						
     						case 'manager_name':
     							$or[] = 'CONCAT(employee.first_name, \' \', employee.last_name) LIKE '.$qq;
     							break;
@@ -87,11 +91,13 @@ class Territory extends AbstractBusinessService
         	state.name AS state_name,
         	employee.username AS manager_username,
         	employee.email AS manager_email,
-        	CONCAT(employee.first_name, ' ', employee.last_name) AS manager_name
+        	CONCAT(employee.first_name, ' ', employee.last_name) AS manager_name,
+        	commission_cycle.title AS cycle_title
         FROM
         	(territory,
         	state)
         	LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
+        	LEFT JOIN commission_cycle ON commission_cycle.id = territory.cycle_id AND commission_cycle.deleted_at IS NULL
         WHERE
         	territory.state_id = state.id AND
         	territory.deleted_at IS NULL
@@ -111,11 +117,13 @@ class Territory extends AbstractBusinessService
         	state.name AS state_name,
         	employee.username AS manager_username,
         	employee.email AS manager_email,
-        	CONCAT(employee.first_name, ' ', employee.last_name) AS manager_name
+        	CONCAT(employee.first_name, ' ', employee.last_name) AS manager_name,
+        	commission_cycle.title AS cycle_title
         FROM
         	(territory,
         	state)
         	LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
+        	LEFT JOIN commission_cycle ON commission_cycle.id = territory.cycle_id AND commission_cycle.deleted_at IS NULL
         WHERE
         	territory.state_id = state.id AND
         	territory.deleted_at IS NULL AND
@@ -131,53 +139,64 @@ class Territory extends AbstractBusinessService
     public function validate(&$app, &$params)
     {
     	$error = array();
-			unset($params['id'],$params['manager'], $params['state_name'], $params['manager_username'], $params['manager_email'], $params['manager_name']);
-			
-			// territory name is required
-			if (empty($params['name'])){
-				$error[] = "Territory name is required";
-			}
-			
-			// territory state is required
-			if (empty($params['state_id'])){
-				$error[] = "State is required";
-			}
-			
-			// validate publisher
-			if (empty($params['manager_id'])){
-				$error[] = "Territory publisher is required";
-			} else {
-				$manager =  $app['business.user']->getById($params['manager_id']);
+		unset($params['id'],$params['manager'], $params['state_name'], $params['manager_username'], $params['manager_email'], $params['manager_name']);
+		unset($params['cycle_title']);
+		
+		// territory name is required
+		if (empty($params['name'])){
+			$error[] = "Territory name is required";
+		}
+		
+		// territory state is required
+		if (empty($params['state_id'])){
+			$error[] = "State is required";
+		}
+		
+		// validate publisher
+		if (empty($params['manager_id'])){
+			$error[] = "Territory publisher is required";
+		} else {
+			$manager =  $app['business.user']->getById($params['manager_id']);
 	    	if (!$manager['id']){
 	    		$error[] = "Invalid publisher selected";		    		
 	    	}
+		}
+		
+		// validate commission cycle
+		if (empty($params['cycle_id'])){
+			$error[] = 'Commission cycle is required';
+		} else {
+			$cycle = $app['business.commissioncycle']->getById($params['cycle_id']);
+			if (!$cycle['id']){
+				$error[] = 'Invalid commission cycle selected';
 			}
-			return $error;
+		}
+		return $error;
     }
 
     public function createTerritory($params) 
     {
-    		unset($params['id']);
-    		$now = new \DateTime('NOW');
+		unset($params['id']);
+		$now = new \DateTime('NOW');
         $params['created_at'] = $now->format('Y-m-d H:i:s');
         $this->db->insert('territory',$params);
         $result = $this->getById($this->db->lastInsertId());
         return $result;
     }
 
-		public function updateTerritory($id, $params) 
+	public function updateTerritory($id, $params) 
     {
         $this->db->update('territory',$params, array('id'=>$id));
         $result = $this->getById($id);
         return $result;
     }
 
-		public function deleteTerritory($id)
-		{
-			$now = new \DateTime('NOW');
-			$params['deleted_at'] = $now->format('Y-m-d H:i:s');
-      $rows = $this->db->update($this->getTableName(),$params, array('id' => $id));
-      $res = $this->getById($id);
-      return $res;
-		}
+	public function deleteTerritory($id)
+	{
+		$now = new \DateTime('NOW');
+		$params['deleted_at'] = $now->format('Y-m-d H:i:s');
+		$rows = $this->db->update($this->getTableName(),$params, array('id' => $id));
+		$res = $this->getById($id);
+		return $res;
+	}
 }

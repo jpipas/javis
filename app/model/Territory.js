@@ -52,6 +52,12 @@ Ext.define('JavisERP.model.Territory', {
         },
         {
             name: 'manager_name'
+        },
+        {
+        	name: 'cycle_id'
+        },
+        {
+        	name: 'cycle_title'
         }
     ],
 

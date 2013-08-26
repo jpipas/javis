@@ -52,11 +52,16 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                             ]
                         }
                     ],
+                    defaults: {
+                        padding: '5px 0px',
+                        anchor: '95%',
+                        labelAlign: 'right'
+                    },
                     items: [
-                    		{
-                    			xtype: 'hiddenfield',
-                    			name: 'id'
-                    		},
+                		{
+                			xtype: 'hiddenfield',
+                			name: 'id'
+                		},
                         {
                             xtype: 'textfield',
                             anchor: '95%',
@@ -68,7 +73,6 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                         },
                         {
                             xtype: 'combobox',
-                            anchor: '100%',
                             itemId: 'state',
                             name: 'state_id',
                             fieldLabel: 'State',
@@ -85,11 +89,20 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                             name: 'manager_id',
                             fieldLabel: 'Publisher',
                             displayField: 'fullname',
-                            store: 'UserDropDown',
+                            store: {type: 'userstore'},
                             hideTrigger: true,
                             triggerAction: 'query',
                             pageSize: true,
                             minChars: 3,
+                            valueField: 'id',
+                            labelAlign: 'right',
+                        },
+                        {
+                            xtype: 'combobox',
+                            name: 'cycle_id',
+                            fieldLabel: 'Commission Cycle',
+                            displayField: 'title',
+                            store: {type: 'commissioncyclestore'},
                             valueField: 'id',
                             labelAlign: 'right',
                         }

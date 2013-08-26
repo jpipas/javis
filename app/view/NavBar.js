@@ -154,7 +154,7 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'Reports',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
+                                width: 150,
                                 hideMode: 'display',
                                 //title: 'ReportsMenu',
                                 items: [
@@ -179,9 +179,29 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-calculator',
                                         text: 'Commissions',
-                                        resourceId: 'report_commissions',
-                                        resourceType: 'disable',
-                                        plugins: ['permission']
+                                        menu: {
+                                        	xtype: 'menu',
+                                        	width: 120,
+                                        	hideMode: 'display',
+                                        	items: [
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'CommissionBaselineGrid',
+                                        			text: 'Baselines',
+								                    resourceId: 'commission_baseline',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		},
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'CommissionStatementPanel',
+                                        			text: 'Statements',
+								                    resourceId: 'commission_statement',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		}                                        		
+                                        	]	
+                                        }
                                     }
                                 ]
                             }
@@ -227,6 +247,13 @@ Ext.define('JavisERP.view.NavBar', {
                                     	text: 'Ad Types & Sizes',
                                     	itemId: 'AdvertisementSizeTypePanel',
 					                    resourceId: 'advertisement_typesize',
+					                    resourceType: 'disable',
+					                    plugins: ['permission']
+                                    },
+                                    {
+                                    	text: 'Commission Cycles',
+                                    	itemId: 'CommissionCycleGrid',
+					                    resourceId: 'commission_cycle',
 					                    resourceType: 'disable',
 					                    plugins: ['permission']
                                     }

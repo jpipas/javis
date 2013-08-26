@@ -96,6 +96,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'advertisementsizetype',
                     itemId: 'AdvertisementSizeTypePanel'
+                },
+                {
+                    xtype: 'commissioncyclegrid',
+                    itemId: 'CommissionCycleGrid'
                 }
             ]
         });
