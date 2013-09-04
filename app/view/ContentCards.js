@@ -100,6 +100,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'commissioncyclegrid',
                     itemId: 'CommissionCycleGrid'
+                },
+                {
+                    xtype: 'commissionstatementpanel',
+                    itemId: 'CommissionStatementPanel'
                 }
             ]
         });
