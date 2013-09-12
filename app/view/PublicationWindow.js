@@ -33,10 +33,10 @@ Ext.define('JavisERP.view.PublicationWindow', {
                             cls: 'pubWindowToolBar',
                             itemId: 'pubwindowtoolbar',
                             items: [
-                            		{
-                            				xtype: 'tbspacer',
-                            				flex: 1
-                            		},
+                        		{
+                    				xtype: 'tbspacer',
+                    				flex: 1
+                        		},
                                 {
                                     xtype: 'button',
                                     cls: 'publicationsavebutton',
@@ -105,7 +105,65 @@ Ext.define('JavisERP.view.PublicationWindow', {
                             minChars: 3,
                             valueField: 'id',
                             anchor: '100%',
-                        }
+                        },
+                        {
+                        	xtype: 'displayfield',
+                        	fieldLabel: 'Baselines',
+                        	labelAlign: 'left',
+                        	style: {
+                        		color: '#cc0000',
+                        		fontWeight: 'bold'
+                        	}
+                        },
+                        {
+                            xtype: 'fieldcontainer',
+                            flex: 1,
+                            layout: {
+                                align: 'stretch',
+                                type: 'anchor'
+                            },
+                            anchor: '100%',
+                            itemId: 'PublicationBaselines',
+                            items: [{
+                            	xtype: 'fieldcontainer',
+                            	padding: '0px 0px 5px 0px',
+	                            flex: 1,
+	                            layout: {
+	                                align: 'stretch',
+	                                type: 'hbox'
+	                            },
+	                            defaults: {
+	                            	hideLabel: true
+	                            },
+	                            anchor: '100%',
+                            	items: [
+	                            	{
+			                            xtype: 'numberfield',
+			                            name: 'pages',
+			                            fieldLabel: 'Pages',
+			                            emptyText: '# of Pages',
+			                            decimalPrecision: 0,
+			                            anchor: '100%',
+			                            flex: 1,
+			                            padding: '0 10px 0 0'
+			                        },
+			                        {
+			                            xtype: 'numberfield',
+			                            name: 'baseline',
+			                            fieldLabel: 'Baseline Amount',
+			                            emptyText: 'Baseline Amount',
+			                            decimalPrecision: 2,
+			                            flex: 1,
+			                            anchor: '100%',
+			                        }
+	                            ]
+	                        }] 
+						},
+						{
+							xtype: 'button',
+							text: 'More Baselines',
+							itemId: 'MoreBaselines'
+						}
                     ]
                 }
             ]

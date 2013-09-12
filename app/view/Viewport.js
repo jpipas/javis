@@ -52,25 +52,25 @@ Ext.define('JavisERP.view.Viewport', {
                     header: false,
                     title: 'Header',
                     titleCollapse: true,
-                    dockedItems: [
-                        {
-                            xtype: 'image',
-                            margins: '0px 0px 5px 0px',
-                            dock: 'left',
-                            border: 0,
-                            height: 50,
-                            id: 'logo',
-                            width: 209,
-                            shadow: false,
-                            src: '/resources/images/BVM_logo_horiz_shadow.jpg'
-                        }
-                    ],
                     items: [
-                        {
-                            xtype: 'container',
-                            itemId: 'HeaderMenu',
-                            border: 0
-                        }
+                    	{
+                    		xtype: 'container',
+                    		itemId: 'HeaderMenu',
+                    		border: 0,
+                    		items: [
+		                        {
+		                            xtype: 'image',
+		                            margins: '0px 0px 5px 0px',
+		                            dock: 'left',
+		                            border: 0,
+		                            height: 50,
+		                            id: 'logo',
+		                            width: 250,
+		                            shadow: false,
+		                            src: '/resources/images/BVMLogo250.gif'
+		                        }
+		                   ]
+		                }
                     ]
                 },
                 {

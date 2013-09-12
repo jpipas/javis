@@ -29,7 +29,7 @@ class Commission implements ControllerProviderInterface
     		if ($request->get('search')){
     			$search = json_decode($request->get('search'), true);
     		}
-            list($totalCount, $result) = $app['business.commissionstatement']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            list($totalCount, $result) = $app['business.commissionstatement']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
         	return $app->json(array("totalCount"=>$totalCount, "statement"=>$result));
         });
         
@@ -135,6 +135,62 @@ class Commission implements ControllerProviderInterface
         });
         
         /******
+		COMMISSION BASELINES
+		******/
+        $controllers->get('/baseline/', function (Application $app, Request $request) {
+        	$sort = '';
+    		if ($request->get('sort')){
+    			$sort = json_decode($request->get('sort'), true);
+    		}
+    		$filter = array();
+    		if ($request->get('filter')){
+    			$filter = json_decode($request->get('filter'), true);
+    		}
+    		$search = array();
+    		if ($request->get('search')){
+    			$search = json_decode($request->get('search'), true);
+    		}
+            list($totalCount, $result) = $app['business.commissionbaseline']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+        	return $app->json(array("success" =>true,"totalCount"=>$totalCount, "baseline"=>$result));
+        });
+        
+        /* baseline get */
+        $controllers->get('/baseline/{id}', function(Application $app, $id, Request $request) {
+            $result = $app['business.commissionbaseline']->getById($id);
+            return $app->json(array("success"=>true,"totalCount"=>1,"baseline"=>$result));
+        });
+
+		/* baseline update */
+		$controllers->put('/baseline/{id}', function(Application $app, $id, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $error = $app['business.commissionbaseline']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$result = $app['business.commissionbaseline']->update($id, $params);
+            	return $app->json(array("success"=>true,"baseline"=>$result));
+            }
+        });
+        
+        /* baseline delete */
+		$controllers->delete('/baseline/delete/{id}', function(Application $app, $id, Request $request) {
+            $result = $app['business.commissionbaseline']->delete($id);
+            return $app->json(array("success"=>true,"baseline"=>$result));
+        });
+
+		/* baseline create */
+        $controllers->post('/baseline/new', function(Application $app, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $error = $app['business.commissionbaseline']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$result = $app['business.commissionbaseline']->create($params);
+            	return $app->json(array("success"=>true,"baseline"=>$result));
+            }
+        });
+        
+        /******
 		COMMISSION PERIODS
 		******/
         $controllers->get('/period/', function (Application $app, Request $request) {
@@ -152,6 +208,13 @@ class Commission implements ControllerProviderInterface
     		}
             list($totalCount, $result) = $app['business.commissionperiod']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
         	return $app->json(array("totalCount"=>$totalCount, "period"=>$result));
+        });
+        
+        /* current, unlocked periods */
+        $controllers->get('/period/current', function (Application $app, Request $request) {
+            list($totalCount, $result) = $app['business.commissionperiod']->getAll('', '', '', '', array(array('property' => 'current', 'value' => true)));
+            return $app->json(array('success'=> true,'totalCount' => $totalCount,"children"=>$result));
+            //return $app->json($result);
         });
         
         /* period tree root */

@@ -31,6 +31,14 @@ Ext.define('JavisERP.controller.PublicationController',{
         {
             ref: 'publicationGrid',
             selector: 'publicationgrid'
+        },
+        {
+        	ref: 'moreBaselines',
+        	selector: 'publicationwindow #publicationform #MoreBaselines'
+        },
+        {
+        	ref: 'publicationBaselines',
+        	selector: 'publicationwindow #publicationform #PublicationBaselines'
         }
     ],
 
@@ -48,6 +56,9 @@ Ext.define('JavisERP.controller.PublicationController',{
 
     onNewPublicationClick: function(button, e, options) {
         var publicationWindow = new JavisERP.view.PublicationWindow();
+        for (i = 0; i < 3; i++){
+        	this.onMoreBaselinesClick();
+        }
         publicationWindow.show();
     },
 
@@ -62,16 +73,16 @@ Ext.define('JavisERP.controller.PublicationController',{
         publication.save({
             success: function(record, operation){
             	pWindow.close();
-              pStore.reload();
-              Ext.Msg.alert('Success','Publication saved successfully!');
+				pStore.reload();
+				Ext.Msg.alert('Success','Publication saved successfully!');
             },
             failure: function(record, operation){
             	Ext.MessageBox.show({
-			           title: 'Failure',
-			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
-			           buttons: Ext.MessageBox.OK,
-			           icon: Ext.MessageBox.ERROR
-			       });
+					title: 'Failure',
+					msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
             }
         });
     },
@@ -99,16 +110,32 @@ Ext.define('JavisERP.controller.PublicationController',{
                 click: function(){ 
                 	me.getPublicationWindow().close();
                 }
+            },
+            "publicationwindow #publicationform #MoreBaselines": {
+            	click: this.onMoreBaselinesClick
             }
         });
+    },
+    
+    onMoreBaselinesClick: function(){
+		var container = this.getPublicationBaselines();
+		//console.log('more baselines');
+		//console.log(container.items.length);
+		if (container){
+			var config = Ext.apply({}, container.initialConfig.items[0]);
+			container.add(config);
+		}
     },
 
     editPublication: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var publicationWindow = new JavisERP.view.PublicationWindow();
         var publicationForm = this.getPublicationForm();
-        publicationWindow.show();
+        var me = this;
+        var myMask = new Ext.LoadMask(me.getPublicationGrid(),{msg:"Loading..."});
+        myMask.show();
         this.getPublicationModel().load(record.data.id,{
             success: function(model){
+            	myMask.hide();
                 publicationForm.loadRecord(model);
                 publicationForm.getForm().findField('territory_id').setValue(new JavisERP.model.Territory(model.raw.territory));
                 publicationForm.getForm().findField('contentcoord_id').setValue(new JavisERP.model.User(model.raw.contentcoord) );
@@ -118,6 +145,41 @@ Ext.define('JavisERP.controller.PublicationController',{
                     valArray.push(arr.iso_code);
                 });
                 postalcodes.setValue(valArray);
+                if (model.data.baselines){
+                	var lcv = model.data.baselines.length;
+                	if (lcv < 3){ lcv = 3; }
+                } else {
+                	var lcv = 3;
+                }
+                for (i = 0; i < lcv; i++){
+        			me.onMoreBaselinesClick();
+        		}
+        		if (model.data.baselines){
+        			var pages = [];
+        			var baseline = [];
+        			for (i in model.data.baselines){
+        				pages.push(model.data.baselines[i].pages);
+        				baseline.push(model.data.baselines[i].baseline);
+        			}
+        		}
+        		var fields = publicationForm.getForm().getFields();
+        		var pgidx = 0;
+        		var baseidx = 0;
+        		for (i in fields.items){
+        			var field = fields.items[i];
+        			if (field.getName() == 'pages'){
+        				if (pages[pgidx]){
+        					field.setValue(pages[pgidx]);
+        				}
+        				pgidx++;
+        			} else if (field.getName() == 'baseline'){
+        				if (baseline[baseidx]){
+        					field.setValue(baseline[baseidx]);
+        				}
+        				baseidx++;
+        			}
+        		}
+        		publicationWindow.show();
             }
         });
 

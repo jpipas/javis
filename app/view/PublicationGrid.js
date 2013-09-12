@@ -5,7 +5,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
     title: 'Publication List',
     forceFit: true,
     scroll: 'vertical',
-    store: 'PublicationStore',
+    store: {type: 'publicationstore'},
     initComponent: function() {
         var me = this;
 
@@ -23,7 +23,16 @@ Ext.define('JavisERP.view.PublicationGrid', {
 		                    resourceId: 'publication_create',
 		                    resourceType: 'disable',
 		                    plugins: ['permission']
-                        }
+                        },
+                        {
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    items: ['->']
+		                }
                     ]
                 },
                 {

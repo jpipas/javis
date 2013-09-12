@@ -80,8 +80,8 @@ class User extends AbstractBusinessService
     							$or[] = 'm.first_name LIKE '.$qq. ' OR m.last_name LIKE '.$qq;
     							break;
     						
-    						case 'territory_name':
-    							$or[] = 'territory.name LIKE '.$qq;
+    						case 'territories':
+    							$or[] = 'territory.territories LIKE '.$qqq;
     							break;
     						
     						default:
@@ -108,12 +108,18 @@ class User extends AbstractBusinessService
         	employee.*,
         	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname,
         	CONCAT(m.first_name, ' ',m.last_name) AS manager_name,
-        	territory.name AS territory_name,
+        	territory.territories,
         	pr.roles
         FROM
         	(employee)
         	LEFT JOIN employee AS m ON m.id = employee.manager_user_id
-        	LEFT JOIN territory ON territory.id = employee.territory_id
+        	LEFT JOIN (SELECT
+        		manager_id,
+        		GROUP_CONCAT(name ORDER BY name SEPARATOR ', ') AS territories
+        	FROM
+        		territory
+        	GROUP BY
+        		manager_id) AS territory ON territory.manager_id = employee.id
         	LEFT JOIN (SELECT 
         			employee_id,
         			GROUP_CONCAT(permission_role.title) AS roles
@@ -153,7 +159,8 @@ class User extends AbstractBusinessService
     public function validate(&$app, &$params){
 		$error = array();
 		// clear params we don't need
-		unset($params['territory_name'], $params['territory'], $params['fullname'], $params['manager'], $params['manager_name'], $params['created_at'], $params['last_login'], $params['deleted_at']);
+		unset($params['territory_name'], $params['territory'],  $params['fullname'], $params['manager'], $params['manager_name']);
+		unset($params['created_at'], $params['last_login'], $params['deleted_at'], $params['territories']);
 		
 		// verify password, clear if not entered to keep existing
 		if ($params['password'] || !$params['id']){

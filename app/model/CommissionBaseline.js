@@ -1,53 +1,46 @@
-Ext.define('JavisERP.model.CommissionStatement', {
+Ext.define('JavisERP.model.CommissionBaseline', {
     extend: 'Ext.data.Model',
-
-	idProperty: 'id',
-
+    alias: 'model.commissionbaseline',
     fields: [
         {
             name: 'id'
         },
         {
-            name: 'employee_id'
+            name: 'period_id'
         },
         {
-        	name: 'fullname'
+        	name: 'duration_description'
         },
         {
-        	name: 'territories'
+        	name: 'territory_id'
         },
         {
-        	name: 'amount_publisher'
+        	name: 'territory_name'
         },
         {
-        	name: 'amount_salesrep'
+        	name: 'publication_id'
         },
         {
-        	name: 'date_string',
-        	type: 'date',
-            dateFormat: 'Y-m-d'
+        	name: 'publication_description'
         },
         {
-        	name: 'period_id'
+        	name: 'pages'
         },
         {
-        	name: 'locked_at'
+        	name: 'baseline'
         },
         {
         	name: 'baselines'
-        },
-        {
-        	name: 'pdf'
         }
     ],
-
+    
     proxy: {
         type: 'srest',
-        url: '/commission/statement/',
+        url: '/commission/baseline/',
         reader: {
             type: 'json',
             idProperty: 'id',
-            root: 'statement',
+            root: 'baseline',
             totalProperty: 'totalCount'
         }
     }

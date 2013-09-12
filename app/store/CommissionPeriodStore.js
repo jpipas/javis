@@ -1,5 +1,5 @@
 Ext.define('JavisERP.store.CommissionPeriodStore', {
-    extend: 'Ext.data.TreeStore',
+    extend: 'Ext.data.Store',
     alias: 'store.commissionperiodstore',
     
     requires: [
@@ -12,11 +12,7 @@ Ext.define('JavisERP.store.CommissionPeriodStore', {
         me.callParent([Ext.apply({
             autoLoad: true,
             storeId: 'CommissionPeriodStore',
-            model: 'JavisERP.model.CommissionPeriod',
-            root: {
-            	text: 'Periods',
-            	expanded: true
-            }
+            model: 'JavisERP.model.CommissionPeriod'
         }, cfg)]);
     }
 });

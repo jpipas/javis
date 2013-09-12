@@ -65,6 +65,13 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
                 	renderer: 'usMoney',
                 	dataIndex: 'amount_salesrep',
                 	text: 'AE Commission'
+                },
+                {
+                	flex: 1,
+                	xtype: 'gridcolumn',
+                	renderer: 'usMoney',
+                	dataIndex: 'baselines',
+                	text: 'Baselines'
                 }
             ],
             dockedItems: [
@@ -95,9 +102,11 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
 	                    }
                     ]
                 },
-        		{
+                {
                     xtype: 'pagingtoolbar',
-                    dock: 'bottom'
+                    dock: 'bottom',
+                    displayInfo: true,
+                    store: 'CommissionStatementStore'
                 }
         	]
         });

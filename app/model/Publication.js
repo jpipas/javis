@@ -66,6 +66,15 @@ Ext.define('JavisERP.model.Publication', {
         },
         {
             name: 'territory'
+        },
+        {
+        	name: 'baselines'
+        },
+        {
+        	name: 'pages'
+        },
+        {
+        	name: 'baseline'
         }
     ],
 

@@ -46,10 +46,12 @@ Ext.define('JavisERP.model.CommissionPeriod', {
     
     proxy: {
         type: 'srest',
-        url: '/commission/period/',
+        url: '/commission/period',
         reader: {
             type: 'json',
-            idProperty: 'id'
+            idProperty: 'id',
+            root: 'children',
+            totalProperty: 'totalCount'
         }
     }
 });

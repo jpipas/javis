@@ -4,7 +4,7 @@ Ext.define('JavisERP.view.CommissionPeriodTree', {
 
     title: 'Commission Periods',
     forceFit: true,
-    store: 'CommissionPeriodStore',
+    store: 'CommissionPeriodTreeStore',
 	itemId: 'CommissionPeriodTree',
 	xtype: 'commissionperiodtree',
     scroll: 'vertical',

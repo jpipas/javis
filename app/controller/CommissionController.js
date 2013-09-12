@@ -7,19 +7,23 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionStatementPanel',
         'CommissionPeriodTree',
         'CommissionPeriodWindow',
-        'CommissionStatementGrid'
+        'CommissionStatementGrid',
+        'CommissionBaselineGrid',
     ],
 
     models: [
         'CommissionCycle',
         'CommissionPeriod',
-        'CommissionStatement'
+        'CommissionStatement',
+        'CommissionBaseline'
     ],
 
     stores: [
         'CommissionCycleStore',
+        'CommissionPeriodTreeStore',
         'CommissionPeriodStore',
-        'CommissionStatementStore'
+        'CommissionStatementStore',
+        'CommissionBaselineStore'
     ],
 
     refs: [
@@ -58,6 +62,14 @@ Ext.define('JavisERP.controller.CommissionController', {
         {
         	ref: 'commissionStatementPrintSelected',
         	selector: 'commissionstatementgrid #commissionstatement_printselected'
+        },
+        {
+        	ref: 'commissionBaselineGrid',
+        	selector: 'commissionbaselinegrid'
+        },
+        {
+        	ref: 'commissionBaselinePeriod',
+        	selector: 'commissionbaselinegrid #commissionperiod'
         }
     ],
     
@@ -219,7 +231,7 @@ Ext.define('JavisERP.controller.CommissionController', {
     
     viewCommissionStatements: function(period_id){
     	var grid = this.getCommissionStatementGrid();
-		grid.getStore().getProxy().url = '/commission/statement';
+		grid.getStore().getProxy().url = '/commission/statement/';
 		grid.getStore().clearFilter(true);
     	grid.getStore().filter("period_id",period_id);
     	grid.getStore().load();
@@ -244,18 +256,18 @@ Ext.define('JavisERP.controller.CommissionController', {
     	var myMask = new Ext.LoadMask(me.getCommissionStatementPanel(),{msg:"Generating PDF..."});
 		myMask.show();
     	var req = this.getCommissionStatementModel();
-    	req.getProxy().url = '/commission/statement/pdf';
+    	req.getProxy().url = '/commission/statement/pdf/';
     	req.getProxy().timeout = 0;
     	req.load(selected_ids, {
         	success: function(record, operation){
                 myMask.hide();
-				req.getProxy().url = '/commission/statement';
+				req.getProxy().url = '/commission/statement/';
 				req.getProxy().timeout = 30000;
 				window.open('/download/'+record.data.pdf);
             },
             failure: function(record, operation){
             	myMask.hide();
-            	req.getProxy().url = '/commission/statement';
+            	req.getProxy().url = '/commission/statement/';
             	req.getProxy().timeout = 30000;
             	Ext.MessageBox.show({
 			           title: 'Failure',
@@ -272,16 +284,16 @@ Ext.define('JavisERP.controller.CommissionController', {
     	var myMask = new Ext.LoadMask(me.getCommissionStatementPanel(),{msg:"Generating PDF..."});
 		myMask.show();
     	var req = this.getCommissionStatementModel();
-    	req.getProxy().url = '/commission/statement/pdf';
+    	req.getProxy().url = '/commission/statement/pdf/';
     	req.load(record.data.id, {
         	success: function(record, operation){
                 myMask.hide();
-				req.getProxy().url = '/commission/statement';
+				req.getProxy().url = '/commission/statement/';
 				window.open('/download/'+record.data.pdf);
             },
             failure: function(record, operation){
             	myMask.hide();
-            	req.getProxy().url = '/commission/statement';
+            	req.getProxy().url = '/commission/statement/';
             	Ext.MessageBox.show({
 			           title: 'Failure',
 			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
@@ -308,11 +320,13 @@ Ext.define('JavisERP.controller.CommissionController', {
                     		id: record.data.id
                     	});
                     	var tree_record = record;
-                    	req.getProxy().url = '/commission/statement/run';
+                    	req.getProxy().url = '/commission/statement/run/';
+                    	req.getProxy().timeout = 0;
                     	req.save({
 				        	success: function(record, operation){
 				                myMask.hide();
-								req.getProxy().url = '/commission/statement';
+								req.getProxy().url = '/commission/statement/';
+								req.getProxy().timeout = 30000;
 								var tree = me.getCommissionPeriodTree();
 								var node = tree.getStore().getNodeById(tree_record.data.id);
 						        if (node){
@@ -323,7 +337,8 @@ Ext.define('JavisERP.controller.CommissionController', {
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
-				            	req.getProxy().url = '/commission/statement';
+				            	req.getProxy().url = '/commission/statement/';
+				            	req.getProxy().timeout = 30000;
 				            	Ext.MessageBox.show({
 							           title: 'Failure',
 							           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
@@ -357,11 +372,11 @@ Ext.define('JavisERP.controller.CommissionController', {
                     		id: record.data.id
                     	});
                     	var tree_record = record;
-                    	req.getProxy().url = '/commission/statement/lock';
+                    	req.getProxy().url = '/commission/statement/lock/';
                     	req.save({
 				        	success: function(record, operation){
 				                myMask.hide();
-								req.getProxy().url = '/commission/statement';
+								req.getProxy().url = '/commission/statement/';
 								var tree = me.getCommissionPeriodTree();
 								var node = tree.getStore().getNodeById(tree_record.data.id);
 						        if (node){
@@ -372,7 +387,7 @@ Ext.define('JavisERP.controller.CommissionController', {
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
-				            	req.getProxy().url = '/commission/statement';
+				            	req.getProxy().url = '/commission/statement/';
 				            	Ext.MessageBox.show({
 							           title: 'Failure',
 							           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
@@ -407,11 +422,11 @@ Ext.define('JavisERP.controller.CommissionController', {
                     		id: record.data.id
                     	});
                     	var tree_record = record;
-                    	req.getProxy().url = '/commission/statement/reset';
+                    	req.getProxy().url = '/commission/statement/reset/';
                     	req.save({
 				        	success: function(record, operation){
 				                myMask.hide();
-								req.getProxy().url = '/commission/statement';
+								req.getProxy().url = '/commission/statement/';
 								var tree = me.getCommissionPeriodTree();
 								var node = tree.getStore().getNodeById(tree_record.data.id);
 						        if (node){
@@ -422,7 +437,7 @@ Ext.define('JavisERP.controller.CommissionController', {
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
-				            	req.getProxy().url = '/commission/statement';
+				            	req.getProxy().url = '/commission/statement/';
 				            	Ext.MessageBox.show({
 							           title: 'Failure',
 							           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
@@ -438,6 +453,51 @@ Ext.define('JavisERP.controller.CommissionController', {
             }
         });
         return false;
+    },
+    
+    listCommissionBaselines: function(){
+    	var grid = this.getCommissionBaselineGrid();
+        if (this.getCommissionBaselinePeriod().getValue()){
+        	grid.getStore().clearFilter(true);
+        	grid.getStore().filter([{property:'period_id', value: parseInt(this.getCommissionBaselinePeriod().getValue(),10)}]);
+        } else {
+        	grid.getStore().clearFilter(false);
+        }
+    },
+    
+    baselineEdited: function(editor,e){
+    	switch (e.field){
+    		case 'pages':
+    			console.log(e);
+    			if (parseInt(e.originalValue) != parseInt(e.value) && e.record.data.baselines && e.record.data.baselines[e.value]){
+    				e.record.data.baseline = e.record.data.baselines[e.value];
+    			}
+    		
+    		default:
+    			var fields = e.record.data
+		        //console.log(fields);
+		        var req = new JavisERP.model.CommissionBaseline({id: fields['id']});
+		        for(var key in fields){
+		            req.set(key,fields[key]);
+		        }
+		        var me = this;
+		        //console.log(me.contract);
+		        req.save({
+		        	success: function(record, operation){
+		        		e.record.data.id = record.data.id;
+		        		e.record.commit();
+		            },
+		            failure: function(record, operation){
+		            	Ext.MessageBox.show({
+					           title: 'Failure',
+					           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+					           buttons: Ext.MessageBox.OK,
+					           icon: Ext.MessageBox.ERROR
+					       });
+		            }
+		        });
+    			break;
+    	}
     },
 
 	/*****
@@ -491,6 +551,12 @@ Ext.define('JavisERP.controller.CommissionController', {
             },
             "commissionstatementgrid": {
             	selectionchange: me.onCommStatementSelectChange
+            },
+            "commissionbaselinegrid #commission_baseline_get":{
+            	click: me.listCommissionBaselines
+            },
+            "commissionbaselinegrid":{
+            	edit: me.baselineEdited
             }
         });
 

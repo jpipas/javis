@@ -46,6 +46,10 @@ class CommissionPeriod extends AbstractBusinessService
 				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
 					$qq = $this->db->quote($f['value']);
 					switch($f['property']){
+						case 'current':
+							$where['locked_at'] = 'locked_at IS NULL';
+							break;
+							
 						default:
 							$where[$f['property']] = $f['property']." = ".$qq;
 							break;
@@ -75,6 +79,7 @@ class CommissionPeriod extends AbstractBusinessService
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	commission_period.*,
         	commission_cycle.title AS cycle_title,
+        	CONCAT(commission_cycle.title, ' (', DATE_FORMAT(commission_period.cutoff_date, '%m/%d/%Y'), ')') AS text,
         	duration.description AS duration_description,
         	payments_to_process.payments
         FROM
@@ -334,7 +339,7 @@ class CommissionPeriod extends AbstractBusinessService
 				deleted_at IS NULL AND
 				locked_at IS NULL AND
 				cycle_id = :cycle_id", array('cycle_id' => $params['cycle_id']));
-			if ($exists['id']){
+			if ($exists['id'] && $exists['id'] != $params['id']){
 				$error[] = 'There is already an unlocked commission period for that cycle';
 			}
 		}

@@ -11,7 +11,7 @@ class CommissionStatement extends AbstractBusinessService
         return 'commission_statement';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array()) 
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array()) 
     {
     	// limit our search results
 		$lsql = '';
@@ -39,7 +39,10 @@ class CommissionStatement extends AbstractBusinessService
 			});
 			$osql = implode(', ', $order);
 		} else {
-			$osql = 'cs.created_at';
+			$order = array();
+			$order[] = 'e.last_name ASC';
+			$order[] = 'e.first_name ASC';
+			$osql = implode(', ', $order);
 		}
 		
 		// build our search criteria
@@ -93,6 +96,10 @@ class CommissionStatement extends AbstractBusinessService
 							$or[] = 'cep.amount_publisher LIKE '.$qq;
 							break;
 						
+						case 'baselines':
+							$or[] = 'cb.baselines LIKE '.$qq;
+							break;
+						
 						case 'amount_salesrep':
 							$or[] = 'ces.amount_salesrep LIKE '.$qq;
 							break;
@@ -118,6 +125,7 @@ class CommissionStatement extends AbstractBusinessService
         	CONCAT(e.first_name, ' ', e.last_name) AS fullname,
         	cep.amount_publisher,
         	(IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) AS amount_salesrep,
+        	cb.baselines,
         	d.date_string,
         	cept.territories
         FROM
@@ -125,7 +133,7 @@ class CommissionStatement extends AbstractBusinessService
         	commission_period AS cp,
         	duration AS d,
         	employee AS e)
-        	/* publisher's territories */
+        	/* publishers territories */
         	LEFT JOIN (SELECT
         			commission_entry.publisher_statement_id,
         			GROUP_CONCAT(DISTINCT t.name ORDER BY t.name SEPARATOR ', ') AS territories
@@ -136,6 +144,29 @@ class CommissionStatement extends AbstractBusinessService
         			commission_entry.deleted_at IS NULL
         		GROUP BY
         			commission_entry.publisher_statement_id) AS cept ON cept.publisher_statement_id = cs.id
+        		
+        	/* baselines */
+        	LEFT JOIN (SELECT
+        			ce.publisher_statement_id,
+        			SUM(cb.baseline) AS baselines
+        		FROM
+        			((SELECT
+        				DISTINCT(territory_id) AS territory_id,
+        				publisher_statement_id
+        			FROM
+        				commission_entry AS ce
+        			WHERE
+        				 ce.deleted_at IS NULL
+        			GROUP BY
+        				publisher_statement_id,
+        				territory_id) AS ce,
+        			commission_statements AS cs)
+        			LEFT JOIN commission_baselines AS cb ON cb.period_id = cs.period_id AND cb.territory_id = ce.territory_id AND cb.deleted_at IS NULL
+        		WHERE
+        			cs.deleted_at IS NULL AND
+        			cs.id = ce.publisher_statement_id
+        		GROUP BY
+        			ce.publisher_statement_id) AS cb ON cb.publisher_statement_id = cs.id
         	
         	/* my publisher sales */
         	LEFT JOIN (SELECT
@@ -268,34 +299,38 @@ class CommissionStatement extends AbstractBusinessService
         	// get publisher entries first
         	$sth = $this->db->executeQuery("SELECT
         		ce.*,
-        		cl.company_name					AS client_company_name,
+        		cl.company_name							AS client_company_name,
         		c.contract_number,
-        		pt.description					AS paytype_description,
-        		t.name							AS territory_name,
+        		IF(p.id,pt.description,cpt.description)	AS paytype_description,
+        		IF(p.id,pt.abbrev,cpt.abbrev)			AS paytype_abbrev,
+        		t.name									AS territory_name,
         		p.postdate,
         		d.date_string,
-        		ce.publisher_comm 				AS comm_percent,
-        		ce.publisher_comm * ce.amount 	AS cpo_amount,
-        		pc.abbrev						AS paycat_abbrev	
+        		ce.publisher_comm 						AS comm_percent,
+        		ce.publisher_comm * ce.amount 			AS cpo_amount,
+        		pc.abbrev								AS paycat_abbrev	
         	FROM
         		(commission_entry AS ce,
         		territory AS t,
-        		payment AS p,
-        		payment_type AS pt,
+        		payment_term AS pterm,
+        		payment_type AS cpt,
         		duration AS d,
         		contract AS c,
         		client AS cl,
         		payment_category AS pc)
+        		LEFT JOIN payment AS p ON p.id = ce.payment_id
+        		LEFT JOIN payment_type AS pt ON p.payment_type_id = pt.id
         	WHERE
         		ce.territory_id = t.id AND
-        		ce.payment_id = p.id AND
         		ce.duration_id = d.id AND
-        		p.payment_type_id = pt.id AND
-        		p.contract_id = c.id AND
-        		p.client_id = cl.id AND
+        		ce.contract_id = c.id AND
+        		c.payment_term_id = pterm.id AND
+        		pterm.payment_type_id = cpt.id AND
+        		c.client_id = cl.id AND
         		ce.paycat_id = pc.id AND
         		ce.salesrep_id IS NULL AND
-        		ce.publisher_statement_id = :statement
+        		ce.publisher_statement_id = :statement AND
+        		ce.deleted_at IS NULL
         	ORDER BY
         		CAST(REPLACE(c.contract_number,'-','.') AS DECIMAL(10,2))", array('statement' => $ret['id']));
         	while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
@@ -308,7 +343,8 @@ class CommissionStatement extends AbstractBusinessService
         		ce.*,
         		cl.company_name							AS client_company_name,
         		c.contract_number,
-        		pt.description							AS paytype_description,
+        		IF(p.id,pt.description,cpt.description)	AS paytype_description,
+        		IF(p.id,pt.abbrev,cpt.abbrev)			AS paytype_abbrev,
         		t.name									AS territory_name,
         		CONCAT(e.first_name, ' ', e.last_name) 	AS salesrep_name,
         		d.date_string,
@@ -319,24 +355,27 @@ class CommissionStatement extends AbstractBusinessService
         	FROM
         		(commission_entry AS ce,
         		territory AS t,
-        		payment AS p,
+        		payment_term AS pterm,
+        		payment_type AS cpt,
         		duration AS d,
-        		payment_type AS pt,
         		employee AS e,
         		contract AS c,
         		client AS cl,
         		payment_category AS pc)
+        		LEFT JOIN payment AS p ON p.id = ce.payment_id
+        		LEFT JOIN payment_type AS pt ON p.payment_type_id = pt.id
         	WHERE
         		ce.territory_id = t.id AND
-        		ce.payment_id = p.id AND
-        		p.payment_type_id = pt.id AND
         		e.id = ce.salesrep_id AND
         		ce.duration_id = d.id AND
-        		p.contract_id = c.id AND
-        		p.client_id = cl.id AND
+        		ce.contract_id = c.id AND
+        		c.payment_term_id = pterm.id AND
+        		pterm.payment_type_id = cpt.id AND
+        		c.client_id = cl.id AND
         		ce.paycat_id = pc.id AND
         		ce.salesrep_id IS NOT NULL AND
-        		ce.publisher_statement_id = :statement
+        		ce.publisher_statement_id = :statement AND
+        		ce.deleted_at IS NULL
         	ORDER BY
         		CAST(REPLACE(c.contract_number,'-','.') AS DECIMAL(10,2))", array('statement' => $ret['id']));
         	while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
@@ -346,36 +385,40 @@ class CommissionStatement extends AbstractBusinessService
         	// get AE entries
         	$sth = $this->db->executeQuery("SELECT
         		ce.*,
-        		cl.company_name					AS client_company_name,
+        		cl.company_name							AS client_company_name,
         		c.contract_number,
-        		pt.description					AS paytype_description,
-        		t.name							AS territory_name,
-        		CONCAT(e.first_name, ' ', e.last_name) AS salesrep_name,
+        		IF(p.id,pt.description,cpt.description)	AS paytype_description,
+        		IF(p.id,pt.abbrev,cpt.abbrev)			AS paytype_abbrev,
+        		t.name									AS territory_name,
+        		CONCAT(e.first_name, ' ', e.last_name) 	AS salesrep_name,
         		d.date_string,
         		p.postdate,
-        		ce.salesrep_comm	 			AS comm_percent,
-        		ce.salesrep_comm * ce.amount 	AS cpo_amount,
-        		pc.abbrev						AS paycat_abbrev
+        		ce.salesrep_comm	 					AS comm_percent,
+        		ce.salesrep_comm * ce.amount 			AS cpo_amount,
+        		pc.abbrev								AS paycat_abbrev
         	FROM
         		(commission_entry AS ce,
         		territory AS t,
-        		payment AS p,
+        		payment_term AS pterm,
+        		payment_type AS cpt,
         		duration AS d,
-        		payment_type AS pt,
         		employee AS e,
         		contract AS c,
         		client AS cl,
         		payment_category AS pc)
+        		LEFT JOIN payment AS p ON p.id = ce.payment_id
+        		LEFT JOIN payment_type AS pt ON p.payment_type_id = pt.id
         	WHERE
         		ce.territory_id = t.id AND
-        		ce.payment_id = p.id AND
-        		p.payment_type_id = pt.id AND
         		ce.duration_id = d.id AND
-        		p.contract_id = c.id AND
+        		ce.contract_id = c.id AND
+        		c.payment_term_id = pterm.id AND
+        		pterm.payment_type_id = cpt.id AND
         		ce.publisher_id = e.id AND
-        		p.client_id = cl.id AND
+        		c.client_id = cl.id AND
         		ce.paycat_id = pc.id AND
-        		ce.salesrep_statement_id = :statement
+        		ce.salesrep_statement_id = :statement AND
+        		ce.deleted_at IS NULL
         	ORDER BY
         		CAST(REPLACE(c.contract_number,'-','.') AS DECIMAL(10,2))", array('statement' => $ret['id']));
         	while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
@@ -384,7 +427,35 @@ class CommissionStatement extends AbstractBusinessService
         	
         	// then get baselines for all of the territories that this publisher is in
         	if (isset($ret['entries']['publisher'])){
-        		
+        		$sth = $this->db->executeQuery("SELECT
+        			ce.publisher_statement_id,
+        			ce.territory_id,
+        			SUM(cb.baseline) AS baselines
+        		FROM
+        			((SELECT
+        				DISTINCT(territory_id) AS territory_id,
+        				publisher_statement_id
+        			FROM
+        				commission_entry AS ce
+        			WHERE
+        				 ce.deleted_at IS NULL AND
+        				 ce.publisher_statement_id = :statement
+        			GROUP BY
+        				publisher_statement_id,
+        				territory_id) AS ce,
+        			commission_statements AS cs,
+        			commission_baselines AS cb)
+        		WHERE
+        			cs.deleted_at IS NULL AND
+        			cs.id = ce.publisher_statement_id AND
+        			cb.period_id = cs.period_id AND
+        			cb.territory_id = ce.territory_id AND
+        			cb.deleted_at IS NULL
+        		GROUP BY
+        			ce.territory_id", array('statement' => $ret['id']));
+        		while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
+        			$ret['baselines'][$r['territory_id']] = $r['baselines'];
+        		}
         	}
         }
         return $ret;
@@ -392,7 +463,7 @@ class CommissionStatement extends AbstractBusinessService
     
     public function pdf(&$app, $id)
     {
-    	set_time_limit(0);
+    	set_time_limit(120);
     	$pdf = new PDF\CommissionStatement();
 		
 		if (is_array($id)){
@@ -518,7 +589,8 @@ class CommissionStatement extends AbstractBusinessService
      		WHERE
      			(ce.publisher_statement_id = cs.id OR
      			ce.salesrep_statement_id = cs.id) AND
-     			cs.period_id = :comm_period", $params);
+     			cs.period_id = :comm_period AND
+     			ce.manually_adjusted IS NULL", $params);
      		$this->db->commit();
         	return array('statements' => ($comm_rows + $entry_rows));
      	} catch (Exception $e){
@@ -533,6 +605,7 @@ class CommissionStatement extends AbstractBusinessService
     */
     public function run(&$app, $comm_period)
     {
+    	set_time_limit(120);
     	// set the creator, updator, owner
 		$ownerid = null;
 		$token = $app['security']->getToken();
@@ -680,6 +753,7 @@ class CommissionStatement extends AbstractBusinessService
 				territory_id,
 				publisher_statement_id,
 				salesrep_statement_id,
+				contract_id,
 				payment_id,
 				duration_id,
 				amount,
@@ -696,16 +770,23 @@ class CommissionStatement extends AbstractBusinessService
 				c.territory_id,
 				cspub.id	AS publisher_statement,
 				IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) AS salesrep_statement,
+				c.id,
 				p.id,
 				d.id,
 				p.payment_amount,
 				t.manager_id,
 				IF(t.manager_id != c.soldby_id,c.soldby_id,NULL) AS salesrep_id,
-				IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string,1,0) AS bonus,
-				IF(t.manager_id = c.soldby_id,1.0,0.3) AS publisher_comm,
+				
+				/* bonus = first period for AE with paytype = CC or ACH for 12 or more months */
+				IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,1,0) AS bonus,
+				
+				/* if publisher sale, then 1.0, if bonus, 0, else .3 */
+				IF(t.manager_id = c.soldby_id,1.0,
+					IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,0,
+					0.3)) AS publisher_comm,
 				
 				IF(t.manager_id = c.soldby_id,NULL,
-						IF(c.date_string = d.date_string AND t.manager_id != c.soldby_id,0.7,0.3)
+						IF(c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12 AND t.manager_id != c.soldby_id,0.7,0.3)
 					) AS salesrep_comm,
 					
 				IF (p.postdate > d.date_string,
@@ -729,7 +810,8 @@ class CommissionStatement extends AbstractBusinessService
 				commission_statements AS cspub,
 				commission_statements AS cssalesrep,
 				(SELECT 
-						MIN(duration.date_string) AS date_string, 
+						MIN(duration.date_string) AS date_string,
+						COUNT(contract_duration.id) AS num_months,
 						contract.*
 					FROM 
 						contract, 
@@ -775,6 +857,115 @@ class CommissionStatement extends AbstractBusinessService
 			ORDER BY
 				d.date_string", array('insert_user_id' => $params['insert_user_id'], 'created_at' => $params['created_at'], 'comm_period' => $comm_period));
         
+        	// create uncollected entries
+        	$unc_entries = $this->db->executeUpdate("INSERT INTO commission_entry (
+				territory_id,
+				publisher_statement_id,
+				salesrep_statement_id,
+				contract_id,
+				duration_id,
+				amount,
+				publisher_id,
+				salesrep_id,
+				bonus,
+				publisher_comm,
+				salesrep_comm,
+				paycat_id,
+        		insert_user_id,
+        		created_at
+			)
+			SELECT
+				c.territory_id,
+				cspub.id	AS publisher_statement,
+				IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) AS salesrep_statement,
+				c.id,
+				d.id,
+				c.monthly_payment,
+				t.manager_id,
+				IF(t.manager_id != c.soldby_id,c.soldby_id,NULL) AS salesrep_id,
+				
+				0 AS bonus,
+				
+				/* uncollected = 0 commission */
+				0 AS publisher_comm,
+				
+				IF(t.manager_id = c.soldby_id,NULL,0) AS salesrep_comm,
+				
+				/* uncollected */
+				5 AS paycat_id,
+				
+        		:insert_user_id,
+        		:created_at
+			FROM
+				(contract AS c,
+				contract_duration AS cd,
+				payment_term AS pterm,
+				payment_type AS pt,
+				duration AS d,
+				client AS cl,
+				territory AS t,
+				employee AS e,
+				commission_period AS cp,
+				duration AS cpd,
+				commission_statements AS cspub,
+				commission_statements AS cssalesrep)
+				LEFT JOIN commission_entry AS ce ON ce.contract_id = c.id AND ce.duration_id = cd.duration_id AND ce.deleted_at IS NULL
+			WHERE
+				c.id = cd.contract_id AND
+				d.id = cd.duration_id AND
+				pterm.id = c.payment_term_id AND
+				pterm.payment_type_id = pt.id AND
+				
+				cp.duration_id = cpd.id AND
+				cp.cycle_id = t.cycle_id AND /* only this cycle's territories */
+				
+				/* publisher's statement */
+				cspub.deleted_at IS NULL AND
+				cspub.period_id = cp.id AND
+				cspub.employee_id = t.manager_id AND
+				
+				/* sales rep's statement */
+				cssalesrep.deleted_at IS NULL AND
+				cssalesrep.period_id = cp.id AND
+				cssalesrep.employee_id = c.soldby_id AND
+				
+				c.territory_id = t.id AND
+				cl.id = c.client_id AND
+				e.id = c.soldby_id AND
+				c.deleted_at IS NULL AND
+				t.deleted_at IS NULL AND
+				d.date_string = cpd.date_string AND /* this periods uncollected payments */
+				ce.id IS NULL AND
+				cp.id = :comm_period
+			ORDER BY
+				d.date_string", array('insert_user_id' => $params['insert_user_id'], 'created_at' => $params['created_at'], 'comm_period' => $comm_period));
+			
+			// mark previously uncollected as now collected ("deleted") for this period
+			$unc_delete = $this->db->executeUpdate("UPDATE
+				commission_statements AS cs,
+				commission_entry AS ce_unc,
+				commission_entry AS ce_paid
+			SET
+				ce_unc.deleted_at = :deleted_at
+			WHERE
+				/* just this commission period */
+				(cs.id = ce_unc.publisher_statement_id OR
+				cs.id = ce_unc.salesrep_statement_id) AND
+				
+				/* just this commission period */
+				(cs.id = ce_paid.publisher_statement_id OR
+				cs.id = ce_paid.salesrep_statement_id) AND
+				
+				cs.period_id = :comm_period AND
+				
+				/* same contract and period */
+				ce_unc.contract_id = ce_paid.contract_id AND
+				ce_paid.duration_id = ce_unc.duration_id AND
+				ce_paid.deleted_at IS NULL AND
+				ce_unc.deleted_at IS NULL AND
+				ce_unc.payment_id IS NULL AND
+				ce_paid.payment_id IS NOT NULL", array('deleted_at' => $params['created_at'], 'comm_period' => $comm_period));
+				
         	$this->db->commit();
         	return array('statements' => ($salesreps_statements + $publishers_statements), 'entries' => $commission_entries);
     	} catch (Exception $e){

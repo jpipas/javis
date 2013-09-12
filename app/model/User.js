@@ -61,6 +61,9 @@ Ext.define('JavisERP.model.User', {
         },
         {
         	name: 'newpassword'
+        },
+        {
+        	name: 'territories'
         }
     ],
 
