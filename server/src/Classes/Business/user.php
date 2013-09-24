@@ -217,6 +217,22 @@ class User extends AbstractBusinessService
 	    }
 	    */
 	    
+	    if (is_numeric($params['profitshare'])){
+	    	if ($params['profitshare'] <= 0 || $params['profitshare'] > 1){
+	    		$error[] = "Profit share percent must be between 0 and 1";
+	    	}
+	    } else {
+	    	$params['profitshare'] = null;
+	    }
+	    
+	    if (is_numeric($params['salesrep_comm'])){
+	    	if ($params['salesrep_comm'] <= 0 || $params['salesrep_comm'] > 1){
+	    		$error[] = "Account exectuive commission percent must be between 0 and 1";
+	    	}
+	    } else {
+	    	$params['salesrep_comm'] = null;
+	    }
+	    
 	    // check that we have a valid manager
 	    if (!empty($params['manager_user_id'])){
 	    	$manager = $this->getById($params['manager_user_id']);

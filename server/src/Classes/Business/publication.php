@@ -107,18 +107,21 @@ class Publication extends AbstractBusinessService
         	territory.manager_id AS publisher_id,
         	employee.email AS publisher_email,
         	CONCAT(cc.first_name, ' ', cc.last_name) AS contentcoord_name,
-        	cc.email AS contentcoord_email
+        	cc.email AS contentcoord_email,
+        	pb.baselines
         FROM
         	(publication AS p,
         	territory,
         	state)
 			LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
 			LEFT JOIN employee AS cc ON cc.id = p.contentcoord_id AND cc.deleted_at IS NULL
-        	LEFT JOIN advertisement_publication AS ap ON p.id = ap.publication_id
-			LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
-			LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
-			LEFT JOIN contract AS c ON ca.contract_id = c.id
-			LEFT JOIN client AS cl ON c.client_id = cl.id
+			LEFT JOIN (SELECT
+					publication_id,
+					GROUP_CONCAT(CONCAT('(',pages,') $',FORMAT(baseline,2)) ORDER BY pages SEPARATOR ', ') AS baselines
+				FROM
+					publication_baseline
+				GROUP BY
+					publication_id) AS pb ON pb.publication_id = p.id
         WHERE
         	p.deleted_at IS NULL AND
         	territory.id = p.territory_id AND
@@ -151,13 +154,8 @@ class Publication extends AbstractBusinessService
         	(publication AS p,
         	territory,
         	state)
-          LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
-          LEFT JOIN employee AS cc ON cc.id = p.contentcoord_id AND cc.deleted_at IS NULL
-        	LEFT JOIN advertisement_publication AS ap ON p.id = ap.publication_id
-          LEFT JOIN advertisement AS a ON ap.advertisement_id = a.id
-          LEFT JOIN contract_advertisement AS ca ON a.id = ca.advertisement_id
-          LEFT JOIN contract AS c ON ca.contract_id = c.id
-          LEFT JOIN client AS cl ON c.client_id = cl.id
+			LEFT JOIN employee ON employee.id = territory.manager_id AND employee.deleted_at IS NULL
+			LEFT JOIN employee AS cc ON cc.id = p.contentcoord_id AND cc.deleted_at IS NULL
         WHERE
         	p.deleted_at IS NULL AND
         	territory.id = p.territory_id AND

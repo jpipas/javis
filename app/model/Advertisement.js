@@ -7,28 +7,30 @@ Ext.define('JavisERP.model.Advertisement', {
         'JavisERP.model.Client',
         'JavisERP.model.Publication'
     ],
+    
+    idProperty: 'id',
 
     fields: [
         {
             name: 'id'
         },
         {
-        		name: 'ad_type'
+        	name: 'ad_type'
         },
         {
-        		name: 'ad_type_description'
+        	name: 'ad_type_description'
         },
         {
             name: 'ad_type_id'
         },
         {
-        		name: 'ad_size'
+        	name: 'ad_size'
         },
         {
-        		name: 'ad_size_id'
+        	name: 'ad_size_id'
         },
         {
-        		name: 'ad_size_description'
+        	name: 'ad_size_description'
         },
         {
             name: 'created_at',
@@ -56,13 +58,13 @@ Ext.define('JavisERP.model.Advertisement', {
             dateFormat: 'Y-m-d'
         },
         {
-        		name: 'client'
+        	name: 'client'
         },
         {
             name: 'client_id'
         },
         {
-        		name: 'client_company_name'
+        	name: 'client_company_name'
         },
         {
             name: 'publications'
@@ -71,22 +73,22 @@ Ext.define('JavisERP.model.Advertisement', {
             name: 'publication_names'
         },
         {
-        		name: 'salesrep'
+        	name: 'salesrep'
         },
         {
-        		name: 'salesrep_id'
+        	name: 'salesrep_id'
         },
         {
-        		name: 'salesrep_name'
+        	name: 'salesrep_name'
         },
         {
-        		name: 'designer'
+        	name: 'designer'
         },
         {
-        		name: 'designer_id'
+        	name: 'designer_id'
         },
         {
-        		name: 'designer_name'
+        	name: 'designer_name'
         }
     ],
 

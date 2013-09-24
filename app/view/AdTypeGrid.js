@@ -42,6 +42,7 @@ Ext.define('JavisERP.view.AdTypeGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-pencil',
 	                itemId: 'adtype_edit',
                     resourceId: 'advertisement_typesize',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -54,6 +55,7 @@ Ext.define('JavisERP.view.AdTypeGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-delete',
 	                itemId: 'adtype_delete',
                     resourceId: 'advertisement_typesize',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

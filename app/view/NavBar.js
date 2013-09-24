@@ -210,6 +210,55 @@ Ext.define('JavisERP.view.NavBar', {
                             xtype: 'tbseparator'
                         },
                         {
+                            text: 'Production',
+                            menu: {
+                                xtype: 'menu',
+                                width: 150,
+                                hideMode: 'display',
+                                items: [
+                                	{
+                                        xtype: 'menuitem',
+                                        iconCls: 'ui-silk ui-silk-page',
+                                        text: 'Documents',
+                                        itemId: 'ProductionDocumentsGrid',
+                                        resourceId: 'production_documents_view',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        iconCls: 'ui-silk ui-silk-picture',
+                                        text: 'Photos',
+                                        itemId: 'ProductionPhotosPanel',
+                                        resourceId: 'production_photos_view',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        iconCls: 'ui-silk ui-silk-newspaper',
+                                        text: 'Publications',
+                                        itemId: 'ProductionPublicationsPanel',
+                                        resourceId: 'production_publications_view',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        iconCls: 'ui-silk ui-silk-layout',
+                                        text: 'Advertisements',
+                                        itemId: 'ProductionAdvertisementsPanel',
+                                        resourceId: 'production_advertisements_view',
+                                        resourceType: 'disable',
+                                        plugins: ['permission']
+                                    }
+								]
+							}
+						},
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
                             text: 'System',
                             menu: {
                                 xtype: 'menu',

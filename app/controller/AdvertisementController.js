@@ -1,6 +1,10 @@
 Ext.define('JavisERP.controller.AdvertisementController', {
     extend: 'Ext.app.Controller',
     
+    uses : [
+    	'JavisERP.model.Advertisement'
+    ],
+    
     client: {
 			id: '',
 			name: ''

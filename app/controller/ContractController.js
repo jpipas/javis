@@ -14,7 +14,8 @@ Ext.define('JavisERP.controller.ContractController', {
     ],
 
     stores: [
-        'Duration'
+        'Duration',
+        'AdvertisementStore'
     ],
     
     models: [
@@ -274,10 +275,13 @@ Ext.define('JavisERP.controller.ContractController', {
 					contractForm.getForm().findField('client_id').setReadOnly(true);
 				}
 				me.isLoadingEdit = false;
+				myMask.hide();
           }
         });
 
         contractWindow.show();
+        var myMask = new Ext.LoadMask(contractWindow, {msg:"Loading..."});
+        myMask.show();
     },
     
     deleteContract: function(grid, rowIndex, colIndex, actionItem, event, record, row) {

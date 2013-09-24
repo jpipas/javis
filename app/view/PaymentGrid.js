@@ -59,6 +59,7 @@ Ext.define('JavisERP.view.PaymentGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-money',
 	                itemId: 'payment_edit',
                     resourceId: 'payment_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -71,6 +72,7 @@ Ext.define('JavisERP.view.PaymentGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-money-delete',
 	                itemId: 'payment_delete',
                     resourceId: 'payment_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

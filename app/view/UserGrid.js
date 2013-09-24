@@ -26,6 +26,7 @@ Ext.define('JavisERP.view.UserGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-user-edit',
 	                itemId: 'user_edit',
                     resourceId: 'user_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -38,6 +39,7 @@ Ext.define('JavisERP.view.UserGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-user-delete',
 	                itemId: 'user_delete',
                     resourceId: 'user_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

@@ -109,6 +109,26 @@ Ext.define('JavisERP.view.UserWindow', {
                                             fieldLabel: 'Email'
                                         },
                                         {
+                                            xtype: 'numberfield',
+                                            name: 'profitshare',
+                                            fieldLabel: 'Profit Share %',
+                                            emptyText: 'Blank: .80 (80%)',
+                                            decimalPrecision: 2,
+					                    	maxValue: 1,
+					                    	minValue: 0,
+					                    	step: .1
+                                        },
+										{
+                                            xtype: 'numberfield',
+                                            name: 'salesrep_comm',
+                                            fieldLabel: 'AE Comm. %',
+                                            emptyText: 'Blank: .30 (30%)',
+                                            decimalPrecision: 2,
+					                    	maxValue: 1,
+					                    	minValue: 0,
+					                    	step: .1
+                                        },
+                                        {
                                             xtype: 'checkbox',
                                             name: 'disabled',
                                             fieldLabel: 'Disable Login',

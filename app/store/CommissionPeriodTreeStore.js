@@ -3,7 +3,7 @@ Ext.define('JavisERP.store.CommissionPeriodTreeStore', {
     alias: 'store.commissionperiodtreestore',
     
     requires: [
-        'JavisERP.model.CommissionPeriod'
+        'JavisERP.model.CommissionPeriodTree'
     ],
 
     constructor: function(cfg) {
@@ -12,7 +12,7 @@ Ext.define('JavisERP.store.CommissionPeriodTreeStore', {
         me.callParent([Ext.apply({
             autoLoad: true,
             storeId: 'CommissionPeriodTreeStore',
-            model: 'JavisERP.model.CommissionPeriod',
+            model: 'JavisERP.model.CommissionPeriodTree',
             root: {
             	text: 'Periods',
             	expanded: true

@@ -85,6 +85,7 @@ Ext.define('JavisERP.view.TerritoryGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-map-edit',
 	                itemId: 'territory_edit',
                     resourceId: 'territory_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -97,6 +98,7 @@ Ext.define('JavisERP.view.TerritoryGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-map-delete',
 	                itemId: 'territory_delete',
                     resourceId: 'territory_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

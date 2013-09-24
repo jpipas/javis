@@ -122,6 +122,73 @@ class Contract extends AbstractBusinessService {
         $lsql";
         $rows = $this->db->fetchAll($sql);
         $totalCount = $this->db->fetchColumn("SELECT FOUND_ROWS()");
+        
+        // get durations and ads for display
+        $ids= array();
+        foreach ($rows as $key => $val){
+        	$ids[$key] = $val['id'];
+        }
+        if (@count($ids) > 0){
+        	$idsr = array_flip($ids);
+        	
+        	// durations
+	        $sth = $this->db->executeQuery("SELECT
+				GROUP_CONCAT(duration.description ORDER BY duration.date_string SEPARATOR ', ') AS duration_appliesto,
+				contract_duration.contract_id
+			FROM
+				(contract_duration,
+				duration)
+			WHERE
+				duration.id = contract_duration.duration_id AND
+				contract_id IN ('".implode("', '", $ids)."')
+			GROUP BY
+				contract_duration.contract_id");
+			while ($r = $sth->fetch()){
+				if (isset($idsr[$r['contract_id']])){
+					$rows[$idsr[$r['contract_id']]]['durations'] = $r['duration_appliesto'];
+				}
+			}
+			
+			// ads
+			$sth = $this->db->executeQuery("SELECT
+	        	advertisement.*,
+	        	contract_advertisement.contract_id,
+	        	client.company_name AS client_company_name,
+	        	app.publication_names,
+	        	ad_type.description AS ad_type_description,
+	        	ad_size.description AS ad_size_description
+	        FROM
+	        	advertisement,
+	        	client,
+	        	contract_advertisement,
+	        	ad_type,
+	        	ad_size,
+	        	(SELECT 
+		        		ap.advertisement_id, 
+		        		GROUP_CONCAT(publication.description ORDER BY publication.description SEPARATOR ', ') AS publication_names 
+		        	FROM 
+		        		advertisement_publication AS ap,
+		        		publication
+		        	WHERE
+		        		publication.deleted_at IS NULL AND
+		        		publication.id = ap.publication_id
+		        	GROUP BY
+		        		ap.advertisement_id) AS app
+	        WHERE
+	        	advertisement.deleted_at IS NULL AND
+	        	client.deleted_at IS NULL AND
+	        	advertisement.client_id = client.id AND
+	        	advertisement.id = app.advertisement_id AND
+	        	advertisement.ad_type_id = ad_type.id AND
+	        	advertisement.ad_size_id = ad_size.id AND
+	        	advertisement.id = contract_advertisement.advertisement_id AND
+	        	contract_advertisement.contract_id IN ('".implode("', '", $ids)."')");
+        	while ($r = $sth->fetch()){
+				if (isset($idsr[$r['contract_id']])){
+					$rows[$idsr[$r['contract_id']]]['advertisements'][] = $r;
+				}
+			}
+		}
         return array($totalCount, $rows);
     }
     

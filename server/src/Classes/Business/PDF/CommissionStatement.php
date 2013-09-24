@@ -21,6 +21,18 @@ class CommissionStatement extends TCPDF
 		'cpo_amount'			=> array('width' => 0, 'title' => 'CPO Amt', 'align' => 'R', 'modifier' => 'dollar')
 	);
 	
+	private $publisher_past_fields = array(
+		'client_company_name'	=> array('width' => .3, 'title' => 'Customer'),
+		'contract_number'		=> array('width' => .08, 'title' => 'Contract', 'align' => 'C'),
+		'paytype_description'	=> array('width' => .08, 'title' => 'Pay Type', 'align' => 'C'),
+		'postdate'				=> array('width' => .09, 'title' => 'TX Date', 'align' => 'C', 'modifier' => 'date'),
+		'date_string'			=> array('width' => .09, 'title' => 'Edition', 'align' => 'C', 'modifier' => 'edition'),
+		'paycat_abbrev'			=> array('width' => .08, 'title' => 'Status', 'align' => 'C', 'modifier' => 'paycatbonus'),
+		'amount'				=> array('width' => .08, 'title' => 'Amount', 'align' => 'R', 'modifier' => 'dollar'),
+		'comm_percent'			=> array('width' => .08, 'title' => 'Comm %', 'align' => 'C', 'modifier' => 'percent'),
+		'cpo_amount'			=> array('width' => 0, 'title' => 'CPO Amt', 'align' => 'R', 'modifier' => 'dollar')
+	);
+	
 	private $salesrep_fields = array(
 		'client_company_name'	=> array('width' => .26, 'title' => 'Customer'),
 		'contract_number'		=> array('width' => .07, 'title' => 'Contract', 'align' => 'C'),
@@ -143,6 +155,7 @@ class CommissionStatement extends TCPDF
 					$this->headertitles['left'] = 'Personal Accounts - '.$territory['territory_name'];
 					if ($date_string != $comm['date_string']){
 						$previous = true;
+						$this->currfields = $this->publisher_past_fields;
 						$this->headertitles['right'] = 'Previous Edition(s)';
 					} else {
 						$previous = false;
@@ -154,7 +167,7 @@ class CommissionStatement extends TCPDF
 						$this->Cell(0, ($this->lineheight/72), $this->headertitles['right'], 0, 1, 'R', true);
 						$this->SetTextColor(0);
 						$this->SetFont('helvetica', 'B', $this->fontsize);
-						foreach ($this->publisher_fields as $key => $val){
+						foreach ($this->currfields as $key => $val){
 							$this->Cell(($width * $val['width']), ($this->lineheight/72), $val['title'], array('B' => array('color' => array($this->linecolor))), 0, (isset($val['align'])?$val['align']:'L'));
 						}
 						$this->SetFont('helvetica', '', $this->fontsize);
@@ -163,7 +176,7 @@ class CommissionStatement extends TCPDF
 					$total = 0;
 					$totalamount = 0;
 					foreach ($territory['entries'] as $entry){
-						foreach ($this->publisher_fields as $key => $val){
+						foreach ($this->currfields as $key => $val){
 							if (isset($val['modifier'])){
 								$func = 'modifier_'.$val['modifier'];
 								$value = $this->$func($entry[$key], $entry);
@@ -298,7 +311,7 @@ class CommissionStatement extends TCPDF
 			foreach ($baseline_totals as $tid => $base){
 				$this->Cell(3, ($this->lineheight/72), $base['territory_name'], array('B' => array('color' => array($this->linecolor))), 0, 'L');
 				$baseline = (isset($comm['baselines'][$tid])?$comm['baselines'][$tid]:0);
-				$total = (($base['total'] - $baseline)*.8);
+				$total = (($base['total'] - $baseline)* $comm['profitshare']);
 				$this->Cell(1.5, ($this->lineheight/72), $this->modifier_dollar($base['total']), array('B' => array('color' => array($this->linecolor))), 0, 'R');
 				if ($baseline == 0){
 					$this->SetTextColor(255,0,0);
@@ -306,7 +319,7 @@ class CommissionStatement extends TCPDF
 				$this->Cell(1.5, ($this->lineheight/72), $this->modifier_dollar($baseline), array('B' => array('color' => array($this->linecolor))), 0, 'R');
 				$this->SetTextColor(0);
 				$this->Cell(1.5, ($this->lineheight/72), $this->modifier_dollar(($base['total'] - $baseline)), array('B' => array('color' => array($this->linecolor))), 0, 'R');
-				$this->Cell(1.5, ($this->lineheight/72), '80%', array('B' => array('color' => array($this->linecolor))), 0, 'C');
+				$this->Cell(1.5, ($this->lineheight/72), ($comm['profitshare'] * 100).'%', array('B' => array('color' => array($this->linecolor))), 0, 'C');
 				$this->Cell(0, ($this->lineheight/72), $this->modifier_dollar($total), array('B' => array('color' => array($this->linecolor))), 1, 'R');
 				$gtotal += round($total,2);
 			}

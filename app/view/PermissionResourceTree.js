@@ -37,7 +37,10 @@ Ext.define('JavisERP.view.PermissionResourceTree', {
                 tooltip: 'Edit Permission',
                 align: 'center',
                 iconCls: 'ui-silk ui-silk-pencil',
-                itemId: 'resource_edit'
+                itemId: 'resource_edit',
+                handler: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+                	this.fireEvent('itemclick', grid, rowIndex, colIndex, actionItem, event, record, row);
+                }
             },
             {
                 text: 'Delete',
@@ -47,8 +50,9 @@ Ext.define('JavisERP.view.PermissionResourceTree', {
                 tooltip: 'Delete Permission',
                 align: 'center',
                 iconCls: 'ui-silk ui-silk-delete',
+                itemId: 'resource_delete',
                 handler: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
-                    Ext.Msg.alert('Do delete');
+                    this.fireEvent('itemclick', grid, rowIndex, colIndex, actionItem, event, record, row);
                 }
             }],
             tbar: [{

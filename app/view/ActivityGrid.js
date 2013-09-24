@@ -24,6 +24,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
 	                getClass: function(v,meta,r){ return r.data.type_cls_edit; },
 	                itemId: 'activity_edit',
                     resourceId: 'activity_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -36,6 +37,7 @@ Ext.define('JavisERP.view.ActivityGrid', {
 	                getClass: function(v,meta,r){ return r.data.type_cls_delete; },
 	                itemId: 'activity_delete',
                     resourceId: 'activity_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

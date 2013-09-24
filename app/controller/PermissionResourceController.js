@@ -75,8 +75,14 @@ Ext.define('JavisERP.controller.PermissionResourceController', {
         var me = this;
         this.getPermissionResourceModel().load(record.data.id,{
         	success: function(record,operation){
-				frm.getForm().loadRecord(record);				
-				frm.getForm().findField('parent_id').setValue(new JavisERP.model.PermissionResource({id : record.data.parent_id, title : record.data.parent_title}));
+				frm.getForm().loadRecord(record);
+				if (record.data.parent_id){
+					frm.getForm().findField('parent_id').setValue(new JavisERP.model.PermissionResource({id : record.data.parent_id, title : record.data.parent_title}));
+				} else {
+					frm.getForm().findField('parent_id').hide();
+					frm.getForm().findField('resourceid').hide();
+					frm.getForm().findField('is_folder').setValue(1);
+				}
 				frm.getForm().findField('title').focus('', 10);
           }
         });
@@ -115,8 +121,11 @@ Ext.define('JavisERP.controller.PermissionResourceController', {
                 click: this.onSaveButtonClick
             },
             "permissionresourcetree #resource_edit": {
-                click: me.editResource
+                itemclick: me.editResource
             },            
+            "permissionresourcetree #resource_delete": {
+                itemclick: me.deleteResource
+            }, 
         	"permissionresourcetree #new_resource": {
                 click: function(){
                 	me.onNewResourceClick(false);

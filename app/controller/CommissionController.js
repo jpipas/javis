@@ -9,13 +9,16 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionPeriodWindow',
         'CommissionStatementGrid',
         'CommissionBaselineGrid',
+        'CommissionEntryGrid'
     ],
 
     models: [
         'CommissionCycle',
+        'CommissionPeriodTree',
         'CommissionPeriod',
         'CommissionStatement',
-        'CommissionBaseline'
+        'CommissionBaseline',
+        'CommissionEntry'
     ],
 
     stores: [
@@ -23,7 +26,8 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionPeriodTreeStore',
         'CommissionPeriodStore',
         'CommissionStatementStore',
-        'CommissionBaselineStore'
+        'CommissionBaselineStore',
+        'CommissionEntryStore'
     ],
 
     refs: [
@@ -54,6 +58,10 @@ Ext.define('JavisERP.controller.CommissionController', {
         {
             ref: 'commissionStatementGrid',
             selector: 'commissionstatementgrid'
+        },
+        {
+            ref: 'commissionEntryGrid',
+            selector: 'commissionentrygrid'
         },
         {
         	ref: 'commissionStatementPanel',
@@ -171,7 +179,7 @@ Ext.define('JavisERP.controller.CommissionController', {
 	onCommPeriodSaveButtonClick: function(button, options, e){
     	var fields = this.getCommissionPeriodForm().getForm().getValues(false,false,false,true);
         //console.log(fields);
-        var req = new JavisERP.model.CommissionPeriod({id: fields['id']});
+        var req = new JavisERP.model.CommissionPeriodTree({id: fields['id']});
         for(var key in fields){
             req.set(key,fields[key]);
         }
@@ -207,7 +215,7 @@ Ext.define('JavisERP.controller.CommissionController', {
     editCommPeriod: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
         var win = new JavisERP.view.CommissionPeriodWindow();
         var frm = this.getCommissionPeriodForm();
-        this.getCommissionPeriodModel().load(record.data.id, {
+        this.getCommissionPeriodTreeModel().load(record.data.id, {
             success: function(record,operation){
                 frm.getForm().loadRecord(record);
                 frm.getForm().findField('duration_id').setValue(new JavisERP.model.Duration({id: record.data.duration_id, description: record.data.duration_description}));
@@ -225,15 +233,26 @@ Ext.define('JavisERP.controller.CommissionController', {
     
     viewCommPeriod: function(tree, record, actionItem, colIndex, event) {
     	if (record.data.leaf == true){
-			this.viewCommissionStatements(record.data.id);
+			this.viewCommissionStatements(record.data);
         }
     },
     
-    viewCommissionStatements: function(period_id){
+    viewCommissionStatements: function(period){
     	var grid = this.getCommissionStatementGrid();
 		grid.getStore().getProxy().url = '/commission/statement/';
 		grid.getStore().clearFilter(true);
-    	grid.getStore().filter("period_id",period_id);
+		if (Ext.typeOf(period) == 'object'){
+    		grid.getStore().filter("period_id",period.id);
+    		if (!period.locked_at){
+    			grid.down('#commissionstatement_view_entries').show();
+    			grid.down('#commissionstatement_reset').show();
+    		} else {
+    			grid.down('#commissionstatement_view_entries').hide();
+    			grid.down('#commissionstatement_reset').hide();
+    		}
+    	} else {
+    		grid.getStore().filter("period_id",period);
+    	}
     	grid.getStore().load();
     },
     
@@ -304,6 +323,16 @@ Ext.define('JavisERP.controller.CommissionController', {
         });
     },
     
+    viewCommStatementEntries: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+    	var me = this;
+    	var grid = this.getCommissionEntryGrid();
+    	grid.setTitle('Commission Entries: '+record.data.fullname+': '+Ext.Date.format(record.data.date_string, 'F Y')+' Edition');
+    	var store = grid.getStore();
+    	store.clearFilter(true);
+        store.filter('statement_id',record.data.id);
+    	grid.expand();
+    },
+    
     runCommPeriod: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
     	var me = this;
         Ext.Msg.show({
@@ -333,7 +362,7 @@ Ext.define('JavisERP.controller.CommissionController', {
 						            tree.getStore().load({node:node.parentNode});
 						        }
 								me.getCommissionPeriodTree().getSelectionModel().select(tree_record)
-								me.viewCommissionStatements(tree_record.data.id);
+								me.viewCommissionStatements(tree_record.data);
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
@@ -383,7 +412,8 @@ Ext.define('JavisERP.controller.CommissionController', {
 						            tree.getStore().load({node:node.parentNode});
 						        }
 								me.getCommissionPeriodTree().getSelectionModel().select(tree_record)
-								me.viewCommissionStatements(tree_record.data.id);
+								tree_record.data.locked_at = new Date();
+								me.viewCommissionStatements(tree_record.data);
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
@@ -433,7 +463,57 @@ Ext.define('JavisERP.controller.CommissionController', {
 						            tree.getStore().load({node:node.parentNode});
 						        }
 								me.getCommissionPeriodTree().getSelectionModel().select(tree_record)
-								me.viewCommissionStatements(tree_record.data.id);
+								me.viewCommissionStatements(tree_record.data);
+				            },
+				            failure: function(record, operation){
+				            	myMask.hide();
+				            	req.getProxy().url = '/commission/statement/';
+				            	Ext.MessageBox.show({
+							           title: 'Failure',
+							           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+							           buttons: Ext.MessageBox.OK,
+							           icon: Ext.MessageBox.ERROR
+							       });
+				            }
+				        });
+                        break;
+                    case 'cancel':
+                        break;
+                }
+            }
+        });
+        return false;
+    },
+    
+    resetCommStatement: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+    	if (this.disabled){ return false; }
+    	var me = this;
+        Ext.Msg.show({
+            title: 'Reset Commission Statement?',
+            msg: 'You are about to RESET commission entries for the specified sales rep and period. ALL EXISTING COMMISSION ENTRIES FOR THIS PERIOD FOR THIS SALES REP WILL BE DELETED AND NEED TO BE RE-RUN. Would you like to proceed?',
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.Msg.QUESTION,
+            fn: function(buttonId,text,opt){
+                switch(buttonId){
+                    case 'ok':
+                     	var myMask = new Ext.LoadMask(me.getCommissionStatementPanel(),{msg:"Resetting Commission Statement..."});
+        				myMask.show();
+                    	var req = new JavisERP.model.CommissionStatement({
+                    		id: record.data.id
+                    	});
+                    	var comm_record = record;
+                    	req.getProxy().url = '/commission/statement/resetuser/';
+                    	req.save({
+				        	success: function(record, operation){
+				                myMask.hide();
+								req.getProxy().url = '/commission/statement/';
+								var tree = me.getCommissionPeriodTree();
+								var node = tree.getStore().getNodeById(comm_record.data.period_id);
+						        if (node){
+						            tree.getStore().load({node:node.parentNode});
+						        }
+								//me.getCommissionPeriodTree().getSelectionModel().select(tree_record)
+								me.viewCommissionStatements(comm_record.data.period_id);
 				            },
 				            failure: function(record, operation){
 				            	myMask.hide();
@@ -468,20 +548,17 @@ Ext.define('JavisERP.controller.CommissionController', {
     baselineEdited: function(editor,e){
     	switch (e.field){
     		case 'pages':
-    			console.log(e);
     			if (parseInt(e.originalValue) != parseInt(e.value) && e.record.data.baselines && e.record.data.baselines[e.value]){
     				e.record.data.baseline = e.record.data.baselines[e.value];
     			}
     		
     		default:
     			var fields = e.record.data
-		        //console.log(fields);
 		        var req = new JavisERP.model.CommissionBaseline({id: fields['id']});
 		        for(var key in fields){
 		            req.set(key,fields[key]);
 		        }
 		        var me = this;
-		        //console.log(me.contract);
 		        req.save({
 		        	success: function(record, operation){
 		        		e.record.data.id = record.data.id;
@@ -498,6 +575,38 @@ Ext.define('JavisERP.controller.CommissionController', {
 		        });
     			break;
     	}
+    },
+    
+    entryEdited: function(editor,e){
+    	// don't submit a save if the values didn't change
+    	if (e.originalValue == e.value){
+    		e.record.commit();
+    		return;
+    	}
+    	
+    	// save the changes
+		var fields = e.record.data
+        //console.log(fields);
+        var req = new JavisERP.model.CommissionEntry({id: fields['id']});
+        for(var key in fields){
+            req.set(key,fields[key]);
+        }
+        var me = this;
+        //console.log(me.contract);
+        req.save({
+        	success: function(record, operation){
+        		e.record.data = record.data;
+        		e.record.commit();
+            },
+            failure: function(record, operation){
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
+            }
+        });
     },
 
 	/*****
@@ -546,6 +655,12 @@ Ext.define('JavisERP.controller.CommissionController', {
             "commissionstatementgrid #commissionstatement_view": {
             	click: me.viewCommStatementPdf
             },
+            "commissionstatementgrid #commissionstatement_view_entries": {
+            	click: me.viewCommStatementEntries
+            },
+            "commissionstatementgrid #commissionstatement_reset": {
+            	click: me.resetCommStatement
+            },
             "commissionstatementgrid #commissionstatement_printselected": {
             	click: me.viewCommStatementPdfSelected
             },
@@ -557,6 +672,9 @@ Ext.define('JavisERP.controller.CommissionController', {
             },
             "commissionbaselinegrid":{
             	edit: me.baselineEdited
+            },
+            "commissionentrygrid":{
+            	edit: me.entryEdited
             }
         });
 

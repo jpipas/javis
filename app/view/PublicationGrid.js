@@ -5,7 +5,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
     title: 'Publication List',
     forceFit: true,
     scroll: 'vertical',
-    store: {type: 'publicationstore'},
+    store: 'PublicationStore',
     initComponent: function() {
         var me = this;
 
@@ -30,6 +30,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
 		                    grid: this,
 		                    border: 0,
 		                    showSelectAll: true,
+		                    disableIndexes: ['baselines'],
 		                    menuIconCls: 'ui-silk ui-silk-magnifier',
 		                    items: ['->']
 		                }
@@ -52,7 +53,9 @@ Ext.define('JavisERP.view.PublicationGrid', {
 	                align: 'center',
 	                iconCls: 'edit_action ui-silk ui-silk-newspaper-go',
 	                itemId: 'publication_edit',
+	                hidden: true,
                     resourceId: 'publication_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -64,15 +67,29 @@ Ext.define('JavisERP.view.PublicationGrid', {
 	                align: 'center',
 	                iconCls: 'delete_action ui-silk ui-silk-newspaper-delete',
 	                itemId: 'publication_delete',
+	                hidden: true,
                     resourceId: 'publication_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'description',
-                    flex: 1,
+                    flex: 2,
                     text: 'Name'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'territory_name',
+                    flex: 1,
+                    text: 'Territory'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'publisher_name',
+                    flex: 2,
+                    text: 'Publisher'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -82,15 +99,9 @@ Ext.define('JavisERP.view.PublicationGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'publisher_name',
-                    flex: 1,
-                    text: 'Publisher'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'territory_name',
-                    flex: 1,
-                    text: 'Territory'
+                    dataIndex: 'baselines',
+                    flex: 2,
+                    text: 'Baselines'
                 }
             ]
         });

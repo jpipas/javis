@@ -69,6 +69,15 @@ class Commission implements ControllerProviderInterface
         	}
         });
         
+        $controllers->put('/statement/resetuser/{id}', function (Application $app, $id, Request $request) {
+            $res = $app['business.commissionstatement']->resetuser($app, $id);
+            if (isset($res['error'])){
+            	return $app->json(array("success"=>false,"error"=>$res['error']));
+            } else {
+        		return $app->json(array("success"=>true,"totalCount"=>$res['statements'], "statement"=>$res));
+        	}
+        });
+        
         $controllers->put('/statement/lock/{id}', function (Application $app, $id, Request $request) {
             $res = $app['business.commissionstatement']->lock($app, $id);
             if (isset($res['error'])){
@@ -76,6 +85,50 @@ class Commission implements ControllerProviderInterface
             } else {
         		return $app->json(array("success"=>true,"totalCount"=>$res['statements'], "statement"=>$res));
         	}
+        });
+        
+        /******
+		COMMISSION ENTRIES
+		******/
+        $controllers->get('/entry/', function (Application $app, Request $request) {
+        	$sort = '';
+    		if ($request->get('sort')){
+    			$sort = json_decode($request->get('sort'), true);
+    		}
+    		$filter = array();
+    		if ($request->get('filter')){
+    			$filter = json_decode($request->get('filter'), true);
+    		}
+    		$search = array();
+    		if ($request->get('search')){
+    			$search = json_decode($request->get('search'), true);
+    		}
+            list($totalCount, $result) = $app['business.commissionentry']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+        	return $app->json(array("totalCount"=>$totalCount, "entry"=>$result));
+        });
+        
+        /* entry get */
+        $controllers->get('/entry/{id}', function(Application $app, $id, Request $request) {
+            $result = $app['business.commissionentry']->getById($id);
+            return $app->json(array("success"=>true,"totalCount"=>1,"entry"=>$result));
+        });
+
+		/* entry update */
+		$controllers->put('/entry/{id}', function(Application $app, $id, Request $request) {
+            $params = json_decode($request->getContent(),true);
+            $error = $app['business.commissionentry']->validate($app, $params);
+            if (@count($error) > 0){
+            	return $app->json(array("success"=>false,"error"=>$error));
+            } else {
+            	$result = $app['business.commissionentry']->update($id, $params);
+            	return $app->json(array("success"=>true,"entry"=>$result));
+            }
+        });
+        
+        /* entry delete */
+		$controllers->delete('/entry/delete/{id}', function(Application $app, $id, Request $request) {
+            $result = $app['business.commissionentry']->delete($id);
+            return $app->json(array("success"=>true,"entry"=>$result));
         });
 
 		/******

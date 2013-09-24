@@ -50,6 +50,7 @@ Ext.define('JavisERP.view.ContactGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-vcard-edit',
 	                itemId: 'contact_edit',
                     resourceId: 'contact_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -62,6 +63,7 @@ Ext.define('JavisERP.view.ContactGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-vcard-delete',
 	                itemId: 'contact_delete',
                     resourceId: 'contact_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

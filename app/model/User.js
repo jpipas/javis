@@ -64,6 +64,12 @@ Ext.define('JavisERP.model.User', {
         },
         {
         	name: 'territories'
+        },
+        {
+        	name: 'profitshare'
+        },
+        {
+        	name: 'salesrep_comm'
         }
     ],
 

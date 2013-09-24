@@ -27,8 +27,8 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                         {
                             xtype: 'toolbar',
                             dock: 'bottom',
-                            cls: 'adWindowToolBar',
-                            itemId: 'adwindowtoolbar',
+                            cls: 'paymentWindowToolBar',
+                            itemId: 'paymentwindowtoolbar',
                             items: [
                         		{
                     				xtype: 'tbspacer',
@@ -91,10 +91,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             minChars: 3,
                             store: {type: 'contractstore'},
                             valueField: 'id',
-                            itemId: 'paymentcontract',
-					        beforeQuery: function(e) {
-					        	this.fireEvent('contractcomboquery', this, event);
-					        }
+                            itemId: 'paymentcontract'
                         },
                         {
                             xtype: 'combobox',
@@ -145,10 +142,7 @@ Ext.define('JavisERP.view.ContractPaymentWindow', {
                             queryMode: 'remote',
                             typeAdead:true,
                             name: 'durations',
-                            itemId: 'paymentdurations',
-					        beforeQuery: function(e) {
-					        	this.fireEvent('paymentdurationcomboquery', this, event);
-					        }
+                            itemId: 'paymentdurations'
                         }
                     ]
                 }

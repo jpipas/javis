@@ -25,6 +25,7 @@ Ext.define('JavisERP.view.ClientGrid', {
 	                iconCls: 'view_action ui-silk ui-silk-user',
 	                itemId: 'client_view',
                     resourceId: 'client_view',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
@@ -37,6 +38,7 @@ Ext.define('JavisERP.view.ClientGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-user-delete',
 	                itemId: 'client_delete',
                     resourceId: 'client_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

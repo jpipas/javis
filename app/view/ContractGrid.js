@@ -6,7 +6,25 @@ Ext.define('JavisERP.view.ContractGrid', {
     forceFit: true,
     store: 'ContractStore',
     itemId: 'ContractGrid',
-    scroll: 'vertical',    
+    scroll: 'vertical',
+    
+    plugins: [{
+        ptype: 'rowexpander',
+        rowBodyTpl : new Ext.XTemplate(
+        	'<table width="100%" border="0" cellpadding="4" cellspacing="4"><tr>',
+        	'<td valign="top" width="50%">',
+            '<b>Duration(s):</b><br>{durations}',
+            '</td><td valign="top" width="50%">',
+            '<b>Advertisement(s):</b><br>',
+            '<tpl for="advertisements">',
+            	'<div>{publication_names} - {ad_type_description} - {ad_size_description}</div>',
+            '</tpl>',
+            '</td>',
+            '</tr></table>'
+        )
+        
+    }],
+    
     initComponent: function() {
         var me = this;
 
@@ -33,6 +51,7 @@ Ext.define('JavisERP.view.ContractGrid', {
 	                iconCls: 'delete_action ui-silk ui-silk-folder-delete',
 	                itemId: 'contract_delete',
                     resourceId: 'contract_delete',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },

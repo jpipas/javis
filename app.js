@@ -44,11 +44,29 @@ Ext.define('Ext.ux.component.Permission', {
 					if (Ext.isArray(cmp.resourceId)){
 						for (i in cmp.resourceId){
 							if(App.user.resources.indexOf(cmp.resourceId[i]) != -1){
+								switch (cmp.resourceType){
+					        		case 'hide':
+						        		cmp.show();
+						        		break;
+						        	
+						        	default:
+						        		cmp.enable();
+						        		break;
+						        }
         						return;
         					}
 						}
 					} else {
         				if(App.user.resources.indexOf(cmp.resourceId) != -1){
+        					switch (cmp.resourceType){
+					        	case 'hide':
+					        		cmp.show();
+					        		break;
+					        	
+					        	default:
+					        		cmp.enable();
+					        		break;
+					        }
         					return;
         				}
         			}
@@ -152,17 +170,18 @@ Ext.application({
         'ClientController',
         'ContactController',
         'Portal',
+        'AdvertisementController',
         'ContractController',
         'PaymentController',
         'PublicationController',
         'UserController',
         'AdListController',
         'TerritoryController',
-        'AdvertisementController',
         'AdSizeTypeController',
         'PermissionResourceController',
         'PermissionRoleController',
-        'CommissionController'
+        'CommissionController',
+        'ProductionPhotosController'
     ],
     appFolder: '/app',
     launch: function() {

@@ -108,6 +108,10 @@ Ext.define('JavisERP.view.ContentCards', {
                 {
                     xtype: 'commissionbaselinegrid',
                     itemId: 'CommissionBaselineGrid'
+                },
+                {
+                    xtype: 'productionphotospanel',
+                    itemId: 'ProductionPhotosPanel'
                 }
             ]
         });

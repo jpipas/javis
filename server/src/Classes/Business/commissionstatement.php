@@ -600,6 +600,59 @@ class CommissionStatement extends AbstractBusinessService
     }
     
     /*
+    	resetuser($app, $period)
+    	marks commission statements and entries deleted to be able to re-run commissions - for a single user
+    */
+    public function resetuser(&$app, $statement_id)
+    {
+    	// set the creator, updator, owner
+		$ownerid = null;
+		$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$ownerid = $user->getId();
+		} else {
+			$app['monolog']->addInfo('unable to get security token');
+		}
+		$params['update_user_id'] = $ownerid;
+		
+		$now = new \DateTime('NOW');
+        $params['deleted_at'] = $now->format('Y-m-d H:i:s');
+     
+     	$statement = $this->getById($statement_id);
+     	if (!isset($statement['id'])){
+     		return array('error' => array('Invalid commission statement specified'));
+     	} elseif ($statement['locked_at']){
+     		return array('error' => array('Cannot reset a locked commission statement'));
+     	}
+     	$params['statement_id'] = $statement['id'];
+     
+     	$this->db->beginTransaction();
+     	try {
+     		// mark statements deleted/reset
+     		$comm_rows = $this->db->executeUpdate("UPDATE commission_statements SET
+     			update_user_id = :update_user_id,
+     			deleted_at = :deleted_at
+     		WHERE
+     			id = :statement_id", $params);
+     		
+     		// mark entries deleted/reset
+     		$entry_rows = $this->db->executeUpdate("UPDATE commission_entry AS ce SET
+     			ce.update_user_id = :update_user_id,
+     			ce.deleted_at = :deleted_at
+     		WHERE
+     			(ce.publisher_statement_id = :statement_id OR
+     			ce.salesrep_statement_id = :statement_id) AND
+     			ce.manually_adjusted IS NULL", $params);
+     		$this->db->commit();
+        	return array('statements' => ($comm_rows + $entry_rows));
+     	} catch (Exception $e){
+     		$this->db->rollback();
+     		return array('error' => array('An unexpected error occurred'));	
+     	}
+    }
+    
+    /*
     	run($app, $period)
     	run commissions picking up any payments that apply to the corresponding commission period
     */
@@ -634,11 +687,13 @@ class CommissionStatement extends AbstractBusinessService
         	$salesreps_statements = $this->db->executeUpdate("INSERT INTO commission_statements (
         		employee_id,
         		period_id,
+        		profitshare,
         		insert_user_id,
         		created_at
         	) SELECT
         		c.soldby_id,
         		cp.id,
+        		IF(e.profitshare > 0,e.profitshare,.8),
         		:insert_user_id,
         		:created_at
 			FROM
@@ -693,11 +748,13 @@ class CommissionStatement extends AbstractBusinessService
         	$publishers_statements = $this->db->executeUpdate("INSERT INTO commission_statements (
         		employee_id,
         		period_id,
+        		profitshare,
         		insert_user_id,
         		created_at
         	) SELECT
         		t.manager_id,
         		cp.id,
+        		IF(e.profitshare > 0,e.profitshare,.8),
         		:insert_user_id,
         		:created_at
 			FROM
@@ -786,7 +843,9 @@ class CommissionStatement extends AbstractBusinessService
 					0.3)) AS publisher_comm,
 				
 				IF(t.manager_id = c.soldby_id,NULL,
-						IF(c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12 AND t.manager_id != c.soldby_id,0.7,0.3)
+						IF(c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12 AND t.manager_id != c.soldby_id,0.7,
+							IF(e.salesrep_comm > 0,e.salesrep_comm,0.3)
+						)
 					) AS salesrep_comm,
 					
 				IF (p.postdate > d.date_string,
@@ -965,6 +1024,47 @@ class CommissionStatement extends AbstractBusinessService
 				ce_unc.deleted_at IS NULL AND
 				ce_unc.payment_id IS NULL AND
 				ce_paid.payment_id IS NOT NULL", array('deleted_at' => $params['created_at'], 'comm_period' => $comm_period));
+			
+			// update manually adjusted entries updating to the new commission statement IDs
+			$manadj_pubs = $this->db->executeQuery("UPDATE
+				commission_statements AS cs,
+				commission_statements AS csd,
+				commission_entry AS ce
+			SET
+				ce.publisher_statement_id = cs.id
+			WHERE
+				ce.publisher_statement_id = csd.id AND
+				cs.employee_id = ce.publisher_id AND
+				csd.employee_id = ce.publisher_id AND
+				csd.id != cs.id AND
+				csd.deleted_at IS NOT NULL AND
+				csd.locked_at IS NULL AND
+				csd.period_id = cs.period_id AND
+				cs.deleted_at IS NULL AND
+				cs.locked_at IS NULL AND
+				ce.manually_adjusted IS NOT NULL AND
+				ce.deleted_at IS NULL AND
+				cs.period_id = :comm_period", array('comm_period' => $comm_period));
+				
+			$manadj_sr = $this->db->executeQuery("UPDATE
+				commission_statements AS cs,
+				commission_statements AS csd,
+				commission_entry AS ce
+			SET
+				ce.salesrep_statement_id = cs.id
+			WHERE
+				ce.salesrep_statement_id = csd.id AND
+				cs.employee_id = ce.salesrep_id AND
+				csd.employee_id = ce.salesrep_id AND
+				csd.id != cs.id AND
+				csd.deleted_at IS NOT NULL AND
+				csd.locked_at IS NULL AND
+				csd.period_id = cs.period_id AND
+				cs.deleted_at IS NULL AND
+				cs.locked_at IS NULL AND
+				ce.manually_adjusted IS NOT NULL AND
+				ce.deleted_at IS NULL AND
+				cs.period_id = :comm_period", array('comm_period' => $comm_period));
 				
         	$this->db->commit();
         	return array('statements' => ($salesreps_statements + $publishers_statements), 'entries' => $commission_entries);

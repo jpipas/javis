@@ -4,6 +4,7 @@ Ext.define('JavisERP.view.CommissionStatementPanel', {
     
     layout: 'border',
     
+    bodyBorder: false,
     border: 0,
     
     defaults: {
@@ -15,6 +16,7 @@ Ext.define('JavisERP.view.CommissionStatementPanel', {
 	    region:'west',
 	    margins: '0',
 	    width: 500,
+	    collapsible: true,
 	    minWidth: 300,
 	    maxWidth: 500,
 	    dockedItems: [
@@ -43,8 +45,23 @@ Ext.define('JavisERP.view.CommissionStatementPanel', {
             }
         ],
 	},{
-	    xtype: 'commissionstatementgrid',
+		xtype: 'panel',
 	    region:'center',
-	    margins: '0'
+	    layout: 'border',
+	    split: true,
+	    border: 0,
+	    items: [{
+	    	xtype: 'commissionstatementgrid',
+		    region:'center'
+	    },
+	    {
+	    	xtype: 'commissionentrygrid',
+	    	region: 'south',
+	    	minHeight: 200,
+	    	maxHeight: 500,
+	    	collapsible: true,
+	    	collapsed: true,
+	    	expandable: true
+	    }]
 	}]
 });

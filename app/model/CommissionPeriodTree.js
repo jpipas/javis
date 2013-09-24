@@ -1,6 +1,6 @@
-Ext.define('JavisERP.model.CommissionPeriod', {
+Ext.define('JavisERP.model.CommissionPeriodTree', {
     extend: 'Ext.data.Model',
-    alias: 'model.commissionperiod',
+    alias: 'model.commissionperiodtree',
     fields: [
         {
             name: 'id'
@@ -46,7 +46,7 @@ Ext.define('JavisERP.model.CommissionPeriod', {
     
     proxy: {
         type: 'srest',
-        url: '/commission/period/current',
+        url: '/commission/period',
         reader: {
             type: 'json',
             idProperty: 'id',

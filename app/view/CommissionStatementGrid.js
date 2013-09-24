@@ -4,7 +4,7 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
 
     title: 'Commission Statements',
     forceFit: true,
-    store: {type: 'commissionstatementstore'},
+    store: 'CommissionStatementStore',
     itemId: 'commissionstatementgrid',
     scroll: 'vertical',
     selType: 'checkboxmodel',
@@ -26,8 +26,29 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-page-white-acrobat',
 	                itemId: 'commissionstatement_view',
                     resourceId: 'commission_statement',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
+	            },
+	            {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Edit Entries',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-pencil',
+	                itemId: 'commissionstatement_view_entries',
+                    hidden: true
+	            },
+	            {
+	                width: 30,
+	                menuDisabled: true,
+	                xtype: 'actioncolumn',
+	                tooltip: 'Reset Commission Statement',
+	                align: 'center',
+	                iconCls: 'edit_action ui-silk ui-silk-database-error',
+	                itemId: 'commissionstatement_reset',
+                    hidden: true
 	            },
 	            {
                     xtype: 'gridcolumn',

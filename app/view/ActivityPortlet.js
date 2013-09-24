@@ -41,6 +41,7 @@ Ext.define('JavisERP.view.ActivityPortlet', {
 	                getClass: function(v,meta,r){ return r.data.type_cls_edit; },
 	                itemId: 'activity_edit',
                     resourceId: 'activity_edit',
+                    hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
 	            },
