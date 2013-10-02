@@ -55,11 +55,22 @@ Ext.define('JavisERP.model.Contract', {
             dateFormat: 'Y-m-d'
         },
         {
+        	name: 'cancelled_at',
+        	type: 'date',
+        	dateFormat: 'Y-m-d'
+        },
+        {
+        	name: 'notes'
+        },
+        {
+        	name: 'comm_redirect'
+        },
+        {
             name: 'client_id',
             type: 'int'
         },
         {
-        		name: 'client_company_name'
+        	name: 'client_company_name'
         },
         {
             name: 'design_fee',
@@ -73,14 +84,14 @@ Ext.define('JavisERP.model.Contract', {
             name: 'territory_id',
             type: 'int'
         },
-				{
-        		name: 'territory_name'
+		{
+        	name: 'territory_name'
         },
         {
             name: 'durations'
         },
         {
-        		name: 'advertisements'
+       		name: 'advertisements'
         }
     ],
 

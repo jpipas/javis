@@ -65,3 +65,4 @@
 .info {
     background-image:url(images/information.png);
 }
+.contractCancelled .x-grid-cell { text-decoration:line-through; color: #aaa; } 

@@ -43,11 +43,8 @@
     </head>
     <body>
         <script>
-            var myMask = new Ext.LoadMask(Ext.getBody(),{msg:"Loading BVM Backoffice..."});
-            myMask.show();
-            Ext.defer(function() {
-                myMask.hide();
-            },4000);
+            var appLaunchMask = new Ext.LoadMask(Ext.getBody(),{msg:"Loading BVM Backoffice..."});
+            appLaunchMask.show();
         </script>
         {% block content %}{% endblock %}
     </body>

@@ -69,15 +69,16 @@ class AdList extends AbstractBusinessService
     			$wsql = " AND ".implode(" AND ", $where);
     		}
 	        $sql = "SELECT SQL_CALC_FOUND_ROWS
-	        	DISTINCT(cl.company_name) AS 'client',
-	        	con.full_name 						AS 'marketing_dir',
-	        	c.contract_number					AS contract_number,
-	        	adt.description 					AS 'ad_type',
-	        	ads.description 					AS 'ad_size',
+	        	DISTINCT(cl.company_name) 				AS 'client',
+	        	con.full_name 							AS 'marketing_dir',
+	        	c.contract_number						AS contract_number,
+	        	c.notes									AS contract_notes,
+	        	adt.description 						AS 'ad_type',
+	        	ads.description 						AS 'ad_size',
 	        	ds.username 							AS 'designer',
-	        	CONCAT(ds.first_name,' ',ds.last_name) AS designer_name,
+	        	CONCAT(ds.first_name,' ',ds.last_name) 	AS designer_name,
 	        	ep.username 							AS 'salesrep', 
-	        	CONCAT(ep.first_name,' ',ep.last_name) AS salesrep_name,
+	        	CONCAT(ep.first_name,' ',ep.last_name) 	AS salesrep_name,
 	        	CASE WHEN a.seasonal_promo = 1 THEN 'Yes' ELSE 'No' END AS 'seasonal'
 	        FROM
 	        	(advertisement AS a)

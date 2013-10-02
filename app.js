@@ -181,12 +181,15 @@ Ext.application({
         'PermissionResourceController',
         'PermissionRoleController',
         'CommissionController',
-        'ProductionPhotosController'
+        'ProductionPhotosController',
+        'SalesReportsController'
     ],
     appFolder: '/app',
     launch: function() {
         // can now be used to reference the application from anywhere!!
         _myAppGlobal = this;
+        
+        appLaunchMask.hide();
         
         // check for requiring a password change
         if (App){

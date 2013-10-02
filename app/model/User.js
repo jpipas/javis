@@ -40,10 +40,14 @@ Ext.define('JavisERP.model.User', {
             name: 'manager_user_id'
         },
         {
-            name: 'created_at'
+            name: 'created_at',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
         },
         {
-            name: 'deleted_at'
+            name: 'deleted_at',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
         },
         {
             name: 'last_login',

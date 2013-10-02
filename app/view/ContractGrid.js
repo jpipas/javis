@@ -20,7 +20,8 @@ Ext.define('JavisERP.view.ContractGrid', {
             	'<div>{publication_names} - {ad_type_description} - {ad_size_description}</div>',
             '</tpl>',
             '</td>',
-            '</tr></table>'
+            '</tr>',
+            '<tr><td colspan="2" valign="top"><strong>Notes:</strong> {notes}</td></tr></table>'
         )
         
     }],
@@ -30,7 +31,11 @@ Ext.define('JavisERP.view.ContractGrid', {
 
         Ext.applyIf(me, {
             viewConfig: {
-
+				getRowClass: function(record, rowIndex, rowParams, store){
+					if (record.data.cancelled_at != null){
+						return 'contractCancelled';
+					}
+				}
             },
             columns: [
                 {

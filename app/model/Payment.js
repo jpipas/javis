@@ -24,10 +24,12 @@ Ext.define('JavisERP.model.Payment', {
         	name: 'payment_type_id',
         },
         {
+        	type: 'date',
             name: 'created_at',
             dateFormat: 'Y-m-d H:i:s'
         },
         {
+        	type: 'date',
             name: 'updated_at',
             dateFormat: 'Y-m-d H:i:s'
         },
@@ -59,6 +61,7 @@ Ext.define('JavisERP.model.Payment', {
         	name: 'contract'
         },
         {
+        	type: 'date',
         	name: 'postdate',
         	dateFormat: 'Y-m-d'
         },

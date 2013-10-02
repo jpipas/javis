@@ -162,9 +162,29 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-money',
                                         text: 'Sales Report',
-                                        resourceId: 'report_sales',
-                                        resourceType: 'disable',
-                                        plugins: ['permission']
+                                        menu: {
+                                        	xtype: 'menu',
+                                        	width: 170,
+                                        	hideMode: 'display',
+                                        	items: [
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'ReportPeriodSalesByTerritoryWindow',
+                                        			text: 'Period Sales by Territory',
+								                    resourceId: 'report_periodsalesbyterritory',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		},
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'ReportPeriodSalesBySalesRepForm',
+                                        			text: 'Period Sales by Sales Rep',
+								                    resourceId: 'report_periodsalesbyterritory',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		}                                        		
+                                        	]	
+                                        }
                                     },
                                     {
                                         xtype: 'menuitem',

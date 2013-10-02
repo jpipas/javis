@@ -12,12 +12,6 @@ Ext.define('JavisERP.controller.ContractController', {
         'ContractGrid',
         'ContractWindow'
     ],
-
-    stores: [
-        'Duration',
-        'AdvertisementStore'
-    ],
-    
     models: [
         'Contract',
         'Advertisement',
@@ -29,7 +23,8 @@ Ext.define('JavisERP.controller.ContractController', {
         'ContractStore',
         'Duration',
         'PaymentTermStore',
-        'TerritoryStore'
+        'TerritoryStore',
+        'ContractCommissionRedirectStore'
     ],
 
     refs: [
@@ -58,8 +53,8 @@ Ext.define('JavisERP.controller.ContractController', {
             selector: 'contentCards'
         },
         {
-        		ref: 'adWindow',
-        		selector: '#adwindow'
+        	ref: 'adWindow',
+        	selector: '#adwindow'
         },
         {
             ref: 'adForm',
@@ -83,42 +78,48 @@ Ext.define('JavisERP.controller.ContractController', {
     },
 
     onSaveButtonClick: function(button, e, options) {
-        var fields = this.getContractForm().getForm().getValues(false,false,false,true);
-        //console.log(fields);
-        var contract = new JavisERP.model.Contract({id: fields['id']});
-        for(var key in fields){
-            contract.set(key,fields[key]);
-        }
-
-        var durations = [];
-        var recs = this.getDurationList().getValue();
-        for(var key1 in recs){
-            var duration = new JavisERP.model.Duration();
-            duration.set("id",recs[key1]);
-            durations.push(duration);
-        }
-
-        contract.setAssociatedData("durations",durations);
-        //contract.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
-        var cWindow = this.getContractWindow();
-        var cGrid = this.getContractGrid();
-        var cc = this.getContentCards();
-        //console.log(me.contract);
-        contract.save({
-           	success: function(record, operation){
-				cGrid.getStore().reload();
-				cWindow.close();
-				Ext.Msg.alert('Success','Contract saved successfully!');
-            },
-            failure: function(record, operation){
-            	Ext.MessageBox.show({
-			           title: 'Failure',
-			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
-			           buttons: Ext.MessageBox.OK,
-			           icon: Ext.MessageBox.ERROR
-			       });
-            }
-        });
+    	if (this.getContractForm().getForm().isValid()){
+	        var fields = this.getContractForm().getForm().getValues(false,false,false,true);
+	        //console.log(fields);
+	        var contract = new JavisERP.model.Contract({id: fields['id']});
+	        for(var key in fields){
+	            contract.set(key,fields[key]);
+	        }
+	
+	        var durations = [];
+	        var recs = this.getDurationList().getValue();
+	        for(var key1 in recs){
+	            var duration = new JavisERP.model.Duration();
+	            duration.set("id",recs[key1]);
+	            durations.push(duration);
+	        }
+	
+	        contract.setAssociatedData("durations",durations);
+	        //contract.getProxy().setWriter(new custom.writer.Json({writeAllFields:true}));
+	        var cWindow = this.getContractWindow();
+	        var cGrid = this.getContractGrid();
+	        var cc = this.getContentCards();
+	        //console.log(me.contract);
+	        var myMask = new Ext.LoadMask(cWindow, {msg:"Saving..."});
+        	myMask.show();
+	        contract.save({
+	           	success: function(record, operation){
+					cGrid.getStore().reload();
+					cWindow.close();
+					Ext.Msg.alert('Success','Contract saved successfully!');
+					myMask.hide();
+	            },
+	            failure: function(record, operation){
+	            	myMask.hide();
+	            	Ext.MessageBox.show({
+				           title: 'Failure',
+				           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+				           buttons: Ext.MessageBox.OK,
+				           icon: Ext.MessageBox.ERROR
+				       });
+	            }
+	        });
+	    }
     },
 
     onWindowClose: function(button,opts) {

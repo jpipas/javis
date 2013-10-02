@@ -77,7 +77,8 @@ Ext.define('JavisERP.view.ContractWindow', {
                                     defaults: {
                                         padding: '5px 0px',
                                         anchor: '95%',
-                                        labelAlign: 'right'
+                                        labelAlign: 'right',
+                                        labelWidth: 125
                                     },
                                     layout: {
                                         type: 'anchor'
@@ -151,6 +152,16 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             fieldLabel: 'Sales Date',
                                             format: 'm/d/Y',
                                             submitFormat: 'Y-m-d'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            name: 'comm_redirect',
+                                            fieldLabel: 'Redirect Commission',
+                                            displayField: 'title',
+                                            store: {type: 'contractcommissionredirectstore'},
+                                            valueField: 'id',
+                                            emptyText: 'Leave Blank for Default'
+                                            
                                         }
                                     ]
                                 },
@@ -220,6 +231,13 @@ Ext.define('JavisERP.view.ContractWindow', {
                                             decimalPrecision: 2,
                                             forcePrecision: true,
                                             labelAlign: 'right'
+                                        },
+                                        {
+                                        	xtype:'datefield',
+                                            name: 'cancelled_at',
+                                            fieldLabel: 'Cancelled',
+                                            format: 'm/d/Y',
+                                            submitFormat: 'Y-m-d'
                                         }
                                     ]
                                 }
@@ -276,6 +294,14 @@ Ext.define('JavisERP.view.ContractWindow', {
 					        beforeQuery: function(e) {
 					        	this.fireEvent('contractadscomboquery', this, e);
 					        }
+                        },
+                        {
+                        	padding: '5px 5px',
+                        	xtype: 'textarea',
+                        	labelAlign: 'top',
+                        	anchor: '100%',
+                        	fieldLabel: 'Notes',
+                        	name: 'notes'                        	
                         }
                     ]
                 }

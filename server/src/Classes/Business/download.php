@@ -6,7 +6,8 @@ class Download
 {
 	protected $tmp_dir = '/tmp';
 	private $mimetypes = array(
-		'pdf' => 'application/pdf'
+		'pdf' 	=> 'application/pdf',
+		'xlsx'	=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 	);
 	
 	public function getTempDir()

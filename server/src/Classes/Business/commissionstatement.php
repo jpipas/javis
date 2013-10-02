@@ -374,6 +374,7 @@ class CommissionStatement extends AbstractBusinessService
         		c.client_id = cl.id AND
         		ce.paycat_id = pc.id AND
         		ce.salesrep_id IS NOT NULL AND
+        		ce.salesrep_id != ce.publisher_id AND
         		ce.publisher_statement_id = :statement AND
         		ce.deleted_at IS NULL
         	ORDER BY
@@ -715,7 +716,8 @@ class CommissionStatement extends AbstractBusinessService
 						duration 
 					WHERE
 						contract.id = contract_duration.contract_id AND
-						contract_duration.duration_id = duration.id
+						contract_duration.duration_id = duration.id AND
+						contract.comm_redirect IS NULL
 					GROUP BY
 						contract.id) AS c)
 				LEFT JOIN commission_statements AS cs ON cs.employee_id = c.soldby_id AND cs.period_id = cp.id AND cs.deleted_at IS NULL
@@ -738,7 +740,8 @@ class CommissionStatement extends AbstractBusinessService
 					d.date_string < cpd.date_string /* past due payments */
 				) AND
 				cs.id IS NULL AND
-				cp.id = :comm_period
+				cp.id = :comm_period AND
+				(c.cancelled_at IS NULL OR c.cancelled_at < cp.cutoff_date)
 			GROUP BY
 				c.soldby_id
 			ORDER BY
@@ -799,7 +802,8 @@ class CommissionStatement extends AbstractBusinessService
 					d.date_string < cpd.date_string /* past due payments */
 				) AND
 				cs.id IS NULL AND
-				cp.id = :comm_period
+				cp.id = :comm_period AND
+				(c.cancelled_at IS NULL OR c.cancelled_at < cp.cutoff_date)
 			GROUP BY
 				t.manager_id
 			ORDER BY
@@ -826,27 +830,49 @@ class CommissionStatement extends AbstractBusinessService
 			SELECT
 				c.territory_id,
 				cspub.id	AS publisher_statement,
-				IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) AS salesrep_statement,
+				
+				/* If commission redirect to pubilisher, NULL, if pub as AE, then pub comm ID, else default */
+				IF (c.comm_redirect = 'pub', NULL,
+					IF (c.comm_redirect = 'pubae', cspub.id,
+						IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) 
+					)
+				) AS salesrep_statement,
+				
 				c.id,
 				p.id,
 				d.id,
 				p.payment_amount,
 				t.manager_id,
-				IF(t.manager_id != c.soldby_id,c.soldby_id,NULL) AS salesrep_id,
+				
+				IF(c.comm_redirect = 'pub', NULL,
+					IF(c.comm_redirect = 'pubae', t.manager_id,
+						IF(t.manager_id != c.soldby_id,c.soldby_id,NULL)
+					)
+				) AS salesrep_id,
 				
 				/* bonus = first period for AE with paytype = CC or ACH for 12 or more months */
-				IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,1,0) AS bonus,
+				IF(c.comm_redirect IS NOT NULL, 0,
+					IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,1,0) 
+				) AS bonus,
 				
 				/* if publisher sale, then 1.0, if bonus, 0, else .3 */
-				IF(t.manager_id = c.soldby_id,1.0,
-					IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,0,
-					0.3)) AS publisher_comm,
-				
-				IF(t.manager_id = c.soldby_id,NULL,
-						IF(c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12 AND t.manager_id != c.soldby_id,0.7,
-							IF(e.salesrep_comm > 0,e.salesrep_comm,0.3)
+				IF (c.comm_redirect = 'pub', 1.0,
+					IF (c.comm_redirect = 'pubae', 0,
+						IF(t.manager_id = c.soldby_id,1.0,
+							IF(t.manager_id != c.soldby_id AND c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12,0,	0.3)
 						)
-					) AS salesrep_comm,
+					)
+				) AS publisher_comm,
+				
+				IF (c.comm_redirect = 'pub', NULL,
+					IF (c.comm_redirect = 'pubae', IF(e.salesrep_comm > 0,e.salesrep_comm,0.3),
+						IF(t.manager_id = c.soldby_id,NULL,
+							IF(c.date_string = d.date_string AND pt.bonuseligible = 1 AND c.num_months >= 12 AND t.manager_id != c.soldby_id,0.7,
+								IF(e.salesrep_comm > 0,e.salesrep_comm,0.3)
+							)
+						)
+					)
+				) AS salesrep_comm,
 					
 				IF (p.postdate > d.date_string,
 						2,  /* paid on overdue */
@@ -936,19 +962,34 @@ class CommissionStatement extends AbstractBusinessService
 			SELECT
 				c.territory_id,
 				cspub.id	AS publisher_statement,
-				IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) AS salesrep_statement,
+				
+				IF(c.comm_redirect = 'pub', NULL,
+					IF(c.comm_redirect = 'pubae', t.manager_id,
+						IF(t.manager_id != c.soldby_id,c.soldby_id,NULL)
+					)
+				) AS salesrep_id,
+				
 				c.id,
 				d.id,
 				c.monthly_payment,
 				t.manager_id,
-				IF(t.manager_id != c.soldby_id,c.soldby_id,NULL) AS salesrep_id,
+				
+				IF(c.comm_redirect = 'pub', NULL,
+					IF(c.comm_redirect = 'pubae', t.manager_id,
+						IF(t.manager_id != c.soldby_id,c.soldby_id,NULL)
+					)
+				) AS salesrep_id,
 				
 				0 AS bonus,
 				
 				/* uncollected = 0 commission */
 				0 AS publisher_comm,
 				
-				IF(t.manager_id = c.soldby_id,NULL,0) AS salesrep_comm,
+				IF (c.comm_redirect = 'pub', NULL,
+					IF (c.comm_redirect = 'pubae', 0,
+						IF(t.manager_id = c.soldby_id,NULL,0)
+					)
+				) AS salesrep_comm,
 				
 				/* uncollected */
 				5 AS paycat_id,
