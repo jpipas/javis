@@ -84,7 +84,6 @@ class AdList extends AbstractBusinessService
 	        	(advertisement AS a)
 	        LEFT JOIN client AS cl ON a.client_id = cl.id
 	        LEFT JOIN contact AS con ON cl.id = con.client_id AND con.role_id = 2
-	        LEFT JOIN employee AS ep ON cl.salesrep_id = ep.id
 	        LEFT JOIN employee AS ds ON a.designer_id = ds.id
 	        LEFT JOIN ad_size AS ads ON a.ad_size_id = ads.id
 	        LEFT JOIN ad_type AS adt ON a.ad_type_id = adt.id
@@ -94,8 +93,12 @@ class AdList extends AbstractBusinessService
 	        LEFT JOIN contract AS c ON ca.contract_id = c.id
 	        LEFT JOIN contract_duration AS cd ON c.id = cd.contract_id
 	        LEFT JOIN duration AS d ON cd.duration_id = d.id
+	        LEFT JOIN employee AS ep ON c.soldby_id = ep.id
 	        WHERE 
-	        	a.deleted_at IS NULL
+	        	a.deleted_at IS NULL AND
+	        	c.deleted_at IS NULL AND
+	        	cl.deleted_at IS NULL AND
+	        	(c.cancelled_at IS NULL OR c.cancelled_at > d.date_string)
 	        $wsql
 	        ORDER BY
 	        	$osql

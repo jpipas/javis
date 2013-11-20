@@ -2,27 +2,27 @@ Ext.define('JavisERP.view.ProductionPhotosDataView', {
     extend: 'Ext.view.View',
     alias: 'widget.productionphotosdataview',
     
-    /*store: 'ResourcesPhotosStore',*/
+    itemId: 'productionphotosdataview',
+    store: 'ProductionStore',
     
 	singleSelect: true,
+	trackOver: true,
+	id: 'images-view',
     overItemCls: 'x-view-over',
     itemSelector: 'div.thumb-wrap',
+    emptyText: 'No matches found.',
     tpl: [
-        // '<div class="details">',
-            '<tpl for=".">',
-                '<div class="thumb-wrap">',
-                    '<div class="thumb">',
-                    (!Ext.isIE6? '<img src="/thumbs/{Folder}/{Filename}" />' : 
-                    '<div style="width:74px;height:74px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'/thumbs/{folder}/{filename}\')"></div>'),
-                    '</div>',
-                    '<span>{name}</span>',
-                '</div>',
-            '</tpl>'
-        // '</div>'
+        '<tpl for=".">',
+            '<div class="thumb-wrap">',
+                '<div class="thumb"><img src="/thumb/{id}?w=80&h=60" /></div>',
+                '<span>{title}</span>',
+            '</div>',
+        '</tpl>'
     ],
     
     initComponent: function() {
-        
-        this.callParent(arguments);
+    	var me = this;
+
+        me.callParent(arguments);
     }
 });

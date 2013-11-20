@@ -2,7 +2,7 @@ Ext.define('JavisERP.view.CommissionCycleGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.commissioncyclegrid',
 
-    title: 'Commission Cycles',
+    title: 'Revenue Cycles',
     forceFit: true,
     store: {type: 'commissioncyclestore'},
     itemId: 'commissioncyclegrid',

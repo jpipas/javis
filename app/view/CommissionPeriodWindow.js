@@ -7,7 +7,7 @@ Ext.define('JavisERP.view.CommissionPeriodWindow', {
     layout: {
         type: 'fit'
     },
-    title: 'Commission Period',
+    title: 'Baseline Revenue Period',
     modal: true,
 
     initComponent: function() {

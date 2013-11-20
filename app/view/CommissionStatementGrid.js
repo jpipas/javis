@@ -2,7 +2,7 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.commissionstatementgrid',
 
-    title: 'Commission Statements',
+    title: 'Baseline Revenue Statements',
     forceFit: true,
     store: 'CommissionStatementStore',
     itemId: 'commissionstatementgrid',
@@ -71,7 +71,7 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
                 	flex: 2,
                 	xtype: 'gridcolumn',
                 	dataIndex: 'territories',
-                	text: 'Territory'
+                	text: 'Location(s)'
                 },
                 {
                 	flex: 1,
@@ -85,6 +85,13 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
                 	xtype: 'gridcolumn',
                 	renderer: 'usMoney',
                 	dataIndex: 'amount_salesrep',
+                	text: 'Cross Sales'
+                },
+                {
+                	flex: 1,
+                	xtype: 'gridcolumn',
+                	renderer: 'usMoney',
+                	dataIndex: 'amount_sellinto',
                 	text: 'AE Commission'
                 },
                 {
@@ -93,6 +100,19 @@ Ext.define('JavisERP.view.CommissionStatementGrid', {
                 	renderer: 'usMoney',
                 	dataIndex: 'baselines',
                 	text: 'Baselines'
+                },
+                {
+                	flex: 1,
+                	xtype: 'gridcolumn',
+                	dataIndex: 'check_total',
+                	text: 'Check',
+                	renderer: 'usMoney'/*,
+                	renderer: function(value, metaData, record){
+                		if (record.baselines <= 0){
+                			return '<span style="color:#cc0000">'+value+'</span>';
+                		}
+                		return value;
+                	}*/
                 }
             ],
             dockedItems: [

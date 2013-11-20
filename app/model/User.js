@@ -16,6 +16,9 @@ Ext.define('JavisERP.model.User', {
             name: 'email'
         },
         {
+        	name: 'phone'
+        },
+        {
             name: 'username'
         },
         {
@@ -40,6 +43,9 @@ Ext.define('JavisERP.model.User', {
             name: 'manager_user_id'
         },
         {
+        	name: 'regional_user_id'
+        },
+        {
             name: 'created_at',
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
@@ -59,6 +65,9 @@ Ext.define('JavisERP.model.User', {
         },
         {
             name: 'manager_name'
+        },
+        {
+        	name: 'regional_name'
         },
         {
         	name: 'disabled'

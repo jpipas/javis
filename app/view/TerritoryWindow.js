@@ -2,20 +2,20 @@ Ext.define('JavisERP.view.TerritoryWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.territorywindow',
 
-		requires: [
+	requires: [
         'JavisERP.view.ComboView',
         'JavisERP.view.ComboFieldBox'
     ],
 		
-		id: 'territoryWindow',
-		cls: 'territoryWindow',
-		itemId: 'territoryWindow',
-		width: 400,
-		autoDestroy: true,
+	id: 'territoryWindow',
+	cls: 'territoryWindow',
+	itemId: 'territoryWindow',
+	width: 400,
+	autoDestroy: true,
     layout: {
         type: 'fit'
     },
-    title: 'Territory',
+    title: 'Location',
     modal: true,
     initComponent: function() {
         var me = this;
@@ -99,8 +99,17 @@ Ext.define('JavisERP.view.TerritoryWindow', {
                         },
                         {
                             xtype: 'combobox',
+                            name: 'region_id',
+                            fieldLabel: 'Region',
+                            displayField: 'title',
+                            store: {type: 'regionstore'},
+                            valueField: 'id',
+                            labelAlign: 'right',
+                        },
+                        {
+                            xtype: 'combobox',
                             name: 'cycle_id',
-                            fieldLabel: 'Commission Cycle',
+                            fieldLabel: 'Revenue Cycle',
                             displayField: 'title',
                             store: {type: 'commissioncyclestore'},
                             valueField: 'id',

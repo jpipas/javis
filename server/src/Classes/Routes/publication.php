@@ -17,6 +17,11 @@ class Publication implements ControllerProviderInterface
 
 		/* search */
         $controllers->get('/', function (Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'publication_view')){
+        		return $app->json(array("totalCount"=>0, "publication"=>array()));
+        	}
+        	
     		$sort = '';
     		if ($request->get('sort')){
     			$sort = json_decode($request->get('sort'), true);
@@ -29,12 +34,17 @@ class Publication implements ControllerProviderInterface
     		if ($request->get('search')){
     			$search = json_decode($request->get('search'), true);
     		}
-            list($totalCount, $res) = $app['business.publication']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            list($totalCount, $res) = $app['business.publication']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
             return $app->json(array("totalCount"=>$totalCount, "publication"=>$res));
         });
 
 		/* get */
 		$controllers->get('/{id}', function(Application $app, $id, Request $request) {
+			// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'publication_view')){
+        		return $app->json(array("success"=>false,"totalCount"=>0, "publication"=>array()));
+        	}
+        	
 	        $result = $app['business.publication']->getById($id);
 	        $result['territory'] = $app['business.territory']->getById($result['territory_id']);
 	        $result['postal_codes'] = $app['business.postalcode']->getByPublicationId($result['id']);
@@ -45,6 +55,11 @@ class Publication implements ControllerProviderInterface
 	    });
 
 		$controllers->post('/new', function(Application $app, Request $request) {
+			// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'publication_create')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
     		$params = json_decode($request->getContent(),true);
     		$error = $app['business.publication']->validate($app, $params);
             if (@count($error) > 0){
@@ -56,6 +71,11 @@ class Publication implements ControllerProviderInterface
         });
 
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'publication_edit') && !$app['business.user']->hasPermission($app, 'publication_edit_basic')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $params = json_decode($request->getContent(),true);
             $error = $app['business.publication']->validate($app, $params);
             if (@count($error) > 0){
@@ -67,6 +87,11 @@ class Publication implements ControllerProviderInterface
         });
 
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'publication_delete')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $result = $app['business.publication']->delete($id);
             return $app->json(array("success"=>true,"publication"=>$result));
         });

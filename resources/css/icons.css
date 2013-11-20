@@ -8,6 +8,7 @@
 *.ui-silk.inline{ display: inline-block; vertical-align: middle; border: 0; outline: 0; }
 
 .ui-silk.hover:hover{background-image: url(/resources/images/silk-sprite.png?634707433804301377);}
+.ui-silk-loading { background: transparent url(/resources/icons/ajax-loader.gif) no-repeat; }
 .ui-silk-accept { background-position: -0px -0px !important}
 .ui-silk-add { background-position: -16px -0px !important}
 .ui-silk-anchor { background-position: -32px -0px !important}

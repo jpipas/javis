@@ -14,7 +14,7 @@ Ext.define('JavisERP.view.AdListGrid', {
     forceFit: false,
     scroll: 'vertical',
     store: 'AdList',
-    emptyText : 'Please select a territory, publication, and month/year',
+    emptyText : 'Please select a location, publication, and month/year',
     initComponent: function() {
         var me = this;
 
@@ -117,7 +117,7 @@ Ext.define('JavisERP.view.AdListGrid', {
                             xtype: 'combobox',
                             displayField: 'name',
                             valueField: 'id',
-                            emptyText: 'Territory',
+                            emptyText: 'Location',
                             store: 'TerritoryStore',
                             editable: false,
                             name: 'territory_id',

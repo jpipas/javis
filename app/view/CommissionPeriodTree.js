@@ -2,7 +2,7 @@ Ext.define('JavisERP.view.CommissionPeriodTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.commissionperiodtree',
 
-    title: 'Commission Periods',
+    title: 'Baseline Revenue Periods',
     forceFit: true,
     store: 'CommissionPeriodTreeStore',
 	itemId: 'CommissionPeriodTree',

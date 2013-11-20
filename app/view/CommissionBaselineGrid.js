@@ -5,11 +5,11 @@ Ext.define('JavisERP.view.CommissionBaselineGrid', {
     itemId: 'CommissionBaselineGrid',
     minHeight: 200,
     autoScroll: false,
-    title: 'Commission Baselines',
+    title: 'Revenue Baselines',
     forceFit: false,
     scroll: 'vertical',
     store: {type: 'commissionbaselinestore'},
-    emptyText : 'Please select an active commission period to modify baselines',
+    emptyText : 'Please select an active period to modify baselines',
     initComponent: function() {
         var me = this;
 
@@ -25,7 +25,13 @@ Ext.define('JavisERP.view.CommissionBaselineGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'territory_name',
                     flex: 2,
-                    text: 'Territory'
+                    text: 'Location'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'manager_fullname',
+                    flex: 2,
+                    text: 'Publisher'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -74,7 +80,7 @@ Ext.define('JavisERP.view.CommissionBaselineGrid', {
                             displayField: 'text',
                             valueField: 'id',
                             width: 300,
-                            emptyText: 'Commission Period',
+                            emptyText: 'Period',
                             store: {type: 'commissionperiodstore'},
                             editable: false,
                             name: 'period_id',
@@ -97,7 +103,21 @@ Ext.define('JavisERP.view.CommissionBaselineGrid', {
                             iconCls: 'ui-silk ui-silk-application-go',
                             itemId: 'commission_baseline_get',
                             text: 'View/Edit Baselines'
-                        }
+                        },
+                        {
+            				xtype: 'tbspacer',
+            				flex: 1
+                		},
+		                {
+		                    xtype: 'gridsearchingbar',
+		                    inputWidth: 200,
+		                    grid: this,
+		                    border: 0,
+		                    showSelectAll: true,
+		                    menuIconCls: 'ui-silk ui-silk-magnifier',
+		                    disableIndexes: ['duration_description'],
+            				items: ['->']
+		                }
                     ]
                 },
                 {

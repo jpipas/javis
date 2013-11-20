@@ -11,102 +11,110 @@ class Payment extends AbstractBusinessService {
         return 'payment';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
    	{
         // limit our search results
-    		$lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
-    		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'payment.created_at DESC';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){
-    			
-    		
-    		// handle additional filters
-    		} elseif (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					$qq = $this->db->quote($f['value']);
-    					switch ($f['property']){
-			                case 'client_id':
-			                	$where[$f['property']] = "client.id = ".$qq;
-			                	break;
-			                	
-			                default:
-			                	$where[$f['property']] = $f['property']." = ".$qq;
-			                	break;
-			              }
-           			}
-    			}
-    		
-    		}
-    		
-    		// search criteria was passed in
-    		if (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				$qqq = $this->db->quote('%'.$search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$qqq){
-    					switch ($field){
-    						case 'client_id':
-    							$or[] = 'client.id LIKE '.$qq;
-    							break;
-    							
-    						case 'client_company_name':
-    							$or[] = 'client.company_name LIKE '.$qq;
-    							break;
-    						
-    						case 'contract_number':
-    							$or[] = 'contract.contract_number LIKE '.$qq;
-    							break;
-    						
-    						case 'durations':
-    							$or[] = 'pd.durations LIKE '.$qqq;
-    							break;
-    						
-    						case 'payment_type_description':
-    							$or[] = 'payment_type.description LIKE '.$qq;
-    							break;
-    						
-    						case 'payment_term_description':
-    							$or[] = 'payment_term.description LIKE '.$qq;
-    							break;
-    						
-    						case 'territory_name':
-    							$or[] = 'territory.name LIKE '.$qq;
-    							break;
-    						
-    						default:
-    							$or[] = 'payment.'.$field.' LIKE '.$qq;
-    							break;
-    					}
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			} else {
-    				
-    			}
-    		}
-    		if (@count($where) > 0){
-    			$wsql = " AND ".implode(" AND ", $where);
-    		}
+		$lsql = '';
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'payment.created_at DESC';
+		}
+		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){
+			
+		
+		// handle additional filters
+		} elseif (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					$qq = $this->db->quote($f['value']);
+					switch ($f['property']){
+		                case 'client_id':
+		                	$where[$f['property']] = "client.id = ".$qq;
+		                	break;
+		                	
+		                default:
+		                	$where[$f['property']] = $f['property']." = ".$qq;
+		                	break;
+		              }
+       			}
+			}
+		
+		}
+		
+		// search criteria was passed in
+		if (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				$qqq = $this->db->quote('%'.$search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$qqq){
+					switch ($field){
+						case 'client_id':
+							$or[] = 'client.id LIKE '.$qq;
+							break;
+							
+						case 'client_company_name':
+							$or[] = 'client.company_name LIKE '.$qq;
+							break;
+						
+						case 'contract_number':
+							$or[] = 'contract.contract_number LIKE '.$qq;
+							break;
+						
+						case 'durations':
+							$or[] = 'pd.durations LIKE '.$qqq;
+							break;
+						
+						case 'payment_type_description':
+							$or[] = 'payment_type.description LIKE '.$qq;
+							break;
+						
+						case 'payment_term_description':
+							$or[] = 'payment_term.description LIKE '.$qq;
+							break;
+						
+						case 'territory_name':
+							$or[] = 'territory.name LIKE '.$qq;
+							break;
+						
+						default:
+							$or[] = 'payment.'.$field.' LIKE '.$qq;
+							break;
+					}
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			} else {
+				
+			}
+		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'payment_view_limit')){
+    		$tids = $app['business.user']->getUserVisibleTerritories($app);
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$where[] = "(contract.soldby_id IN ('".implode("', '", $eids)."') OR contract.territory_id IN ('".implode("', '", $tids)."'))";
+    	}
+		
+		if (@count($where) > 0){
+			$wsql = " AND ".implode(" AND ", $where);
+		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	payment.*,
         	client.company_name AS client_company_name,
@@ -269,6 +277,26 @@ class Payment extends AbstractBusinessService {
 			}
 		}
 		
+		// check if there are any existing payments for certain periods
+		if (@count($error) < 1){
+			$durations = $params['durations'];
+			foreach ($durations as $key => $val){
+				$exists = $this->db->fetchAll("SELECT
+					*
+				FROM
+					payment,
+					payment_duration
+				WHERE
+					payment.deleted_at IS NULL AND
+					payment.id = payment_duration.payment_id AND
+					contract_id = :contract_id AND
+					payment_duration.duration_id = :duration_id", array('contract_id' => $params['contract_id'], 'duration_id' => $val));
+				if (@count($exists) > 0){
+					$duration = $app['business.duration']->getById($val);
+					$error[] = "Payment already exists for ".$duration['description'];
+				}
+			}
+		}
 		
 		// set the creator, updator, owner
 		$ownerid = null;

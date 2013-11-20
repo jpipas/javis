@@ -46,17 +46,21 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                 },
                                 {
                                     xtype: 'button',
-                                    cls: 'cancelbutton',
-                                    itemId: 'cancelbutton',
-                                    text: 'Cancel'
+                                    text: 'Cancel',
+                                    scope: this,
+                                    handler: function(){ this.close(); }
                                 }
                             ]
                         }
                     ],
                     items: [
-                    		{
+                    	{
                             xtype: 'hiddenfield',
                             name: 'id'
+                        },
+                        {
+                            xtype: 'hiddenfield',
+                            name: 'edit'
                         },
                         {
                             xtype: 'textfield',
@@ -69,11 +73,15 @@ Ext.define('JavisERP.view.PublicationWindow', {
                             cls: 'territory',
                             itemId: 'territory_id',
                             name: 'territory_id',
-                            fieldLabel: 'Territory',
+                            fieldLabel: 'Location',
                             displayField: 'name',
                             store: 'TerritoryStore',
                             valueField: 'id',
                             anchor: '100%',
+                            disabled: true,
+                            resourceId: ['publication_edit','publication_create'],
+		                    resourceType: 'disable',
+		                    plugins: ['permission']
                         },
                         {
                             xtype: 'combobox',
@@ -89,6 +97,10 @@ Ext.define('JavisERP.view.PublicationWindow', {
                             name: 'postal_codes',
                             cls:'postalCodeList',
                             anchor: '100%',
+                            disabled: true,
+                            resourceId: ['publication_edit','publication_create'],
+                    		resourceType: 'disable',
+                    		plugins: ['permission']
                         },
                         {
                             xtype: 'combobox',
@@ -113,7 +125,11 @@ Ext.define('JavisERP.view.PublicationWindow', {
                         	style: {
                         		color: '#cc0000',
                         		fontWeight: 'bold'
-                        	}
+                        	},
+                        	hidden: true,
+                        	resourceId: ['publication_edit','publication_create'],
+		                    resourceType: 'hide',
+		                    plugins: ['permission']
                         },
                         {
                             xtype: 'fieldcontainer',
@@ -122,6 +138,10 @@ Ext.define('JavisERP.view.PublicationWindow', {
                                 align: 'stretch',
                                 type: 'anchor'
                             },
+                            hidden: true,
+                        	resourceId: ['publication_edit','publication_create'],
+		                    resourceType: 'hide',
+		                    plugins: ['permission'],
                             anchor: '100%',
                             itemId: 'PublicationBaselines',
                             items: [{
@@ -162,7 +182,11 @@ Ext.define('JavisERP.view.PublicationWindow', {
 						{
 							xtype: 'button',
 							text: 'More Baselines',
-							itemId: 'MoreBaselines'
+							itemId: 'MoreBaselines',
+							hidden: true,
+                        	resourceId: ['publication_edit','publication_create'],
+		                    resourceType: 'hide',
+		                    plugins: ['permission']
 						}
                     ]
                 }

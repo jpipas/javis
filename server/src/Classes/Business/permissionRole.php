@@ -64,7 +64,6 @@ class PermissionRole extends AbstractBusinessService
     
     public function validate(&$app, &$params)
     {
-    	$app['monolog']->addInfo(print_r($params, true));
 		$error = array();
 		// clear params we don't need
 		unset($params['users']);

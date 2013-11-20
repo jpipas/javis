@@ -1,8 +1,8 @@
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext': 'http://cdn.sencha.io/ext-4.2.0-gpl/src/',
-        'Ext.ux': 'http://cdn.sencha.io/ext-4.2.0-gpl/examples/ux/'
+        'Ext': 'http://cdn.sencha.com/ext/gpl/4.2.1/src/',
+        'Ext.ux': 'http://cdn.sencha.com/ext/gpl/4.2.1/examples/ux/'
         //'JavisERP':'/app'
     }
 });
@@ -177,6 +177,7 @@ Ext.application({
         'UserController',
         'AdListController',
         'TerritoryController',
+        'RegionController',
         'AdSizeTypeController',
         'PermissionResourceController',
         'PermissionRoleController',

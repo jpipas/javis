@@ -9,6 +9,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
     models: [
         'Territory',
         'CommissionCycle',
+        'Region',
         'User'
     ],
 
@@ -27,20 +28,12 @@ Ext.define('JavisERP.controller.TerritoryController', {
         {
             ref: 'territoryWindow',
             selector: 'window[cls=territoryWindow]'
+        },
+        {
+        	ref: 'territoryGrid',
+        	selector: 'territorygrid'
         }
     ],
-
-		onTerritoryActionClick: function(grid,record,action,idx,col,e,target) {
-        var doAction = action.split(" ",1);
-        switch(doAction[0]){
-            case 'edit_action':
-                this.editTerritory(record);
-                break;
-            case 'delete_action':
-                this.deleteTerritory(record,grid);
-                break;
-        }
-    },
 
     onNewTerritoryClick: function(button, options, e) {
         var terWindow = new JavisERP.view.TerritoryWindow();
@@ -54,22 +47,11 @@ Ext.define('JavisERP.controller.TerritoryController', {
             ter.set(key,fields[key]);
         }
         var tWindow = this.getTerritoryWindow();
-        var tStore = this.getTerritoryStoreStore();
+        var grid = this.getTerritoryGrid();
         ter.save({
-            /*
-            callback: function(record,operation){
-                if(operation.wasSuccessful){
-                    tWindow.close();
-                    tStore.reload();
-                    Ext.Msg.alert('Success','Territory saved successfully!');
-                } else {
-                    Ext.Msg.alert('Failure','Something went wrong!');
-                }
-            }*/
             success: function(record, operation){
             	tWindow.close();
-              tStore.reload();
-              Ext.Msg.alert('Success','Territory saved successfully!');
+              	grid.getStore().reload();
             },
             failure: function(record, operation){
             	Ext.MessageBox.show({
@@ -113,6 +95,7 @@ Ext.define('JavisERP.controller.TerritoryController', {
             success: function(record,operation){
             	tForm.getForm().loadRecord(record);
                 tForm.getForm().findField('manager_id').setValue(new JavisERP.model.User(record.data.manager));
+                tForm.getForm().findField('region_id').setValue(new JavisERP.model.Region({id: record.data.region_id, title: record.data.region_title}));
                 tForm.getForm().findField('cycle_id').setValue(new JavisERP.model.CommissionCycle({id : record.data.cycle_id, title : record.data.cycle_title}));
                 tWindow.show();
             }

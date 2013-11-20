@@ -24,6 +24,12 @@ Ext.define('JavisERP.model.CommissionBaseline', {
         	name: 'publication_description'
         },
         {
+        	name: 'manager_id'
+        },
+        {
+        	name: 'manager_fullname'
+        },
+        {
         	name: 'pages'
         },
         {

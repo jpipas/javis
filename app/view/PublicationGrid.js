@@ -54,7 +54,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
 	                iconCls: 'edit_action ui-silk ui-silk-newspaper-go',
 	                itemId: 'publication_edit',
 	                hidden: true,
-                    resourceId: 'publication_edit',
+                    resourceId: ['publication_edit','publication_edit_basic'],
                     hidden: true,
                     resourceType: 'hide',
                     plugins: ['permission']
@@ -83,7 +83,7 @@ Ext.define('JavisERP.view.PublicationGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'territory_name',
                     flex: 1,
-                    text: 'Territory'
+                    text: 'Location'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -101,7 +101,11 @@ Ext.define('JavisERP.view.PublicationGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'baselines',
                     flex: 2,
-                    text: 'Baselines'
+                    text: 'Baselines',
+                    hidden: true,
+                    resourceId: 'publication_view_baseline',
+                    resourceType: 'hide',
+                    plugins: ['permission']
                 }
             ]
         });

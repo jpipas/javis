@@ -6,8 +6,8 @@ class Download
 {
 	protected $tmp_dir = '/tmp';
 	private $mimetypes = array(
-		'pdf' 	=> 'application/pdf',
-		'xlsx'	=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		'pdf' 	=> array('type' => 'application/pdf'),
+		'xlsx'	=> array('type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'action' => 'download')
 	);
 	
 	public function getTempDir()
@@ -29,8 +29,12 @@ class Download
 			$mimetype = $this->mimetypes[$ext];
 		}
 		if ($mimetype){
-			header('Content-Type: '.$mimetype); // octet-stream
-			header('Content-Disposition: inline; filename='.basename($file));
+			header('Content-Type: '.$mimetype['type']); // octet-stream
+			if (isset($mimetype['action']) && $mimetype['action'] == 'download'){
+				header('Content-Disposition: attachment; filename='.basename($file));
+			} else {
+				header('Content-Disposition: inline; filename='.basename($file));
+			}
 		} else {
 			header('Content-Type: application/octet-stream'); // 
 			header('Content-Disposition: attachment; filename='.basename($file));

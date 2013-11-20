@@ -153,6 +153,18 @@ final class User implements UserInterface
     {
         return $this->id;
     }
+    
+    public function hasPermission($resourceid)
+    {
+    	$resources = $this->getResources();
+    	if (is_array($resources)){
+    		if (in_array($resourceid, $resources)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     /**
      * {@inheritdoc}
      */

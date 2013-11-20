@@ -12,7 +12,7 @@ class Publication extends AbstractBusinessService
         return 'publication';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         // limit our search results
 		$lsql = '';
@@ -48,16 +48,18 @@ class Publication extends AbstractBusinessService
 					} else {
 						$where[$f['property']] = 'p.'.$f['property']." = ".$qq;
 					}
-        }
+        		}
 			}
+		}
 
 		// search criteria was passed in
-		} elseif (isset($search['query']) && !empty($search['query'])){
+		if (isset($search['query']) && !empty($search['query'])){
 			if (@count($search['fields']) >= 1){
 				$or = array();
 				$q = $search['query'];
 				$qq = $this->db->quote($search['query'].'%');
-				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$q){
+				$qqq = $this->db->quote('%'.$search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$q, &$qqq){
 					switch ($field){
 						case 'contentcoord_name':
 							$parts = explode(" ", $q);
@@ -82,7 +84,7 @@ class Publication extends AbstractBusinessService
 							break;
 								
 						default:
-							$or[] = 'p.'.$field.' LIKE '.$qq;
+							$or[] = 'p.'.$field.' LIKE '.$qqq;
 							break;
 					}
 				});
@@ -94,6 +96,15 @@ class Publication extends AbstractBusinessService
     			$where[] = "p.description LIKE '".addslashes($search['query'])."%'";
 			}
 		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'contract_view_limit')){
+    		$tids = $app['business.user']->getUserVisibleTerritories($app);
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$pids = $app['business.user']->getUserVisiblePublications($app);
+    		$where[] = "(p.contentcoord_id IN ('".implode("', '", $eids)."') OR p.territory_id IN ('".implode("', '", $tids)."') OR p.id IN ('".implode("', '", $pids)."'))";
+    	}
+		
 		if (@count($where) > 0){
 			$wsql = " AND ".implode(" AND ", $where);
 		}
@@ -148,8 +159,10 @@ class Publication extends AbstractBusinessService
         	CONCAT(employee.first_name, ' ', employee.last_name) AS publisher_name,
         	territory.manager_id AS publisher_id,
         	employee.email AS publisher_email,
+        	employee.email AS contact_email, /* for backwards compatibility */
         	CONCAT(cc.first_name, ' ', cc.last_name) AS contentcoord_name,
-        	cc.email AS contentcoord_email
+        	cc.email AS contentcoord_email,
+        	cc.email AS contact_email /* for backwards compatibility */
         FROM
         	(publication AS p,
         	territory,
@@ -218,6 +231,8 @@ class Publication extends AbstractBusinessService
     public function validate(&$app, &$params)
     {
     	$error = array();
+    	$params['edit'] = ($app['business.user']->hasPermission($app, 'publication_edit_basic')?'basic':null);
+    	$update = (isset($params['id']) && !empty($params['id'])?true:false);
 		unset($params['id'],$params['contact_email'], $params['content_email'], $params['territory_name'], $params['publisher_id']);
 		unset($params['publisher_name'], $params['publisher_email'],$params['contentcoord_name'], $params['contentcoord_email'], $params['created_at']);
 		unset($params['deleted_at'],$params['territory'], $params['contentcoord'], $params['publisher'], $params['postal_code'], $params['baselines']);
@@ -227,14 +242,19 @@ class Publication extends AbstractBusinessService
 			$error[] = "Publication name/description is required";
 		}
 
-		// validate territory
-		if (empty($params['territory_id'])){
-			$error[] = "Publication territory is required";
-		} else {
-			$territory = $app['business.territory']->getById($params['territory_id']);
-			if (empty($territory['id'])){
-				$error[] = "Invalid territory specified";
+		// validate territory - only if we are able to edit more than just the basics
+		if ($params['edit'] != 'basic' || !$update){
+			if (empty($params['territory_id'])){
+				$error[] = "Publication territory is required";
+			} else {
+				$territory = $app['business.territory']->getById($params['territory_id']);
+				if (empty($territory['id'])){
+					$error[] = "Invalid territory specified";
+				}
 			}
+		} else {
+			// unset this value so it doesn't get edited
+			unset($params['territory_id']);
 		}
 
 		// validate content coord
@@ -246,7 +266,7 @@ class Publication extends AbstractBusinessService
 		}
 
 		// get postal code
-	    if (@count($error) < 1){
+	    if (@count($error) < 1 && $params['edit'] != 'basic'){
 	    	if (is_array($params['postal_codes'])){
 	    		$codes = $params['postal_codes'];
 	    	} else {
@@ -279,6 +299,7 @@ class Publication extends AbstractBusinessService
 
 	public function create($params)
     {
+    	unset($params['edit']);
 		$postal_code_array = $params['postal_codes'];
 		$baseline = $params['baseline'];
 		$pages = $params['pages'];
@@ -302,6 +323,8 @@ class Publication extends AbstractBusinessService
 
 	public function update($id, $params, $app)
     {
+    	$isbasic = (isset($params['edit']) && $params['edit'] == 'basic'?true:false);
+    	unset($params['edit']);
 		$postal_code_array = $params['postal_codes'];
 		$baseline = $params['baseline'];
 		$pages = $params['pages'];
@@ -309,16 +332,18 @@ class Publication extends AbstractBusinessService
 		$now = new \DateTime('NOW');
         $params['updated_at'] = $now->format('Y-m-d H:i:s');
         $this->db->update('publication',$params, array('id'=>$id));
-        $this->db->delete('publication_zip',array("publication_id"=>$id));
-        $this->db->delete('publication_baseline',array("publication_id"=>$id));
-        foreach($postal_code_array as $postal_code){
-            $this->db->insert('publication_zip', array('publication_id' => $id, 'postal_code_id' => $postal_code));
-        }
-        foreach ($pages as $key => $val){
-        	if (is_numeric($val) && isset($baseline[$key]) && is_numeric($baseline[$key])){
-        		$this->db->insert('publication_baseline', array('publication_id' => $id, 'pages' => $val, 'baseline' => $baseline[$key]));
-        	}
-        }
+        if (!$isbasic){
+	        $this->db->delete('publication_zip',array("publication_id"=>$id));
+	        $this->db->delete('publication_baseline',array("publication_id"=>$id));
+	        foreach($postal_code_array as $postal_code){
+	            $this->db->insert('publication_zip', array('publication_id' => $id, 'postal_code_id' => $postal_code));
+	        }
+	        foreach ($pages as $key => $val){
+	        	if (is_numeric($val) && isset($baseline[$key]) && is_numeric($baseline[$key])){
+	        		$this->db->insert('publication_baseline', array('publication_id' => $id, 'pages' => $val, 'baseline' => $baseline[$key]));
+	        	}
+	        }
+	    }
         $result = $this->getById($id);
         return $result;
     }
@@ -333,10 +358,18 @@ class Publication extends AbstractBusinessService
 	}
 
     public function getByPostalCode($zip,$app){
-        $sql = "SELECT p.* FROM postal_code pc
+        $sql = "SELECT 
+        	p.*,
+        	cc.email AS content_email,
+        	publisher.email AS contact_email
+        FROM 
+        	postal_code pc
             LEFT JOIN publication_zip pz ON pc.id = pz.postal_code_id
             LEFT JOIN publication p ON pz.publication_id = p.id
-            WHERE pc.iso_code = $zip
+            LEFT JOIN territory AS t ON t.id = p.territory_id
+            LEFT JOIN employee AS publisher ON publisher.id = t.manager_id
+            LEFT JOIN employee AS cc ON cc.id = p.contentcoord_id
+		WHERE pc.iso_code = $zip
             GROUP BY p.id";
         //$app['monolog']->addInfo(print_r($sql, true));
         return $this->db->fetchAll($sql);

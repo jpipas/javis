@@ -37,6 +37,9 @@ class CommissionStatement extends AbstractBusinessService
 						break;
 				}
 			});
+			// add name sort order as secondary sorting
+			$order[] = 'e.last_name ASC';
+			$order[] = 'e.first_name ASC';
 			$osql = implode(', ', $order);
 		} else {
 			$order = array();
@@ -99,9 +102,17 @@ class CommissionStatement extends AbstractBusinessService
 						case 'baselines':
 							$or[] = 'cb.baselines LIKE '.$qq;
 							break;
+							
+						case 'amount_sellinto':
+							$or[] = 'cepae.amount_sellinto LIKE '.$qq;
+							break;
 						
 						case 'amount_salesrep':
 							$or[] = 'ces.amount_salesrep LIKE '.$qq;
+							break;
+						
+						case 'check_total':
+							$or[] = '((IF(cep.amount_publisher IS NULL,0,cep.amount_publisher) - IF(cb.baselines IS NULL,0,cb.baselines)) * cs.profitshare) + (IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) LIKE '.$qq;
 							break;
 						
 						default:
@@ -117,6 +128,14 @@ class CommissionStatement extends AbstractBusinessService
     			$where[] = "commission_cycle.title LIKE '".addslashes($search['query'])."%'";
 			}
 		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'commission_statement_view_limit')){
+    		//$tids = $app['business.user']->getUserVisibleTerritories($app);
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$where[] = "cs.employee_id IN ('".implode("', '", $eids)."')";
+    	}
+		
 		if (@count($where) > 0){
 			$wsql = " AND ".implode(" AND ", $where);
 		}
@@ -124,8 +143,10 @@ class CommissionStatement extends AbstractBusinessService
         	cs.*,
         	CONCAT(e.first_name, ' ', e.last_name) AS fullname,
         	cep.amount_publisher,
-        	(IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) AS amount_salesrep,
+        	IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) AS amount_salesrep,
+        	IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto) AS amount_sellinto,
         	cb.baselines,
+        	((IF(cep.amount_publisher IS NULL,0,cep.amount_publisher) - IF(cb.baselines IS NULL,0,cb.baselines)) * cs.profitshare) + (IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) AS check_total,
         	d.date_string,
         	cept.territories
         FROM
@@ -224,11 +245,14 @@ class CommissionStatement extends AbstractBusinessService
     
     public function getById($id, $entries = false)
     {
-    	$sql = "SELECT
-    		cs.*,
+    	$sql = "SELECT SQL_CALC_FOUND_ROWS
+        	cs.*,
         	CONCAT(e.first_name, ' ', e.last_name) AS fullname,
         	cep.amount_publisher,
-        	(IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) AS amount_salesrep,
+        	IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) AS amount_salesrep,
+        	IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto) AS amount_sellinto,
+        	cb.baselines,
+        	((IF(cep.amount_publisher IS NULL,0,cep.amount_publisher) - IF(cb.baselines IS NULL,0,cb.baselines)) * cs.profitshare) + (IF(ces.amount_salesrep IS NULL,0,ces.amount_salesrep) + IF(cepae.amount_sellinto IS NULL,0,cepae.amount_sellinto)) AS check_total,
         	d.date_string,
         	cept.territories
         FROM
@@ -236,8 +260,7 @@ class CommissionStatement extends AbstractBusinessService
         	commission_period AS cp,
         	duration AS d,
         	employee AS e)
-        	
-        	/* publisher's territories */
+        	/* publishers territories */
         	LEFT JOIN (SELECT
         			commission_entry.publisher_statement_id,
         			GROUP_CONCAT(DISTINCT t.name ORDER BY t.name SEPARATOR ', ') AS territories
@@ -248,6 +271,29 @@ class CommissionStatement extends AbstractBusinessService
         			commission_entry.deleted_at IS NULL
         		GROUP BY
         			commission_entry.publisher_statement_id) AS cept ON cept.publisher_statement_id = cs.id
+        		
+        	/* baselines */
+        	LEFT JOIN (SELECT
+        			ce.publisher_statement_id,
+        			SUM(cb.baseline) AS baselines
+        		FROM
+        			((SELECT
+        				DISTINCT(territory_id) AS territory_id,
+        				publisher_statement_id
+        			FROM
+        				commission_entry AS ce
+        			WHERE
+        				 ce.deleted_at IS NULL
+        			GROUP BY
+        				publisher_statement_id,
+        				territory_id) AS ce,
+        			commission_statements AS cs)
+        			LEFT JOIN commission_baselines AS cb ON cb.period_id = cs.period_id AND cb.territory_id = ce.territory_id AND cb.deleted_at IS NULL
+        		WHERE
+        			cs.deleted_at IS NULL AND
+        			cs.id = ce.publisher_statement_id
+        		GROUP BY
+        			ce.publisher_statement_id) AS cb ON cb.publisher_statement_id = cs.id
         	
         	/* my publisher sales */
         	LEFT JOIN (SELECT
@@ -294,7 +340,6 @@ class CommissionStatement extends AbstractBusinessService
         	cs.deleted_at IS NULL AND
         	cs.id = ?";
         $ret = $this->db->fetchAssoc($sql,array((int) $id));
-        
         if ($entries){
         	// get publisher entries first
         	$sth = $this->db->executeQuery("SELECT
@@ -380,7 +425,10 @@ class CommissionStatement extends AbstractBusinessService
         	ORDER BY
         		CAST(REPLACE(c.contract_number,'-','.') AS DECIMAL(10,2))", array('statement' => $ret['id']));
         	while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
-        		$ret['entries']['salesrep'][$r['date_string']][$r['id']] = $r;
+        		if (!isset($ret['entries']['salesrep'][$r['territory_id']])){
+        			$ret['entries']['salesrep'][$r['territory_id']]['name'] = $r['territory_name'];
+        		}
+        		$ret['entries']['salesrep'][$r['territory_id']]['periods'][$r['date_string']][$r['id']] = $r;
         	}
         	
         	// get AE entries
@@ -423,10 +471,17 @@ class CommissionStatement extends AbstractBusinessService
         	ORDER BY
         		CAST(REPLACE(c.contract_number,'-','.') AS DECIMAL(10,2))", array('statement' => $ret['id']));
         	while ($r = $sth->fetch(\PDO::FETCH_ASSOC)){
-        		$ret['entries']['salesrep'][$r['date_string']][$r['id']] = $r;
+        		/*
+        		if (!isset($ret['entries']['salesrep'][$r['territory_id']])){
+        			$ret['entries']['salesrep'][$r['territory_id']]['name'] = $r['territory_name'];
+        		}
+        		$ret['entries']['salesrep'][$r['territory_id']]['periods'][$r['date_string']][$r['id']] = $r;
+        		*/
+        		$ret['entries']['personalcross'][$r['date_string']][$r['id']] = $r;
         	}
         	
         	// then get baselines for all of the territories that this publisher is in
+        	unset($ret['baselines']);
         	if (isset($ret['entries']['publisher'])){
         		$sth = $this->db->executeQuery("SELECT
         			ce.publisher_statement_id,
@@ -734,6 +789,7 @@ class CommissionStatement extends AbstractBusinessService
 				p.deleted_at IS NULL AND
 				c.deleted_at IS NULL AND
 				t.deleted_at IS NULL AND
+				cl.deleted_at IS NULL AND
 				p.postdate <= cp.cutoff_date AND
 				(
 					d.date_string = cpd.date_string OR /* this period's payments */
@@ -741,7 +797,7 @@ class CommissionStatement extends AbstractBusinessService
 				) AND
 				cs.id IS NULL AND
 				cp.id = :comm_period AND
-				(c.cancelled_at IS NULL OR c.cancelled_at < cp.cutoff_date)
+				(c.cancelled_at IS NULL OR c.cancelled_at > cp.cutoff_date)
 			GROUP BY
 				c.soldby_id
 			ORDER BY
@@ -796,6 +852,7 @@ class CommissionStatement extends AbstractBusinessService
 				p.deleted_at IS NULL AND
 				c.deleted_at IS NULL AND
 				t.deleted_at IS NULL AND
+				cl.deleted_at IS NULL AND
 				p.postdate <= cp.cutoff_date AND
 				(
 					d.date_string = cpd.date_string OR /* this period's payments */
@@ -803,7 +860,7 @@ class CommissionStatement extends AbstractBusinessService
 				) AND
 				cs.id IS NULL AND
 				cp.id = :comm_period AND
-				(c.cancelled_at IS NULL OR c.cancelled_at < cp.cutoff_date)
+				(c.cancelled_at IS NULL OR c.cancelled_at > cp.cutoff_date)
 			GROUP BY
 				t.manager_id
 			ORDER BY
@@ -932,6 +989,7 @@ class CommissionStatement extends AbstractBusinessService
 				p.deleted_at IS NULL AND
 				c.deleted_at IS NULL AND
 				t.deleted_at IS NULL AND
+				cl.deleted_at IS NULL AND
 				p.postdate <= cp.cutoff_date AND
 				(
 					d.date_string = cpd.date_string OR /* this period's payments */
@@ -963,11 +1021,12 @@ class CommissionStatement extends AbstractBusinessService
 				c.territory_id,
 				cspub.id	AS publisher_statement,
 				
-				IF(c.comm_redirect = 'pub', NULL,
-					IF(c.comm_redirect = 'pubae', t.manager_id,
-						IF(t.manager_id != c.soldby_id,c.soldby_id,NULL)
+				/* If commission redirect to pubilisher, NULL, if pub as AE, then pub comm ID, else default */
+				IF (c.comm_redirect = 'pub', NULL,
+					IF (c.comm_redirect = 'pubae', cspub.id,
+						IF(t.manager_id != c.soldby_id,cssalesrep.id,NULL) 
 					)
-				) AS salesrep_id,
+				) AS salesrep_statement,
 				
 				c.id,
 				d.id,
@@ -1034,8 +1093,10 @@ class CommissionStatement extends AbstractBusinessService
 				e.id = c.soldby_id AND
 				c.deleted_at IS NULL AND
 				t.deleted_at IS NULL AND
+				cl.deleted_at IS NULL AND
 				d.date_string = cpd.date_string AND /* this periods uncollected payments */
 				ce.id IS NULL AND
+				(c.cancelled_at IS NULL OR c.cancelled_at > cp.cutoff_date) AND
 				cp.id = :comm_period
 			ORDER BY
 				d.date_string", array('insert_user_id' => $params['insert_user_id'], 'created_at' => $params['created_at'], 'comm_period' => $comm_period));

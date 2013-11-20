@@ -17,6 +17,11 @@ class Commission implements ControllerProviderInterface
 		COMMISSION STATEMENTS
 		******/        
         $controllers->get('/statement/', function (Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'commission_statement') && !$app['business.user']->hasPermission($app, 'commission_statement_view')){
+        		return $app->json(array("totalCount"=>0, "statement"=>array()));
+        	}
+        	
         	$sort = '';
     		if ($request->get('sort')){
     			$sort = json_decode($request->get('sort'), true);
@@ -35,11 +40,21 @@ class Commission implements ControllerProviderInterface
         
         /* cycle get */
         $controllers->get('/statement/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'commission_statement') && !$app['business.user']->hasPermission($app, 'commission_statement_view')){
+        		return $app->json(array("totalCount"=>0, "statement"=>array()));
+        	}
+        	
             $result = $app['business.commissionstatement']->getById($id);
             return $app->json(array("success"=>true,"totalCount"=>1,"statement"=>$result));
         });
         
         $controllers->get('/statement/pdf/{id}', function (Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'commission_statement') && !$app['business.user']->hasPermission($app, 'commission_statement_view')){
+        		return $app->json(array("totalCount"=>0, "statement"=>array()));
+        	}
+        	
         	if (preg_match("/,/", $id)){
         		$id = explode(",", $id);
         	}

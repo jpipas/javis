@@ -311,7 +311,7 @@ class CommissionPeriod extends AbstractBusinessService
 		unset($params['expanded'], $params['loaded'], $params['leaf'], $params['text'], $params['parentId'], $params['locked_at']);
 		unset($params['cycle_title'], $params['duration_description'], $params['payments']);
 		if (empty($params['duration_id'])){
-			$error[] = 'Commission period is required';
+			$error[] = 'Period is required';
 		} else {
 			$cp = $app['business.duration']->getById($params['duration_id']);
 			if (!$cp['id']){
@@ -321,7 +321,7 @@ class CommissionPeriod extends AbstractBusinessService
 		
 		// commission cycle
 		if (empty($params['cycle_id'])){
-			$error[] = 'Commission cycle is required';
+			$error[] = 'Cycle is required';
 		} else {
 			$cc = $app['business.commissioncycle']->getById($params['cycle_id']);
 			if (!$cc['id']){

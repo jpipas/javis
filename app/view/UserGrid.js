@@ -21,7 +21,7 @@ Ext.define('JavisERP.view.UserGrid', {
 	                width: 30,
 	                menuDisabled: true,
 	                xtype: 'actioncolumn',
-	                tooltip: 'Edit Employee',
+	                tooltip: 'Edit',
 	                align: 'center',
 	                iconCls: 'edit_action ui-silk ui-silk-user-edit',
 	                itemId: 'user_edit',
@@ -34,7 +34,7 @@ Ext.define('JavisERP.view.UserGrid', {
 	                width: 30,
 	                menuDisabled: true,
 	                xtype: 'actioncolumn',
-	                tooltip: 'Delete Employee',
+	                tooltip: 'Delete',
 	                align: 'center',
 	                iconCls: 'delete_action ui-silk ui-silk-user-delete',
 	                itemId: 'user_delete',
@@ -57,12 +57,6 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'email',
-                    flex: 3,
-                    text: 'Email'
-                },
-                {
-                    xtype: 'gridcolumn',
                     dataIndex: 'first_name',
                     flex: 1,
                     text: 'First Name'
@@ -75,6 +69,18 @@ Ext.define('JavisERP.view.UserGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'email',
+                    flex: 3,
+                    text: 'Email'
+                },
+				{
+                    xtype: 'gridcolumn',
+                    dataIndex: 'phone',
+                    flex: 1,
+                    text: 'Phone'
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'roles',
                     flex: 1,
                     text: 'Roles'
@@ -83,7 +89,13 @@ Ext.define('JavisERP.view.UserGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'manager_name',
                     flex: 1,
-                    text: 'Manager'
+                    text: 'DVM'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'regional_name',
+                    flex: 1,
+                    text: 'RM'
                 },
                 {
                     xtype: 'gridcolumn',
@@ -108,7 +120,7 @@ Ext.define('JavisERP.view.UserGrid', {
                             xtype: 'button',
                             itemId: 'newuser',
                             iconCls: 'ui-silk ui-silk-user-add',
-                            text: 'New Employee',
+                            text: 'New IC',
 		                    resourceId: 'user_create',
 		                    resourceType: 'disable',
 		                    plugins: ['permission']

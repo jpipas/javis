@@ -60,6 +60,13 @@ Ext.define('JavisERP.model.Contract', {
         	dateFormat: 'Y-m-d'
         },
         {
+        	name: 'cancelled_amount',
+        	type: 'float',
+        	convert: function(value, row) {
+		        return (value == null || Ext.isEmpty(value)) ? null : parseFloat(value);
+		    }
+        },
+        {
         	name: 'notes'
         },
         {

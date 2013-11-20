@@ -54,6 +54,10 @@ Ext.define('JavisERP.view.ContentCards', {
                     itemId: 'TerritoryGrid'
                 },
                 {
+                    xtype: 'regiongrid',
+                    itemId: 'RegionGrid'
+                },
+                {
                     xtype: 'clientrecord',
                     itemId: 'ClientRecord',
                     layout: {
@@ -106,12 +110,28 @@ Ext.define('JavisERP.view.ContentCards', {
                     itemId: 'CommissionStatementPanel'
                 },
                 {
+                    xtype: 'commissionstatementviewgrid',
+                    itemId: 'CommissionStatementViewGrid'
+                },
+                {
                     xtype: 'commissionbaselinegrid',
                     itemId: 'CommissionBaselineGrid'
                 },
                 {
                     xtype: 'productionphotospanel',
                     itemId: 'ProductionPhotosPanel'
+                },
+                {
+                    xtype: 'reportperiodsalesbyterritorytree',
+                    itemId: 'ReportPeriodSalesByTerritoryTree'
+                },
+                {
+                    xtype: 'reportperiodsalesbysalesreptree',
+                    itemId: 'ReportPeriodSalesBySalesRepTree'
+                },
+                {
+                    xtype: 'reportcontractmetricstree',
+                    itemId: 'ReportContractMetricsTree'
                 }
             ]
         });

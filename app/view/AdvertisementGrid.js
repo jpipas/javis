@@ -92,6 +92,12 @@ Ext.define('JavisERP.view.AdvertisementGrid', {
                 },
                 {
             		xtype: 'gridcolumn',
+            		dataIndex: 'contracts',
+            		text: 'Contract(s)',
+            		flex: 2
+                },
+                {
+            		xtype: 'gridcolumn',
             		dataIndex: 'designer_name',
             		text: 'Designer',
             		flex: 2

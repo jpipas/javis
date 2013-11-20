@@ -167,6 +167,13 @@ Ext.define('JavisERP.controller.ContractController', {
             "#contractdurations": {
                 change: this.runCalcs
             },
+            "contractwindow #cancelled_at": {
+            	change: function(field, value){
+            		if (value == null || Ext.isEmpty(value)){
+            			me.getContractForm().getForm().findField('cancelled_amount').setValue(null);
+            		}
+            	}
+            },
             "button[cls=contractsave]": {
                 click: this.onSaveButtonClick
             },
@@ -186,9 +193,7 @@ Ext.define('JavisERP.controller.ContractController', {
             	ontrigger2click: function(){
             		this.onNewAdvertisementClick();
             	},
-            	beforequery: function(){
-            		this.filterContractAdsCombo(this);
-            	}
+            	beforequery: this.filterContractAdsCombo
             }
         });
 
@@ -216,7 +221,11 @@ Ext.define('JavisERP.controller.ContractController', {
     	var cForm = this.getContractForm().getForm();
     	var combo = cForm.findField('advertisements');
     	combo.getStore().clearFilter(true);
-    	combo.getStore().filter("client_id", cForm.findField('client_id').getValue());
+    	if (Ext.isNumeric(cForm.findField('client_id').getValue())){
+    		combo.getStore().filter("client_id", cForm.findField('client_id').getValue());
+    	} else {
+    		return false;
+    	}
     },
     
     onAdvertisementSaved: function(ad){

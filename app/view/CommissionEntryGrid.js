@@ -2,7 +2,7 @@ Ext.define('JavisERP.view.CommissionEntryGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.commissionentrygrid',
 
-    title: 'Commission Entries',
+    title: 'Baseline Revenue Entries',
     forceFit: true,
     store: 'CommissionEntryStore',
     itemId: 'commissionentrygrid',
@@ -128,7 +128,20 @@ Ext.define('JavisERP.view.CommissionEntryGrid', {
                 			return 'Yes';
                 		}
                 		return '';
-                	}
+                	}/*,
+                	editor: {
+                		xtype: 'combobox',
+                        name: 'bonus',
+                        displayField: 'title',
+                        store: Ext.create('Ext.data.Store', {
+					        fields: ['id', 'title'],
+					        data : [
+					        	{"id":0,"title": 'No'},
+					        	{"id":1,"title":'Yes'}
+					        ]
+					    }),
+                        valueField: 'id'	
+                	}*/
                 },
                 {
                 	flex: 1,

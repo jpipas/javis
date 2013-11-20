@@ -12,6 +12,9 @@ Ext.define('JavisERP.view.ContractGrid', {
         ptype: 'rowexpander',
         rowBodyTpl : new Ext.XTemplate(
         	'<table width="100%" border="0" cellpadding="4" cellspacing="4"><tr>',
+        	'<tpl if="cancelled_at != null">',
+        	'<tr><td colspan="2" valign="top" style="color: #cc0000;"><strong>Cancelled:</strong> {cancelled_at:date("m/d/Y")}<tpl if="cancelled_amount != null"> ({cancelled_amount:usMoney})</tpl></td></tr>',
+        	'</tpl>',
         	'<td valign="top" width="50%">',
             '<b>Duration(s):</b><br>{durations}',
             '</td><td valign="top" width="50%">',
@@ -137,6 +140,14 @@ Ext.define('JavisERP.view.ContractGrid', {
                     dataIndex: 'sale_date',
                     flex: 1,
                     text: 'Sale Date',
+                    format: 'm/d/Y'
+                },
+                {
+                    xtype: 'datecolumn',
+                    dataIndex: 'cancelled_at',
+                    hidden: true,
+                    flex: 1,
+                    text: 'Cancelled',
                     format: 'm/d/Y'
                 }
             ],

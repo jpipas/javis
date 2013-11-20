@@ -212,7 +212,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             header: false,
                                             border: 0
                                         },
-                                        {
+                                        /*{
                                             title: 'Activities',
                                             xtype: 'activitygrid',
                                             header: false,
@@ -220,7 +220,7 @@ Ext.define('JavisERP.view.ClientRecord', {
                                             itemId: 'clientactivitygrid',
                                             border: 0,
                                             cls: 'clientactivitygrid'
-                                        },
+                                        },*/
                                         {
                                             title: 'User Notes',
 	                                          xtype: 'usernotegrid',

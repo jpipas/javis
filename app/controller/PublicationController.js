@@ -86,7 +86,7 @@ Ext.define('JavisERP.controller.PublicationController',{
             }
         });
     },
-
+    
     onWindowClose: function(panel, eOpts){
         this.getPublicationGrid().getStore().reload();
     },
@@ -105,11 +105,6 @@ Ext.define('JavisERP.controller.PublicationController',{
             },
             "publicationwindow toolbar button[cls=publicationsavebutton]": {
                 click: this.onSavePublicationClick
-            },
-            "#pubwindowtoolbar > #cancelbutton": {
-                click: function(){ 
-                	me.getPublicationWindow().close();
-                }
             },
             "publicationwindow #publicationform #MoreBaselines": {
             	click: this.onMoreBaselinesClick
@@ -182,8 +177,6 @@ Ext.define('JavisERP.controller.PublicationController',{
         		publicationWindow.show();
             }
         });
-
-
     },
 
     deletePublication: function(grid, rowIndex, colIndex, actionItem, event, record, row) {

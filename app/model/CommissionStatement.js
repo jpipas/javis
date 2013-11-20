@@ -23,6 +23,12 @@ Ext.define('JavisERP.model.CommissionStatement', {
         	name: 'amount_salesrep'
         },
         {
+        	name: 'amount_sellinto'
+        },
+        {
+        	name: 'check_total'
+        },
+        {
         	name: 'date_string',
         	type: 'date',
             dateFormat: 'Y-m-d'

@@ -33,14 +33,17 @@ Ext.define('JavisERP.model.Advertisement', {
         	name: 'ad_size_description'
         },
         {
+        	type: 'date',
             name: 'created_at',
             dateFormat: 'Y-m-d H:i:s'
         },
         {
+        	type: 'date',
             name: 'updated_at',
             dateFormat: 'Y-m-d H:i:s'
         },
         {
+        	type: 'date',
             name: 'deleted_at',
             dateFormat: 'Y-m-d H:i:s'
         },
@@ -54,6 +57,7 @@ Ext.define('JavisERP.model.Advertisement', {
             name: 'email_designer'
         },
         {
+        	type: 'date',
             name: 'exp_date',
             dateFormat: 'Y-m-d'
         },
@@ -68,6 +72,9 @@ Ext.define('JavisERP.model.Advertisement', {
         },
         {
             name: 'publications'
+        },
+        {
+        	name: 'contracts'
         },
         {
             name: 'publication_names'

@@ -235,9 +235,18 @@ Ext.define('JavisERP.view.ContractWindow', {
                                         {
                                         	xtype:'datefield',
                                             name: 'cancelled_at',
+                                            itemId: 'cancelled_at',
                                             fieldLabel: 'Cancelled',
                                             format: 'm/d/Y',
                                             submitFormat: 'Y-m-d'
+                                        },
+                                        {
+                                            xtype: 'numberfield',
+                                            name: 'cancelled_amount',
+                                            fieldLabel: 'Cancelled Received',
+                                            decimalPrecision: 2,
+                                            allowBlank: true,
+                                            labelAlign: 'right'
                                         }
                                     ]
                                 }
@@ -290,9 +299,6 @@ Ext.define('JavisERP.view.ContractWindow', {
                             trigger2Cls: 'x-trigger-add',
                             onTrigger2Click: function(e) {
 				              	this.fireEvent("ontrigger2click", this, e);
-					        },
-					        beforeQuery: function(e) {
-					        	this.fireEvent('contractadscomboquery', this, e);
 					        }
                         },
                         {

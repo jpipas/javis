@@ -53,14 +53,37 @@ class CommissionBaseline extends AbstractBusinessService
 					}
         		}
 			}
+		} 
 		
 		// search criteria was passed in
-		} elseif (isset($search['query']) && !empty($search['query'])){
+		if (isset($search['query']) && !empty($search['query'])){
 			if (@count($search['fields']) >= 1){
 				$or = array();
 				$qq = $this->db->quote($search['query'].'%');
-				array_walk($search['fields'], function($field,$key) use (&$or, &$qq){
-					$or[] = 'commission_baselines.'.$field.' LIKE '.$qq;
+				$q = $search['query'];
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$q){
+					switch ($field){
+						case 'manager_fullname':
+							$parts = explode(" ", $q);
+			    			if (@count($parts) == 2){
+			    				$or[] = "employee.first_name LIKE '".addslashes($parts[0])."%' AND employee.last_name LIKE '".addslashes($parts[1])."%'";
+			    			} else {
+			    				$or[] = "(employee.first_name LIKE '".addslashes($q)."%' OR employee.last_name LIKE '".addslashes($q)."%')";
+			    			}
+							break;
+						
+						case 'publication_description':
+							$or[] = 'publication.description LIKE '.$qq;
+							break;
+						
+						case 'territory_name':
+							$or[] = 'territory.name LIKE '.$qq;
+							break;
+						
+						default:
+							$or[] = 'commission_baselines.'.$field.' LIKE '.$qq;
+							break;
+					}
 				});
 				if (@count($or) > 0){
 					$where[] = "(".implode(' OR ', $or).")";
@@ -77,6 +100,8 @@ class CommissionBaseline extends AbstractBusinessService
 	        	commission_period.id	AS period_id,
 	        	territory.id			AS territory_id,
 	        	territory.name			AS territory_name,
+	        	territory.manager_id	AS manager_id,
+	        	CONCAT(employee.first_name, ' ', employee.last_name) AS manager_fullname,
 	        	publication.id			AS publication_id,
 	        	publication.description	AS publication_description,
 	        	publication.baselines	AS baselines
@@ -94,6 +119,7 @@ class CommissionBaseline extends AbstractBusinessService
 	        		publication.deleted_at IS NULL
 	        	GROUP BY
 	        		publication.id) AS publication)
+	        	LEFT JOIN employee ON territory.manager_id = employee.id
 	        	LEFT JOIN commission_baselines ON commission_baselines.period_id = commission_period.id AND commission_baselines.publication_id = publication.id AND commission_baselines.deleted_at IS NULL
 	        WHERE
 	        	commission_period.deleted_at IS NULL AND
@@ -167,17 +193,18 @@ class CommissionBaseline extends AbstractBusinessService
     	$error = array();
 		// clear params we don't need
 		unset($params['baselines'], $params['publication_description'], $params['territory_name'], $params['duration_description']);
+		unset($params['manager_id'], $params['manager_fullname']);
 		if (empty($params['territory_id'])){
-			$error[] = 'Territory is required';
+			$error[] = 'Location is required';
 		} else {
 			$exists = $app['business.territory']->getById($params['territory_id']);
 			if (!isset($exists['id'])){
-				$error[] = 'Invalid territory specified';
+				$error[] = 'Invalid location specified';
 			}
 		}
 		
 		if (empty($params['publication_id'])){
-			$error[] = 'Publiation is required';
+			$error[] = 'Publication is required';
 		} else {
 			$exists = $app['business.publication']->getById($params['publication_id']);
 			if (!isset($exists['id'])){
@@ -186,13 +213,13 @@ class CommissionBaseline extends AbstractBusinessService
 		}
 		
 		if (empty($params['period_id'])){
-			$error[] = 'Commission edition/period is required';
+			$error[] = 'Revenue edition/period is required';
 		} else {
 			$exists = $app['business.commissionperiod']->getById($params['period_id']);
 			if (!isset($exists['id'])){
-				$error[] = 'Invalid commission period specified';
+				$error[] = 'Invalid period specified';
 			} elseif (!empty($exists['locked_at'])){
-				$error[] = 'Specified commission period is already locked';
+				$error[] = 'Specified period is already locked';
 			}
 		}
 				

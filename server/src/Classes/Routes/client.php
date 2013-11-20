@@ -16,6 +16,12 @@ class Client implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
+        	
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'client_view')){
+        		return $app->json(array("totalCount"=>0, "client"=>array()));
+        	}
+        	
             $client_array = array();
             $sort = '';
     		if ($request->get('sort')){
@@ -29,7 +35,7 @@ class Client implements ControllerProviderInterface
     		if ($request->get('search')){
     			$search = json_decode($request->get('search'), true);
     		}
-            list($totalCount, $client_array) = $app['business.client']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search, $app);
+            list($totalCount, $client_array) = $app['business.client']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search, $app);
 
 
             array_walk($client_array,function($client,$key) use (&$client_array, &$app){
@@ -55,6 +61,11 @@ class Client implements ControllerProviderInterface
 
 
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'client_view')){
+        		return $app->json(array("success" => false, "totalCount"=>0, "client"=>array()));
+        	}
+        	
             $client = $app['business.client']->getById($id);
             if ($client['id']){
 	            $client['territory'] = $app['business.territory']->getById($client['territory_id']);
@@ -66,6 +77,11 @@ class Client implements ControllerProviderInterface
         });
 
         $controllers->post('/new', function(Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'client_create')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
         	$params = json_decode($request->getContent(),true);
             $error = $app['business.client']->validate($app, $params);
             if (@count($error) > 0){
@@ -85,6 +101,11 @@ class Client implements ControllerProviderInterface
         });
 
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'client_edit')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $params = json_decode($request->getContent(),true);
             $error = $app['business.client']->validate($app, $params);
             if (@count($error) > 0){
@@ -97,6 +118,11 @@ class Client implements ControllerProviderInterface
 
         /* delete */
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'client_delete')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $client_array = $app['business.client']->deleteClient($app, $id);
             return $app->json(array("success"=>true));
         });

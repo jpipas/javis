@@ -20,6 +20,7 @@ Ext.define('JavisERP.view.NavBar', {
                     	framed: false
                     },
                     items: [
+                        /*
                         {
                             xtype: 'splitbutton',
                             iconCls: 'ui-silk ui-silk-clock',
@@ -30,6 +31,7 @@ Ext.define('JavisERP.view.NavBar', {
                             iconCls: 'ui-silk ui-silk-star',
                             tooltip: 'Favorite Records'
                         },
+                        */
                         {
                             xtype: 'splitbutton',
                             itemId: 'Dashboard',
@@ -46,11 +48,11 @@ Ext.define('JavisERP.view.NavBar', {
                                         iconCls: 'ui-silk ui-silk-application-home',
                                         text: 'Dashboard'
                                     },
-                                    {
+                                    /*{
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-application-edit',
                                         text: 'Preferences'
-                                    },
+                                    },*/
                                     {
                                         xtype: 'menuitem',
                                         itemId: 'UserPasswordWindow',
@@ -73,6 +75,7 @@ Ext.define('JavisERP.view.NavBar', {
                         {
                             xtype: 'tbseparator'
                         },
+                        /*
                         {
                         	itemId: 'ActivityGrid',
                             text: 'Activities',
@@ -82,6 +85,7 @@ Ext.define('JavisERP.view.NavBar', {
                         {
                             xtype: 'tbseparator'
                         },
+                        */
                         {
                             text: 'Lists',
                             menu: {
@@ -139,8 +143,17 @@ Ext.define('JavisERP.view.NavBar', {
                                         xtype: 'menuitem',
                                         itemId: 'TerritoryGrid',
                                         iconCls: 'ui-silk ui-silk-map',
-                                        text: 'Territories',
+                                        text: 'Locations',
 			                            resourceId: 'territory_view',
+			                            resourceType: 'disable',
+			                            plugins: ['permission']
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        itemId: 'RegionGrid',
+                                        iconCls: 'ui-silk ui-silk-world',
+                                        text: 'Regions',
+			                            resourceId: 'region_view',
 			                            resourceType: 'disable',
 			                            plugins: ['permission']
                                     }
@@ -154,7 +167,6 @@ Ext.define('JavisERP.view.NavBar', {
                             text: 'Reports',
                             menu: {
                                 xtype: 'menu',
-                                width: 150,
                                 hideMode: 'display',
                                 //title: 'ReportsMenu',
                                 items: [
@@ -169,20 +181,28 @@ Ext.define('JavisERP.view.NavBar', {
                                         	items: [
                                         		{
                                         			xtype: 'menuitem',
-                                        			itemId: 'ReportPeriodSalesByTerritoryWindow',
-                                        			text: 'Period Sales by Territory',
+                                        			itemId: 'ReportPeriodSalesByTerritoryTree',
+                                        			text: 'Period Sales by Location',
 								                    resourceId: 'report_periodsalesbyterritory',
 								                    resourceType: 'disable',
 								                    plugins: ['permission']
                                         		},
                                         		{
                                         			xtype: 'menuitem',
-                                        			itemId: 'ReportPeriodSalesBySalesRepForm',
+                                        			itemId: 'ReportPeriodSalesBySalesRepTree',
                                         			text: 'Period Sales by Sales Rep',
-								                    resourceId: 'report_periodsalesbyterritory',
+								                    resourceId: 'report_periodsalesbysalesrep',
 								                    resourceType: 'disable',
 								                    plugins: ['permission']
-                                        		}                                        		
+                                        		},
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'ReportContractMetricsTree',
+                                        			text: 'Contract Metrics',
+								                    resourceId: 'report_contractmetrics',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		}
                                         	]	
                                         }
                                     },
@@ -198,10 +218,9 @@ Ext.define('JavisERP.view.NavBar', {
                                     {
                                         xtype: 'menuitem',
                                         iconCls: 'ui-silk ui-silk-calculator',
-                                        text: 'Commissions',
+                                        text: 'Baseline Revenue Report',
                                         menu: {
                                         	xtype: 'menu',
-                                        	width: 120,
                                         	hideMode: 'display',
                                         	items: [
                                         		{
@@ -215,11 +234,19 @@ Ext.define('JavisERP.view.NavBar', {
                                         		{
                                         			xtype: 'menuitem',
                                         			itemId: 'CommissionStatementPanel',
-                                        			text: 'Statements',
+                                        			text: 'Generate',
 								                    resourceId: 'commission_statement',
 								                    resourceType: 'disable',
 								                    plugins: ['permission']
-                                        		}                                        		
+                                        		},
+                                        		{
+                                        			xtype: 'menuitem',
+                                        			itemId: 'CommissionStatementViewGrid',
+                                        			text: 'Statements',
+								                    resourceId: 'commission_statement_view',
+								                    resourceType: 'disable',
+								                    plugins: ['permission']
+                                        		}
                                         	]	
                                         }
                                     }
@@ -320,7 +347,7 @@ Ext.define('JavisERP.view.NavBar', {
 					                    plugins: ['permission']
                                     },
                                     {
-                                    	text: 'Commission Cycles',
+                                    	text: 'Revenue Cycles',
                                     	itemId: 'CommissionCycleGrid',
 					                    resourceId: 'commission_cycle',
 					                    resourceType: 'disable',

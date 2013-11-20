@@ -46,7 +46,8 @@ Ext.define('JavisERP.view.PortletPanel', {
                     resourceType: 'hide',
                     plugins: ['permission']
                     
-                },{
+                }
+                /*,{
                     id: 'portlet-2',
                     title: 'Activities Portlet',
                     tools: this.getTools(),
@@ -54,7 +55,8 @@ Ext.define('JavisERP.view.PortletPanel', {
                     resourceId: 'activity_view',
                     resourceType: 'hide',
                     plugins: ['permission']
-                }]
+                }*/
+                ]
             }]
 
         });

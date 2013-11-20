@@ -11,7 +11,7 @@ class Contract extends AbstractBusinessService {
         return 'contract';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array())
     {
         // limit our search results
 		$lsql = '';
@@ -88,6 +88,14 @@ class Contract extends AbstractBusinessService {
 				
 			}
 		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'contract_view_limit')){
+    		$tids = $app['business.user']->getUserVisibleTerritories($app);
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$where[] = "(contract.soldby_id IN ('".implode("', '", $eids)."') OR contract.territory_id IN ('".implode("', '", $tids)."'))";
+    	}
+		
 		if (@count($where) > 0){
 			$wsql = " AND ".implode(" AND ", $where);
 		}
@@ -271,6 +279,18 @@ class Contract extends AbstractBusinessService {
 			if (!checkdate($mon,$day,$yr)){
 				$error[] = "Sales date appears to be an invalid date";
 			}
+		}
+		
+		// cancel date
+		if (!empty($params['cancelled_at'])){
+			list($yr,$mon,$day) = explode("-",$params['cancelled_at']);
+			if (!checkdate($mon,$day,$yr)){
+				$error[] = "Cancel date appears to be an invalid date";
+			} elseif (!is_numeric($params['cancelled_amount']) && $params['cancelled_amount'] != null) {
+				$error[] = "Please specify the amount collected for this contract before it was cancelled";
+			}
+		} else {
+			$params['cancelled_amount'] = null;
 		}
 		
 		// sold by

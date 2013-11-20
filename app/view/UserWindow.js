@@ -109,6 +109,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             fieldLabel: 'Email'
                                         },
                                         {
+                                            xtype: 'textfield',
+                                            name: 'phone',
+                                            fieldLabel: 'Phone',
+                                            maxLength: 30
+                                        },
+                                        {
                                             xtype: 'numberfield',
                                             name: 'profitshare',
                                             fieldLabel: 'Profit Share %',
@@ -127,12 +133,6 @@ Ext.define('JavisERP.view.UserWindow', {
 					                    	maxValue: 1,
 					                    	minValue: 0,
 					                    	step: .1
-                                        },
-                                        {
-                                            xtype: 'checkbox',
-                                            name: 'disabled',
-                                            fieldLabel: 'Disable Login',
-                                            inputValue: 1
                                         }
                                     ]
                                 },
@@ -182,6 +182,12 @@ Ext.define('JavisERP.view.UserWindow', {
                                             inputValue: 1
                                         },
                                         {
+                                            xtype: 'checkbox',
+                                            name: 'disabled',
+                                            fieldLabel: 'Disable Login',
+                                            inputValue: 1
+                                        },
+                                        {
 				                            xtype: 'comboboxselect',
 				                            multiSelect:true,
 				                            fieldLabel: 'Role(s)',
@@ -204,7 +210,20 @@ Ext.define('JavisERP.view.UserWindow', {
                                             id: 'manager_user_id',
                                             itemId: 'manager_user_id',
                                             name: 'manager_user_id',
-                                            fieldLabel: 'Manager',
+                                            fieldLabel: 'DVM',
+                                            displayField: 'fullname',
+                                            store: {type: 'userstore'},
+                                            hideTrigger: true,
+                                            triggerAction: 'query',
+                                            pageSize: true,
+                                            minChars: 3,
+                                            valueField: 'id'
+                                        },
+                                        {
+                                            xtype: 'combobox',
+                                            itemId: 'regional_user_id',
+                                            name: 'regional_user_id',
+                                            fieldLabel: 'RM',
                                             displayField: 'fullname',
                                             store: {type: 'userstore'},
                                             hideTrigger: true,

@@ -52,118 +52,109 @@ class Client extends AbstractBusinessService
     }
     */
     
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array(), &$app)
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array(), &$app)
     {
-    		// limit our search results
-    		$lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
-    		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'company_name ASC';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){
-    			$where[] = "c.company_name LIKE ".$this->db->quote($query.'%');
-    		
-    		// handle additional filters
-    		} elseif (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					switch ($f['property']){
-    						case 'company_name':
-				    			$where[$f['property']] = "company_name LIKE ".$this->db->quote($f['value'].'%');
-				    			break;
-                  
-                default:
-    							$qq = $this->db->quote($f['value']);
-                	$where[$f['property']] = $f['property']." = ".$qq;
-                	break;
-              }
-            }
-    			}
-    		
-    		// search criteria was passed in
-    		} elseif (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				$fieldmapping = $this->fieldmapping;
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$search, &$fieldmapping){
-    					switch ($field){
-    						case 'salesrep_name':
-    							$parts = explode(" ", $search['query']);
-				    			if (@count($parts) == 2){
-				    				$or[] = "e.first_name LIKE '".addslashes($parts[0])."%' AND e.last_name LIKE '".addslashes($parts[1])."%'";
-				    			} else {
-				    				$or[] = "(e.first_name LIKE '".addslashes($search['query'])."%' OR e.last_name LIKE '".addslashes($search['query'])."%')";
-				    			}
-    							break;
-    						
-    						default:
-    							if (isset($fieldmapping[$field])){
-    								$or[] = $fieldmapping[$field].' LIKE '.$qq;
-    							} else {
-    								$or[] = $field.' LIKE '.$qq;
-    							}
-    							break;
-    					}
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			} else {
-    				$where[] = "company_name LIKE ".$this->db->quote($search['query'].'%');
-    			}
-    		}
-    		if (@count($where) > 0){
-    			$wsql = " AND ".implode(" AND ", $where);
-    		}
+		// limit our search results
+		$lsql = '';
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'company_name ASC';
+		}
+		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){
+			$where[] = "c.company_name LIKE ".$this->db->quote($query.'%');
+		
+		// handle additional filters
+		} elseif (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					switch ($f['property']){
+						case 'company_name':
+			    			$where[$f['property']] = "company_name LIKE ".$this->db->quote($f['value'].'%');
+			    			break;
+              
+		                default:
+		    							$qq = $this->db->quote($f['value']);
+		                	$where[$f['property']] = $f['property']." = ".$qq;
+		                	break;
+		            }
+		        }
+			}
+		}
+		
+		// search criteria was passed in
+		if (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				$fieldmapping = $this->fieldmapping;
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$search, &$fieldmapping){
+					switch ($field){
+						case 'salesrep_name':
+							$parts = explode(" ", $search['query']);
+			    			if (@count($parts) == 2){
+			    				$or[] = "e.first_name LIKE '".addslashes($parts[0])."%' AND e.last_name LIKE '".addslashes($parts[1])."%'";
+			    			} else {
+			    				$or[] = "(e.first_name LIKE '".addslashes($search['query'])."%' OR e.last_name LIKE '".addslashes($search['query'])."%')";
+			    			}
+							break;
+						
+						default:
+							if (isset($fieldmapping[$field])){
+								$or[] = $fieldmapping[$field].' LIKE '.$qq;
+							} else {
+								$or[] = $field.' LIKE '.$qq;
+							}
+							break;
+					}
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			} else {
+				$where[] = "company_name LIKE ".$this->db->quote($search['query'].'%');
+			}
+		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'client_view_limit')){
+    		$tids = $app['business.user']->getUserVisibleTerritories($app);
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$where[] = "(con.soldby_id IN ('".implode("', '", $eids)."') OR con.territory_id IN ('".implode("', '", $tids)."'))";
+    	}
+		
+		if (@count($where) > 0){
+			$wsql = " AND ".implode(" AND ", $where);
+		}
     	
-    		/*
-    		$wherestr = $this->getWhereString($filter);
-        $sortstr = $this->getSortString($sort);
-        ($start === null)?$start = "":$start;
-        ($limit === null)?$limit_clause="":$limit_clause = "LIMIT $limit OFFSET $start";
-        */
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	c.*,
         	s.name AS state_name,
         	pc.iso_code AS zipcode,
-        	rm.cnt AS remaining,
         	CONCAT(e.first_name, ' ', e.last_name) AS salesrep_name,
         	t.name AS territory_name,
-        	pc.iso_code AS postal_code_iso,
-        	TRUNCATE(IFNULL(SUM(con.total_amount)/(CASE WHEN count(distinct p.id) = 0 THEN count(distinct c.id) ELSE count(distinct p.id) END)-IFNULL(SUM(CASE WHEN p.contract_id = con.id THEN p.payment_amount ELSE 0 END),0.00),0.00),2) AS balance 
+        	pc.iso_code AS postal_code_iso
         FROM 
 			(client AS c)
 			LEFT JOIN state s ON c.state_id = s.id
-			LEFT JOIN payment p ON c.id = p.client_id
 			LEFT JOIN contract con ON c.id = con.client_id
 			LEFT JOIN territory t ON c.territory_id = t.id
 			LEFT JOIN employee e ON c.salesrep_id = e.id
 			LEFT JOIN postal_code pc ON c.postal_code_id = pc.id
-			LEFT JOIN (SELECT 
-        				COUNT(cd.id)-COUNT(p.id) as 'cnt', 
-        				cd.contract_id 
-        			FROM
-        				contract_duration AS cd
-        				LEFT JOIN payment AS p ON p.contract_id = cd.contract_id AND p.deleted_at IS NULL
-        				LEFT JOIN payment_duration as pd ON pd.payment_id = p.id AND cd.duration_id = pd.duration_id
-        			GROUP BY
-        				cd.contract_id) AS rm ON rm.contract_id = con.id
         WHERE 
         	c.deleted_at IS NULL
         	$wsql

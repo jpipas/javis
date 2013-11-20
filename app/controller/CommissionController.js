@@ -5,6 +5,7 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionCycleGrid',
         'CommissionCycleWindow',
         'CommissionStatementPanel',
+        'CommissionStatementViewGrid',
         'CommissionPeriodTree',
         'CommissionPeriodWindow',
         'CommissionStatementGrid',
@@ -17,6 +18,7 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionPeriodTree',
         'CommissionPeriod',
         'CommissionStatement',
+        'CommissionStatementView',
         'CommissionBaseline',
         'CommissionEntry'
     ],
@@ -26,6 +28,7 @@ Ext.define('JavisERP.controller.CommissionController', {
         'CommissionPeriodTreeStore',
         'CommissionPeriodStore',
         'CommissionStatementStore',
+        'CommissionStatementViewStore',
         'CommissionBaselineStore',
         'CommissionEntryStore'
     ],
@@ -58,6 +61,10 @@ Ext.define('JavisERP.controller.CommissionController', {
         {
             ref: 'commissionStatementGrid',
             selector: 'commissionstatementgrid'
+        },
+       	{
+            ref: 'commissionStatementViewGrid',
+            selector: 'commissionstatementviewgrid'
         },
         {
             ref: 'commissionEntryGrid',
@@ -323,10 +330,35 @@ Ext.define('JavisERP.controller.CommissionController', {
         });
     },
     
+    viewCommStatementViewPdf: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
+    	var me = this;
+    	var myMask = new Ext.LoadMask(me.getCommissionStatementViewGrid(),{msg:"Generating PDF..."});
+		myMask.show();
+    	var req = this.getCommissionStatementViewModel();
+    	req.getProxy().url = '/commission/statement/pdf/';
+    	req.load(record.data.id, {
+        	success: function(record, operation){
+                myMask.hide();
+				req.getProxy().url = '/commission/statement/';
+				window.open('/download/'+record.data.pdf);
+            },
+            failure: function(record, operation){
+            	myMask.hide();
+            	req.getProxy().url = '/commission/statement/';
+            	Ext.MessageBox.show({
+			           title: 'Failure',
+			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+			           buttons: Ext.MessageBox.OK,
+			           icon: Ext.MessageBox.ERROR
+			       });
+            }
+        });
+    },
+    
     viewCommStatementEntries: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
     	var me = this;
     	var grid = this.getCommissionEntryGrid();
-    	grid.setTitle('Commission Entries: '+record.data.fullname+': '+Ext.Date.format(record.data.date_string, 'F Y')+' Edition');
+    	grid.setTitle('Baseline Revenue Entries: '+record.data.fullname+': '+Ext.Date.format(record.data.date_string, 'F Y')+' Edition');
     	var store = grid.getStore();
     	store.clearFilter(true);
         store.filter('statement_id',record.data.id);
@@ -666,6 +698,9 @@ Ext.define('JavisERP.controller.CommissionController', {
             },
             "commissionstatementgrid": {
             	selectionchange: me.onCommStatementSelectChange
+            },
+            "commissionstatementviewgrid #commissionstatement_view": {
+            	click: me.viewCommStatementViewPdf
             },
             "commissionbaselinegrid #commission_baseline_get":{
             	click: me.listCommissionBaselines

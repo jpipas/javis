@@ -12,107 +12,121 @@ class User extends AbstractBusinessService
         return 'employee';
     }
 
-    public function getAll($page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array()) {
-    		// limit our search results
-    		$lsql = '';
-    		if (is_numeric($start) && is_numeric($limit)){
-	    			$lsql = " LIMIT $start, $limit";
-    		}
-    		
-    		// sort our results
-    		if (is_array($sort)){
-    			$order = array();
-    			array_walk($sort, function($sort, $key) use (&$order){
-    				$order[] = $sort['property'].' '.$sort['direction'];
-    			});
-    			$osql = implode(', ', $order);
-    		} else {
-    			$osql = 'last_name ASC';
-    		}
-    		
-    		// build our search criteria
-    		$where = array();
-    		$wsql = '';
-    		// handle query filter
-    		if ($query){
-    			$parts = explode(" ", $query);
+    public function getAll(&$app, $page = '', $start = '', $limit = '', $sort = '', $filter = '', $query = '', $search = array()) {
+		// limit our search results
+		$lsql = '';
+		if (is_numeric($start) && is_numeric($limit)){
+    			$lsql = " LIMIT $start, $limit";
+		}
+		
+		// sort our results
+		if (is_array($sort)){
+			$order = array();
+			array_walk($sort, function($sort, $key) use (&$order){
+				$order[] = $sort['property'].' '.$sort['direction'];
+			});
+			$osql = implode(', ', $order);
+		} else {
+			$osql = 'last_name ASC';
+		}
+		
+		// build our search criteria
+		$where = array();
+		$wsql = '';
+		// handle query filter
+		if ($query){
+			$parts = explode(" ", $query);
+			if (@count($parts) == 2){
+				$where[] = "employee.first_name LIKE '".addslashes($parts[0])."%' AND employee.last_name LIKE '".addslashes($parts[1])."%'";
+			} else {
+				$where[] = "(employee.first_name LIKE '".addslashes($query)."%' OR employee.last_name LIKE '".addslashes($query)."%')";
+			}
+		
+		// search criteria was passed in
+		} elseif (isset($search['query']) && !empty($search['query'])){
+			if (@count($search['fields']) >= 1){
+				$or = array();
+				$qq = $this->db->quote($search['query'].'%');
+				$qqq = $this->db->quote('%'.$search['query'].'%');
+				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$qqq){
+					switch ($field){
+						case 'roles':
+							$or[] = 'pr.roles LIKE '.$qqq;
+							break;
+							
+						case 'manager_name':
+							$or[] = 'm.first_name LIKE '.$qq. ' OR m.last_name LIKE '.$qq;
+							break;
+						
+						case 'regional_name':
+							$or[] = 'rm.first_name LIKE '.$qq. ' OR rm.last_name LIKE '.$qq;
+							break;
+						
+						case 'territories':
+							$or[] = 'territory.territories LIKE '.$qqq;
+							break;
+						
+						default:
+							$or[] = 'employee.'.$field.' LIKE '.$qq;
+							break;
+					}
+				});
+				if (@count($or) > 0){
+					$where[] = "(".implode(' OR ', $or).")";
+				}
+			} else {
+				$parts = explode(" ", $search['query']);
     			if (@count($parts) == 2){
     				$where[] = "employee.first_name LIKE '".addslashes($parts[0])."%' AND employee.last_name LIKE '".addslashes($parts[1])."%'";
     			} else {
-    				$where[] = "(employee.first_name LIKE '".addslashes($query)."%' OR employee.last_name LIKE '".addslashes($query)."%')";
+    				$where[] = "(employee.first_name LIKE '".addslashes($search['query'])."%' OR employee.last_name LIKE '".addslashes($search['query'])."%')";
     			}
-    		
-    		// handle additional filters
-    		} elseif (@count($filter) > 0){
-    			foreach ($filter as $f){
-    				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
-    					switch ($f['property']){
-    						case 'fullname':
-                	$parts = explode(" ", $f['value']);
-				    			if (@count($parts) == 2){
-				    				$where[$f['property']] = "employee.first_name LIKE ".$this->db->quote($parts[0].'%')." AND employee.last_name LIKE ".$this->db->quote($parts[1].'%');
-				    			} else {
-				    				$where[$f['property']] = "(employee.first_name LIKE ".$this->db->quote($f['value'].'%')." OR employee.last_name LIKE ".$this->db->quote($f['value'].'%').")";
-				    			}
-				    			break;
-                  
-                default:
-    							$qq = $this->db->quote($f['value']);
-                	$where[$f['property']] = $f['property']." = ".$qq;
-                	break;
-              }
-            }
-    			}
-    		
-    		// search criteria was passed in
-    		} elseif (isset($search['query']) && !empty($search['query'])){
-    			if (@count($search['fields']) >= 1){
-    				$or = array();
-    				$qq = $this->db->quote($search['query'].'%');
-    				$qqq = $this->db->quote('%'.$search['query'].'%');
-    				array_walk($search['fields'], function($field,$key) use (&$or, &$qq, &$qqq){
-    					switch ($field){
-    						case 'roles':
-    							$or[] = 'pr.roles LIKE '.$qqq;
-    							break;
-    							
-    						case 'manager_name':
-    							$or[] = 'm.first_name LIKE '.$qq. ' OR m.last_name LIKE '.$qq;
-    							break;
-    						
-    						case 'territories':
-    							$or[] = 'territory.territories LIKE '.$qqq;
-    							break;
-    						
-    						default:
-    							$or[] = 'employee.'.$field.' LIKE '.$qq;
-    							break;
-    					}
-    				});
-    				if (@count($or) > 0){
-    					$where[] = "(".implode(' OR ', $or).")";
-    				}
-    			} else {
-    				$parts = explode(" ", $search['query']);
-	    			if (@count($parts) == 2){
-	    				$where[] = "employee.first_name LIKE '".addslashes($parts[0])."%' AND employee.last_name LIKE '".addslashes($parts[1])."%'";
-	    			} else {
-	    				$where[] = "(employee.first_name LIKE '".addslashes($search['query'])."%' OR employee.last_name LIKE '".addslashes($search['query'])."%')";
-	    			}
-    			}
-    		}
-    		if (@count($where) > 0){
-    			$wsql = " AND ".implode(" AND ", $where);
-    		}
+			}
+		}
+		
+		// handle additional filters
+		if (@count($filter) > 0){
+			foreach ($filter as $f){
+				if(array_key_exists('value',$f) && !isset($where[$f['property']]) && !empty($f['value'])){
+					switch ($f['property']){
+						case 'fullname':
+            				$parts = explode(" ", $f['value']);
+			    			if (@count($parts) == 2){
+			    				$where[$f['property']] = "employee.first_name LIKE ".$this->db->quote($parts[0].'%')." AND employee.last_name LIKE ".$this->db->quote($parts[1].'%');
+			    			} else {
+			    				$where[$f['property']] = "(employee.first_name LIKE ".$this->db->quote($f['value'].'%')." OR employee.last_name LIKE ".$this->db->quote($f['value'].'%').")";
+			    			}
+			    			break;
+              
+		                default:
+		    							$qq = $this->db->quote($f['value']);
+		                	$where[$f['property']] = $f['property']." = ".$qq;
+		                	break;
+		            }
+		        }
+			}
+		}
+		
+		// see if we need to limit what they can see
+		if ($app['business.user']->hasPermission($app, 'user_view_limit')){
+    		$eids = $app['business.user']->getUserVisibleDirectReports($app);
+    		$where[] = "employee.id IN ('".implode("', '", $eids)."')";
+    	}
+		
+		if (@count($where) > 0){
+			$wsql = " AND ".implode(" AND ", $where);
+		}
         $sql = "SELECT SQL_CALC_FOUND_ROWS
         	employee.*,
         	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname,
         	CONCAT(m.first_name, ' ',m.last_name) AS manager_name,
+        	CONCAT(rm.first_name, ' ',rm.last_name) AS regional_name,
         	territory.territories,
         	pr.roles
         FROM
         	(employee)
         	LEFT JOIN employee AS m ON m.id = employee.manager_user_id
+        	LEFT JOIN employee AS rm ON rm.id = employee.regional_user_id
         	LEFT JOIN (SELECT
         		manager_id,
         		GROUP_CONCAT(name ORDER BY name SEPARATOR ', ') AS territories
@@ -145,14 +159,40 @@ class User extends AbstractBusinessService
     }
 
     public function getById($id) {
-        $sql = "SELECT 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
         	employee.*,
-        	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname
+        	CONCAT(employee.first_name, ' ',employee.last_name) AS fullname,
+        	CONCAT(m.first_name, ' ',m.last_name) AS manager_name,
+        	CONCAT(rm.first_name, ' ',rm.last_name) AS regional_name,
+        	territory.territories,
+        	pr.roles
         FROM
-        	employee
+        	(employee)
+        	LEFT JOIN employee AS m ON m.id = employee.manager_user_id
+        	LEFT JOIN employee AS rm ON rm.id = employee.regional_user_id
+        	LEFT JOIN (SELECT
+        		manager_id,
+        		GROUP_CONCAT(name ORDER BY name SEPARATOR ', ') AS territories
+        	FROM
+        		territory
+        	GROUP BY
+        		manager_id) AS territory ON territory.manager_id = employee.id
+        	LEFT JOIN (SELECT 
+        			employee_id,
+        			GROUP_CONCAT(permission_role.title) AS roles
+        		FROM
+        			(employee_role,
+        			permission_role)
+        		WHERE
+        			permission_role.id = employee_role.role_id AND 
+        			permission_role.deleted_at IS NULL
+        		GROUP BY
+        			employee_role.employee_id
+        		ORDER BY
+        			permission_role.title) AS pr ON pr.employee_id = employee.id
         WHERE
-        	id = ? AND
-        	deleted_at IS NULL";
+        	employee.id = ? AND
+        	employee.deleted_at IS NULL";
         return $this->db->fetchAssoc($sql,array((int) $id));
     }
     
@@ -160,7 +200,7 @@ class User extends AbstractBusinessService
 		$error = array();
 		// clear params we don't need
 		unset($params['territory_name'], $params['territory'],  $params['fullname'], $params['manager'], $params['manager_name']);
-		unset($params['created_at'], $params['last_login'], $params['deleted_at'], $params['territories']);
+		unset($params['created_at'], $params['last_login'], $params['deleted_at'], $params['territories'], $params['regional_name']);
 		
 		// verify password, clear if not entered to keep existing
 		if ($params['password'] || !$params['id']){
@@ -340,6 +380,90 @@ class User extends AbstractBusinessService
         $rows = $this->db->update('employee',$params, array('id' => $id));
         $user = $this->getById($id);
         return $user;
+    }
+    
+    public function hasPermission(&$app, $resourceid)
+    {
+    	$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			return $user->hasPermission($resourceid);
+		}
+		return false;
+    }
+    
+    public function getUserVisibleTerritories(&$app)
+    {
+    	$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+	    	$sql = "SELECT
+	    		t.id
+	    	FROM
+	    		(territory AS t,
+	    		employee AS e)
+	    		LEFT JOIN publication AS p ON t.id = p.territory_id
+	    	WHERE
+	    		t.manager_id = e.id AND
+	    		t.deleted_at IS NULL AND
+	    		(t.manager_id = :id OR
+	    		e.manager_user_id = :id OR
+	    		e.regional_user_id = :id OR
+	    		p.contentcoord_id = :id)";
+	    	$sth = $this->db->executeQuery($sql, array('id' => $userid));
+	    	$tids = $sth->fetchAll(\PDO::FETCH_COLUMN, 0);
+	    	return $tids;
+	    }
+	    return array();
+    }
+    
+    public function getUserVisiblePublications(&$app)
+    {
+    	$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+	    	$sql = "SELECT
+	    		p.id
+	    	FROM
+	    		(publication AS p,
+	    		territory AS t,
+	    		employee AS e)
+	    	WHERE
+	    		p.territory_id = t.id AND
+	    		t.manager_id = e.id AND
+	    		p.deleted_at IS NULL AND
+	    		(t.manager_id = :id OR
+	    		p.contentcoord_id = :id OR
+	    		e.manager_user_id = :id OR
+	    		e.regional_user_id = :id)";
+	    	$sth = $this->db->executeQuery($sql, array('id' => $userid));
+	    	$ids = $sth->fetchAll(\PDO::FETCH_COLUMN, 0);
+	    	return $ids;
+	    }
+	    return array();
+    }
+    
+    public function getUserVisibleDirectReports(&$app)
+    {
+    	$token = $app['security']->getToken();
+		if (null !== $token) {
+			$user = $token->getUser();
+			$userid = $user->getId();
+	    	$sql = "SELECT
+	    		e.id
+	    	FROM
+	    		(employee AS e)
+	    	WHERE
+	    		(e.id = :id OR
+	    		e.manager_user_id = :id OR
+	    		e.regional_user_id = :id)";
+	    	$sth = $this->db->executeQuery($sql, array('id' => $userid));
+	    	$eids = $sth->fetchAll(\PDO::FETCH_COLUMN, 0);
+	    	return $eids;
+	    }
+	    return array();
     }
     
     public function encodePassword($username, $nonEncodedPassword, $app)

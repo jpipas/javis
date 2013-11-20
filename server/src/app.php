@@ -23,7 +23,10 @@ date_default_timezone_set("America/Chicago");
 $app = new Application();
 
 $app->register(new UrlGeneratorServiceProvider());
-$app->register(new SessionServiceProvider());
+$app->register(new SessionServiceProvider(array(
+    	'session.storage.options' => array('cookie_lifetime' => 60 * 60)
+	)
+));
 $app->register(new HttpCacheServiceProvider(), array("http_cache.cache_dir" => ROOT_PATH."/cache/",   ));
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../templates'
@@ -83,7 +86,6 @@ $app['security.role_hierarchy'] = array(
     'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH', 'ROLE_DESIGNER', 'ROLE_FINANCE')
 );
 
-
 //registering logger
 $app->register(new MonologServiceProvider(), array(
         "monolog.logfile" => ROOT_PATH."/logs/".date("Y-m-d").".log",
@@ -97,7 +99,7 @@ $routes = scandir($routesDir);
 foreach ($routes as $file){
     if (pathinfo($file, PATHINFO_EXTENSION) === "php"){
         $exploded = explode(".", $file);
-        $routeToLoad = "Classes\\Routes\\".$exploded[0];
+        $routeToLoad = "Classes\\Routes\\".$exploded[0];;
         $app->mount("/".strtolower($exploded[0]), new $routeToLoad);
     }
 }
@@ -119,6 +121,7 @@ $app->register(new BusinessServiceProvider(),array("business.container" =>  $arr
 $app->get("/", function () use ($app) {
     $token = $app['security']->getToken();
     $user = $token->getUser();
+    //$user->setLastLogin();
     $app['session']->set('user_token',array('user'=>$user));
     return $app['twig']->render('index.html', array('resources' => $user->getResources(), 'newpassword' => $user->getNewPassword()));
 });

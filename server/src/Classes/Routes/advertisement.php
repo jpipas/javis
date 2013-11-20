@@ -14,6 +14,11 @@ class Advertisement implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'advertisement_view')){
+        		return $app->json(array("totalCount"=>0, "advertisement"=>array()));
+        	}
+        	
         	$sort = '';
     		if ($request->get('sort')){
     			$sort = json_decode($request->get('sort'), true);
@@ -26,11 +31,16 @@ class Advertisement implements ControllerProviderInterface
     		if ($request->get('search')){
     			$search = json_decode($request->get('search'), true);
     		}
-            list($totalCount, $result) = $app['business.advertisement']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            list($totalCount, $result) = $app['business.advertisement']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
         	return $app->json(array("totalCount"=>$totalCount, "advertisement"=>$result));
         });
 
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'advertisement_view')){
+        		return $app->json(array("totalCount"=>0, "advertisement"=>array()));
+        	}
+        	
             $result = $app['business.advertisement']->getById($id);
 
 			$result['client'] = $app['business.client']->getById($result['client_id']);
@@ -186,6 +196,11 @@ class Advertisement implements ControllerProviderInterface
 
 		/* update */
 		$controllers->put('/{id}', function(Application $app, $id, Request $request) {
+			// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'advertisement_edit')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $params = json_decode($request->getContent(),true);
             $error = $app['business.advertisement']->validate($app, $params);
             if (@count($error) > 0){
@@ -198,12 +213,22 @@ class Advertisement implements ControllerProviderInterface
         
         /* delete */
 		$controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+			// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'advertisement_delete')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $result = $app['business.advertisement']->delete($id);
             return $app->json(array("success"=>true,"advertisement"=>$result));
         });
 
 		/* create */
         $controllers->post('/new', function(Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'advertisement_create')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             $params = json_decode($request->getContent(),true);
             $error = $app['business.advertisement']->validate($app, $params);
             if (@count($error) > 0){

@@ -17,6 +17,11 @@ class Payment implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/', function (Application $app, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'payment_view')){
+        		return $app->json(array("totalCount"=>0, "payment"=>array()));
+        	}
+        	
             $sort = '';
 			if ($request->get('sort')){
 				$sort = json_decode($request->get('sort'), true);
@@ -29,32 +34,31 @@ class Payment implements ControllerProviderInterface
 			if ($request->get('search')){
 				$search = json_decode($request->get('search'), true);
 			}
-            list($totalCount, $result) = $app['business.payment']->getAll($request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
+            list($totalCount, $result) = $app['business.payment']->getAll($app, $request->get('page'),$request->get('start'),$request->get('limit'),$sort,$filter,$request->get('query'),$search);
             return $app->json(array("totalCount"=>$totalCount, "payment"=>$result));
         });
 
 
         $controllers->get('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'payment_view')){
+        		return $app->json(array("totalCount"=>0, "payment"=>array()));
+        	}
+        	
             $result = $app['business.payment']->getById($id);
             $result['client'] = $app['business.client']->getById($result['client_id']);
             $result['contract'] = $app['business.contract']->getById($result['contract_id']);
             $result['durations'] = $app['business.duration']->getByPaymentId($result['id']);
-
-			/*
-            array_walk($payment_array,function($payment,$key) use (&$payment_array, &$app){
-                $subReq = Request::create('/client/'.$payment['client_id'],'GET');
-                $cl_array = json_decode($app->handle($subReq,HttpKernelInterface::SUB_REQUEST, false)->getContent(),true);
-                $payment_array[$key]['client'] = $cl_array['client'][0];
-                $payment_array[$key]['payment_type'] = $app['business.paymenttype']->getById($payment['payment_type_id']);
-                $payment_array[$key]['contract'] = $app['business.contract']->getById($payment['contract_id']);
-            });
-            */
-
             return $app->json(array("success"=>true,"totalCount"=>($result['id']?1:0),"payment"=>$result));
         });
 
 		// create
 		$controllers->post('/new', function(Application $app, Request $request) {
+			// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'payment_create')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+			
             $params = json_decode($request->getContent(),true);
             $error = $app['business.payment']->validate($app, $params);
             if (@count($error) > 0){
@@ -67,6 +71,11 @@ class Payment implements ControllerProviderInterface
 
 		// update
         $controllers->put('/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'payment_edit')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
         	$params = json_decode($request->getContent(),true);
             $error = $app['business.payment']->validate($app, $params);
             if (@count($error) > 0){
@@ -78,6 +87,11 @@ class Payment implements ControllerProviderInterface
         });
         
         $controllers->delete('/delete/{id}', function(Application $app, $id, Request $request) {
+        	// make sure we have the right permission
+        	if (!$app['business.user']->hasPermission($app, 'payment_delete')){
+        		return $app->json(array("success"=>false,"error"=>array('Invalid permission')));
+        	}
+        	
             //$params = json_decode($request->getContent(),true);
             $app['business.payment']->deletePayment($app, $id);
             return $app->json(array("success"=>true));

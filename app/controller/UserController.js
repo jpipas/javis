@@ -54,38 +54,40 @@ Ext.define('JavisERP.controller.UserController', {
     },
 
     onUserSaveButtonClick: function(button, options, e){
-        var fields = this.getUserForm().getForm().getValues(false,false,false,true);
-        var user = new JavisERP.model.User();
-        for(var key in fields){
-            user.set(key,fields[key]);
-        }
-        
-        var roles = [];
-        var recs = this.getUserForm().getForm().findField('roles').getValue();
-        for(var key1 in recs){
-            var role = new JavisERP.model.PermissionRole();
-            role.set("id",recs[key1]);
-            roles.push(role);
-        }
-        user.setAssociatedData("roles",roles);
-        
-        var uWindow = this.getUserWindow();
-        var uStore = this.getUserStore();
-        user.save({
-            success: function(record, operation){
-            	uWindow.close();
-              uStore.reload();
-              Ext.Msg.alert('Success','Employee saved successfully!');
-            },
-            failure: function(record, operation){
-            	Ext.MessageBox.show({
-			           title: 'Failure',
-			           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
-			           buttons: Ext.MessageBox.OK,
-			           icon: Ext.MessageBox.ERROR
-			       });
-            }
-        });
+    	if (this.getUserForm().getForm().isValid()){
+	        var fields = this.getUserForm().getForm().getValues(false,false,false,true);
+	        var user = new JavisERP.model.User();
+	        for(var key in fields){
+	            user.set(key,fields[key]);
+	        }
+	        
+	        var roles = [];
+	        var recs = this.getUserForm().getForm().findField('roles').getValue();
+	        for(var key1 in recs){
+	            var role = new JavisERP.model.PermissionRole();
+	            role.set("id",recs[key1]);
+	            roles.push(role);
+	        }
+	        user.setAssociatedData("roles",roles);
+	        
+	        var uWindow = this.getUserWindow();
+	        var uStore = this.getUserStore();
+	        user.save({
+	            success: function(record, operation){
+	            	uWindow.close();
+	              uStore.reload();
+	              Ext.Msg.alert('Success','Employee saved successfully!');
+	            },
+	            failure: function(record, operation){
+	            	Ext.MessageBox.show({
+				           title: 'Failure',
+				           msg: "<p>The following errors were encountered:</p><ul><li>"+operation.request.scope.reader.jsonData.error.join("</li><li>")+'</li></ul>',
+				           buttons: Ext.MessageBox.OK,
+				           icon: Ext.MessageBox.ERROR
+				       });
+	            }
+	        });
+	    }
     },
     
     onPasswordSaveButtonClick: function(button, options, e){
@@ -161,7 +163,8 @@ Ext.define('JavisERP.controller.UserController', {
 					roles.push(new JavisERP.model.PermissionRole(record.data.roles[i]));
 				}
 				uForm.getForm().findField('roles').setValue(roles);
-                uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User(record.data.manager));
+                uForm.getForm().findField('manager_user_id').setValue(new JavisERP.model.User({id: record.data.manager_user_id, fullname: record.data.manager_name }));
+                uForm.getForm().findField('regional_user_id').setValue(new JavisERP.model.User({id: record.data.regional_user_id, fullname: record.data.regional_name}));
             }
         });
         uWindow.show();

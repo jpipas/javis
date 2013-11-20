@@ -22,7 +22,8 @@
         "phpoffice/phpexcel": "dev-develop_2.0.0",
         "tecnick.com/tcpdf": "dev-master",
         "igorw/config-service-provider": "1.0",
-        "knplabs/migration-service-provider": "dev-master"
+        "knplabs/migration-service-provider": "dev-master",
+        "aws/aws-sdk-php-silex": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {

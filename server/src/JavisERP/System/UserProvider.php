@@ -57,7 +57,7 @@ class UserProvider implements UserProviderInterface
         while ($r = $sth->fetch()){
         	$resources[] = $r['resourceid'];
         }
-        return new User($user['id'],$user['username'], $user['password'], $user['newpassword'], $user['email'], $user['manager_user_id'],$user['first_name'],$user['last_name'], $resources, true, true, true, true);
+        return new User($user['id'],$user['username'], $user['password'], $user['newpassword'], $user['email'], $user['manager_user_id'],$user['first_name'],$user['last_name'], $resources, ($user['disabled']?false:true), true, true, true);
     }
 
     public function refreshUser(UserInterface $user)
